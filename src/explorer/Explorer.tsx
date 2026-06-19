@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { useDarkMode } from '../lib/useDarkMode';
 import { buildTree } from './registry';
 import { useHashRoute } from './useHashRoute';
@@ -13,6 +14,10 @@ const tree = buildTree();
 export default function Explorer() {
   const [dark, setDark] = useDarkMode();
   const { route, navigate } = useHashRoute();
+  // The section currently in view (scroll-spy) — drives the tree highlight/expand.
+  // Resets to the route on navigation, then tracks scrolling within the page.
+  const [activeSlug, setActiveSlug] = useState(route);
+  useEffect(() => { setActiveSlug(route); }, [route]);
 
   return (
     <div className="shell">
@@ -20,7 +25,7 @@ export default function Explorer() {
         <div className="rail__brand">
           <span className="mark">S</span>SuperRadix
         </div>
-        <Sidebar tree={tree} route={route} onNavigate={navigate} />
+        <Sidebar tree={tree} route={route} activeSlug={activeSlug} onNavigate={navigate} />
       </aside>
 
       <main className="main">
@@ -32,7 +37,7 @@ export default function Explorer() {
           {dark ? 'Light' : 'Dark'}
         </button>
 
-        <StoryView tree={tree} route={route} onNavigate={navigate} />
+        <StoryView tree={tree} route={route} onNavigate={navigate} onActiveChange={setActiveSlug} />
       </main>
     </div>
   );

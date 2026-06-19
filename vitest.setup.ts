@@ -30,3 +30,18 @@ if (!('matchMedia' in window)) {
 if (!('scrollTo' in window)) {
   (window as any).scrollTo = () => {};
 }
+
+// jsdom has no IntersectionObserver. Fire once as "intersecting" so lazy content
+// mounts and scroll-spy resolves during tests.
+if (!('IntersectionObserver' in globalThis)) {
+  (globalThis as any).IntersectionObserver = class {
+    cb: (entries: unknown[], obs: unknown) => void;
+    constructor(cb: (entries: unknown[], obs: unknown) => void) { this.cb = cb; }
+    observe(el: Element) {
+      this.cb([{ isIntersecting: true, target: el, boundingClientRect: { top: 0 } }], this);
+    }
+    unobserve() {}
+    disconnect() {}
+    takeRecords() { return []; }
+  };
+}

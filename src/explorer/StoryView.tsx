@@ -1,4 +1,6 @@
+import { useEffect } from 'react';
 import { entries, entriesUnder, findNode, type Entry, type TreeNode } from './registry';
+import { LazyMount } from './LazyMount';
 
 const VARIANT_TOTAL = entries.reduce((n, e) => n + e.variants.length, 0);
 
@@ -13,14 +15,37 @@ function EntryBlock({ entry }: { entry: Entry }) {
         </span>
       </div>
       {entry.description && <p className="sec__desc">{entry.description}</p>}
-      {entry.variants.map(({ id, name, Component }) => (
-        <div className="variant" key={id}>
-          {entry.variants.length > 1 && <span className="variant__tag">{name}</span>}
-          <Component />
-        </div>
-      ))}
+      <LazyMount minHeight={180}>
+        {entry.variants.map(({ id, name, Component }) => (
+          <div className="variant" key={id}>
+            {entry.variants.length > 1 && <span className="variant__tag">{name}</span>}
+            <Component />
+          </div>
+        ))}
+      </LazyMount>
     </section>
   );
+}
+
+/** Scroll-spy: report the section nearest the top of the viewport so the tree
+ * can highlight + expand to whatever the user is currently looking at. */
+function useScrollSpy(route: string, onActiveChange?: (slug: string) => void): void {
+  useEffect(() => {
+    if (!onActiveChange) return undefined;
+    const secs = Array.from(document.querySelectorAll<HTMLElement>('.sec[id]'));
+    if (secs.length < 2) return undefined; // single section — nothing to spy
+    const io = new IntersectionObserver(
+      (entriesList) => {
+        const visible = entriesList
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+        if (visible[0]) onActiveChange((visible[0].target as HTMLElement).id);
+      },
+      { rootMargin: '0px 0px -70% 0px', threshold: 0 },
+    );
+    secs.forEach((s) => io.observe(s));
+    return () => io.disconnect();
+  }, [route, onActiveChange]);
 }
 
 function Overview({ tree, onNavigate }: { tree: TreeNode[]; onNavigate: (s: string) => void }) {
@@ -73,15 +98,18 @@ export function StoryView({
   tree,
   route,
   onNavigate,
+  onActiveChange,
 }: {
   tree: TreeNode[];
   route: string;
   onNavigate: (slug: string) => void;
+  onActiveChange?: (slug: string) => void;
 }) {
-  if (route === '') return <Overview tree={tree} onNavigate={onNavigate} />;
-
   const node = findNode(tree, route);
   const list = entriesUnder(route);
+  useScrollSpy(route, onActiveChange);
+
+  if (route === '') return <Overview tree={tree} onNavigate={onNavigate} />;
 
   if (!list.length) {
     return (

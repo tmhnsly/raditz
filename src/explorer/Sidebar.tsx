@@ -1,5 +1,7 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Tree, type TreeNode as TreeItem } from '../components/navigation/Tree';
+import { Search } from '../components/forms/Search';
+import { fuzzyScore } from '../components/internal';
 import type { TreeNode } from './registry';
 
 // A few top-level groups read better with a fuller label than their story prefix.
@@ -23,27 +25,69 @@ function toItems(nodes: TreeNode[]): TreeItem[] {
   }));
 }
 
+/** Prune the tree to nodes that fuzzy-match the query (keeping ancestors of any match). */
+function filterTree(nodes: TreeItem[], query: string): TreeItem[] {
+  const out: TreeItem[] = [];
+  for (const n of nodes) {
+    const kids = n.children ? filterTree(n.children, query) : [];
+    const selfMatch = fuzzyScore(String(n.label), query) !== null;
+    if (selfMatch || kids.length) out.push({ ...n, children: kids.length ? kids : n.children });
+  }
+  return out;
+}
+
+/** Ids of every branch (folder) node — used to fully expand search results. */
+function allBranchIds(nodes: TreeItem[], acc: string[] = []): string[] {
+  for (const n of nodes) {
+    if (n.children?.length) { acc.push(n.id); allBranchIds(n.children, acc); }
+  }
+  return acc;
+}
+
 export function Sidebar({
   tree,
   route,
+  activeSlug,
   onNavigate,
 }: {
   tree: TreeNode[];
   route: string;
+  activeSlug: string;
   onNavigate: (slug: string) => void;
 }) {
-  const items = useMemo(() => toItems(tree), [tree]);
+  const allItems = useMemo(() => toItems(tree), [tree]);
+  const [query, setQuery] = useState('');
+  const searching = query.trim().length > 0;
+  const filtered = useMemo(() => (searching ? filterTree(allItems, query.trim()) : allItems), [searching, query, allItems]);
 
-  // Compositions-first groups start open; the Components catalog starts collapsed.
-  // Captured once at mount; in-app clicks expand naturally (file-browser style).
-  const [defaultExpandedIds] = useState(() => {
+  // Compositions-first groups start open; Components starts collapsed. User
+  // toggles persist; scroll-spy expands the branch you're currently viewing.
+  const [userExpanded, setUserExpanded] = useState<string[]>(() => {
     const open = new Set<string>(tree.filter((n) => n.slug !== 'components').map((n) => n.slug));
     ancestorsOf(route).forEach((s) => open.add(s));
     return [...open];
   });
+  useEffect(() => {
+    const anc = ancestorsOf(activeSlug);
+    if (!anc.length) return;
+    setUserExpanded((prev) => {
+      const s = new Set(prev);
+      anc.forEach((a) => s.add(a));
+      return [...s];
+    });
+  }, [activeSlug]);
+
+  const searchExpanded = useMemo(() => (searching ? allBranchIds(filtered) : []), [searching, filtered]);
 
   return (
     <div className="rail__nav">
+      <Search
+        className="rail__search"
+        size="sm"
+        placeholder="Search components…"
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+      />
       <button
         type="button"
         className={'tree__home' + (route === '' ? ' tree__home--active' : '')}
@@ -52,13 +96,18 @@ export function Sidebar({
       >
         Overview
       </button>
-      <Tree
-        aria-label="Showcase navigation"
-        items={items}
-        selectedId={route || undefined}
-        onSelect={(id) => onNavigate(id)}
-        defaultExpandedIds={defaultExpandedIds}
-      />
+      {searching && filtered.length === 0 ? (
+        <p className="rail__empty">No matches</p>
+      ) : (
+        <Tree
+          aria-label="Showcase navigation"
+          items={filtered}
+          selectedId={activeSlug || route || undefined}
+          onSelect={(id) => { onNavigate(id); setQuery(''); }}
+          expandedIds={searching ? searchExpanded : userExpanded}
+          onExpandedChange={searching ? undefined : setUserExpanded}
+        />
+      )}
     </div>
   );
 }
