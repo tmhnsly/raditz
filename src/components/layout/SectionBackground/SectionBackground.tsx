@@ -85,7 +85,9 @@ export function SectionBackground({
           ) : null}
         </div>
       ) : null}
-      <div className="srx-secbg__content">{children}</div>
+      {/* A scrim darkens the backdrop, so the surface OWNS its on-dark context —
+          content gets legible on-media tokens without the caller adding a class. */}
+      <div className={cx('srx-secbg__content', scrim && 'srx-on-dark')}>{children}</div>
     </div>
   );
 }

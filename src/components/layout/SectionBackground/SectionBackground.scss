@@ -44,9 +44,9 @@
 }
 
 /* scrim — darken the backdrop (esp. image/video) so overlaid text stays legible
-   over ANY media; bottom-heavier since photos are often brightest there. Content
-   scopes itself to .srx-on-dark, so text/buttons use on-media tokens (legible +
-   theme-consistent). Uses Radix black-alpha tokens, not hardcoded colours. */
+   over ANY media; bottom-heavier since photos are often brightest there. The
+   component scopes its own content to .srx-on-dark when scrimmed (see the .tsx),
+   so text/buttons use on-media tokens. Uses Radix black-alpha tokens, not hex. */
 .srx-secbg--scrim .srx-secbg__layer::after {
   content: ''; position: absolute; inset: 0;
   background: linear-gradient(180deg, var(--black-a8) 0%, var(--black-a9) 100%);
