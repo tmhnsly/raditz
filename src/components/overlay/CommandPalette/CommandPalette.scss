@@ -9,7 +9,7 @@
   box-shadow: 0 2px 0 var(--rule); line-height: 1;
 }
 
-.srx-cmdk { position: relative; z-index: 1; width: 100%; max-width: 36rem; background: var(--panel); border: 1px solid var(--surface-edge); border-radius: var(--radius-overlay); box-shadow: var(--shadow-6); overflow: hidden; animation: srxPop var(--duration-base) var(--ease-standard); }
+.srx-cmdk { position: relative; z-index: var(--z-overlay-local); width: 100%; max-width: 36rem; background: var(--panel); border: 1px solid var(--surface-edge); border-radius: var(--radius-overlay); box-shadow: var(--shadow-6); overflow: hidden; animation: srxPop var(--duration-base) var(--ease-standard); }
 
 /* search row now provided by the shared <Search variant="plain"> */
 

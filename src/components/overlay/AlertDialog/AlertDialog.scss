@@ -6,7 +6,7 @@
 .srx-overlay__scrim { position: absolute; inset: 0; background: var(--overlay-scrim); -webkit-backdrop-filter: blur(0.125rem); backdrop-filter: blur(0.125rem); animation: srxFade var(--duration-base) var(--ease-standard); }
 
 .srx-dialog {
-  position: relative; z-index: 1; width: 100%; max-width: 28.75rem; max-height: calc(100vh - 2 * var(--space-7));
+  position: relative; z-index: var(--z-overlay-local); width: 100%; max-width: 28.75rem; max-height: calc(100vh - 2 * var(--space-7));
   overflow: auto; background: var(--panel); border: var(--border-width) solid var(--surface-edge);
   border-radius: var(--radius-panel); box-shadow: var(--shadow-6); padding: var(--space-6);
   animation: srxPop var(--duration-base) var(--ease-standard);
