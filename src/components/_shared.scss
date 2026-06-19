@@ -47,12 +47,6 @@
 
 @media (max-width: 460px) { .srx-gallery { grid-template-columns: 1fr !important; } .srx-gallery--masonry { column-count: 1 !important; } }
 
-@media (max-width: 640px) {
-  .srx-carousel__arrow--prev { transform: translate(0, -50%); left: 0.5rem; }
-  .srx-carousel__arrow--prev:hover { transform: translate(0, -50%) scale(1.06); }
-  .srx-carousel__arrow--next { transform: translate(0, -50%); right: 0.5rem; }
-  .srx-carousel__arrow--next:hover { transform: translate(0, -50%) scale(1.06); }
-}
 
 @keyframes srxDrawerR { from { transform: translateX(100%); } to { transform: none; } }
 

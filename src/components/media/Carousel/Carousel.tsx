@@ -121,28 +121,34 @@ export function Carousel({
           </div>
         ))}
       </div>
-      {arrows && n > 1 ? (
-        <>
-          <button type="button" className="srx-carousel__arrow srx-carousel__arrow--prev" aria-label="Previous" onClick={() => go(active - 1)}>
-            {CHEV('prev')}
-          </button>
-          <button type="button" className="srx-carousel__arrow srx-carousel__arrow--next" aria-label="Next" onClick={() => go(active + 1)}>
-            {CHEV('next')}
-          </button>
-        </>
-      ) : null}
-      {dots && n > 1 ? (
-        <div className="srx-carousel__dots">
-          {items.map((_, i) => (
-            <button
-              key={i}
-              type="button"
-              className={cx('srx-carousel__dot', i === active && 'is-active')}
-              aria-label={`Go to slide ${i + 1}`}
-              aria-current={i === active ? 'true' : undefined}
-              onClick={() => go(i)}
-            />
-          ))}
+      {n > 1 ? (
+        <div className="srx-carousel__bar">
+          {dots ? (
+            <div className="srx-carousel__indicator" role="tablist" aria-label="Slides">
+              {items.map((_, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  role="tab"
+                  className={cx('srx-carousel__seg', i === active && 'is-active')}
+                  aria-label={`Go to slide ${i + 1}`}
+                  aria-selected={i === active}
+                  onClick={() => go(i)}
+                />
+              ))}
+            </div>
+          ) : <span />}
+          {arrows ? (
+            <div className="srx-carousel__nav">
+              <button type="button" className="srx-carousel__arrow" aria-label="Previous" disabled={!loop && active === 0} onClick={() => go(active - 1)}>
+                {CHEV('prev')}
+              </button>
+              <span className="srx-carousel__count" aria-hidden="true"><b>{active + 1}</b> / {n}</span>
+              <button type="button" className="srx-carousel__arrow" aria-label="Next" disabled={!loop && active === n - 1} onClick={() => go(active + 1)}>
+                {CHEV('next')}
+              </button>
+            </div>
+          ) : null}
         </div>
       ) : null}
     </div>
