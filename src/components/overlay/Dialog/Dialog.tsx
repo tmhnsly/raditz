@@ -1,5 +1,5 @@
 import type { HTMLAttributes, ReactNode, ReactElement } from 'react';
-import { cx, Overlay } from '../../internal';
+import { cx, Overlay, OverlayClose } from '../../internal';
 
 export interface DialogProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
   /** Open state (controlled). */
@@ -55,12 +55,7 @@ export function Dialog({
       ) : null}
       {children ? <div className="srx-dialog__body">{children}</div> : null}
       {footer ? <div className="srx-dialog__footer">{footer}</div> : null}
-      <button type="button" className="srx-dialog__close" aria-label="Close" onClick={close}>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-          <line x1="6" y1="6" x2="18" y2="18" />
-          <line x1="18" y1="6" x2="6" y2="18" />
-        </svg>
-      </button>
+      <OverlayClose className="srx-dialog__close" onClick={close} />
     </Overlay>
   );
 }

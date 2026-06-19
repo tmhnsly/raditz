@@ -1,26 +1,29 @@
-// Auto-split from components.css — this component's styles, co-located.
-// Uses SuperRadix tokens (var(--…)); re-skins/re-themes with the system.
-/* ═══════════════════════ Media · Lightbox · Gallery · Carousel ═══════════════════════ */
-/* Lightbox is an Overlay adapter face: the .srx-overlay container provides the
-   fixed full-screen layer + z-index; this panel fills it edge-to-edge. */
+// Uses SuperRadix tokens (var(--…)). The Lightbox always renders on a dark scrim
+// (identical in light + dark themes); the panel wraps in .srx-on-dark so chrome
+// reads white-on-dark and the shared .srx-oclose / .srx-ovbtn discs follow suit.
+/* ═══════════════════════ Media · Lightbox ═══════════════════════ */
 .srx-overlay--lightbox { padding: 0; }
 .srx-lightbox { position: absolute; inset: 0; display: flex; flex-direction: column; }
 
-.srx-lightbox__scrim { position: absolute; inset: 0; background: color-mix(in srgb, var(--slate-1) 92%, black); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); animation: srxFade var(--duration-base) var(--ease-standard); }
+/* Always-dark, theme-independent scrim so the viewer looks the same in both modes. */
+.srx-lightbox__scrim { position: absolute; inset: 0; background: color-mix(in srgb, black 92%, transparent); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); animation: srxFade var(--duration-base) var(--ease-standard); }
 
-.dark .srx-lightbox__scrim { background: color-mix(in srgb, black 86%, var(--slate-1)); }
+/* Close: position only — the disc visual comes from the shared .srx-oclose. */
+.srx-lightbox__close { position: absolute; top: var(--space-4); right: var(--space-4); z-index: 3; }
 
-.srx-lightbox__close { position: absolute; top: var(--space-4); right: var(--space-4); z-index: 3; width: 2.75rem; height: 2.75rem; display: inline-grid; place-items: center; border-radius: var(--radius-full); color: var(--on-media); background: var(--white-a4); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); transition: var(--transition-control); }
+.srx-lightbox__stage { position: absolute; inset: 0; z-index: 1; margin: 0; display: grid; place-items: center; padding: 4.5rem clamp(0.75rem, 3vw, 2rem) 5rem; touch-action: none; }
 
-.srx-lightbox__close:hover { background: var(--white-a8); transform: scale(1.06); }
+.srx-lightbox__img {
+  max-width: calc(100vw - 2rem); max-height: calc(100dvh - 9.5rem); object-fit: contain;
+  border-radius: var(--radius-md); box-shadow: var(--shadow-6); user-select: none; cursor: zoom-in;
+  transform: translate(var(--srx-lb-x, 0px), var(--srx-lb-y, 0px)) scale(var(--srx-lb-scale, 1));
+  transition: transform var(--duration-base) var(--ease-standard);
+  animation: srxPop var(--duration-base) var(--ease-standard);
+}
 
-.srx-lightbox__close svg { width: 1.25rem; height: 1.25rem; }
+.srx-lightbox__img.is-zoom { cursor: grab; }
 
-.srx-lightbox__stage { position: absolute; inset: 0; z-index: 1; margin: 0; display: grid; place-items: center; padding: 4.5rem clamp(0.75rem, 3vw, 2rem) 5rem; }
-
-.srx-lightbox__img { max-width: calc(100vw - 2rem); max-height: calc(100dvh - 9.5rem); object-fit: contain; border-radius: var(--radius-md); box-shadow: var(--shadow-6); cursor: zoom-in; animation: srxPop var(--duration-base) var(--ease-standard); user-select: none; }
-
-.srx-lightbox__img.is-zoom { cursor: zoom-out; transform: scale(1.6); }
+.srx-lightbox__img.is-panning { transition: none; cursor: grabbing; }
 
 .srx-lightbox__footer { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-4); padding: var(--space-4) var(--space-5); pointer-events: none; }
 
@@ -34,15 +37,9 @@
 
 .srx-lightbox__tag { font-family: var(--font-mono); font-size: var(--fs-mono-xs); text-transform: uppercase; letter-spacing: 0.08em; color: var(--on-media); background: var(--white-a4); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); border-radius: var(--radius-full); padding: 0.3125rem 0.75rem; }
 
-.srx-lightbox__controls { display: flex; align-items: center; gap: var(--space-3); margin-left: auto; }
+.srx-lightbox__controls { display: flex; align-items: center; gap: var(--space-2); margin-left: auto; }
 
 .srx-lightbox__counter { font-family: var(--font-mono); font-size: var(--fs-mono-s); color: var(--on-media-soft); min-width: 3.25rem; text-align: center; }
-
-.srx-lightbox__nav { width: 2.75rem; height: 2.75rem; display: inline-grid; place-items: center; border-radius: var(--radius-full); color: var(--on-media); background: var(--white-a4); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); transition: var(--transition-control); }
-
-.srx-lightbox__nav:hover { background: var(--white-a8); transform: scale(1.06); }
-
-.srx-lightbox__nav svg { width: 1.5rem; height: 1.5rem; }
 
 .srx-lightbox__nav--next svg { transform: rotate(180deg); }
 

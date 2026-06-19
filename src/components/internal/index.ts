@@ -7,6 +7,7 @@ export * from './primitiveUtils';
 export * from './trigger';
 export * from './overlayHooks';
 export * from './Overlay';
+export * from './OverlayClose';
 export * from './fuzzy';
 export * from './scale';
 export * from './pageModel';

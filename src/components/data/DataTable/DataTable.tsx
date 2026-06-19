@@ -97,7 +97,7 @@ export function DataTable<Row = DefaultRow>({
   const toggleRow = (id: RowKey): void => setSel(toggleSelected(sel, id));
 
   return (
-    <div className={cx('srx-table-wrap', className)} {...rest}>
+    <div className={cx('srx-table-wrap', 'srx-scrollbar', className)} {...rest}>
       <table className={cx('srx-table', dense && 'srx-table--dense')}>
         <thead>
           <tr>

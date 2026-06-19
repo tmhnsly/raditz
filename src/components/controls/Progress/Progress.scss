@@ -9,4 +9,7 @@
 
 .srx-progress__indicator { height: 100%; width: var(--srx-progress-pct, 100%); border-radius: var(--radius-full); background: var(--accent); transition: width var(--duration-slow) var(--ease-standard); }
 
-.srx-progress--indeterminate .srx-progress__indicator { width: 40%; animation: srxProgressSlide 1.2s var(--ease-smooth) infinite; }
+/* Continuous sweep: LINEAR timing only. An ease-in-out curve decelerates at the
+   off-screen wrap and re-accelerates on re-entry, which reads as a stutter on an
+   infinite loop. Duration follows the global motion scale. */
+.srx-progress--indeterminate .srx-progress__indicator { width: 40%; animation: srxProgressSlide calc(1100ms * var(--motion-scale)) linear infinite; }

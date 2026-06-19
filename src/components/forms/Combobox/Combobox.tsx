@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useId, useRef, useState } from 'react';
 import type { ChangeEvent, HTMLAttributes, KeyboardEvent, ReactElement } from 'react';
 import { cx, useControllableState, Overlay, useRoving, fuzzyFilter } from '../../internal';
 import { Icon } from '../../foundation/Icon/Icon';
@@ -39,6 +39,7 @@ export function Combobox({
   const [query, setQuery] = useState('');
   const anchorRef = useRef<HTMLButtonElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);
+  const listId = useId();
 
   const norm: ComboboxOption[] = options.map((o) => (typeof o === 'string' ? { value: o, label: o } : o));
   const selected = norm.find((o) => o.value === val);
@@ -74,7 +75,6 @@ export function Combobox({
         focus="auto"
         initialFocus={searchRef}
         className="srx-combobox__pop"
-        role="listbox"
       >
         <Search
           ref={searchRef}
@@ -82,13 +82,19 @@ export function Combobox({
           size="sm"
           value={query}
           placeholder="Search…"
+          role="combobox"
+          aria-expanded={open}
+          aria-controls={listId}
+          aria-autocomplete="list"
+          aria-activedescendant={filtered[active] ? `${listId}-o-${active}` : undefined}
           onChange={(e: ChangeEvent<HTMLInputElement>) => { setQuery(e.target.value); setActive(0); }}
           onKeyDown={onKey}
         />
-        <div className="srx-combobox__list">
+        <div className="srx-combobox__list srx-scrollbar" id={listId} role="listbox">
           {filtered.length ? filtered.map((o, i) => (
             <button
               key={o.value}
+              id={`${listId}-o-${i}`}
               type="button"
               role="option"
               aria-selected={o.value === val}

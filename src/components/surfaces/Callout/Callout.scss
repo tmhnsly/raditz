@@ -16,3 +16,11 @@
 .srx-callout__body { font-size: var(--fs-body-s); line-height: var(--lh-body); }
 
 .srx-callout__title { font-weight: var(--fw-semibold); margin-bottom: 0.125rem; color: var(--text); }
+
+/* Per-tone palettes — map data-color to the semantic scales. Without these the
+   surface/accent/ink vars fall back to accent, so every tone reads identically. */
+.srx-callout[data-color="accent"]  { --callout-surface: var(--accent-surface);  --callout-accent: var(--accent);  --callout-ink: var(--accent-ink); }
+.srx-callout[data-color="info"]    { --callout-surface: var(--info-surface);     --callout-accent: var(--info);     --callout-ink: var(--info-ink); }
+.srx-callout[data-color="success"] { --callout-surface: var(--success-surface);  --callout-accent: var(--success);  --callout-ink: var(--success-ink); }
+.srx-callout[data-color="warning"] { --callout-surface: var(--warning-surface);  --callout-accent: var(--warning);  --callout-ink: var(--warning-ink); }
+.srx-callout[data-color="danger"]  { --callout-surface: var(--danger-surface);   --callout-accent: var(--danger);   --callout-ink: var(--danger-ink); }

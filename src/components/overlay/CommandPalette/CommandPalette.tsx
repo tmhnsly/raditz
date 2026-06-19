@@ -85,7 +85,7 @@ export function CommandPalette({ open, onOpenChange, groups = [], placeholder = 
         onChange={(e) => { setQuery(e.target.value); setActive(0); }}
         onKeyDown={onKey}
       />
-      <div className="srx-cmdk__list">
+      <div className="srx-cmdk__list srx-scrollbar">
         {filtered.length ? filtered.map((it, i) => {
           const showHeading = it.heading && it.heading !== lastHeading;
           lastHeading = it.heading;

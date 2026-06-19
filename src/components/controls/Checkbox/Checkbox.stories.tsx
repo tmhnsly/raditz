@@ -13,16 +13,16 @@ type Story = StoryObj;
 export const Default: Story = {
   render: () => {
     const [checked, setChecked] = useState(true);
-    return <Checkbox aria-label="Accept terms" checked={checked} onChange={(e) => setChecked(e.target.checked)} />;
+    return <Checkbox label="Accept terms" checked={checked} onChange={(e) => setChecked(e.target.checked)} />;
   },
 };
 
 export const States: Story = {
   render: () => (
-    <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-      <Checkbox defaultChecked={false} />
-      <Checkbox defaultChecked />
-      <Checkbox defaultChecked disabled />
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', alignItems: 'flex-start' }}>
+      <Checkbox label="Unchecked" defaultChecked={false} />
+      <Checkbox label="Checked" defaultChecked />
+      <Checkbox label="Disabled" defaultChecked disabled />
     </div>
   ),
 };

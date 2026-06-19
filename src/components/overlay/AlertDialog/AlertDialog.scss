@@ -28,11 +28,8 @@
 
 .srx-dialog__footer { display: flex; justify-content: flex-end; gap: var(--space-3); margin-top: var(--space-6); }
 
-.srx-dialog__close { position: absolute; top: var(--space-4); right: var(--space-4); width: 2rem; height: 2rem; display: inline-grid; place-items: center; border-radius: var(--radius-sm); color: var(--text-muted); transition: var(--transition-control); }
-
-.srx-dialog__close:hover { background: var(--surface); color: var(--text); }
-
-.srx-dialog__close svg { width: 1.125rem; height: 1.125rem; }
+/* Position only — the disc visual is the shared .srx-oclose. */
+.srx-dialog__close { position: absolute; top: var(--space-4); right: var(--space-4); }
 
 .srx-alert__danger { background: var(--danger); box-shadow: none; }
 

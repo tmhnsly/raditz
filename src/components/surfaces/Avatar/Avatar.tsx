@@ -17,7 +17,8 @@ export interface AvatarProps extends HTMLAttributes<HTMLSpanElement> {
 
 /**
  * A user / brand avatar. Pass `src` for an image, or `initials` for a tinted
- * monogram. `variant="orb"` renders the accent gradient sphere (author orb).
+ * monogram. `variant="orb"` renders the accent gradient sphere; combine it with
+ * `initials` for a monogram set into the orb surface.
  */
 export function Avatar({
   src,
@@ -37,7 +38,7 @@ export function Avatar({
       style={{ '--srx-avatar-size': `${px}px`, '--srx-avatar-fs': `${Math.round(px * 0.4)}px`, ...style } as CSSProperties}
       {...rest}
     >
-      {src ? <img src={src} alt={alt} /> : variant === 'orb' ? null : initials}
+      {src ? <img src={src} alt={alt} /> : initials ? <span className="srx-avatar__initials">{initials}</span> : null}
     </span>
   );
 }

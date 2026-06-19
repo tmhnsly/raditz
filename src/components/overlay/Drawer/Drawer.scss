@@ -16,11 +16,8 @@
 
 .srx-drawer__desc { color: var(--text-soft); font-size: var(--fs-body-s); margin-top: 0.25rem; }
 
-.srx-drawer__close { flex: none; width: 2rem; height: 2rem; display: inline-grid; place-items: center; border-radius: var(--radius-2); color: var(--text-muted); transition: var(--transition-control); }
-
-.srx-drawer__close:hover { background: var(--surface); color: var(--text); }
-
-.srx-drawer__close svg { width: 1.125rem; height: 1.125rem; }
+/* Layout only — the disc visual is the shared .srx-oclose. */
+.srx-drawer__close { flex: none; }
 
 .srx-drawer__body { flex: 1; overflow-y: auto; padding: var(--space-5); }
 

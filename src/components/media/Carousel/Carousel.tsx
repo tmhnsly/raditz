@@ -6,7 +6,9 @@ const { useRef, useState, useEffect, useCallback } = React;
 export interface CarouselProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Each child is a slide. */
   children?: React.ReactNode;
-  /** Slides visible at once (fractional peeks the next). @default 1 */
+  /** Slides visible at once (fractional peeks the next). Omit for a responsive
+   *  default: ~1.15 on small screens scaling up to ~2.5 on wide ones, so there's
+   *  always more than one slide hinting at further content. */
   perView?: number;
   /** Gap between slides (CSS length). @default "var(--space-4)" */
   gap?: string;
@@ -25,21 +27,26 @@ export interface CarouselProps extends React.HTMLAttributes<HTMLDivElement> {
   bleed?: boolean;
 }
 
-const CHEV = (dir: 'prev' | 'next'): React.ReactElement => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <polyline points={dir === 'prev' ? '15 18 9 12 15 6' : '9 18 15 12 9 6'} />
+// One chevron geometry, rotated for "next" — so both carets are optically centered.
+const CHEV = (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <polyline points="15 18 9 12 15 6" />
   </svg>
 );
 
+const easeOut = (t: number): number => 1 - Math.pow(1 - t, 3);
+
 /**
  * Carousel — a horizontal scroll-snap slider. Each child is a slide. `perView`
- * sets how many slides show at once (fractional is fine, e.g. 1.2 to peek the
- * next). Arrows + dots are built in; `autoplay` advances every `interval` ms and
- * `loop` wraps. Native scroll-snap means touch/trackpad swipe works for free.
+ * sets how many slides show at once (fractional peeks the next); omit it for a
+ * responsive default. Arrows + dots are built in; `autoplay` advances every
+ * `interval` ms and `loop` wraps. Touch/trackpad swipe works via native
+ * scroll-snap; programmatic paging is a token-timed smooth scroll (it honours the
+ * project motion scale and `prefers-reduced-motion`).
  */
 export function Carousel({
   children,
-  perView = 1,
+  perView,
   gap = 'var(--space-4)',
   autoplay = false,
   interval = 4500,
@@ -54,30 +61,61 @@ export function Carousel({
   const [active, setActive] = useState(0);
   const items = React.Children.toArray(children);
   const n = items.length;
+  const raf = useRef(0);
 
-  const scrollTo = useCallback((i: number) => {
+  // Token-timed smooth scroll. Native `scroll-behavior:smooth` ignores the motion
+  // tokens AND fights `scroll-snap-type:mandatory` (the browser yanks to a snap
+  // point mid-animation — the "glitch"). So we animate scrollLeft ourselves over a
+  // motion-scale-derived duration with snapping briefly disabled.
+  const smoothScroll = useCallback((left: number) => {
+    const track = trackRef.current;
+    if (!track) return;
+    cancelAnimationFrame(raf.current);
+    const start = track.scrollLeft;
+    const dist = left - start;
+    if (Math.abs(dist) < 1) return;
+    const scale = parseFloat(getComputedStyle(track).getPropertyValue('--motion-scale')) || 1;
+    const dur = 460 * scale;
+    if (dur < 30) { track.scrollLeft = left; return; } // "none" preset / reduced motion
+    const prevSnap = track.style.scrollSnapType;
+    track.style.scrollSnapType = 'none';
+    const t0 = performance.now();
+    const step = (now: number): void => {
+      const t = Math.min(1, (now - t0) / dur);
+      track.scrollLeft = start + dist * easeOut(t);
+      if (t < 1) raf.current = requestAnimationFrame(step);
+      else track.style.scrollSnapType = prevSnap;
+    };
+    raf.current = requestAnimationFrame(step);
+  }, []);
+
+  const scrollToIndex = useCallback((i: number) => {
     const track = trackRef.current;
     if (!track) return;
     const child = track.children[i] as HTMLElement | undefined;
-    if (child) track.scrollTo({ left: child.offsetLeft - track.offsetLeft, behavior: 'smooth' });
-  }, []);
+    if (!child) return;
+    // Centre the slide in the viewport (matches scroll-snap-align: center).
+    const target = child.offsetLeft - track.offsetLeft - (track.clientWidth - child.clientWidth) / 2;
+    const max = track.scrollWidth - track.clientWidth;
+    smoothScroll(Math.max(0, Math.min(max, target)));
+  }, [smoothScroll]);
 
   const go = useCallback(
     (i: number) => {
       const t = loop ? ((i % n) + n) % n : Math.max(0, Math.min(n - 1, i));
       setActive(t);
-      scrollTo(t);
+      scrollToIndex(t);
     },
-    [n, loop, scrollTo],
+    [n, loop, scrollToIndex],
   );
 
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return undefined;
-    let raf = 0;
+    let r = 0;
     const onScroll = (): void => {
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(() => {
+      cancelAnimationFrame(r);
+      r = requestAnimationFrame(() => {
         const center = track.scrollLeft + track.clientWidth / 2;
         let best = 0;
         let bd = Infinity;
@@ -96,7 +134,8 @@ export function Carousel({
     track.addEventListener('scroll', onScroll, { passive: true });
     return () => {
       track.removeEventListener('scroll', onScroll);
-      cancelAnimationFrame(raf);
+      cancelAnimationFrame(r);
+      cancelAnimationFrame(raf.current);
     };
   }, []);
 
@@ -105,20 +144,21 @@ export function Carousel({
     const id = setInterval(() => {
       setActive((a) => {
         const next = (a + 1) % n;
-        scrollTo(next);
+        scrollToIndex(next);
         return next;
       });
     }, interval);
     return () => clearInterval(id);
-  }, [autoplay, interval, n, scrollTo]);
+  }, [autoplay, interval, n, scrollToIndex]);
+
+  const viewportStyle = {
+    '--srx-carousel-gap': gap,
+    ...(perView != null ? { '--srx-per-view': perView } : {}),
+  } as React.CSSProperties;
 
   return (
-    <div className={cx('srx-carousel', bleed && 'srx-carousel--bleed', className)} {...rest}>
-      <div
-        className="srx-carousel__viewport"
-        ref={trackRef}
-        style={{ '--srx-carousel-gap': gap, '--srx-per-view': perView } as React.CSSProperties}
-      >
+    <div className={cx('srx-carousel', perView == null && 'srx-carousel--auto', bleed && 'srx-carousel--bleed', className)} {...rest}>
+      <div className="srx-carousel__viewport" ref={trackRef} style={viewportStyle}>
         {items.map((c, i) => (
           <div className="srx-carousel__slide" key={i}>
             {c}
@@ -144,12 +184,12 @@ export function Carousel({
           ) : <span />}
           {arrows ? (
             <div className="srx-carousel__nav">
-              <button type="button" className="srx-carousel__arrow" aria-label="Previous" disabled={!loop && active === 0} onClick={() => go(active - 1)}>
-                {CHEV('prev')}
+              <button type="button" className="srx-ovbtn" aria-label="Previous" disabled={!loop && active === 0} onClick={() => go(active - 1)}>
+                {CHEV}
               </button>
               <span className="srx-carousel__count" aria-hidden="true"><b>{active + 1}</b> / {n}</span>
-              <button type="button" className="srx-carousel__arrow" aria-label="Next" disabled={!loop && active === n - 1} onClick={() => go(active + 1)}>
-                {CHEV('next')}
+              <button type="button" className="srx-ovbtn srx-carousel__next" aria-label="Next" disabled={!loop && active === n - 1} onClick={() => go(active + 1)}>
+                {CHEV}
               </button>
             </div>
           ) : null}

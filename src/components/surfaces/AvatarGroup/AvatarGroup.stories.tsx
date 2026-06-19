@@ -18,12 +18,12 @@ export const Default: Story = {
     max: 4,
     size: 'md',
     items: [
-      { initials: 'TH' },
-      { initials: 'AB' },
-      { initials: 'CD' },
-      { initials: 'EF' },
-      { initials: 'GH' },
-      { initials: 'IJ' },
+      { initials: 'TH', name: 'Tom Hinsley', role: 'Design engineer', href: '#' },
+      { initials: 'AB', name: 'Ada Byron', role: 'Engineering', href: '#' },
+      { initials: 'CD', name: 'Carl Daly', role: 'Product', href: '#' },
+      { initials: 'EF', name: 'Erin Frost', role: 'Research', href: '#' },
+      { initials: 'GH', name: 'Greg Hale', role: 'Marketing', href: '#' },
+      { initials: 'IJ', name: 'Iris Jones', role: 'Support', href: '#' },
     ],
   },
 };

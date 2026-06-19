@@ -6,6 +6,8 @@ export interface LabelProps extends LabelHTMLAttributes<HTMLLabelElement> {
   htmlFor?: string;
   /** Append a required asterisk. @default false */
   required?: boolean;
+  /** Dim the label to indicate its control is disabled. @default false */
+  disabled?: boolean;
   children?: ReactNode;
 }
 
@@ -13,9 +15,9 @@ export interface LabelProps extends LabelHTMLAttributes<HTMLLabelElement> {
  * Label — a form label (Radix Label). Associate it with a control via `htmlFor`;
  * `required` appends a danger-colored asterisk.
  */
-export function Label({ htmlFor, required = false, className, children, ...rest }: LabelProps): ReactElement {
+export function Label({ htmlFor, required = false, disabled = false, className, children, ...rest }: LabelProps): ReactElement {
   return (
-    <label htmlFor={htmlFor} className={cx('srx-label', className)} {...rest}>
+    <label htmlFor={htmlFor} className={cx('srx-label', disabled && 'srx-label--disabled', className)} {...rest}>
       {children}
       {required ? (
         <span className="srx-label__req" aria-hidden="true">

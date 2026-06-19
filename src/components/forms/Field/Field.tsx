@@ -11,6 +11,8 @@ export interface FieldContextValue {
   invalid: boolean;
   /** Whether the field is required. */
   required: boolean;
+  /** Whether the field (and its control) is disabled. */
+  disabled: boolean;
 }
 
 const FieldContext = createContext<FieldContextValue | null>(null);
@@ -30,6 +32,8 @@ export interface FieldProps extends HTMLAttributes<HTMLDivElement> {
   error?: ReactNode;
   /** Show a required asterisk and mark the control required. @default false */
   required?: boolean;
+  /** Disable the control (injected into the child) and dim the label. @default false */
+  disabled?: boolean;
   /** Override the generated control id (else one is generated and linked). */
   htmlFor?: string;
   children?: ReactNode;
@@ -38,6 +42,7 @@ export interface FieldProps extends HTMLAttributes<HTMLDivElement> {
 interface InjectableProps {
   id?: string;
   required?: boolean;
+  disabled?: boolean;
   'aria-invalid'?: boolean | 'true' | 'false';
   'aria-describedby'?: string;
 }
@@ -58,6 +63,7 @@ export function Field({
   hint,
   error,
   required = false,
+  disabled = false,
   htmlFor,
   className,
   children,
@@ -76,14 +82,15 @@ export function Field({
     control = cloneElement(child, {
       id: p.id ?? id,
       required: p.required ?? (required || undefined),
+      disabled: p.disabled ?? (disabled || undefined),
       'aria-invalid': p['aria-invalid'] ?? (invalid || undefined),
       'aria-describedby': p['aria-describedby'] ?? describedBy,
     });
   }
 
   return (
-    <FieldContext.Provider value={{ id, describedBy, invalid, required }}>
-      <div className={cx('srx-field', className)} {...rest}>
+    <FieldContext.Provider value={{ id, describedBy, invalid, required, disabled }}>
+      <div className={cx('srx-field', className)} data-disabled={disabled || undefined} {...rest}>
         {label && (
           <label className="srx-field__label" htmlFor={id}>
             {label}

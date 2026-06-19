@@ -31,4 +31,8 @@
 
 .srx-rating--lg svg { width: 1.75rem; height: 1.75rem; }
 
-.srx-rating:not(.is-readonly) .srx-rating__star:hover { transform: scale(1.12); transition: transform var(--duration-fast) var(--ease-standard); }
+.srx-rating:not(.is-readonly):not(.is-disabled) .srx-rating__star:hover { transform: scale(1.12); transition: transform var(--duration-fast) var(--ease-standard); }
+
+.srx-rating.is-disabled { opacity: var(--disabled-opacity); cursor: not-allowed; }
+
+.srx-rating.is-disabled .srx-rating__hit { pointer-events: none; }

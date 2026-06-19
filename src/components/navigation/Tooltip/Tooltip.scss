@@ -13,3 +13,10 @@
 }
 
 .srx-tooltip:hover .srx-tooltip__bubble, .srx-tooltip:focus-within .srx-tooltip__bubble { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* Edge alignment — anchor the bubble to the trigger's start/end so it opens inward
+   (and never pushes document scroll) near a viewport edge. */
+.srx-tooltip--start .srx-tooltip__bubble { left: 0; right: auto; transform: translateY(4px); }
+.srx-tooltip--start:hover .srx-tooltip__bubble, .srx-tooltip--start:focus-within .srx-tooltip__bubble { transform: translateY(0); }
+.srx-tooltip--end .srx-tooltip__bubble { left: auto; right: 0; transform: translateY(4px); }
+.srx-tooltip--end:hover .srx-tooltip__bubble, .srx-tooltip--end:focus-within .srx-tooltip__bubble { transform: translateY(0); }

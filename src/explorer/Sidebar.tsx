@@ -9,6 +9,11 @@ const LABEL_OVERRIDE: Record<string, string> = {
   demos: 'Demos / design ideas',
 };
 
+// As scroll-spy moves the active section, collapse branches that aren't on the
+// active path ("close behind" you) so the tree stays tidy. Flip to false to keep
+// every branch you've opened expanded instead.
+const AUTO_COLLAPSE = true;
+
 // Slugs of every ancestor of a route, so deep links open expanded to the target.
 function ancestorsOf(slug: string): string[] {
   if (!slug) return [];
@@ -70,11 +75,9 @@ export function Sidebar({
   useEffect(() => {
     const anc = ancestorsOf(activeSlug);
     if (!anc.length) return;
-    setUserExpanded((prev) => {
-      const s = new Set(prev);
-      anc.forEach((a) => s.add(a));
-      return [...s];
-    });
+    // Keep only the active branch path open (close others "behind"), or merge into
+    // the existing set when AUTO_COLLAPSE is off.
+    setUserExpanded((prev) => (AUTO_COLLAPSE ? anc : [...new Set([...prev, ...anc])]));
   }, [activeSlug]);
 
   const searchExpanded = useMemo(() => (searching ? allBranchIds(filtered) : []), [searching, filtered]);

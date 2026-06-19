@@ -16,7 +16,7 @@
 
 .srx-menu__item:hover:not(:disabled), .srx-menu__item:focus-visible { background: var(--surface); outline: none; }
 
-.srx-menu__item:disabled { opacity: 0.45; cursor: not-allowed; }
+.srx-menu__item:disabled { opacity: var(--disabled-opacity); cursor: not-allowed; }
 
 .srx-menu__item--danger { color: var(--danger-ink); }
 

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useControllableState, Overlay, onKeys, KEYS, cx } from '../../internal';
+import { useControllableState, Overlay, onKeys, KEYS, cx, OverlayClose } from '../../internal';
 
 const { useState, useEffect, useRef, useCallback } = React;
 
@@ -29,23 +29,32 @@ export interface LightboxProps extends React.HTMLAttributes<HTMLDivElement> {
   filmstrip?: boolean;
 }
 
-const X = (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-    <line x1="6" y1="6" x2="18" y2="18" />
-    <line x1="18" y1="6" x2="6" y2="18" />
-  </svg>
-);
 const CHEV = (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
     <polyline points="15 18 9 12 15 6" />
   </svg>
 );
+const ZOOM_IN = (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <circle cx="11" cy="11" r="7" /><line x1="21" y1="21" x2="16.65" y2="16.65" /><line x1="11" y1="8" x2="11" y2="14" /><line x1="8" y1="11" x2="14" y2="11" />
+  </svg>
+);
+const ZOOM_OUT = (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <circle cx="11" cy="11" r="7" /><line x1="21" y1="21" x2="16.65" y2="16.65" /><line x1="8" y1="11" x2="14" y2="11" />
+  </svg>
+);
+
+const MAX_SCALE = 4;
+const clamp = (n: number, lo: number, hi: number): number => Math.min(hi, Math.max(lo, n));
 
 /**
  * Lightbox — a full-screen image viewer (gallery modal). Controlled with `open`
  * + `index`, or uncontrolled with `defaultOpen` / `defaultIndex`. Arrow keys and
- * the on-screen arrows page; swipe works on touch; clicking the image toggles
- * zoom; Escape or the scrim closes. A thumbnail filmstrip lets you jump.
+ * the on-screen arrows page; swipe pages on touch. Zoom with the wheel, the
+ * +/− buttons or a click; drag to pan when zoomed. Escape — or a click on the
+ * black space around the image — closes. The chrome is always rendered on a dark
+ * scrim (identical in light + dark themes) via `.srx-on-dark`.
  * `images` is `[{ src, thumb?, alt?, caption?, tags? }]`.
  */
 export function Lightbox({
@@ -62,30 +71,88 @@ export function Lightbox({
 }: LightboxProps): React.ReactElement | null {
   const [isOpen, setOpen] = useControllableState<boolean>({ value: open, defaultValue: defaultOpen, onChange: onOpenChange });
   const [idx, setIdx] = useControllableState<number>({ value: index, defaultValue: defaultIndex, onChange: onIndexChange });
-  const [zoom, setZoom] = useState(false);
+  const [scale, setScale] = useState(1);
+  const [pan, setPan] = useState({ x: 0, y: 0 });
+  const [panning, setPanning] = useState(false);
   const count = images.length;
 
+  const stageRef = useRef<HTMLElement>(null);
+  const imgRef = useRef<HTMLImageElement>(null);
+  const drag = useRef<{ x: number; y: number; px: number; py: number } | null>(null);
+  const startX = useRef<number | null>(null);
+  const moved = useRef(false);
+
+  const resetView = useCallback(() => { setScale(1); setPan({ x: 0, y: 0 }); }, []);
+  // Reset zoom/pan whenever the viewer opens.
+  useEffect(() => { if (isOpen) resetView(); }, [isOpen, resetView]);
+
   const go = useCallback(
-    (d: number) => {
-      setZoom(false);
-      setIdx((i) => (((i + d) % count) + count) % count);
-    },
-    [count, setIdx],
+    (d: number) => { resetView(); setIdx((i) => (((i + d) % count) + count) % count); },
+    [count, setIdx, resetView],
   );
+  const jumpTo = useCallback((i: number) => { resetView(); setIdx(i); }, [setIdx, resetView]);
   const close = useCallback(() => setOpen(false), [setOpen]);
-  // Escape / scroll-lock / focus-trap / scrim sizing come from Overlay; arrows
-  // (paging) stay here as a Lightbox concern.
+
+  // Keep the (scaled) image roughly within the stage so it can't be dragged away.
+  const clampPan = useCallback((x: number, y: number): { x: number; y: number } => {
+    const img = imgRef.current;
+    const stage = stageRef.current;
+    if (!img || !stage) return { x, y };
+    const ir = img.getBoundingClientRect();
+    const sr = stage.getBoundingClientRect();
+    const mx = Math.max(0, (ir.width - sr.width) / 2 + 24);
+    const my = Math.max(0, (ir.height - sr.height) / 2 + 24);
+    return { x: clamp(x, -mx, mx), y: clamp(y, -my, my) };
+  }, []);
+
+  const zoomTo = useCallback((s: number) => {
+    const ns = clamp(s, 1, MAX_SCALE);
+    setScale(ns);
+    if (ns === 1) setPan({ x: 0, y: 0 });
+    else setPan((p) => clampPan(p.x, p.y));
+  }, [clampPan]);
+
+  // Escape / scroll-lock / focus-trap come from Overlay; paging + zoom are here.
   const onKeyDown = onKeys({ [KEYS.ArrowRight]: () => go(1), [KEYS.ArrowLeft]: () => go(-1) });
 
-  const startX = useRef<number | null>(null);
   const onPointerDown = (e: React.PointerEvent): void => {
-    startX.current = e.clientX;
+    moved.current = false;
+    if (scale > 1) {
+      drag.current = { x: e.clientX, y: e.clientY, px: pan.x, py: pan.y };
+      setPanning(true);
+      (e.currentTarget as Element).setPointerCapture?.(e.pointerId);
+    } else {
+      startX.current = e.clientX;
+    }
+  };
+  const onPointerMove = (e: React.PointerEvent): void => {
+    if (drag.current) {
+      const dx = e.clientX - drag.current.x;
+      const dy = e.clientY - drag.current.y;
+      if (Math.abs(dx) + Math.abs(dy) > 3) moved.current = true;
+      setPan(clampPan(drag.current.px + dx, drag.current.py + dy));
+    } else if (startX.current != null && Math.abs(e.clientX - startX.current) > 6) {
+      moved.current = true;
+    }
   };
   const onPointerUp = (e: React.PointerEvent): void => {
+    if (drag.current) { drag.current = null; setPanning(false); return; }
     if (startX.current == null) return;
     const dx = e.clientX - startX.current;
     startX.current = null;
-    if (!zoom && Math.abs(dx) > 48 && count > 1) go(dx < 0 ? 1 : -1);
+    if (Math.abs(dx) > 48 && count > 1) go(dx < 0 ? 1 : -1);
+  };
+  const onWheel = (e: React.WheelEvent): void => { zoomTo(scale - e.deltaY * 0.0016); };
+  const onImgClick = (e: React.MouseEvent): void => {
+    e.stopPropagation();
+    if (moved.current) { moved.current = false; return; }
+    zoomTo(scale > 1 ? 1 : 2);
+  };
+  // Click on the black space (the stage itself, not the image) closes — but not
+  // after a drag/swipe, and not while zoomed (you're exploring then).
+  const onStageClick = (e: React.MouseEvent): void => {
+    if (e.target === e.currentTarget && !moved.current && scale === 1) close();
+    moved.current = false;
   };
 
   const cur: LightboxImage = images[idx] || { src: '' };
@@ -99,20 +166,29 @@ export function Lightbox({
       focus="trap"
       role="dialog"
       aria-label="Image viewer"
-      className={cx('srx-lightbox', className)}
+      className={cx('srx-lightbox', 'srx-on-dark', className)}
       onKeyDown={onKeyDown}
       {...rest}
     >
       <div className="srx-lightbox__scrim" onClick={close} />
-      <button type="button" className="srx-lightbox__close" aria-label="Close" onClick={close}>
-        {X}
-      </button>
-      <figure className="srx-lightbox__stage" onPointerDown={onPointerDown} onPointerUp={onPointerUp}>
+      <OverlayClose large className="srx-lightbox__close" onClick={close} />
+      <figure
+        ref={stageRef}
+        className="srx-lightbox__stage"
+        onClick={onStageClick}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerCancel={onPointerUp}
+        onWheel={onWheel}
+      >
         <img
-          className={cx('srx-lightbox__img', zoom && 'is-zoom')}
+          ref={imgRef}
+          className={cx('srx-lightbox__img', scale > 1 && 'is-zoom', panning && 'is-panning')}
+          style={{ '--srx-lb-scale': scale, '--srx-lb-x': `${pan.x}px`, '--srx-lb-y': `${pan.y}px` } as React.CSSProperties}
           src={cur.src}
           alt={cur.alt || ''}
-          onClick={() => setZoom((z) => !z)}
+          onClick={onImgClick}
           draggable="false"
         />
       </figure>
@@ -125,10 +201,7 @@ export function Lightbox({
               className={cx('srx-lightbox__thumb', i === idx && 'is-active')}
               aria-label={`View image ${i + 1}`}
               aria-current={i === idx ? 'true' : undefined}
-              onClick={() => {
-                setZoom(false);
-                setIdx(i);
-              }}
+              onClick={() => jumpTo(i)}
             >
               <img src={im.thumb || im.src} alt="" draggable="false" />
             </button>
@@ -148,19 +221,27 @@ export function Lightbox({
             </div>
           ) : null}
         </div>
-        {count > 1 ? (
-          <div className="srx-lightbox__controls">
-            <button type="button" className="srx-lightbox__nav" aria-label="Previous image" onClick={() => go(-1)}>
-              {CHEV}
-            </button>
-            <span className="srx-lightbox__counter">
-              {idx + 1} / {count}
-            </span>
-            <button type="button" className="srx-lightbox__nav srx-lightbox__nav--next" aria-label="Next image" onClick={() => go(1)}>
-              {CHEV}
-            </button>
-          </div>
-        ) : null}
+        <div className="srx-lightbox__controls">
+          <button type="button" className="srx-ovbtn" aria-label="Zoom out" onClick={() => zoomTo(scale - 0.5)} disabled={scale <= 1}>
+            {ZOOM_OUT}
+          </button>
+          <button type="button" className="srx-ovbtn" aria-label="Zoom in" onClick={() => zoomTo(scale + 0.5)} disabled={scale >= MAX_SCALE}>
+            {ZOOM_IN}
+          </button>
+          {count > 1 ? (
+            <>
+              <button type="button" className="srx-ovbtn" aria-label="Previous image" onClick={() => go(-1)}>
+                {CHEV}
+              </button>
+              <span className="srx-lightbox__counter">
+                {idx + 1} / {count}
+              </span>
+              <button type="button" className="srx-ovbtn srx-lightbox__nav--next" aria-label="Next image" onClick={() => go(1)}>
+                {CHEV}
+              </button>
+            </>
+          ) : null}
+        </div>
       </div>
     </Overlay>
   );

@@ -40,6 +40,10 @@
   --surface-soft: var(--neutral-a2);
   --surface-strong: var(--neutral-a4);
   --surface-edge: var(--neutral-6);   /* hairline card border (step 6) */
+  /* raised control knob (slider / switch thumb). Light in BOTH themes so the
+     knob always reads against its track — neutral-1 ≈ white in light, and the
+     .dark scope repoints it to neutral-12 (≈ white in dark). */
+  --control-thumb: var(--neutral-1);
 
   /* ── glass (frosted translucent surfaces) ──
      --glass-blur is the single config knob — raise it for a softer frost, set it
@@ -98,6 +102,10 @@
   /* ── focus ── */
   --focus-ring: var(--accent-ink);
 
+  /* ── interaction state — one dimming value so every disabled control fades
+        consistently (tune once here instead of per component). ── */
+  --disabled-opacity: 0.5;
+
   /* ── overlays / on-media ── */
   --overlay-scrim: var(--black-a9);
   --on-media: var(--white-a12);
@@ -118,6 +126,7 @@
   --glass: color-mix(in srgb, var(--bg) 74%, transparent);
   --glass-soft: color-mix(in srgb, var(--bg) 58%, transparent);
   --glass-sheen: var(--white-a4);
+  --control-thumb: var(--neutral-12);
   --code-bg: var(--neutral-2);
   --code-text: var(--neutral-12);
   --code-inline-text: var(--neutral-12);

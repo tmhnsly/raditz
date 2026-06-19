@@ -9,7 +9,7 @@
 
 .srx-radio-group__item { display: flex; gap: var(--space-3); align-items: flex-start; cursor: pointer; }
 
-.srx-radio-group__item[data-disabled] { opacity: 0.5; cursor: not-allowed; }
+.srx-radio-group__item[data-disabled] { opacity: var(--disabled-opacity); cursor: not-allowed; }
 
 .srx-radio-group__text { display: flex; flex-direction: column; gap: 0.0625rem; }
 

@@ -70,12 +70,14 @@ export function PricingB({ background = 'gradient-accent', ...props }: SectionVa
   const [period, setPeriod] = useState<'mo' | 'yr'>('mo');
   return (
     <SectionShell wrap="col sx-price__toggle-col" background={background} {...props}>
-      <h3 className="h-section">Pay monthly or save yearly</h3>
-      <Tabs
-        value={period}
-        onValueChange={(v) => setPeriod(v as 'mo' | 'yr')}
-        tabs={[{ value: 'mo', label: 'Monthly' }, { value: 'yr', label: 'Annual (−20%)' }]}
-      />
+      <div className="sx-price__toggle-head">
+        <h3 className="h-section">Pay monthly or save yearly</h3>
+        <Tabs
+          value={period}
+          onValueChange={(v) => setPeriod(v as 'mo' | 'yr')}
+          tabs={[{ value: 'mo', label: 'Monthly' }, { value: 'yr', label: 'Annual (−20%)' }]}
+        />
+      </div>
       <div className="sx-price2 sx-gap-4">
         <div className="srx-card col sx-price__card">
           <strong>Pro</strong>

@@ -25,4 +25,4 @@
 
 .srx-icon-btn--ghost:hover { background: var(--surface); }
 
-.srx-icon-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.srx-icon-btn:disabled { opacity: var(--disabled-opacity); cursor: not-allowed; }

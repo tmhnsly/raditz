@@ -1,5 +1,5 @@
 import type { CSSProperties, HTMLAttributes, ReactNode, ReactElement } from 'react';
-import { cx, Overlay } from '../../internal';
+import { cx, Overlay, OverlayClose } from '../../internal';
 
 export interface DrawerProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
   /** Open state (controlled). */
@@ -57,12 +57,10 @@ export function Drawer({
             {title ? <h2 className="srx-drawer__title">{title}</h2> : null}
             {description ? <p className="srx-drawer__desc">{description}</p> : null}
           </div>
-          <button type="button" className="srx-drawer__close" aria-label="Close" onClick={close}>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="6" y1="6" x2="18" y2="18" /><line x1="18" y1="6" x2="6" y2="18" /></svg>
-          </button>
+          <OverlayClose className="srx-drawer__close" onClick={close} />
         </div>
       ) : null}
-      <div className="srx-drawer__body">{children}</div>
+      <div className="srx-drawer__body srx-scrollbar">{children}</div>
       {footer ? <div className="srx-drawer__footer">{footer}</div> : null}
     </Overlay>
   );

@@ -7,7 +7,7 @@
 
 .srx-taginput:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
 
-.srx-taginput.is-disabled { opacity: 0.6; }
+.srx-taginput.is-disabled { opacity: var(--disabled-opacity); }
 
 .srx-tag { display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.1875rem 0.25rem 0.1875rem 0.625rem; background: var(--accent-surface); color: var(--accent-ink); border-radius: var(--radius-chip); font-size: var(--fs-label); font-weight: var(--fw-medium); }
 

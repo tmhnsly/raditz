@@ -9,3 +9,6 @@
 .srx-field__hint { font-size: var(--fs-caption); color: var(--text-muted); }
 
 .srx-field__error { font-size: var(--fs-caption); color: var(--danger-ink); }
+
+/* Disabled — `disabled` is injected into the control; dim the label to match. */
+.srx-field[data-disabled] .srx-field__label { opacity: var(--disabled-opacity); }

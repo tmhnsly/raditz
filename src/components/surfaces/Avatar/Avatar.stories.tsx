@@ -17,6 +17,8 @@ export const Default: Story = { args: { initials: 'TH', size: 'md', variant: 'so
 
 export const Orb: Story = { args: { size: 'lg', variant: 'orb' } };
 
+export const OrbInitials: Story = { args: { initials: 'TH', size: 'lg', variant: 'orb' } };
+
 export const Sizes: Story = {
   render: () => (
     <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>

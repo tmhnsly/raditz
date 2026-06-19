@@ -1,14 +1,39 @@
-// Auto-split from components.css — this component's styles, co-located.
 // Uses SuperRadix tokens (var(--…)); re-skins/re-themes with the system.
-/* ═══════════════════════ AvatarGroup · notification dot ═══════════════════════ */
+/* ═══════════════════════ AvatarGroup ═══════════════════════ */
 .srx-avatar-group { display: inline-flex; }
 
-/* position + ascending z-index so each avatar overlaps the one to its LEFT
-   (right-on-top cascade); the ring matches the surface so each masks the next. */
-.srx-avatar-group__item { position: relative; z-index: var(--srx-avatar-z, 0); border: 2px solid var(--bg); width: var(--srx-avatar-group-dim); height: var(--srx-avatar-group-dim); }
+/* Each avatar lives in a positioned "slot" carrying the overlap + z-index, so the
+   stacking works whether the chip is wrapped in a HoverCard or not. Ascending
+   z-index = right-on-top cascade; the "+N" slot gets the highest z (always on top). */
+.srx-avatar-group__slot { position: relative; z-index: var(--srx-avatar-z, 0); display: inline-flex; }
+
+.srx-avatar-group__slot + .srx-avatar-group__slot { margin-left: -0.625rem; }
+
+.srx-avatar-group__item { border: 2px solid var(--bg); width: var(--srx-avatar-group-dim); height: var(--srx-avatar-group-dim); }
 
 .srx-avatar-group__item[data-image] { background-image: var(--srx-avatar-group-img); background-size: cover; background-position: center; color: transparent; }
 
-.srx-avatar-group__item + .srx-avatar-group__item { margin-left: -0.625rem; }
+a.srx-avatar-group__item { cursor: pointer; transition: transform var(--duration-fast) var(--ease-standard); }
 
-.srx-avatar-group__more { background: var(--surface-strong); color: var(--text-soft); font-size: var(--fs-label); font-weight: var(--fw-semibold); display: inline-grid; place-items: center; border-radius: var(--radius-full); }
+@media (hover: hover) {
+  a.srx-avatar-group__item:hover { transform: translateY(-2px); }
+}
+
+.srx-avatar-group__more { padding: 0; background: var(--surface-strong); color: var(--text-soft); font-size: var(--fs-label); font-weight: var(--fw-semibold); display: inline-grid; place-items: center; border-radius: var(--radius-full); cursor: pointer; }
+
+@media (hover: hover) {
+  .srx-avatar-group__more:hover { background: var(--rule-strong); color: var(--text); }
+}
+
+/* Profile row — shared by the per-avatar hover card and the "+N" overflow list. */
+.srx-avatar-group__profile { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-2) var(--space-3); border-radius: var(--radius-md); color: var(--text); text-decoration: none; min-width: 11rem; }
+
+a.srx-avatar-group__profile:hover { background: var(--surface); }
+
+.srx-avatar-group__profile-text { display: flex; flex-direction: column; min-width: 0; }
+
+.srx-avatar-group__profile-name { font-weight: var(--fw-semibold); font-size: var(--fs-body-s); color: var(--text); }
+
+.srx-avatar-group__profile-role { font-size: var(--fs-caption); color: var(--text-muted); }
+
+.srx-avatar-group__list { display: flex; flex-direction: column; gap: 0.125rem; max-height: 16rem; overflow-y: auto; min-width: 13rem; }

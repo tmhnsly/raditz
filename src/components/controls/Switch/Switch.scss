@@ -7,13 +7,13 @@
 
 .srx-switch__track {
   width: 2.75rem; height: 1.625rem; border-radius: var(--radius-full);
-  background: var(--slate-a5); transition: background var(--duration-base) var(--ease-standard);
+  background: var(--neutral-a5); transition: background var(--duration-base) var(--ease-standard);
   display: inline-flex; align-items: center; padding: 0.1875rem;
 }
 
 .srx-switch__thumb {
   width: 1.25rem; height: 1.25rem; border-radius: var(--radius-full);
-  background: white; box-shadow: var(--shadow-2);
+  background: var(--control-thumb); box-shadow: var(--shadow-2);
   transition: transform var(--duration-base) var(--ease-standard);
 }
 
@@ -23,6 +23,6 @@
 
 .srx-switch input:focus-visible + .srx-switch__track { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 
-.srx-switch input:disabled + .srx-switch__track { opacity: 0.5; }
+.srx-switch input:disabled + .srx-switch__track { opacity: var(--disabled-opacity); }
 
 .srx-switch:has(input:disabled) { cursor: not-allowed; }

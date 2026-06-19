@@ -12,6 +12,8 @@ export interface RatingProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onCha
   count?: number;
   /** Display only (renders any fractional value, e.g. 3.2). @default false */
   readOnly?: boolean;
+  /** Disable interaction — dimmed and non-interactive. @default false */
+  disabled?: boolean;
   /** @default "md" */
   size?: 'sm' | 'md' | 'lg';
   /** Input granularity: whole or half stars. (Read-only display is always exact.) @default "full" */
@@ -38,6 +40,7 @@ export function Rating({
   onChange,
   count = 5,
   readOnly = false,
+  disabled = false,
   size = 'md',
   precision = 'full',
   className,
@@ -46,7 +49,7 @@ export function Rating({
   const [val, setVal] = useControllableState<number>({ value, defaultValue, onChange });
   const [hover, setHover] = useState(0);
   const shown = hover || val;
-  const cls = cx('srx-rating', `srx-rating--${size}`, readOnly && 'is-readonly');
+  const cls = cx('srx-rating', `srx-rating--${size}`, readOnly && 'is-readonly', disabled && 'is-disabled');
   const pick = (v: number): void => setVal(val === v ? 0 : v);
   const label = (v: number): string => `${v} star${v === 1 ? '' : 's'}`;
 
@@ -55,6 +58,7 @@ export function Rating({
       className={cx(cls, className)}
       role={readOnly ? 'img' : 'radiogroup'}
       aria-label={`Rating: ${val} of ${count}`}
+      aria-disabled={disabled || undefined}
       onMouseLeave={() => setHover(0)}
       {...rest}
     >
@@ -67,11 +71,11 @@ export function Rating({
             <span className="srx-rating__fg" style={{ '--srx-rating-fill': `${fill * 100}%` } as CSSProperties}>{STAR}</span>
             {readOnly ? null : precision === 'half' ? (
               <>
-                <button type="button" className="srx-rating__hit srx-rating__hit--l" role="radio" aria-checked={val === n - 0.5} aria-label={label(n - 0.5)} onMouseEnter={() => setHover(n - 0.5)} onClick={() => pick(n - 0.5)} />
-                <button type="button" className="srx-rating__hit srx-rating__hit--r" role="radio" aria-checked={val === n} aria-label={label(n)} onMouseEnter={() => setHover(n)} onClick={() => pick(n)} />
+                <button type="button" disabled={disabled} className="srx-rating__hit srx-rating__hit--l" role="radio" aria-checked={val === n - 0.5} aria-label={label(n - 0.5)} onMouseEnter={() => setHover(n - 0.5)} onClick={() => pick(n - 0.5)} />
+                <button type="button" disabled={disabled} className="srx-rating__hit srx-rating__hit--r" role="radio" aria-checked={val === n} aria-label={label(n)} onMouseEnter={() => setHover(n)} onClick={() => pick(n)} />
               </>
             ) : (
-              <button type="button" className="srx-rating__hit" role="radio" aria-checked={val === n} aria-label={label(n)} onMouseEnter={() => setHover(n)} onClick={() => pick(n)} />
+              <button type="button" disabled={disabled} className="srx-rating__hit" role="radio" aria-checked={val === n} aria-label={label(n)} onMouseEnter={() => setHover(n)} onClick={() => pick(n)} />
             )}
           </span>
         );

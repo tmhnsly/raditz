@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Label } from './Label';
+import { Input } from '../../forms/Input/Input';
 
 const meta = {
   title: 'Components/Utility/Label',
@@ -17,7 +18,7 @@ export const Default: Story = {
   render: (args) => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', maxWidth: 280 }}>
       <Label {...args} />
-      <input id="email" type="email" placeholder="you@example.com" />
+      <Input id="email" type="email" placeholder="you@example.com" />
     </div>
   ),
 };

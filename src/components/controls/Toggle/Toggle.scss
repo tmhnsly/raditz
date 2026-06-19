@@ -24,4 +24,4 @@
 
 .srx-toggle:active { transform: translateY(1px); }
 
-.srx-toggle:disabled { opacity: 0.5; cursor: not-allowed; }
+.srx-toggle:disabled { opacity: var(--disabled-opacity); cursor: not-allowed; }

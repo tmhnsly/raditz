@@ -1,3 +1,4 @@
+import { useId } from 'react';
 import type { HTMLAttributes, ReactElement, ReactNode } from 'react';
 import { useControllableState, cx } from '../../internal';
 
@@ -52,16 +53,21 @@ export function Accordion({
       setOpen(open === v ? (collapsible ? '' : (open as string)) : v);
     }
   };
+  const baseId = useId();
   return (
     <div className={cx('srx-accordion', className)} {...rest}>
-      {items.map((it) => {
+      {items.map((it, i) => {
         const o = isOpen(it.value);
+        const triggerId = `${baseId}-t-${i}`;
+        const panelId = `${baseId}-p-${i}`;
         return (
           <div className="srx-accordion__item" key={it.value} data-state={o ? 'open' : 'closed'}>
             <button
               type="button"
+              id={triggerId}
               className="srx-accordion__trigger"
               aria-expanded={o}
+              aria-controls={panelId}
               disabled={it.disabled}
               onClick={() => toggle(it.value)}
             >
@@ -70,7 +76,9 @@ export function Accordion({
                 <polyline points="6 9 12 15 18 9" />
               </svg>
             </button>
-            <div className="srx-accordion__panel" role="region" hidden={!o}>
+            {/* Always rendered (no `hidden` attr) so height can animate; closed
+                content is visibility:hidden in CSS to stay out of the a11y tree. */}
+            <div className="srx-accordion__panel" id={panelId} role="region" aria-labelledby={triggerId}>
               <div className="srx-accordion__content">{it.content}</div>
             </div>
           </div>

@@ -3,6 +3,33 @@
  /* Rule 6: clip media to the card corner */
 .srx-clip { overflow: hidden; border-radius: inherit; }
 
+/* Themed scrollbar for any scrollable surface. Firefox ignores ::-webkit-scrollbar
+   and needs scrollbar-width/color, so set both. Pair with an existing overflow rule. */
+.srx-scrollbar { scrollbar-width: thin; scrollbar-color: var(--rule-strong) transparent; }
+.srx-scrollbar::-webkit-scrollbar { width: 0.625rem; height: 0.625rem; }
+.srx-scrollbar::-webkit-scrollbar-thumb { background: var(--surface-strong); border-radius: var(--radius-full); border: 0.1875rem solid transparent; background-clip: content-box; }
+.srx-scrollbar::-webkit-scrollbar-thumb:hover { background: var(--rule-strong); background-clip: content-box; }
+.srx-scrollbar::-webkit-scrollbar-track { background: transparent; }
+
+/* Shared overlay icon button — the close affordance (srx-oclose) and media nav
+   carets (srx-ovbtn). The disc tint derives from currentColor, so one style reads
+   on a light panel (Dialog/Drawer) and on a dark scrim (Lightbox) alike: set the
+   text color or wrap in .srx-on-dark and the button follows. */
+.srx-oclose, .srx-ovbtn {
+  display: inline-grid; place-items: center; flex: none;
+  width: var(--srx-oclose-size, 2rem); height: var(--srx-oclose-size, 2rem);
+  border: 0; padding: 0; border-radius: var(--radius-full);
+  color: var(--text-soft); background: color-mix(in srgb, currentColor 12%, transparent);
+  cursor: pointer; transition: var(--transition-control);
+}
+.srx-oclose:hover, .srx-ovbtn:hover { background: color-mix(in srgb, currentColor 22%, transparent); color: var(--text); transform: scale(1.06); }
+.srx-oclose:active, .srx-ovbtn:active { transform: scale(0.95); }
+.srx-oclose:focus-visible, .srx-ovbtn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.srx-oclose:disabled, .srx-ovbtn:disabled { opacity: var(--disabled-opacity); cursor: not-allowed; transform: none; }
+.srx-oclose svg, .srx-ovbtn svg { width: 1.1rem; height: 1.1rem; }
+.srx-oclose--lg, .srx-ovbtn--lg { --srx-oclose-size: 2.75rem; }
+.srx-oclose--lg svg, .srx-ovbtn--lg svg { width: 1.25rem; height: 1.25rem; }
+
 @keyframes srxProgressSlide { 0% { transform: translateX(-110%); } 100% { transform: translateX(360%); } }
 
 @keyframes srxFade { from { opacity: 0; } to { opacity: 1; } }
@@ -70,7 +97,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .srx-btn, .srx-card, .srx-input, .srx-switch__thumb, .srx-check__box svg, .srx-tooltip__bubble,
-  .srx-slider__thumb, .srx-accordion__chevron, .srx-collapsible__chevron, .srx-progress__indicator { transition-duration: 0.01ms !important; }
+  .srx-slider__thumb, .srx-accordion__chevron, .srx-accordion__panel, .srx-accordion__content, .srx-collapsible__chevron, .srx-progress__indicator, .srx-lightbox__img { transition-duration: 0.01ms !important; }
   .srx-progress--indeterminate .srx-progress__indicator { animation-duration: 0.01ms !important; }
   .srx-overlay__scrim, .srx-dialog { animation-duration: 0.01ms !important; }
   .srx-popover, .srx-hovercard, .srx-menu { animation-duration: 0.01ms !important; }

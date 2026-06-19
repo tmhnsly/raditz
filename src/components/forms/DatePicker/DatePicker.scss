@@ -31,7 +31,7 @@
 
 .srx-calendar__day:hover:not(:disabled) { background: var(--surface); }
 
-.srx-calendar__day:disabled { opacity: 0.35; cursor: not-allowed; }
+.srx-calendar__day:disabled { opacity: var(--disabled-opacity); cursor: not-allowed; }
 
 .srx-calendar__day.is-today { box-shadow: inset 0 0 0 1px var(--accent-border); }
 
