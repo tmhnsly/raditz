@@ -30,6 +30,9 @@ export interface TreeProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onSelec
   defaultExpandedIds?: string[];
   /** Fires when the expanded set changes. */
   onExpandedChange?: (ids: string[]) => void;
+  /** Whether clicking a folder row toggles it (the chevron always toggles).
+   * Set false when the row should only select/navigate. @default true */
+  toggleOnRowClick?: boolean;
 }
 
 type Flat = { node: TreeNode; level: number; hasChildren: boolean; expanded: boolean; parentId?: string };
@@ -62,6 +65,7 @@ export function Tree({
   expandedIds,
   defaultExpandedIds,
   onExpandedChange,
+  toggleOnRowClick = true,
   className,
   ...rest
 }: TreeProps): ReactElement {
@@ -104,7 +108,7 @@ export function Tree({
   const activate = (f: Flat) => {
     if (f.node.disabled) return;
     setSelected(f.node.id);
-    if (f.hasChildren) toggle(f.node.id);
+    if (toggleOnRowClick && f.hasChildren) toggle(f.node.id);
     focusRow(f.node.id);
   };
 
@@ -173,7 +177,11 @@ export function Tree({
             onClick={() => activate({ node, level, hasChildren, expanded: isExpanded })}
             onFocus={() => setActiveId(node.id)}
           >
-            <span className="srx-tree__twist" aria-hidden>
+            <span
+              className="srx-tree__twist"
+              aria-hidden
+              onClick={hasChildren ? (e) => { e.stopPropagation(); toggle(node.id); } : undefined}
+            >
               {hasChildren && (
                 <svg viewBox="0 0 16 16" width="1em" height="1em" className={cx('srx-tree__chevron', isExpanded && 'is-open')}>
                   <path d="M6 4l4 4-4 4" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />

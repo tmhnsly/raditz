@@ -38,10 +38,10 @@ describe('Overlay — the test surface for every overlay behavior', () => {
 
   it('renders a scrim for modal topologies and dismisses on scrim click', () => {
     const onDismiss = vi.fn();
-    const { container } = render(
+    render(
       <Overlay open onDismiss={onDismiss} position={{ kind: 'centered' }}>x</Overlay>,
     );
-    const scrim = container.querySelector('.srx-overlay__scrim');
+    const scrim = document.querySelector('.srx-overlay__scrim');
     expect(scrim).not.toBeNull();
     fireEvent.click(scrim as Element);
     expect(onDismiss).toHaveBeenCalledTimes(1);
@@ -49,10 +49,10 @@ describe('Overlay — the test surface for every overlay behavior', () => {
 
   it('keeps a scrim but blocks outside-dismiss when dismissOnOutside is false (AlertDialog)', () => {
     const onDismiss = vi.fn();
-    const { container } = render(
+    render(
       <Overlay open onDismiss={onDismiss} dismissOnOutside={false} position={{ kind: 'centered' }}>x</Overlay>,
     );
-    const scrim = container.querySelector('.srx-overlay__scrim');
+    const scrim = document.querySelector('.srx-overlay__scrim');
     expect(scrim).not.toBeNull();
     fireEvent.click(scrim as Element);
     expect(onDismiss).not.toHaveBeenCalled();

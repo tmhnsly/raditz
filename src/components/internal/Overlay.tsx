@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import type { CSSProperties, HTMLAttributes, ReactNode, ReactElement, RefObject } from 'react';
 import { cx } from './cx';
 import {
@@ -125,18 +126,23 @@ export function Overlay({
     </div>
   );
 
-  if (!modal && !wantScrim) return panel;
+  const node = (!modal && !wantScrim)
+    ? panel
+    : (
+      <div
+        className={cx('srx-overlay', position.kind === 'side' && 'srx-overlay--drawer', containerClassName)}
+        data-side={position.kind === 'side' ? position.side : undefined}
+        data-state="open"
+      >
+        {wantScrim ? (
+          <div className="srx-overlay__scrim" onClick={dismissOnOutside ? onDismiss : undefined} />
+        ) : null}
+        {panel}
+      </div>
+    );
 
-  return (
-    <div
-      className={cx('srx-overlay', position.kind === 'side' && 'srx-overlay--drawer', containerClassName)}
-      data-side={position.kind === 'side' ? position.side : undefined}
-      data-state="open"
-    >
-      {wantScrim ? (
-        <div className="srx-overlay__scrim" onClick={dismissOnOutside ? onDismiss : undefined} />
-      ) : null}
-      {panel}
-    </div>
-  );
+  // Portal to <body> so `position: fixed` is viewport-relative regardless of any
+  // ancestor that establishes a containing block (transform / filter /
+  // backdrop-filter / will-change) — otherwise anchored panels mis-position.
+  return typeof document !== 'undefined' ? createPortal(node, document.body) : node;
 }

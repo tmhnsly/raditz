@@ -106,6 +106,7 @@ export function Sidebar({
           onSelect={(id) => { onNavigate(id); setQuery(''); }}
           expandedIds={searching ? searchExpanded : userExpanded}
           onExpandedChange={searching ? undefined : setUserExpanded}
+          toggleOnRowClick={false}
         />
       )}
     </div>
