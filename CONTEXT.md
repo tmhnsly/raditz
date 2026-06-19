@@ -51,6 +51,36 @@ direct control child (existing controls untouched), with a **`useField()` contex
 fallback** for nested/custom layouts.
 _Avoid_: form-group, form-control, wrapper.
 
+### Shared internals (deepened 2026-06-19)
+
+**Roving**:
+The one stateful arrow-key navigation module — `useRoving` over the pure
+`rovingIndex` (loop/orientation/Home/End). Menu-surface, Combobox, CommandPalette
+and ToggleGroup adapt it; NavBar uses `rovingIndex` directly. Tree keeps its own
+2D expand/collapse nav; RadioGroup roves natively.
+_Avoid_: per-component arrow handlers.
+
+**Scale**:
+Pure chart geometry (`minMax`, `normalize`, `toPercent`, `sparklinePath`,
+`donutDashes`) in `internal/scale.ts`. BarChart, Donut, Sparkline and Progress
+call it instead of inlining math in JSX — so the math is unit-tested.
+_Avoid_: in-closure scaling math.
+
+**Page-model**:
+Pure paging math (`pageCount`, `buildPages`) in `internal/pageModel.ts`, shared
+by Pagination and DataTable.
+
+**SectionShell** _(showcase infra, `src/lib`)_:
+The home for the section layout boilerplate — Frame + `.s-pad` + `.s-wrap` (where
+the responsive container-query lives) + optional **SectionBackground**. Sections
+are content + a shell choice. Navbar (ref/data on the wrap) stays bespoke.
+
+**Search**:
+The shared search input (`forms/Search`) + the `fuzzyFilter` matcher, used by
+Combobox, CommandPalette and the explorer so every search looks/behaves alike.
+
+(Lightbox is now an **Adapter face** over **Overlay**, alongside Dialog/Drawer/etc.)
+
 ## Relationships
 
 - An **Adapter face** renders exactly one **Overlay** and supplies its own **Trigger**.
