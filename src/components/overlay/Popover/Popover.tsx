@@ -1,6 +1,5 @@
-import { useRef } from 'react';
 import type { HTMLAttributes, ReactNode, ReactElement } from 'react';
-import { cx, useControllableState, Overlay } from '../../internal';
+import { cx, Overlay, useTrigger } from '../../internal';
 
 export interface PopoverProps extends HTMLAttributes<HTMLDivElement> {
   /** Trigger element (click toggles the popover). */
@@ -36,14 +35,13 @@ export function Popover({
   className,
   ...rest
 }: PopoverProps): ReactElement {
-  const [open, setOpen] = useControllableState<boolean>({ value: openProp, defaultValue: defaultOpen, onChange: onOpenChange });
-  const anchorRef = useRef<HTMLSpanElement>(null);
+  const { open, toggle, close, anchorRef } = useTrigger<HTMLSpanElement>({ open: openProp, defaultOpen, onOpenChange });
   return (
     <span className="srx-popover__root">
-      <span ref={anchorRef} className="srx-popover__anchor" onClick={() => setOpen(!open)}>{trigger}</span>
+      <span ref={anchorRef} className="srx-popover__anchor" onClick={toggle}>{trigger}</span>
       <Overlay
         open={open}
-        onDismiss={() => setOpen(false)}
+        onDismiss={close}
         position={{ kind: 'anchored', anchor: anchorRef, side, align }}
         ignore={anchorRef}
         focus="none"

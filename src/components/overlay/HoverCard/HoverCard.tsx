@@ -1,10 +1,15 @@
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import type { HTMLAttributes, ReactNode, ReactElement } from 'react';
-import { cx, Overlay } from '../../internal';
+import { cx, Overlay, useTrigger } from '../../internal';
 
 export interface HoverCardProps extends HTMLAttributes<HTMLDivElement> {
   /** Element that reveals the card on hover/focus. */
   trigger?: ReactNode;
+  /** Open state (controlled). */
+  open?: boolean;
+  /** Initial open state (uncontrolled). @default false */
+  defaultOpen?: boolean;
+  onOpenChange?: (open: boolean) => void;
   /** Preferred side. @default "bottom" */
   side?: 'top' | 'bottom' | 'left' | 'right';
   /** Cross-axis alignment. @default "center" */
@@ -27,6 +32,9 @@ export interface HoverCardProps extends HTMLAttributes<HTMLDivElement> {
 export function HoverCard({
   trigger,
   children,
+  open: openProp,
+  defaultOpen = false,
+  onOpenChange,
   side = 'bottom',
   align = 'center',
   openDelay = 200,
@@ -34,8 +42,7 @@ export function HoverCard({
   className,
   ...rest
 }: HoverCardProps): ReactElement {
-  const [open, setOpen] = useState(false);
-  const anchorRef = useRef<HTMLSpanElement>(null);
+  const { open, setOpen, close, anchorRef } = useTrigger<HTMLSpanElement>({ open: openProp, defaultOpen, onOpenChange });
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const show = (): void => { if (timer.current) clearTimeout(timer.current); timer.current = setTimeout(() => setOpen(true), openDelay); };
   const hide = (): void => { if (timer.current) clearTimeout(timer.current); timer.current = setTimeout(() => setOpen(false), closeDelay); };
@@ -44,7 +51,7 @@ export function HoverCard({
       <span ref={anchorRef} className="srx-hovercard__anchor">{trigger}</span>
       <Overlay
         open={open}
-        onDismiss={() => setOpen(false)}
+        onDismiss={close}
         position={{ kind: 'anchored', anchor: anchorRef, side, align }}
         focus="none"
         dismissOnEscape={false}

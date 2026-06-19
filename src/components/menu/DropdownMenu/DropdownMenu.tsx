@@ -1,6 +1,5 @@
-import { useRef } from 'react';
 import type { HTMLAttributes, ReactNode, ReactElement } from 'react';
-import { useControllableState } from '../../internal';
+import { useTrigger } from '../../internal';
 import { MenuSurface } from '../MenuSurface/MenuSurface';
 import type { MenuItem } from '../MenuSurface/MenuSurface';
 
@@ -40,14 +39,13 @@ export function DropdownMenu({
   onOpenChange,
   ...rest
 }: DropdownMenuProps): ReactElement {
-  const [open, setOpen] = useControllableState<boolean>({ value: openProp, defaultValue: defaultOpen, onChange: onOpenChange });
-  const anchorRef = useRef<HTMLSpanElement>(null);
+  const { open, toggle, close, anchorRef } = useTrigger<HTMLSpanElement>({ open: openProp, defaultOpen, onOpenChange });
   return (
     <span className="srx-dropdown-menu__root">
-      <span ref={anchorRef} className="srx-dropdown-menu__anchor" onClick={() => setOpen(!open)}>{trigger}</span>
+      <span ref={anchorRef} className="srx-dropdown-menu__anchor" onClick={toggle}>{trigger}</span>
       <MenuSurface
         open={open}
-        onDismiss={() => setOpen(false)}
+        onDismiss={close}
         items={items}
         anchor={anchorRef}
         ignore={anchorRef}
