@@ -14,15 +14,28 @@
    ────────────────────────────────────────────────────────────────────────── */
 
 :root {
+  /* ── neutral scale indirection ──
+     Surfaces / text / rules read from --neutral-* (NOT a raw Radix gray) so the
+     theme picker can repoint the whole neutral ramp to any of the six Radix grays
+     at runtime — by overriding these on <html>. Default: Slate. --neutral-a* are
+     the alpha steps used for translucent fills. (Named --neutral, not --gray,
+     because Radix's own `gray.css` owns --gray-*.) */
+  --neutral-1: var(--slate-1);   --neutral-2: var(--slate-2);   --neutral-3: var(--slate-3);
+  --neutral-4: var(--slate-4);   --neutral-5: var(--slate-5);   --neutral-6: var(--slate-6);
+  --neutral-7: var(--slate-7);   --neutral-8: var(--slate-8);   --neutral-9: var(--slate-9);
+  --neutral-10: var(--slate-10); --neutral-11: var(--slate-11); --neutral-12: var(--slate-12);
+  --neutral-a1: var(--slate-a1); --neutral-a2: var(--slate-a2); --neutral-a3: var(--slate-a3);
+  --neutral-a4: var(--slate-a4); --neutral-a5: var(--slate-a5); --neutral-a6: var(--slate-a6);
+
   /* ── surfaces / backgrounds ── */
-  --bg: var(--slate-1);             /* app canvas */
-  --bg-subtle: var(--slate-2);      /* striped / inset regions */
-  --panel: var(--slate-1);          /* solid raised panel (cards, menus) */
-  --panel-subtle: var(--slate-2);
-  --surface: var(--slate-a3);       /* translucent neutral fill (chips, wells) */
-  --surface-soft: var(--slate-a2);
-  --surface-strong: var(--slate-a4);
-  --surface-edge: var(--slate-6);   /* hairline card border (step 6) */
+  --bg: var(--neutral-1);             /* app canvas */
+  --bg-subtle: var(--neutral-2);      /* striped / inset regions */
+  --panel: var(--neutral-1);          /* solid raised panel (cards, menus) */
+  --panel-subtle: var(--neutral-2);
+  --surface: var(--neutral-a3);       /* translucent neutral fill (chips, wells) */
+  --surface-soft: var(--neutral-a2);
+  --surface-strong: var(--neutral-a4);
+  --surface-edge: var(--neutral-6);   /* hairline card border (step 6) */
 
   /* ── glass (frosted translucent surfaces) ──
      --glass-blur is the single config knob — raise it for a softer frost, set it
@@ -33,28 +46,37 @@
   --glass-sheen: var(--white-a8);   /* top rim light on glass */
 
   /* ── text ── */
-  --text: var(--slate-12);          /* primary ink */
-  --text-soft: var(--slate-11);     /* secondary */
-  --text-muted: var(--slate-11);    /* tertiary / captions (still readable step 11) */
-  --text-faint: var(--slate-10);    /* placeholder / disabled */
+  --text: var(--neutral-12);          /* primary ink */
+  --text-soft: var(--neutral-11);     /* secondary */
+  --text-muted: var(--neutral-11);    /* tertiary / captions (still readable step 11) */
+  --text-faint: var(--neutral-10);    /* placeholder / disabled */
   --on-accent: var(--white-a12);    /* text drawn on the accent fill */
 
   /* ── rules / borders ── */
   --border-width: 1px;
   --border-width-2: 2px;
   --border-width-3: 3px;            /* emphasis bars (callout / blockquote) */
-  --rule-soft: var(--slate-6);
-  --rule: var(--slate-7);
-  --rule-strong: var(--slate-8);
+  --rule-soft: var(--neutral-6);
+  --rule: var(--neutral-7);
+  --rule-strong: var(--neutral-8);
 
-  /* ── accent — Cyan (overridable per project / per scope) ── */
-  --accent: var(--cyan-9);
-  --accent-hover: var(--cyan-10);
-  --accent-active: var(--cyan-10);
-  --accent-ink: var(--cyan-11);     /* legible coloured text / icons */
-  --accent-surface: var(--cyan-3);  /* tinted fill behind accent content */
-  --accent-surface-soft: var(--cyan-2);
-  --accent-border: var(--cyan-7);
+  /* ── accent scale indirection — Cyan by default ──
+     Accent aliases read from --accent-N so the theme picker can repoint the
+     whole accent ramp to any Radix accent at runtime (override these on <html>).
+     Steps stay as var() references so a .dark toggle keeps flipping them. */
+  --accent-1: var(--cyan-1);   --accent-2: var(--cyan-2);   --accent-3: var(--cyan-3);
+  --accent-4: var(--cyan-4);   --accent-5: var(--cyan-5);   --accent-6: var(--cyan-6);
+  --accent-7: var(--cyan-7);   --accent-8: var(--cyan-8);   --accent-9: var(--cyan-9);
+  --accent-10: var(--cyan-10); --accent-11: var(--cyan-11); --accent-12: var(--cyan-12);
+
+  /* ── accent aliases (overridable per project / per scope) ── */
+  --accent: var(--accent-9);
+  --accent-hover: var(--accent-10);
+  --accent-active: var(--accent-10);
+  --accent-ink: var(--accent-11);     /* legible coloured text / icons */
+  --accent-surface: var(--accent-3);  /* tinted fill behind accent content */
+  --accent-surface-soft: var(--accent-2);
+  --accent-border: var(--accent-7);
   --accent-glow: color-mix(in srgb, var(--accent) 25%, transparent);
 
   /* ── secondary accent — Iris ── */
@@ -78,10 +100,10 @@
   --on-media-border: var(--white-a6);
 
   /* ── code — dark in both themes ── */
-  --code-bg: var(--slate-12);
-  --code-text: var(--slate-1);
-  --code-inline-bg: var(--slate-a3);
-  --code-inline-text: var(--slate-12);
+  --code-bg: var(--neutral-12);
+  --code-text: var(--neutral-1);
+  --code-inline-bg: var(--neutral-a3);
+  --code-inline-text: var(--neutral-12);
 }
 
 /* dark glass needs a touch more body to read as frosted; sheen dims so the rim
@@ -90,7 +112,7 @@
   --glass: color-mix(in srgb, var(--bg) 74%, transparent);
   --glass-soft: color-mix(in srgb, var(--bg) 58%, transparent);
   --glass-sheen: var(--white-a4);
-  --code-bg: var(--slate-2);
-  --code-text: var(--slate-12);
-  --code-inline-text: var(--slate-12);
+  --code-bg: var(--neutral-2);
+  --code-text: var(--neutral-12);
+  --code-inline-text: var(--neutral-12);
 }

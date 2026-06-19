@@ -76,6 +76,18 @@
 @import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/bronze-dark.css");
 @import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/gold.css");
 @import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/gold-dark.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/tomato.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/tomato-dark.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/ruby.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/ruby-dark.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/green.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/green-dark.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/mint.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/mint-dark.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/yellow.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/yellow-dark.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/brown.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/brown-dark.css");
 
 /* ── Theme Builder neutrals — the six Radix grays (solid + dark + alpha) ──
    Surfaces use alpha steps (-a2/-a3/-a4), so each gray needs its alpha files.

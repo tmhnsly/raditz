@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDarkMode } from '../lib/useDarkMode';
+import { ThemePicker } from '../lib/ThemePicker';
+import { Popover } from '../components/overlay/Popover';
 import { buildTree } from './registry';
 import { useHashRoute } from './useHashRoute';
 import { Sidebar } from './Sidebar';
@@ -29,13 +31,19 @@ export default function Explorer() {
       </aside>
 
       <main className="main">
-        <button
-          className="srx-btn srx-btn--soft themeBtn"
-          aria-pressed={dark}
-          onClick={() => setDark((d) => !d)}
-        >
-          {dark ? 'Light' : 'Dark'}
-        </button>
+        <div className="theme-toolbar">
+          <Popover trigger={<button type="button" className="srx-btn srx-btn--soft">Theme</button>}>
+            <ThemePicker />
+          </Popover>
+          <button
+            type="button"
+            className="srx-btn srx-btn--soft"
+            aria-pressed={dark}
+            onClick={() => setDark((d) => !d)}
+          >
+            {dark ? 'Light' : 'Dark'}
+          </button>
+        </div>
 
         <StoryView tree={tree} route={route} onNavigate={navigate} onActiveChange={setActiveSlug} />
       </main>
