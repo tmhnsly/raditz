@@ -13,7 +13,7 @@
 .srx-page .frame { border: 0; border-radius: 0; box-shadow: none; }
 /* In a composed page the navbar pins to the top; its panel bg covers content
    scrolling underneath. (In the isolated showcase it's just a framed preview.) */
-.srx-page .nav-section { position: sticky; top: 0; z-index: 50; }
+.srx-page .nav-section { position: sticky; top: 0; z-index: var(--z-nav); }
 .srx-page .variant { margin: 0; }
 .srx-page .variant__tag { display: none; }
 

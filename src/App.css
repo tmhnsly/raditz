@@ -44,7 +44,7 @@ body { font-family: var(--font-display); background-color: var(--bg-subtle); col
 .page-group { scroll-margin-top: 6rem; }
 /* L0 — major section (Foundations / Components / Sections): large + bold, and it
    sticks just under the bar so you always know which top-level group you're in. */
-.page-group--l0 { position: sticky; top: 4rem; z-index: 6; font-size: var(--fs-h3); font-weight: var(--fw-bold); color: var(--text); letter-spacing: -0.01em; margin: var(--space-11) 0 var(--space-6); padding: var(--space-3) 0; border-bottom: 1px solid var(--rule); }
+.page-group--l0 { position: sticky; top: 4rem; z-index: var(--z-raised); font-size: var(--fs-h3); font-weight: var(--fw-bold); color: var(--text); letter-spacing: -0.01em; margin: var(--space-11) 0 var(--space-6); padding: var(--space-3) 0; border-bottom: 1px solid var(--rule); }
 /* The sticky top bar and the sticky group title share one frosted surface AND
    bleed to the main column's edges (padding-inline restores the content position),
    so they read as one full-width glass panel that bordered cards scroll cleanly
@@ -63,7 +63,7 @@ body { font-family: var(--font-display); background-color: var(--bg-subtle); col
 
 /* sticky top bar inside the main column: theme/dark always (right); brand +
    nav burger appear only on mobile (left). */
-.expbar { position: sticky; top: 0; z-index: 30; display: flex; align-items: center; gap: var(--space-3);
+.expbar { position: sticky; top: 0; z-index: var(--z-sticky); display: flex; align-items: center; gap: var(--space-3);
   padding: var(--space-3) 0; margin-bottom: var(--space-4);
   background: color-mix(in srgb, var(--bg-subtle) 86%, transparent); -webkit-backdrop-filter: blur(var(--glass-blur)); backdrop-filter: blur(var(--glass-blur)); }
 /* A composed page preview scrolls in the window beside the explorer chrome, so a
@@ -96,11 +96,11 @@ body { font-family: var(--font-display); background-color: var(--bg-subtle); col
 
   .rail { position: fixed; top: 0; left: 0; height: 100dvh; width: min(18rem, 86vw);
     transform: translateX(-100%); transition: transform var(--duration-base) var(--ease-standard);
-    z-index: 60; box-shadow: var(--shadow-6); border-right: 1px solid var(--surface-edge); }
+    z-index: var(--z-drawer); box-shadow: var(--shadow-6); border-right: 1px solid var(--surface-edge); }
   .shell--nav-open .rail { transform: none; }
   .rail__brand--desktop { display: none; }
 
-  .rail-scrim { display: block; position: fixed; inset: 0; z-index: 55; background: var(--overlay-scrim);
+  .rail-scrim { display: block; position: fixed; inset: 0; z-index: var(--z-scrim); background: var(--overlay-scrim);
     opacity: 0; pointer-events: none; transition: opacity var(--duration-base) var(--ease-standard); }
   .shell--nav-open .rail-scrim { opacity: 1; pointer-events: auto; }
 }

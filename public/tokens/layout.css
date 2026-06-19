@@ -6,12 +6,17 @@
    ────────────────────────────────────────────────────────────────────────── */
 
 :root {
-  /* z-index ladder */
+  /* z-index ladder — the single source of stacking order. Never write a raw
+     z-index; pick a rung. (Components may use 0/1/2 for LOCAL stacking inside
+     their own isolation context — that is not part of this global ladder.) */
   --z-base: 0;        /* @kind other */
   --z-content: 1;     /* @kind other */
   --z-overlay-local: 2;/* @kind other */
-  --z-raised: 10;     /* @kind other */
-  --z-nav: 100;       /* @kind other */
+  --z-raised: 10;     /* raised in-flow content (e.g. a sticky section title) */ /* @kind other */
+  --z-sticky: 20;     /* sticky app chrome (a top bar) above raised content */ /* @kind other */
+  --z-nav: 100;       /* primary site/page nav */ /* @kind other */
+  --z-scrim: 200;     /* dimming behind an off-canvas drawer */ /* @kind other */
+  --z-drawer: 210;    /* off-canvas drawer (mobile nav), above its scrim */ /* @kind other */
   --z-popover: 500;   /* @kind other */
   --z-modal: 1000;    /* @kind other */
   --z-toast: 1100;    /* @kind other */

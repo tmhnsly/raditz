@@ -41,4 +41,3 @@
 .theme-picker__sw.is-active { border-color: var(--text); }
 .theme-picker__chip { padding: 0.25rem 0.5rem; border-radius: var(--radius-control); border: 1px solid var(--rule); background: var(--panel); font-size: var(--fs-body-s); color: var(--text-soft); cursor: pointer; }
 .theme-picker__chip.is-active { background: var(--accent-surface); color: var(--accent-ink); border-color: var(--accent-border); }
-.theme-toolbar { display: flex; align-items: center; gap: var(--space-2); position: absolute; top: var(--space-5); right: var(--space-5); z-index: 5; }

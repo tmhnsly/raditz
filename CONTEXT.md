@@ -148,6 +148,15 @@ How a region declares its colour context. Two named contexts:
   `--on-media` (white-alpha) family in **one level**, so it works anywhere.
 _Avoid_: applying `.dark` to a region (use `.srx-on-dark`); hardcoding white text.
 
+**Layer** (deepened 2026-06-19):
+The stacking order — one ladder of `--z-*` rungs in `public/tokens/layout.css` is
+the single source of truth. Every globally-stacked element (overlays, app chrome,
+drawer/scrim, nav) references a rung; never a raw z-index. Rungs:
+`base < content < overlay-local < raised < sticky < nav < scrim < drawer < popover
+< modal < toast`. Components may still use 0/1/2 for *local* stacking inside their
+own isolation context — that's not part of the global ladder.
+_Avoid_: raw z-index numbers in app/section CSS (they collide — that caused a bug).
+
 ## Flagged ambiguities
 
 - "anchor" vs "trigger" — resolved: the **Trigger** is what the user interacts with to
