@@ -19,11 +19,13 @@
 
 .srx-cmdk__item { display: flex; align-items: center; gap: var(--space-3); width: 100%; padding: 0.625rem var(--space-3); border-radius: var(--radius-md); font-family: var(--font-display); font-size: var(--fs-body-s); color: var(--text); text-align: left; cursor: pointer; }
 
-.srx-cmdk__item[data-active] { background: var(--accent-surface); color: var(--accent-ink); }
+/* Match the dropdown-menu / combobox highlight (neutral surface) so every overlay
+   surface feels consistent — was an accent-tinted outlier. */
+.srx-cmdk__item[data-active] { background: var(--surface); color: var(--text); }
 
 .srx-cmdk__icon { color: var(--text-muted); flex: none; }
 
-.srx-cmdk__item[data-active] .srx-cmdk__icon { color: var(--accent-ink); }
+.srx-cmdk__item[data-active] .srx-cmdk__icon { color: var(--text-soft); }
 
 .srx-cmdk__label { flex: 1; }
 
