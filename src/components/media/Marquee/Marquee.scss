@@ -1,0 +1,36 @@
+// Uses SuperRadix tokens (var(--…)); re-skins/re-themes with the system.
+.srx-marquee { overflow: hidden; }
+
+.srx-marquee--fade {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+.srx-marquee__track {
+  display: flex;
+  width: max-content;
+  animation: srx-marquee var(--srx-marquee-duration, 26s) linear infinite;
+  animation-direction: var(--srx-marquee-dir, normal);
+}
+
+.srx-marquee--pause:hover .srx-marquee__track { animation-play-state: paused; }
+
+.srx-marquee__group {
+  display: flex;
+  align-items: center;
+  flex: none;
+  gap: var(--srx-marquee-gap, var(--space-7));
+  padding-inline: calc(var(--srx-marquee-gap, var(--space-7)) / 2);
+}
+
+/* two identical groups → shifting by half the track width loops seamlessly */
+@keyframes srx-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .srx-marquee { -webkit-mask-image: none; mask-image: none; overflow-x: auto; }
+  .srx-marquee__track { animation: none; }
+  .srx-marquee__group[aria-hidden='true'] { display: none; }
+}

@@ -294,6 +294,7 @@
 /* ── SocialProof ── */
 .sx-sp__band { padding-top: var(--space-6); padding-bottom: var(--space-6); }
 .sx-sp__row { justify-content: space-between; gap: var(--space-5); opacity: 0.75; }
+.sx-sp__marquee { opacity: 0.75; }
 .sx-sp__logo { font-size: 1.125rem; }
 .sx-sp__logo-tight { letter-spacing: -0.02em; }
 .sx-sp__logo-mono { font-family: var(--font-mono); }

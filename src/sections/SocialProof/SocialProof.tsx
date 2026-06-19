@@ -1,13 +1,17 @@
 import { SectionShell, type SectionVariantProps } from '../../lib/SectionShell';
+import { Marquee } from '../../components/media/Marquee';
 
 export function SocialProofA({ background = 'none', parallax, image, video }: SectionVariantProps = {}) {
   return (
-    <SectionShell pad="sm" padClassName="sx-sp__band" wrap="row sx-sp__row" background={background} parallax={parallax} image={image} video={video}>
-      <strong className="sx-sp__logo sx-sp__logo-tight">Northwind</strong>
-      <strong className="sx-sp__logo sx-sp__logo-mono">ACME</strong>
-      <strong className="sx-sp__logo sx-sp__logo-wide">LUMEN</strong>
-      <strong className="sx-sp__logo sx-sp__logo-italic">Vertex</strong>
-      <strong className="sx-sp__logo sx-sp__logo-tighter">Hatch</strong>
+    <SectionShell pad="sm" padClassName="sx-sp__band" background={background} parallax={parallax} image={image} video={video}>
+      {/* a marquee so the logo row never overflows / clips on narrow screens */}
+      <Marquee className="sx-sp__marquee" duration={30}>
+        <strong className="sx-sp__logo sx-sp__logo-tight">Northwind</strong>
+        <strong className="sx-sp__logo sx-sp__logo-mono">ACME</strong>
+        <strong className="sx-sp__logo sx-sp__logo-wide">LUMEN</strong>
+        <strong className="sx-sp__logo sx-sp__logo-italic">Vertex</strong>
+        <strong className="sx-sp__logo sx-sp__logo-tighter">Hatch</strong>
+      </Marquee>
     </SectionShell>
   );
 }

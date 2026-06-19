@@ -50,6 +50,7 @@ import '../components/feedback/Toast/Toast.scss';
 import '../components/media/Lightbox/Lightbox.scss';
 import '../components/media/Gallery/Gallery.scss';
 import '../components/media/Carousel/Carousel.scss';
+import '../components/media/Marquee/Marquee.scss';
 import '../components/data/DataTable/DataTable.scss';
 import '../components/overlay/Drawer/Drawer.scss';
 import '../components/forms/DatePicker/DatePicker.scss';

@@ -121,3 +121,21 @@
   --code-text: var(--neutral-12);
   --code-inline-text: var(--neutral-12);
 }
+
+/* On-dark surface context — for content sitting over a dark scrim / photo / video
+   / accent band. It re-points the semantic text + rule tokens to the theme-
+   independent on-media (white-alpha) tokens, so text, muted text, dividers and
+   outline/ghost buttons stay legible regardless of light/dark theme (the accent
+   stays the themed accent). Unlike `.dark`, this overrides the *semantic* tokens
+   directly in one level, so it works on any subtree (not just :root). */
+.srx-on-dark {
+  color: var(--on-media);
+  --text: var(--on-media);
+  --text-soft: var(--on-media-soft);
+  --text-muted: var(--on-media-soft);
+  --text-faint: var(--on-media-soft);
+  --rule: var(--on-media-border);
+  --rule-soft: var(--on-media-border);
+  --surface-edge: var(--on-media-border);
+  --accent-ink: var(--on-media);
+}
