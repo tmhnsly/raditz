@@ -32,9 +32,19 @@ export function resolveGray(accent: Accent, choice: GrayChoice): Gray {
  * (the rest pair with white). From the Radix Colors "understanding the scale" docs. */
 export const LIGHT_ACCENTS = new Set<Accent>(['sky', 'mint', 'lime', 'yellow', 'amber']);
 
-/** Repoint the accent + neutral ramps on <html> to the chosen Radix scales.
- * Values stay as var() references so a `.dark` toggle keeps flipping them. */
-export function applyTheme(accent: Accent, choice: GrayChoice): void {
+/** Corner roundness — scales every radius token via --radius-factor. */
+export const RADII = ['sharp', 'default', 'round'] as const;
+export type RadiusChoice = (typeof RADII)[number];
+const RADIUS_FACTOR: Record<RadiusChoice, string> = { sharp: '0.5', default: '1.4', round: '2.6' };
+
+/** Motion feel — maps to the token system's data-motion presets. */
+export const MOTIONS = ['none', 'snappy', 'smooth', 'calm'] as const;
+export type MotionChoice = (typeof MOTIONS)[number];
+
+/** Repoint the accent + neutral ramps on <html> to the chosen Radix scales, and
+ * set the radius factor + motion preset. Values stay as var() references so a
+ * `.dark` toggle keeps flipping them. */
+export function applyTheme(accent: Accent, choice: GrayChoice, radius: RadiusChoice = 'default', motion: MotionChoice = 'smooth'): void {
   if (typeof document === 'undefined') return;
   const root = document.documentElement;
   const gray = resolveGray(accent, choice);
@@ -47,35 +57,50 @@ export function applyTheme(accent: Accent, choice: GrayChoice): void {
   }
   // Light accents (sky/mint/lime/yellow/amber) need dark text on their step 9/10.
   root.style.setProperty('--on-accent', LIGHT_ACCENTS.has(accent) ? 'var(--black-a12)' : 'var(--white-a12)');
+  root.style.setProperty('--radius-factor', RADIUS_FACTOR[radius]);
+  root.setAttribute('data-motion', motion);
 }
 
 const KEY = 'srx-theme';
 
-interface ThemeState { accent: Accent; gray: GrayChoice; }
+interface ThemeState { accent: Accent; gray: GrayChoice; radius: RadiusChoice; motion: MotionChoice; }
+
+const DEFAULTS: ThemeState = { accent: 'cyan', gray: 'auto', radius: 'default', motion: 'smooth' };
 
 function load(): ThemeState {
   if (typeof localStorage !== 'undefined') {
     try {
       const v = JSON.parse(localStorage.getItem(KEY) || '');
-      if (v && ACCENTS.includes(v.accent)) return { accent: v.accent, gray: v.gray ?? 'auto' };
+      if (v && ACCENTS.includes(v.accent)) {
+        return {
+          accent: v.accent,
+          gray: v.gray ?? 'auto',
+          radius: RADII.includes(v.radius) ? v.radius : 'default',
+          motion: MOTIONS.includes(v.motion) ? v.motion : 'smooth',
+        };
+      }
     } catch { /* ignore */ }
   }
-  return { accent: 'cyan', gray: 'auto' };
+  return DEFAULTS;
 }
 
-/** App-wide theme: pick an accent, and a gray (or 'auto' for the paired one).
- * Applies to <html> and persists to localStorage. */
+/** App-wide theme: pick an accent, gray (or 'auto'), corner radius, and motion
+ * feel. Applies to <html> and persists to localStorage. */
 export function useTheme() {
   const [state, setState] = useState<ThemeState>(load);
   useEffect(() => {
-    applyTheme(state.accent, state.gray);
+    applyTheme(state.accent, state.gray, state.radius, state.motion);
     if (typeof localStorage !== 'undefined') localStorage.setItem(KEY, JSON.stringify(state));
   }, [state]);
   return {
     accent: state.accent,
     gray: state.gray,
+    radius: state.radius,
+    motion: state.motion,
     setAccent: (accent: Accent) => setState((s) => ({ ...s, accent })),
     setGray: (gray: GrayChoice) => setState((s) => ({ ...s, gray })),
-    reset: () => setState({ accent: 'cyan', gray: 'auto' }),
+    setRadius: (radius: RadiusChoice) => setState((s) => ({ ...s, radius })),
+    setMotion: (motion: MotionChoice) => setState((s) => ({ ...s, motion })),
+    reset: () => setState(DEFAULTS),
   };
 }

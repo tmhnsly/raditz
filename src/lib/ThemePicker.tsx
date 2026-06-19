@@ -1,14 +1,15 @@
 import type { CSSProperties } from 'react';
 import { cx } from '../components/internal';
-import { useTheme, ACCENTS, GRAYS, resolveGray } from './theme';
+import { useTheme, ACCENTS, GRAYS, RADII, MOTIONS, resolveGray } from './theme';
 
 /**
- * ThemePicker — pick an accent and a gray; the whole app re-themes live.
- * Accent swatches repoint the accent ramp; "Auto" uses Radix's recommended
- * paired gray, or pick a specific gray (incl. neutral "gray"). Persists.
+ * ThemePicker — pick an accent, gray, corner radius, and motion feel; the whole
+ * app re-themes live. Accent swatches repoint the accent ramp; "Auto" uses
+ * Radix's recommended paired gray; radius scales --radius-factor; motion maps to
+ * the data-motion presets. Persists.
  */
 export function ThemePicker() {
-  const { accent, gray, setAccent, setGray, reset } = useTheme();
+  const { accent, gray, radius, motion, setAccent, setGray, setRadius, setMotion, reset } = useTheme();
   const paired = resolveGray(accent, 'auto');
   return (
     <div className="theme-picker">
@@ -54,6 +55,40 @@ export function ThemePicker() {
             style={{ '--sw': `var(--${g}-9)` } as CSSProperties}
             onClick={() => setGray(g)}
           />
+        ))}
+      </div>
+
+      <div className="theme-picker__row">
+        <strong className="theme-picker__title">Radius</strong>
+      </div>
+      <div className="theme-picker__swatches">
+        {RADII.map((r) => (
+          <button
+            key={r}
+            type="button"
+            aria-pressed={radius === r}
+            className={cx('theme-picker__chip', radius === r && 'is-active')}
+            onClick={() => setRadius(r)}
+          >
+            {r}
+          </button>
+        ))}
+      </div>
+
+      <div className="theme-picker__row">
+        <strong className="theme-picker__title">Motion</strong>
+      </div>
+      <div className="theme-picker__swatches">
+        {MOTIONS.map((m) => (
+          <button
+            key={m}
+            type="button"
+            aria-pressed={motion === m}
+            className={cx('theme-picker__chip', motion === m && 'is-active')}
+            onClick={() => setMotion(m)}
+          >
+            {m}
+          </button>
         ))}
       </div>
     </div>
