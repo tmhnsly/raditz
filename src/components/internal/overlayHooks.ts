@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useState, useCallback } from 'react';
 import type { RefObject, Dispatch, SetStateAction, KeyboardEvent as ReactKeyboardEvent } from 'react';
+import { useRoving, KEYS } from './keyboard';
 
 // Overlay internals for SuperRadix — React-only (no react-dom dependency).
 // Overlays render inline with position:fixed and are positioned from client
@@ -304,19 +305,17 @@ export interface RovingMenu {
   onKeyDown: (e: ReactKeyboardEvent) => void;
 }
 
-/** Roving keyboard nav for a vertical menu list. Returns handlers + active index. */
+/** Roving keyboard nav for a vertical menu list (over the shared {@link useRoving}),
+ * plus Escape-to-close and reset on close. Active starts at -1 (container focused). */
 export function useRovingMenu(count: number, open: boolean, onClose?: () => void): RovingMenu {
-  const [active, setActive] = useState(-1);
-  useEffect(() => { if (!open) setActive(-1); }, [open]);
+  const { active, setActive, onKeyDown: rove } = useRoving({ count, orientation: 'vertical', loop: true, initial: -1 });
+  useEffect(() => { if (!open) setActive(-1); }, [open, setActive]);
   const onKeyDown = useCallback(
     (e: ReactKeyboardEvent) => {
-      if (e.key === 'ArrowDown') { e.preventDefault(); setActive((i) => (i + 1) % count); }
-      else if (e.key === 'ArrowUp') { e.preventDefault(); setActive((i) => (i - 1 + count) % count); }
-      else if (e.key === 'Home') { e.preventDefault(); setActive(0); }
-      else if (e.key === 'End') { e.preventDefault(); setActive(count - 1); }
-      else if (e.key === 'Escape') { e.preventDefault(); onClose && onClose(); }
+      if (e.key === KEYS.Escape) { e.preventDefault(); if (onClose) onClose(); return; }
+      rove(e);
     },
-    [count, onClose],
+    [rove, onClose],
   );
   return { active, setActive, onKeyDown };
 }

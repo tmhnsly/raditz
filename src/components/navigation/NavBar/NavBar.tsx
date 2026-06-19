@@ -1,6 +1,6 @@
 import { useRef, useState, useLayoutEffect, useCallback } from 'react';
 import type { CSSProperties, HTMLAttributes, KeyboardEvent as ReactKeyboardEvent, ReactElement, ReactNode } from 'react';
-import { useControllableState, cx, KEYS } from '../../internal';
+import { useControllableState, cx, rovingIndex } from '../../internal';
 import { Icon } from '../../foundation/Icon/Icon';
 import type { IconName } from '../../foundation/Icon/Icon';
 
@@ -87,8 +87,8 @@ export function NavBar({
 
   const onKeyDown = (e: ReactKeyboardEvent): void => {
     const i = items.findIndex((it) => it.key === val);
-    if (e.key === KEYS.ArrowRight || e.key === KEYS.ArrowDown) { e.preventDefault(); setVal(items[(i + 1) % items.length].key); }
-    else if (e.key === KEYS.ArrowLeft || e.key === KEYS.ArrowUp) { e.preventDefault(); setVal(items[(i - 1 + items.length) % items.length].key); }
+    const next = rovingIndex(e.key, i, items.length, { orientation: orientation === 'vertical' ? 'vertical' : 'horizontal', loop: true });
+    if (next !== null) { e.preventDefault(); setVal(items[next].key); }
   };
 
   return (

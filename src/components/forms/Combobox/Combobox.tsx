@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import type { ChangeEvent, HTMLAttributes, KeyboardEvent, ReactElement } from 'react';
-import { cx, useControllableState, Overlay, KEYS, fuzzyFilter } from '../../internal';
+import { cx, useControllableState, Overlay, useRoving, fuzzyFilter } from '../../internal';
 import { Icon } from '../../foundation/Icon/Icon';
 import { Search } from '../Search/Search';
 
@@ -37,7 +37,6 @@ export function Combobox({
   const [val, setVal] = useControllableState<string>({ value, defaultValue, onChange });
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
-  const [active, setActive] = useState(0);
   const anchorRef = useRef<HTMLButtonElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);
 
@@ -46,11 +45,12 @@ export function Combobox({
   const filtered = fuzzyFilter(norm, query, (o) => o.label);
   const choose = (o: ComboboxOption): void => { setVal(o.value); setOpen(false); setQuery(''); };
 
-  const onKey = (e: KeyboardEvent<HTMLInputElement>): void => {
-    if (e.key === KEYS.ArrowDown) { e.preventDefault(); setActive((a) => Math.min(filtered.length - 1, a + 1)); }
-    else if (e.key === KEYS.ArrowUp) { e.preventDefault(); setActive((a) => Math.max(0, a - 1)); }
-    else if (e.key === KEYS.Enter) { e.preventDefault(); if (filtered[active]) choose(filtered[active]); }
-  };
+  const { active, setActive, onKeyDown: onKey } = useRoving({
+    count: filtered.length,
+    orientation: 'vertical',
+    loop: false,
+    onSelect: (i) => { if (filtered[i]) choose(filtered[i]); },
+  });
 
   return (
     <div className={cx('srx-combobox', className)} {...rest}>

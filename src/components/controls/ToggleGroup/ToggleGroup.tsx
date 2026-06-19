@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useControllableState, cx } from '../../internal';
+import { useControllableState, cx, rovingIndex } from '../../internal';
 
 export interface ToggleGroupItem {
   value: string;
@@ -55,14 +55,27 @@ export function ToggleGroup({
     }
   };
   const cls = cx('srx-toggle-group', size !== 'md' && `srx-toggle-group--${size}`, className);
+  const itemRefs = React.useRef<(HTMLButtonElement | null)[]>([]);
+  // Single-select acts as a radiogroup: arrow keys rove focus + selection.
+  const singleIdx = type === 'single' ? items.findIndex((it) => it.value === val) : -1;
+  const focusIdx = singleIdx < 0 ? 0 : singleIdx;
+  const onKeyDown = (e: React.KeyboardEvent<HTMLDivElement>): void => {
+    if (type !== 'single') return;
+    const next = rovingIndex(e.key, focusIdx, items.length, { orientation: 'horizontal', loop: true });
+    if (next === null) return;
+    e.preventDefault();
+    const it = items[next];
+    if (it && !it.disabled && !disabled) { setVal(it.value); itemRefs.current[next]?.focus(); }
+  };
   return (
-    <div className={cls} role={type === 'single' ? 'radiogroup' : 'group'} {...rest}>
-      {items.map((it) => {
+    <div className={cls} role={type === 'single' ? 'radiogroup' : 'group'} onKeyDown={onKeyDown} {...rest}>
+      {items.map((it, i) => {
         const on = isOn(it.value);
         return (
           <button
             type="button"
             key={it.value}
+            ref={(el) => { itemRefs.current[i] = el; }}
             className="srx-toggle-group__item"
             data-state={on ? 'on' : 'off'}
             role={type === 'single' ? 'radio' : undefined}
@@ -70,6 +83,7 @@ export function ToggleGroup({
             aria-pressed={type === 'multiple' ? on : undefined}
             aria-label={it.label ? undefined : it.value}
             title={typeof it.label === 'string' ? it.label : it.value}
+            tabIndex={type === 'single' ? (i === focusIdx ? 0 : -1) : undefined}
             disabled={disabled || it.disabled}
             onClick={() => toggle(it.value)}
           >

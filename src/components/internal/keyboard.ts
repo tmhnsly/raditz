@@ -1,4 +1,5 @@
-import type { KeyboardEvent as ReactKeyboardEvent } from 'react';
+import { useCallback, useState } from 'react';
+import type { Dispatch, KeyboardEvent as ReactKeyboardEvent, SetStateAction } from 'react';
 
 /** Canonical KeyboardEvent.key values — use these instead of magic strings. */
 export const KEYS = {
@@ -68,4 +69,43 @@ export function rovingIndex(
   if (key === KEYS.Home) return 0;
   if (key === KEYS.End) return count - 1;
   return null;
+}
+
+export interface UseRovingOptions {
+  /** Number of items to rove over. */
+  count: number;
+  /** @default 'vertical' */
+  orientation?: Orientation;
+  /** Wrap past the ends. @default true */
+  loop?: boolean;
+  /** Initial active index. @default 0 */
+  initial?: number;
+  /** Fired on Enter/Space with the active index. */
+  onSelect?: (index: number) => void;
+}
+
+export interface Roving {
+  active: number;
+  setActive: Dispatch<SetStateAction<number>>;
+  /** Spread onto the roving container (or focused element). */
+  onKeyDown: (e: ReactKeyboardEvent) => void;
+}
+
+/**
+ * The one stateful roving-navigation hook. Owns the active index and turns
+ * arrow / Home / End into index moves via {@link rovingIndex} (loop + orientation
+ * aware); Enter/Space fire `onSelect`. Callers map `active` to focus/selection.
+ * Use this instead of re-implementing arrow handling per component.
+ */
+export function useRoving({ count, orientation = 'vertical', loop = true, initial = 0, onSelect }: UseRovingOptions): Roving {
+  const [active, setActive] = useState(initial);
+  const onKeyDown = useCallback(
+    (e: ReactKeyboardEvent) => {
+      const next = rovingIndex(e.key, active, count, { orientation, loop });
+      if (next !== null) { e.preventDefault(); setActive(next); return; }
+      if ((e.key === KEYS.Enter || e.key === KEYS.Space) && onSelect) { e.preventDefault(); onSelect(active); }
+    },
+    [active, count, orientation, loop, onSelect],
+  );
+  return { active, setActive, onKeyDown };
 }

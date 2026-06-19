@@ -1,6 +1,6 @@
 import { Fragment, useState, useEffect, useMemo } from 'react';
 import type { HTMLAttributes, ReactNode, ReactElement, KeyboardEvent as ReactKeyboardEvent } from 'react';
-import { cx, Overlay, KEYS, fuzzyFilter } from '../../internal';
+import { cx, Overlay, useRoving, fuzzyFilter } from '../../internal';
 import { Icon } from '../../foundation/Icon/Icon';
 import { Search } from '../../forms/Search/Search';
 import type { IconName } from '../../foundation/Icon/Icon';
@@ -36,8 +36,22 @@ type FlatItem = CommandItem & { heading?: ReactNode };
  */
 export function CommandPalette({ open, onOpenChange, groups = [], placeholder = 'Type a command or search…', hotkey = true, className, ...rest }: CommandPaletteProps): ReactElement | null {
   const [query, setQuery] = useState('');
-  const [active, setActive] = useState(0);
   const close = (): void => { if (onOpenChange) onOpenChange(false); };
+
+  const flat = useMemo<FlatItem[]>(() => {
+    const out: FlatItem[] = [];
+    groups.forEach((g) => (g.items || []).forEach((it) => out.push({ ...it, heading: g.heading })));
+    return out;
+  }, [groups]);
+  const filtered = fuzzyFilter(flat, query, (it) => `${it.label} ${it.keywords || ''}`);
+  const run = (it: FlatItem | undefined): void => { if (it) { if (it.onSelect) it.onSelect(); close(); } };
+
+  const { active, setActive, onKeyDown: onKey } = useRoving({
+    count: filtered.length,
+    orientation: 'vertical',
+    loop: false,
+    onSelect: (i) => run(filtered[i]),
+  });
 
   useEffect(() => {
     if (!hotkey) return undefined;
@@ -48,21 +62,7 @@ export function CommandPalette({ open, onOpenChange, groups = [], placeholder = 
     return () => document.removeEventListener('keydown', h);
   }, [hotkey, open, onOpenChange]);
 
-  useEffect(() => { if (open) { setQuery(''); setActive(0); } }, [open]);
-
-  const flat = useMemo<FlatItem[]>(() => {
-    const out: FlatItem[] = [];
-    groups.forEach((g) => (g.items || []).forEach((it) => out.push({ ...it, heading: g.heading })));
-    return out;
-  }, [groups]);
-  const filtered = fuzzyFilter(flat, query, (it) => `${it.label} ${it.keywords || ''}`);
-
-  const run = (it: FlatItem | undefined): void => { if (it) { if (it.onSelect) it.onSelect(); close(); } };
-  const onKey = (e: ReactKeyboardEvent<HTMLInputElement>): void => {
-    if (e.key === KEYS.ArrowDown) { e.preventDefault(); setActive((a) => Math.min(filtered.length - 1, a + 1)); }
-    else if (e.key === KEYS.ArrowUp) { e.preventDefault(); setActive((a) => Math.max(0, a - 1)); }
-    else if (e.key === KEYS.Enter) { e.preventDefault(); run(filtered[active]); }
-  };
+  useEffect(() => { if (open) { setQuery(''); setActive(0); } }, [open, setActive]);
 
   let lastHeading: ReactNode = null;
   return (
