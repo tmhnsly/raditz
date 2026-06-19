@@ -28,11 +28,16 @@ body { font-family: var(--font-display); background-color: var(--bg-subtle); col
 .sec { margin-bottom: var(--space-9); scroll-margin-top: 4.5rem; }
 
 /* group headings on the single scrollable page (tree order); anchorable */
-.page-group { font-family: var(--font-mono); text-transform: uppercase; letter-spacing: var(--ls-eyebrow); color: var(--text-muted); scroll-margin-top: 4.5rem; }
-.page-group--l0 { font-size: var(--fs-body); color: var(--text); margin: var(--space-11) 0 var(--space-6); padding-bottom: var(--space-3); border-bottom: 1px solid var(--rule); }
-.page-group--l0:first-of-type { margin-top: var(--space-4); }
-.page-group--l1 { font-size: var(--fs-mono-s); margin: var(--space-8) 0 var(--space-4); }
-.page-group--l2 { font-size: var(--fs-mono-xs); color: var(--text-faint); margin: var(--space-5) 0 var(--space-3); }
+.page-group { scroll-margin-top: 6rem; }
+/* L0 — major section (Foundations / Components / Sections): large + bold, and it
+   sticks just under the bar so you always know which top-level group you're in. */
+.page-group--l0 { position: sticky; top: 3.4rem; z-index: 6; background: var(--bg); font-size: var(--fs-h3); font-weight: var(--fw-bold); color: var(--text); letter-spacing: -0.01em; margin: var(--space-11) 0 var(--space-6); padding: var(--space-3) 0; border-bottom: 1px solid var(--rule); }
+.page-group--l0:first-of-type { margin-top: var(--space-2); }
+/* L1 — sub-group (Controls / Disclosure / Data): medium sans, clearly larger
+   than the small mono entry labels so folders read as folders. */
+.page-group--l1 { font-size: var(--fs-h4); font-weight: var(--fw-semibold); color: var(--text); margin: var(--space-8) 0 var(--space-4); }
+/* L2 — deeper nesting: small mono caps, accent-tinted to stay distinct. */
+.page-group--l2 { font-family: var(--font-mono); text-transform: uppercase; letter-spacing: var(--ls-eyebrow); font-size: var(--fs-mono-xs); color: var(--accent-ink); margin: var(--space-5) 0 var(--space-3); }
 
 /* sticky top bar inside the main column: theme/dark always (right); brand +
    nav burger appear only on mobile (left). */
