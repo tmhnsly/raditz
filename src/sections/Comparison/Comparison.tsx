@@ -1,10 +1,9 @@
-import { Frame } from '../../lib/Frame';
+import { SectionShell } from '../../lib/SectionShell';
 
 export function ComparisonA() {
   return (
-    <Frame>
-      <div className="s-pad"><div className="s-wrap">
-        <div className="cmp-scroll">
+    <SectionShell>
+      <div className="cmp-scroll">
         <table className="cmp">
           <thead><tr><th></th><th>Starter</th><th className="cmp__pop">Team</th><th>Enterprise</th></tr></thead>
           <tbody>
@@ -16,9 +15,8 @@ export function ComparisonA() {
             <tr><th></th><td><button className="srx-btn srx-btn--outline srx-btn--sm">Start</button></td><td className="cmp__pop"><button className="srx-btn srx-btn--primary srx-btn--sm">Choose Team</button></td><td><button className="srx-btn srx-btn--outline srx-btn--sm">Contact</button></td></tr>
           </tbody>
         </table>
-        </div>
-      </div></div>
-    </Frame>
+      </div>
+    </SectionShell>
   );
 }
 

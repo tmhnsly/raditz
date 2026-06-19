@@ -1,4 +1,4 @@
-import { Frame } from '../../lib/Frame';
+import { SectionShell } from '../../lib/SectionShell';
 import { Accordion } from '../../components/disclosure/Accordion';
 
 const FAQ_ITEMS = [
@@ -9,24 +9,20 @@ const FAQ_ITEMS = [
 
 export function FaqA() {
   return (
-    <Frame>
-      <div className="s-pad"><div className="s-wrap sx-faq__wrap">
-        <Accordion id="faqAcc" type="single" collapsible defaultValue="0" items={FAQ_ITEMS} />
-      </div></div>
-    </Frame>
+    <SectionShell wrap="sx-faq__wrap">
+      <Accordion id="faqAcc" type="single" collapsible defaultValue="0" items={FAQ_ITEMS} />
+    </SectionShell>
   );
 }
 
 export function FaqB() {
   return (
-    <Frame>
-      <div className="s-pad"><div className="s-wrap sx-faq2 sx-gap-6">
-        <div className="col sx-faq__item"><strong>What's the license?</strong><span className="muted sx-body-s">MIT — use it in commercial products freely.</span></div>
-        <div className="col sx-faq__item"><strong>Does it need a build step?</strong><span className="muted sx-body-s">No. It works from a CDN link, or self-host for production.</span></div>
-        <div className="col sx-faq__item"><strong>Which frameworks?</strong><span className="muted sx-body-s">Components are React; tokens and classes are framework-agnostic.</span></div>
-        <div className="col sx-faq__item"><strong>Can I extend it?</strong><span className="muted sx-body-s">Yes — add tokens and components; everything composes.</span></div>
-      </div></div>
-    </Frame>
+    <SectionShell wrap="sx-faq2 sx-gap-6">
+      <div className="col sx-faq__item"><strong>What's the license?</strong><span className="muted sx-body-s">MIT — use it in commercial products freely.</span></div>
+      <div className="col sx-faq__item"><strong>Does it need a build step?</strong><span className="muted sx-body-s">No. It works from a CDN link, or self-host for production.</span></div>
+      <div className="col sx-faq__item"><strong>Which frameworks?</strong><span className="muted sx-body-s">Components are React; tokens and classes are framework-agnostic.</span></div>
+      <div className="col sx-faq__item"><strong>Can I extend it?</strong><span className="muted sx-body-s">Yes — add tokens and components; everything composes.</span></div>
+    </SectionShell>
   );
 }
 
