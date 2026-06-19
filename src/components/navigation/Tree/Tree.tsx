@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import type { CSSProperties, HTMLAttributes, KeyboardEvent, ReactElement, ReactNode } from 'react';
 import { cx, useControllableState, KEYS } from '../../internal';
 
@@ -96,6 +96,26 @@ export function Tree({
     setActiveId(id);
     rowRefs.current.get(id)?.focus();
   };
+
+  // Keep the selected row visible inside its own scroll container (e.g. a sidebar
+  // rail) when selection changes from outside — scroll-spy following the page —
+  // WITHOUT scrolling the window/page.
+  useEffect(() => {
+    if (selected == null) return;
+    const row = rowRefs.current.get(selected);
+    if (!row) return;
+    let s: HTMLElement | null = row.parentElement;
+    while (s) {
+      const oy = getComputedStyle(s).overflowY;
+      if ((oy === 'auto' || oy === 'scroll') && s.scrollHeight > s.clientHeight) break;
+      s = s.parentElement;
+    }
+    if (!s) return;
+    const r = row.getBoundingClientRect();
+    const c = s.getBoundingClientRect();
+    if (r.top < c.top) s.scrollTop -= (c.top - r.top) + 16;
+    else if (r.bottom > c.bottom) s.scrollTop += (r.bottom - c.bottom) + 16;
+  }, [selected]);
 
   const toggle = (id: string, open?: boolean) => {
     const next = new Set(expanded);

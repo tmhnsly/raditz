@@ -1,7 +1,6 @@
 /* ── Catalog page chrome (rail + main column). Sections themselves use tokens
       + srx-* classes; this only styles the browsing shell. ── */
-body { font-family: var(--font-display); background-color: var(--bg-subtle); color: var(--text);
-  transition: background-color var(--duration-base) var(--ease-standard), color var(--duration-base) var(--ease-standard); }
+body { font-family: var(--font-display); background-color: var(--bg-subtle); color: var(--text); }
 /* `minmax(0, 1fr)` (not `1fr`) + `min-width:0` on .main let the content track
    shrink below its children's intrinsic width — otherwise the default grid
    `min-width:auto` forces .main to its content width and the page overflows

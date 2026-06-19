@@ -29,9 +29,12 @@ export interface HeroBleedProps extends SectionVariantProps {
  */
 export function HeroBleed({ background = 'gradient-aurora', parallax, image, video, scrim, nav, wrap, children }: HeroBleedProps) {
   const onMedia = !!image || !!video;
+  // Over scrimmed media the hero is a dark surface, so scope it to the .dark token
+  // context — text/muted/outline-button all resolve to on-dark tokens (legible +
+  // theme-consistent), never hardcoded colours.
   return (
-    <Frame className={cx('hero-bleed', onMedia && 'hero-bleed--media')}>
-      <SectionBackground background={background} parallax={parallax} image={image} video={video} scrim={scrim ?? onMedia}>
+    <Frame className="hero-bleed">
+      <SectionBackground background={background} parallax={parallax} image={image} video={video} scrim={scrim ?? onMedia} className={cx(onMedia && 'dark')}>
         {nav ? <div className="hero-bleed__nav">{nav}</div> : null}
         <div className="s-pad hero-bleed__body">
           <div className={cx('s-wrap', wrap)}>{children}</div>

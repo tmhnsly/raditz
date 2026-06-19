@@ -74,7 +74,7 @@ export function PricingB({ background = 'gradient-accent', parallax, image, vide
       <Tabs
         value={period}
         onValueChange={(v) => setPeriod(v as 'mo' | 'yr')}
-        tabs={[{ value: 'mo', label: 'Monthly' }, { value: 'yr', label: 'Annual · −20%' }]}
+        tabs={[{ value: 'mo', label: 'Monthly' }, { value: 'yr', label: 'Annual (−20%)' }]}
       />
       <div className="sx-price2 sx-gap-4">
         <div className="srx-card col sx-price__card">

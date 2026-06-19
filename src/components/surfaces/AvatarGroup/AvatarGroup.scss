@@ -3,7 +3,9 @@
 /* ═══════════════════════ AvatarGroup · notification dot ═══════════════════════ */
 .srx-avatar-group { display: inline-flex; }
 
-.srx-avatar-group__item { border: 2px solid var(--bg); width: var(--srx-avatar-group-dim); height: var(--srx-avatar-group-dim); }
+/* position + descending z-index (first on top) so overlaps stack cleanly as a
+   left-to-right cascade; the ring matches the surface so each masks the next. */
+.srx-avatar-group__item { position: relative; z-index: var(--srx-avatar-z, 0); border: 2px solid var(--bg); width: var(--srx-avatar-group-dim); height: var(--srx-avatar-group-dim); }
 
 .srx-avatar-group__item[data-image] { background-image: var(--srx-avatar-group-img); background-size: cover; background-position: center; color: transparent; }
 
