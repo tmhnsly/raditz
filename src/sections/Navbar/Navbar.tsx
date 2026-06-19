@@ -56,7 +56,7 @@ export function NavbarA() {
               <button
                 ref={burgerRef}
                 className="nav-bar__burger"
-                aria-label="Open menu"
+                aria-label={open ? 'Close menu' : 'Open menu'}
                 aria-expanded={open}
                 onClick={() => setOpen((o) => !o)}
               >
@@ -104,7 +104,7 @@ export function NavbarB() {
               <button
                 ref={burgerRef}
                 className="nav-bar__burger"
-                aria-label="Open menu"
+                aria-label={open ? 'Close menu' : 'Open menu'}
                 aria-expanded={open}
                 onClick={() => setOpen((o) => !o)}
               >
@@ -203,13 +203,12 @@ export function NavbarD() {
         <div className="nav-tabframe__body">
           <div className="ph nav-tabframe__ph">app content</div>
         </div>
-        <nav className="nav-tabbar" role="tablist" aria-label="Primary">
+        <nav className="nav-tabbar" aria-label="Primary">
           {tabs.map((t) => (
             <button
               key={t.id}
               type="button"
-              role="tab"
-              aria-selected={active === t.id}
+              aria-current={active === t.id ? 'page' : undefined}
               className={'nav-tab' + (active === t.id ? ' is-active' : '')}
               onClick={() => setActive(t.id)}
             >

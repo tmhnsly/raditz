@@ -84,18 +84,31 @@ export function Sidebar({
       <Search
         className="rail__search"
         size="sm"
-        placeholder="Search components…"
+        placeholder="Search…"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
       />
-      <button
-        type="button"
-        className={'tree__home' + (route === '' ? ' tree__home--active' : '')}
-        aria-current={route === '' ? 'page' : undefined}
-        onClick={() => onNavigate('')}
-      >
-        Overview
-      </button>
+      <div className="rail__tools">
+        <button
+          type="button"
+          className={'tree__home' + (route === '' ? ' tree__home--active' : '')}
+          aria-current={route === '' ? 'page' : undefined}
+          onClick={() => onNavigate('')}
+        >
+          Overview
+        </button>
+        {!searching && (
+          <button
+            type="button"
+            className="rail__collapse"
+            onClick={() => setUserExpanded([])}
+            disabled={userExpanded.length === 0}
+            title="Collapse all groups"
+          >
+            Collapse all
+          </button>
+        )}
+      </div>
       {searching && filtered.length === 0 ? (
         <p className="rail__empty">No matches</p>
       ) : (

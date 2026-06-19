@@ -37,6 +37,19 @@ export interface TreeProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onSelec
 
 type Flat = { node: TreeNode; level: number; hasChildren: boolean; expanded: boolean; parentId?: string };
 
+function findNodeById(items: TreeNode[], id: string): TreeNode | undefined {
+  for (const n of items) {
+    if (n.id === id) return n;
+    if (n.children) { const f = findNodeById(n.children, id); if (f) return f; }
+  }
+  return undefined;
+}
+
+function descendantIds(items: TreeNode[], acc: string[] = []): string[] {
+  for (const n of items) { acc.push(n.id); if (n.children) descendantIds(n.children, acc); }
+  return acc;
+}
+
 function flatten(items: TreeNode[], expanded: Set<string>, level = 1, parentId?: string, out: Flat[] = []): Flat[] {
   for (const node of items) {
     const hasChildren = !!node.children?.length;
@@ -120,7 +133,15 @@ export function Tree({
   const toggle = (id: string, open?: boolean) => {
     const next = new Set(expanded);
     const willOpen = open ?? !next.has(id);
-    if (willOpen) next.add(id); else next.delete(id);
+    if (willOpen) {
+      next.add(id);
+    } else {
+      // collapsing a parent collapses its whole subtree, so re-opening it doesn't
+      // restore a deep half-open state.
+      next.delete(id);
+      const node = findNodeById(items, id);
+      if (node?.children) descendantIds(node.children).forEach((d) => next.delete(d));
+    }
     setExpanded([...next]);
   };
 

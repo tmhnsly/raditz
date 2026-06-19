@@ -70,6 +70,15 @@
   .sx-g4, .sx-footer { grid-template-columns: 1fr; }
 }
 
+/* Section-specific cards also turn glass inside a gradient section (the component
+   handles the generic .srx-card; these are section-layer classes). */
+.srx-secbg--gradient :is(.sx-price__card, .sx-price__card-pop, .sx-tst__card, .sx-blog__card, .sx-news__card, .tcar__card, .sx-stat__cell) {
+  background: var(--glass);
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  backdrop-filter: blur(var(--glass-blur));
+  border-color: var(--surface-edge);
+}
+
 /* HeroBleed — the nav floats (transparent) over the hero's shared background, so
    the background reaches the top with no seam. Content layout is decoupled. */
 .hero-bleed__nav { padding: var(--space-4) clamp(1.5rem, 5vw, 4.5rem) 0; }

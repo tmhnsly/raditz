@@ -83,8 +83,9 @@
   --accent-border: var(--accent-7);
   --accent-glow: color-mix(in srgb, var(--accent) 25%, transparent);
 
-  /* ── secondary accent — Iris ── */
-  --accent-2: var(--iris-9);
+  /* ── secondary accent — Iris (NB: no bare `--accent-2`; that's accent-scale
+        step 2. Use --accent-2-solid/-ink/-surface for the secondary accent.) ── */
+  --accent-2-solid: var(--iris-9);
   --accent-2-ink: var(--iris-11);
   --accent-2-surface: var(--iris-3);
 

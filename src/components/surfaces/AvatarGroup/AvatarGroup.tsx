@@ -43,7 +43,7 @@ export function AvatarGroup({
           className="srx-avatar srx-avatar-group__item"
           data-image={it && it.src ? '' : undefined}
           style={{
-            '--srx-avatar-z': shown.length - i,
+            '--srx-avatar-z': i + 1,
             ...(it && it.src ? { '--srx-avatar-group-img': `url(${it.src})` } : {}),
           } as CSSProperties}
           title={it.alt || it.initials}

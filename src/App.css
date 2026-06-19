@@ -10,7 +10,18 @@ body { font-family: var(--font-display); background-color: var(--bg-subtle); col
 /* left rail */
 .rail { position: sticky; top: 0; height: 100vh; overflow-y: auto; padding: var(--space-5) var(--space-4);
   background: var(--panel); border-right: 1px solid var(--surface-edge); display: flex; flex-direction: column; gap: var(--space-2); }
-.rail__brand { display: flex; align-items: center; gap: 0.625rem; font-weight: 700; font-size: 0.9375rem; letter-spacing: -0.02em; padding: 0 var(--space-2) var(--space-3); }
+/* Logo + search pin to the top of the rail (frosted) while the tree scrolls
+   behind them — negative insets bleed the glass to the rail edges. */
+.rail__brand { position: sticky; top: 0; z-index: 3; display: flex; align-items: center; gap: 0.625rem; font-weight: 700; font-size: 0.9375rem; letter-spacing: -0.02em;
+  margin: calc(-1 * var(--space-5)) calc(-1 * var(--space-4)) 0; padding: var(--space-5) calc(var(--space-4) + var(--space-2)) var(--space-3);
+  background: color-mix(in srgb, var(--panel) 86%, transparent); -webkit-backdrop-filter: blur(var(--glass-blur)); backdrop-filter: blur(var(--glass-blur)); }
+.rail__search { position: sticky; top: 3.5rem; z-index: 3; margin: 0 calc(-1 * var(--space-4)); padding: 0 var(--space-4) var(--space-3);
+  background: color-mix(in srgb, var(--panel) 86%, transparent); -webkit-backdrop-filter: blur(var(--glass-blur)); backdrop-filter: blur(var(--glass-blur)); }
+.rail__tools { display: flex; align-items: center; gap: var(--space-2); }
+.rail__tools .tree__home { flex: 1; }
+.rail__collapse { flex: none; font-family: var(--font-mono); font-size: 0.625rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-faint); background: none; border: 0; cursor: pointer; padding: 0.3125rem 0.5rem; border-radius: var(--radius-sm); transition: var(--transition-control); }
+.rail__collapse:hover:not(:disabled) { background: var(--surface); color: var(--text-soft); }
+.rail__collapse:disabled { opacity: 0.4; cursor: default; }
 .rail__brand .mark { width: 1.625rem; height: 1.625rem; border-radius: var(--radius-md); background: var(--accent); display: inline-grid; place-items: center; color: var(--on-accent); font-family: var(--font-mono); font-size: 0.875rem; }
 .rail nav { display: flex; flex-direction: column; gap: var(--space-2); }
 .rail a { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); padding: 0.4375rem var(--space-3); border-radius: var(--radius-sm); color: var(--text-soft); font-size: var(--fs-body-s); text-decoration: none; transition: var(--transition-control); }
