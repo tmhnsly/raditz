@@ -41,11 +41,6 @@ export function onKeys<E extends AnyKeyEvent = ReactKeyboardEvent>(
   };
 }
 
-/** Activate on Enter or Space — gives button semantics to non-button elements. */
-export function onActivate<E extends AnyKeyEvent = ReactKeyboardEvent>(handler: KeyHandler<E>): KeyHandler<E> {
-  return onKeys<E>({ [KEYS.Enter]: handler, [KEYS.Space]: handler });
-}
-
 export type Orientation = 'vertical' | 'horizontal' | 'both';
 
 /**

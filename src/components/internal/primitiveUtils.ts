@@ -1,5 +1,4 @@
 import { useState, useCallback, useRef, useId } from 'react';
-import type { Ref, MutableRefObject } from 'react';
 
 // Shared internals for SuperRadix primitives. Kept dependency-free (React only)
 // so the whole library still ships as a single CDN-friendly bundle.
@@ -29,16 +28,6 @@ export function useControllableState<T>({ value, defaultValue, onChange }: Contr
     [isControlled, onChange, current],
   );
   return [current, set];
-}
-
-/** Merge multiple refs (callback or object) onto one node. */
-export function composeRefs<T>(...refs: Array<Ref<T> | undefined>): (node: T | null) => void {
-  return (node) => {
-    for (const r of refs) {
-      if (typeof r === 'function') r(node);
-      else if (r != null) (r as MutableRefObject<T | null>).current = node;
-    }
-  };
 }
 
 /** Stable unique id (SSR-safe via React.useId when present). */
