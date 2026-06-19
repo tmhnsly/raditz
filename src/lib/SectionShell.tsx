@@ -30,6 +30,11 @@ export interface SectionShellProps {
   image?: string;
   /** Video URL backdrop (overrides image + gradient). */
   video?: string;
+  /** Darken the backdrop (scrim); the surface then scopes content to on-dark. */
+  scrim?: boolean;
+  /** A transparent nav rendered above the content, floating over the shared
+   * background (the "hero bleed" effect). Pass a nav with no background. */
+  nav?: ReactNode;
   /** Class on the preview Frame (e.g. "nav-frame", "ph--neutral"). */
   frameClassName?: string;
   /** Constrain the Frame width. */
@@ -52,21 +57,26 @@ export function SectionShell({
   parallax = false,
   image,
   video,
+  scrim = false,
+  nav,
   frameClassName,
   frameMaxWidth,
   children,
 }: SectionShellProps) {
   const padClass = pad === 'sm' ? 's-pad-sm' : pad === 'none' ? undefined : 's-pad';
   const inner = (
-    <div className={cx(padClass, padClassName)}>
-      <div className={cx('s-wrap', wrap)}>{children}</div>
-    </div>
+    <>
+      {nav ? <div className="section-shell__nav">{nav}</div> : null}
+      <div className={cx(padClass, padClassName)}>
+        <div className={cx('s-wrap', wrap)}>{children}</div>
+      </div>
+    </>
   );
   const hasBg = background !== 'none' || !!image || !!video;
   return (
     <Frame className={frameClassName} maxWidth={frameMaxWidth}>
       {hasBg ? (
-        <SectionBackground background={background} parallax={parallax} image={image} video={video}>{inner}</SectionBackground>
+        <SectionBackground background={background} parallax={parallax} image={image} video={video} scrim={scrim}>{inner}</SectionBackground>
       ) : (
         inner
       )}

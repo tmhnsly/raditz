@@ -1,9 +1,9 @@
 import { SectionShell, type SectionVariantProps } from '../../lib/SectionShell';
 import { Marquee } from '../../components/media/Marquee';
 
-export function SocialProofA({ background = 'none', parallax, image, video }: SectionVariantProps = {}) {
+export function SocialProofA({ background = 'none', ...props }: SectionVariantProps = {}) {
   return (
-    <SectionShell pad="sm" padClassName="sx-sp__band" background={background} parallax={parallax} image={image} video={video}>
+    <SectionShell pad="sm" padClassName="sx-sp__band" background={background} {...props}>
       {/* a marquee so the logo row never overflows / clips on narrow screens */}
       <Marquee className="sx-sp__marquee" duration={30}>
         <strong className="sx-sp__logo sx-sp__logo-tight">Northwind</strong>
@@ -16,9 +16,9 @@ export function SocialProofA({ background = 'none', parallax, image, video }: Se
   );
 }
 
-export function SocialProofB({ background = 'none', parallax, image, video }: SectionVariantProps = {}) {
+export function SocialProofB({ background = 'none', ...props }: SectionVariantProps = {}) {
   return (
-    <SectionShell pad="sm" padClassName="sx-sp__band" wrap="col sx-items-center sx-gap-4" background={background} parallax={parallax} image={image} video={video}>
+    <SectionShell pad="sm" padClassName="sx-sp__band" wrap="col sx-items-center sx-gap-4" background={background} {...props}>
       <span className="muted sx-fs-body-s">Trusted by teams at</span>
       <div className="row sx-sp__row-b">
         <strong className="sx-sp__logo-b">Northwind</strong>

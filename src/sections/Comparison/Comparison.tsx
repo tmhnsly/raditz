@@ -1,8 +1,8 @@
 import { SectionShell, type SectionVariantProps } from '../../lib/SectionShell';
 
-export function ComparisonA({ background = 'surface-2', parallax, image, video }: SectionVariantProps = {}) {
+export function ComparisonA({ background = 'surface-2', ...props }: SectionVariantProps = {}) {
   return (
-    <SectionShell background={background} parallax={parallax} image={image} video={video}>
+    <SectionShell background={background} {...props}>
       <div className="cmp-scroll">
         <table className="cmp">
           <thead><tr><th></th><th>Starter</th><th className="cmp__pop">Team</th><th>Enterprise</th></tr></thead>

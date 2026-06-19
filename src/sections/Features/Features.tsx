@@ -1,8 +1,8 @@
 import { SectionShell, type SectionVariantProps } from '../../lib/SectionShell';
 
-export function FeaturesA({ background = 'none', parallax, image, video }: SectionVariantProps = {}) {
+export function FeaturesA({ background = 'none', ...props }: SectionVariantProps = {}) {
   return (
-    <SectionShell wrap="col sx-gap-6" background={background} parallax={parallax} image={image} video={video}>
+    <SectionShell wrap="col sx-gap-6" background={background} {...props}>
       <div className="col sx-feat__head">
         <span className="eyebrow2">Why SuperRadix</span>
         <h3 className="h-section">Everything wired together</h3>
@@ -50,9 +50,9 @@ export function FeaturesA({ background = 'none', parallax, image, video }: Secti
   );
 }
 
-export function FeaturesB({ background = 'gradient-mesh', parallax, image, video }: SectionVariantProps = {}) {
+export function FeaturesB({ background = 'gradient-mesh', ...props }: SectionVariantProps = {}) {
   return (
-    <SectionShell wrap="sx-bento sx-feat__bento" background={background} parallax={parallax} image={image} video={video}>
+    <SectionShell wrap="sx-bento sx-feat__bento" background={background} {...props}>
       <div className="srx-card col sx-feat__bento-lead">
         <span className="feat-ico">
           <svg className="ico" viewBox="0 0 24 24">
@@ -83,9 +83,9 @@ export function FeaturesB({ background = 'gradient-mesh', parallax, image, video
   );
 }
 
-export function FeaturesC({ background = 'surface-2', parallax, image, video }: SectionVariantProps = {}) {
+export function FeaturesC({ background = 'surface-2', ...props }: SectionVariantProps = {}) {
   return (
-    <SectionShell wrap="col sx-gap-7" background={background} parallax={parallax} image={image} video={video}>
+    <SectionShell wrap="col sx-gap-7" background={background} {...props}>
       <div className="sx-split sx-feat__spotlight">
         <div className="col sx-gap-3">
           <span className="eyebrow2">Composable</span>

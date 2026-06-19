@@ -2,9 +2,9 @@ import { useState } from 'react';
 import { SectionShell, type SectionVariantProps } from '../../lib/SectionShell';
 import { Tabs } from '../../components/navigation/Tabs';
 
-export function PricingA({ background = 'surface-2', parallax, image, video }: SectionVariantProps = {}) {
+export function PricingA({ background = 'surface-2', ...props }: SectionVariantProps = {}) {
   return (
-    <SectionShell wrap="col sx-gap-6" background={background} parallax={parallax} image={image} video={video}>
+    <SectionShell wrap="col sx-gap-6" background={background} {...props}>
       <div className="col sx-center sx-gap-2">
         <h3 className="h-section">Simple, scalable pricing</h3>
         <p className="muted">Start free. Upgrade when your team grows.</p>
@@ -66,10 +66,10 @@ export function PricingA({ background = 'surface-2', parallax, image, video }: S
   );
 }
 
-export function PricingB({ background = 'gradient-accent', parallax, image, video }: SectionVariantProps = {}) {
+export function PricingB({ background = 'gradient-accent', ...props }: SectionVariantProps = {}) {
   const [period, setPeriod] = useState<'mo' | 'yr'>('mo');
   return (
-    <SectionShell wrap="col sx-price__toggle-col" background={background} parallax={parallax} image={image} video={video}>
+    <SectionShell wrap="col sx-price__toggle-col" background={background} {...props}>
       <h3 className="h-section">Pay monthly or save yearly</h3>
       <Tabs
         value={period}

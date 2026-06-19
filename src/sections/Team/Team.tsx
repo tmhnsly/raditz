@@ -1,8 +1,8 @@
 import { SectionShell, type SectionVariantProps } from '../../lib/SectionShell';
 
-export function TeamA({ background = 'none', parallax, image, video }: SectionVariantProps = {}) {
+export function TeamA({ background = 'none', ...props }: SectionVariantProps = {}) {
   return (
-    <SectionShell wrap="col sx-gap-6" background={background} parallax={parallax} image={image} video={video}>
+    <SectionShell wrap="col sx-gap-6" background={background} {...props}>
       <div className="col sx-team__head"><span className="eyebrow2">The people</span><h3 className="h-section">Meet the team</h3></div>
       <div className="sx-g4 sx-gap-5">
         <div className="col sx-team__member"><div className="ph sx-team__photo">MO</div><div className="col"><strong>Maya Okafor</strong><span className="muted sx-fs-body-s">Design Lead</span></div></div>

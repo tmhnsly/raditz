@@ -81,7 +81,8 @@
 
 /* HeroBleed — the nav floats (transparent) over the hero's shared background, so
    the background reaches the top with no seam. Content layout is decoupled. */
-.hero-bleed__nav { padding: var(--space-4) clamp(1.5rem, 5vw, 4.5rem) 0; }
+/* SectionShell's floating nav slot (the "hero bleed" — nav over the shared bg). */
+.section-shell__nav { padding: var(--space-4) clamp(1.5rem, 5vw, 4.5rem) 0; }
 /* Media heroes scope themselves to .dark (see HeroBleed) so text/nav use on-dark
    tokens automatically — no per-element colour overrides needed here. */
 

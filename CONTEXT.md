@@ -74,9 +74,14 @@ Pure paging math (`pageCount`, `buildPages`) in `internal/pageModel.ts`, shared
 by Pagination and DataTable.
 
 **SectionShell** _(showcase infra, `src/lib`)_:
-The home for the section layout boilerplate — Frame + `.s-pad` + `.s-wrap` (where
-the responsive container-query lives) + optional **SectionBackground**. Sections
-are content + a shell choice. Navbar (ref/data on the wrap) stays bespoke.
+The one home for section layout — Frame + `.s-pad` + `.s-wrap` (where the responsive
+container-query lives) + optional **SectionBackground** (+ `scrim` → on-dark, + an
+optional floating `nav` slot for the hero-bleed effect). Sections are content + a
+shell choice. **HeroBleed** is now a thin *preset* of SectionShell (gradient + nav
++ media-scrim defaults), not its own Frame/background/padding stack. Variants take
+`props: SectionVariantProps` and **spread** them (`background="…" {...props}`),
+keeping a curated backdrop default without re-threading 4 props each. Navbar
+(ref/data on the wrap) stays bespoke.
 
 **Search**:
 The shared search input (`forms/Search`) + the `fuzzyFilter` matcher, used by
