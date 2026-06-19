@@ -1,5 +1,10 @@
 import * as React from 'react';
-import { useControllableState, cx, pageCount } from '../../internal';
+import {
+  useControllableState, cx, clamp,
+  pageCount, pageSlice, pageRange,
+  sortRows, nextSort, toggleSelected, togglePage, pageSelectionState,
+} from '../../internal';
+import type { Sort } from '../../internal';
 
 const { useMemo, useState } = React;
 
@@ -38,11 +43,6 @@ export interface DataTableProps<Row = DefaultRow> extends React.HTMLAttributes<H
   dense?: boolean;
 }
 
-interface SortState {
-  key: string;
-  dir: 'asc' | 'desc';
-}
-
 const ARROW = (dir: 'asc' | 'desc'): React.ReactElement => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
     {dir === 'asc' ? <polyline points="6 14 12 8 18 14" /> : <polyline points="6 10 12 16 18 10" />}
@@ -69,43 +69,32 @@ export function DataTable<Row = DefaultRow>({
   className,
   ...rest
 }: DataTableProps<Row>): React.ReactElement {
-  const [sort, setSort] = useState<SortState | null>(defaultSort);
+  const [sort, setSort] = useState<Sort | null>(defaultSort);
   const [page, setPage] = useState(0);
   const [sel, setSel] = useControllableState<RowKey[]>({ value: selected, defaultValue: [], onChange: onSelectedChange });
 
   const getField = (row: Row, key: string): unknown => (row as Record<string, unknown>)[key];
   const getId = (row: Row): RowKey => getField(row, rowKey) as RowKey;
 
+  // Sorting + selection rules live in the Table-model; paging math in the Page-model.
   const sorted = useMemo(() => {
     if (!sort) return rows;
     const col = columns.find((c) => c.key === sort.key);
-    const get = (r: Row): unknown => (col && col.sortValue ? col.sortValue(r) : getField(r, sort.key));
-    return [...rows].sort((a, b) => {
-      const av = get(a);
-      const bv = get(b);
-      if (av == null) return 1;
-      if (bv == null) return -1;
-      const cmp = typeof av === 'number' && typeof bv === 'number' ? av - bv : String(av).localeCompare(String(bv));
-      return sort.dir === 'asc' ? cmp : -cmp;
-    });
+    return sortRows(rows, sort, (r) => (col && col.sortValue ? col.sortValue(r) : getField(r, sort.key)));
   }, [rows, sort, columns]);
 
   const pages = pageCount(sorted.length, pageSize);
-  const pageRows = pageSize > 0 ? sorted.slice(page * pageSize, page * pageSize + pageSize) : sorted;
+  const safePage = clamp(page, 0, pages - 1); // survive rows/pageSize shrinking under a stale page
+  const pageRows = pageSlice(sorted, safePage, pageSize);
+  const range = pageRange(safePage, pageSize, sorted.length);
 
+  const pageIds = pageRows.map(getId);
+  const selState = pageSelectionState(sel, pageIds);
   const toggleSort = (col: DataTableColumn<Row>): void => {
-    if (!col.sortable) return;
-    setSort((s) =>
-      !s || s.key !== col.key ? { key: col.key, dir: 'asc' } : s.dir === 'asc' ? { key: col.key, dir: 'desc' } : null,
-    );
+    if (col.sortable) setSort((s) => nextSort(s, col.key));
   };
-  const allOnPage = pageRows.length > 0 && pageRows.every((r) => sel.includes(getId(r)));
-  const someOnPage = pageRows.some((r) => sel.includes(getId(r)));
-  const toggleAll = (): void => {
-    const ids = pageRows.map((r) => getId(r));
-    setSel(allOnPage ? sel.filter((id) => !ids.includes(id)) : [...new Set([...sel, ...ids])]);
-  };
-  const toggleRow = (id: RowKey): void => setSel(sel.includes(id) ? sel.filter((x) => x !== id) : [...sel, id]);
+  const toggleAll = (): void => setSel(togglePage(sel, pageIds));
+  const toggleRow = (id: RowKey): void => setSel(toggleSelected(sel, id));
 
   return (
     <div className={cx('srx-table-wrap', className)} {...rest}>
@@ -117,9 +106,9 @@ export function DataTable<Row = DefaultRow>({
                 <label className="srx-check">
                   <input
                     type="checkbox"
-                    checked={allOnPage}
+                    checked={selState === 'all'}
                     ref={(el) => {
-                      if (el) el.indeterminate = !allOnPage && someOnPage;
+                      if (el) el.indeterminate = selState === 'some';
                     }}
                     onChange={toggleAll}
                   />
@@ -182,13 +171,13 @@ export function DataTable<Row = DefaultRow>({
       {pageSize > 0 && pages > 1 ? (
         <div className="srx-table__pager">
           <span className="srx-table__pageinfo">
-            {page * pageSize + 1}–{Math.min((page + 1) * pageSize, sorted.length)} of {sorted.length}
+            {range.from}–{range.to} of {range.total}
           </span>
           <div className="srx-table__pagebtns">
-            <button type="button" className="srx-btn srx-btn--soft srx-btn--sm" disabled={page === 0} onClick={() => setPage((p) => Math.max(0, p - 1))}>
+            <button type="button" className="srx-btn srx-btn--soft srx-btn--sm" disabled={safePage === 0} onClick={() => setPage((p) => clamp(p - 1, 0, pages - 1))}>
               Prev
             </button>
-            <button type="button" className="srx-btn srx-btn--soft srx-btn--sm" disabled={page >= pages - 1} onClick={() => setPage((p) => Math.min(pages - 1, p + 1))}>
+            <button type="button" className="srx-btn srx-btn--soft srx-btn--sm" disabled={safePage >= pages - 1} onClick={() => setPage((p) => clamp(p + 1, 0, pages - 1))}>
               Next
             </button>
           </div>
