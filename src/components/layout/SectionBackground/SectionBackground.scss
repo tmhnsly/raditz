@@ -1,0 +1,42 @@
+// Optional decorative section backdrop. Content sits above an absolute layer so
+// translucent/glass panels read against it. All token-driven → re-themes.
+/* ═══════════════════════ SectionBackground ═══════════════════════ */
+.srx-secbg { position: relative; isolation: isolate; }
+
+.srx-secbg__content { position: relative; z-index: 1; }
+
+.srx-secbg__layer { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+
+.srx-secbg__layer img, .srx-secbg__layer video { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* neutral surface levels — alternate sections to differentiate them */
+.srx-secbg--surface { background: var(--bg); }
+.srx-secbg--surface-2 { background: var(--bg-subtle); }
+
+/* templated gradients (token-driven) */
+.srx-secbg--gradient-accent .srx-secbg__layer {
+  background: linear-gradient(135deg, var(--accent-surface), color-mix(in srgb, var(--accent-surface) 30%, var(--bg)));
+}
+.srx-secbg--gradient-aurora .srx-secbg__layer {
+  background:
+    radial-gradient(60% 80% at 15% 10%, var(--accent-surface), transparent 70%),
+    radial-gradient(50% 70% at 85% 20%, var(--accent-2-surface), transparent 70%),
+    var(--bg);
+}
+.srx-secbg--gradient-dusk .srx-secbg__layer {
+  background: linear-gradient(120deg, var(--accent-surface), var(--accent-2-surface));
+}
+.srx-secbg--gradient-mesh .srx-secbg__layer {
+  background:
+    radial-gradient(40% 60% at 20% 30%, var(--accent-surface), transparent 60%),
+    radial-gradient(45% 55% at 80% 25%, var(--accent-2-surface), transparent 60%),
+    radial-gradient(50% 60% at 60% 90%, color-mix(in srgb, var(--accent-surface) 60%, transparent), transparent 60%),
+    var(--bg-subtle);
+}
+
+/* parallax — the layer is oversized and translated from a scroll-driven var */
+.srx-secbg--parallax .srx-secbg__layer { top: -12%; height: 124%; transform: translate3d(0, var(--srx-parallax-y, 0), 0); will-change: transform; }
+
+@media (prefers-reduced-motion: reduce) {
+  .srx-secbg--parallax .srx-secbg__layer { transform: none; }
+}

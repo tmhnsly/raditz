@@ -13,6 +13,7 @@ import '../components/controls/Checkbox/Checkbox.scss';
 import '../components/controls/Radio/Radio.scss';
 import '../components/forms/Combobox/Combobox.scss';
 import '../components/forms/Search/Search.scss';
+import '../components/layout/SectionBackground/SectionBackground.scss';
 import '../components/forms/Form/Form.scss';
 import '../components/forms/Select/Select.scss';
 import '../components/forms/Field/Field.scss';
