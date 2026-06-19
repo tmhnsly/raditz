@@ -1,0 +1,96 @@
+/* ──────────────────────────────────────────────────────────────────────────
+   Colors — semantic aliases over Radix scales
+   ----------------------------------------------------------------------------
+   Components NEVER reference a raw Radix step (var(--cyan-9)); they reference a
+   semantic alias (var(--accent), var(--surface), var(--text)). Aliases resolve
+   to Radix steps, so light/dark theming is automatic — a `.dark` ancestor swaps
+   every scale and every alias follows. To re-skin a whole project, repoint the
+   accent block below to a different hue (and import it in radix-colors.css).
+
+   --accent / --accent-ink are intentionally LEFT UNREGISTERED (plain custom
+   props). A project (or a "zone") can override --accent at any scope and it
+   keeps re-resolving the Radix scale on a theme toggle — a registered <color>
+   would freeze var() substitution and break dark mode.
+   ────────────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* ── surfaces / backgrounds ── */
+  --bg: var(--slate-1);             /* app canvas */
+  --bg-subtle: var(--slate-2);      /* striped / inset regions */
+  --panel: var(--slate-1);          /* solid raised panel (cards, menus) */
+  --panel-subtle: var(--slate-2);
+  --surface: var(--slate-a3);       /* translucent neutral fill (chips, wells) */
+  --surface-soft: var(--slate-a2);
+  --surface-strong: var(--slate-a4);
+  --surface-edge: var(--slate-6);   /* hairline card border (step 6) */
+
+  /* ── glass (frosted translucent surfaces) ──
+     --glass-blur is the single config knob — raise it for a softer frost, set it
+     to 0 to disable blur project-wide without touching components. */
+  --glass-blur: 14px;
+  --glass: color-mix(in srgb, var(--bg) 80%, transparent);
+  --glass-soft: color-mix(in srgb, var(--bg) 64%, transparent);
+  --glass-sheen: var(--white-a8);   /* top rim light on glass */
+
+  /* ── text ── */
+  --text: var(--slate-12);          /* primary ink */
+  --text-soft: var(--slate-11);     /* secondary */
+  --text-muted: var(--slate-11);    /* tertiary / captions (still readable step 11) */
+  --text-faint: var(--slate-10);    /* placeholder / disabled */
+  --on-accent: var(--white-a12);    /* text drawn on the accent fill */
+
+  /* ── rules / borders ── */
+  --border-width: 1px;
+  --border-width-2: 2px;
+  --border-width-3: 3px;            /* emphasis bars (callout / blockquote) */
+  --rule-soft: var(--slate-6);
+  --rule: var(--slate-7);
+  --rule-strong: var(--slate-8);
+
+  /* ── accent — Cyan (overridable per project / per scope) ── */
+  --accent: var(--cyan-9);
+  --accent-hover: var(--cyan-10);
+  --accent-active: var(--cyan-10);
+  --accent-ink: var(--cyan-11);     /* legible coloured text / icons */
+  --accent-surface: var(--cyan-3);  /* tinted fill behind accent content */
+  --accent-surface-soft: var(--cyan-2);
+  --accent-border: var(--cyan-7);
+  --accent-glow: color-mix(in srgb, var(--accent) 25%, transparent);
+
+  /* ── secondary accent — Iris ── */
+  --accent-2: var(--iris-9);
+  --accent-2-ink: var(--iris-11);
+  --accent-2-surface: var(--iris-3);
+
+  /* ── semantic — solid 9 / legible ink 11 / tinted surface ── */
+  --success: var(--grass-9);  --success-ink: var(--grass-11);  --success-surface: var(--grass-3);  --on-success: var(--white-a12);
+  --warning: var(--amber-9);  --warning-ink: var(--amber-11);  --warning-surface: var(--amber-3);  --on-warning: var(--black-a12); /* amber-9 is a light solid */
+  --danger:  var(--red-9);    --danger-ink:  var(--red-11);    --danger-surface:  var(--red-3);    --on-danger: var(--white-a12);
+  --info:    var(--blue-9);   --info-ink:    var(--blue-11);   --info-surface:    var(--blue-3);   --on-info: var(--white-a12);
+
+  /* ── focus ── */
+  --focus-ring: var(--accent-ink);
+
+  /* ── overlays / on-media ── */
+  --overlay-scrim: var(--black-a9);
+  --on-media: var(--white-a12);
+  --on-media-soft: var(--white-a9);
+  --on-media-border: var(--white-a6);
+
+  /* ── code — dark in both themes ── */
+  --code-bg: var(--slate-12);
+  --code-text: var(--slate-1);
+  --code-inline-bg: var(--slate-a3);
+  --code-inline-text: var(--slate-12);
+}
+
+/* dark glass needs a touch more body to read as frosted; sheen dims so the rim
+   light stays subtle on a dark panel. (Radix scales already flip via .dark.) */
+.dark {
+  --glass: color-mix(in srgb, var(--bg) 74%, transparent);
+  --glass-soft: color-mix(in srgb, var(--bg) 58%, transparent);
+  --glass-sheen: var(--white-a4);
+  --code-bg: var(--slate-2);
+  --code-text: var(--slate-12);
+  --code-inline-text: var(--slate-12);
+}

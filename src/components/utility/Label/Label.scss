@@ -1,0 +1,6 @@
+// Auto-split from components.css — this component's styles, co-located.
+// Uses SuperRadix tokens (var(--…)); re-skins/re-themes with the system.
+/* ═══════════════════════ Label · VisuallyHidden ═══════════════════════ */
+.srx-label { font-family: var(--font-display); font-size: var(--fs-body-s); font-weight: var(--fw-medium); color: var(--text); display: inline-flex; gap: 0.1875rem; align-items: center; }
+
+.srx-label__req { color: var(--danger); }

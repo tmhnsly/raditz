@@ -1,0 +1,102 @@
+/* ──────────────────────────────────────────────────────────────────────────
+   Radix Colors — raw scales (steps 1–12, solid + alpha, light + dark)
+   ----------------------------------------------------------------------------
+   SuperRadix is built ON TOP of Radix Colors. These @imports pull the scales we
+   alias in colors.css. The dark files self-scope to `.dark, .dark-theme`, so a
+   single `class="dark"` high up flips every scale.
+
+   PROTOTYPING: the jsDelivr CDN below works out of the box (and is what the
+   Design System tab previews use). PRODUCTION: install the package instead —
+   `npm i @radix-ui/colors` — and replace these with bare imports
+   (`@import '@radix-ui/colors/cyan.css';` …). Same custom-property names, so
+   nothing else changes. Add a scale here AND alias it in colors.css to use it.
+   ────────────────────────────────────────────────────────────────────────── */
+
+/* neutral — Slate (cool gray) */
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/slate.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/slate-dark.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/slate-alpha.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/slate-dark-alpha.css");
+
+/* accent — Cyan (SuperRadix default brand) */
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/cyan.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/cyan-dark.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/cyan-alpha.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/cyan-dark-alpha.css");
+
+/* secondary accent — Iris (pairs with cyan for data / secondary actions) */
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/iris.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/iris-dark.css");
+
+/* alternate accents — Jade (re-skin option, pairs with the board switcher) */
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/jade.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/jade-dark.css");
+
+/* alternate neutral — Sand (warm gray; re-skin option for the slate base) */
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/sand.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/sand-dark.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/sand-alpha.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/sand-dark-alpha.css");
+
+/* semantic — success / warning / danger / info */
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/grass.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/grass-dark.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/amber.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/amber-dark.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/red.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/red-dark.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/red-alpha.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/blue.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/blue-dark.css");
+
+/* ── Theme Builder palette — curated accents (solid + dark) ──
+   These feed theme-builder.html. Accent aliases use solid steps 2/3/7/9/10/11
+   only, so no alpha files are needed per accent. */
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/indigo.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/indigo-dark.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/sky.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/sky-dark.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/teal.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/teal-dark.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/lime.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/lime-dark.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/orange.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/orange-dark.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/pink.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/pink-dark.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/crimson.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/crimson-dark.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/plum.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/plum-dark.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/purple.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/purple-dark.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/violet.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/violet-dark.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/bronze.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/bronze-dark.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/gold.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/gold-dark.css");
+
+/* ── Theme Builder neutrals — the six Radix grays (solid + dark + alpha) ──
+   Surfaces use alpha steps (-a2/-a3/-a4), so each gray needs its alpha files.
+   Radix pairs each accent with a recommended gray; the builder applies it. */
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/mauve.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/mauve-dark.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/mauve-alpha.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/mauve-dark-alpha.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/sage.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/sage-dark.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/sage-alpha.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/sage-dark-alpha.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/olive.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/olive-dark.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/olive-alpha.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/olive-dark-alpha.css");
+
+/* fixed alpha ramps (theme-independent) — shadows, glass sheen, on-media chrome */
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/white-alpha.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/black-alpha.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/gray.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/gray-dark.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/gray-alpha.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/gray-dark-alpha.css");

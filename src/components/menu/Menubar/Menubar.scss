@@ -1,0 +1,16 @@
+// Auto-split from components.css — this component's styles, co-located.
+// Uses SuperRadix tokens (var(--…)); re-skins/re-themes with the system.
+/* ═══════════════════════ Menubar ═══════════════════════ */
+.srx-menubar { display: flex; max-width: 100%; overflow-x: auto; scrollbar-width: none; gap: 0.125rem; padding: 0.1875rem; background: var(--surface); border-radius: var(--radius-control); }
+
+.srx-menubar::-webkit-scrollbar { display: none; }
+
+.srx-menubar__trigger { white-space: nowrap; }
+
+.srx-menubar__group { position: relative; }
+
+.srx-menubar__trigger { padding: 0.375rem 0.75rem; border-radius: calc(var(--radius-control) - 0.1875rem); font-family: var(--font-display); font-size: var(--fs-body-s); font-weight: var(--fw-medium); color: var(--text-soft); transition: var(--transition-control); }
+
+.srx-menubar__trigger:hover { background: var(--surface-strong); color: var(--text); }
+
+.srx-menubar__trigger[data-state="on"] { background: var(--panel); color: var(--text); box-shadow: var(--shadow-2); }

@@ -1,0 +1,6 @@
+// Auto-split from components.css — this component's styles, co-located.
+// Uses SuperRadix tokens (var(--…)); re-skins/re-themes with the system.
+.srx-hovercard { padding: var(--space-4); }
+
+.srx-hovercard__root { display: inline-flex; }
+.srx-hovercard__anchor { display: inline-flex; }

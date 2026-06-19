@@ -1,0 +1,57 @@
+// Auto-split from components.css — this component's styles, co-located.
+// Uses SuperRadix tokens (var(--…)); re-skins/re-themes with the system.
+/* ═══════════════════════ Stepper ═══════════════════════ */
+.srx-stepper { display: flex; list-style: none; margin: 0; padding: 0; }
+
+.srx-stepper--horizontal { flex-direction: row; align-items: flex-start; }
+
+.srx-stepper--vertical { flex-direction: column; gap: 0; }
+
+.srx-stepper__step { position: relative; display: flex; flex: 1; min-width: 0; }
+
+.srx-stepper--vertical .srx-stepper__step { flex: none; }
+
+.srx-stepper__node { display: flex; align-items: flex-start; gap: var(--space-3); background: none; text-align: left; }
+
+.srx-stepper__node:disabled { cursor: default; }
+
+.srx-stepper__node:not(:disabled) { cursor: pointer; }
+
+.srx-stepper__dot { flex: none; width: 2rem; height: 2rem; border-radius: var(--radius-full); display: inline-grid; place-items: center; background: var(--surface-strong); color: var(--text-soft); font-family: var(--font-mono); font-size: var(--fs-label); font-weight: var(--fw-semibold); transition: var(--transition-control); }
+
+.srx-stepper__dot svg { width: 1rem; height: 1rem; }
+
+.srx-stepper__step[data-state="complete"] .srx-stepper__dot { background: var(--accent); color: var(--on-accent); }
+
+.srx-stepper__step[data-state="current"] .srx-stepper__dot { background: var(--accent-surface); color: var(--accent-ink); box-shadow: inset 0 0 0 2px var(--accent); }
+
+.srx-stepper__text { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+
+.srx-stepper__label { font-size: var(--fs-body-s); font-weight: var(--fw-medium); color: var(--text); }
+
+.srx-stepper__step[data-state="upcoming"] .srx-stepper__label { color: var(--text-soft); }
+
+.srx-stepper__desc { font-size: var(--fs-caption); color: var(--text-muted); }
+
+.srx-stepper__line { background: var(--rule); }
+
+.srx-stepper__step[data-state="complete"] .srx-stepper__line { background: var(--accent); }
+
+/* ── Horizontal: dot + connector form one row; text centers below each dot.
+      The connector spans from this dot's centre to the next dot's centre and
+      sits behind the dots (which are opaque), so it reads as one rail. ── */
+.srx-stepper--horizontal .srx-stepper__step { justify-content: center; }
+
+.srx-stepper--horizontal .srx-stepper__node { flex-direction: column; align-items: center; text-align: center; gap: var(--space-2); }
+
+.srx-stepper--horizontal .srx-stepper__dot { position: relative; z-index: 1; }
+
+/* Span only the GAP between this dot and the next (dot is 2rem → 1rem radius),
+   so the rail never passes under a dot — the upcoming dots use a translucent
+   fill and a line behind them would show through. */
+.srx-stepper--horizontal .srx-stepper__line { position: absolute; top: 1rem; left: calc(50% + 1rem); width: calc(100% - 2rem); height: 2px; transform: translateY(-50%); }
+
+/* ── Vertical: dot left, text right, connector drops between dots. ── */
+.srx-stepper--vertical .srx-stepper__step { display: grid; grid-template-columns: auto 1fr; }
+
+.srx-stepper--vertical .srx-stepper__line { width: 2px; height: auto; min-height: 1.25rem; margin: var(--space-2) 0 var(--space-2) calc(1rem - 1px); }

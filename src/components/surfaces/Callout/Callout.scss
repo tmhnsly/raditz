@@ -1,0 +1,18 @@
+// Auto-split from components.css — this component's styles, co-located.
+// Uses SuperRadix tokens (var(--…)); re-skins/re-themes with the system.
+ /* Rule 6: child media follows the parent radius */
+
+.srx-callout {
+  display: flex; gap: var(--space-3); align-items: flex-start;
+  padding: var(--space-4); border-radius: var(--radius-card);
+  background: var(--callout-surface, var(--accent-surface));
+  color: var(--text); border-left: var(--border-width-3) solid var(--callout-accent, var(--accent));
+}
+
+.srx-callout__icon { color: var(--callout-ink, var(--accent-ink)); flex: none; display: inline-flex; margin-top: 0.0625rem; }
+
+.srx-callout__icon svg { width: 1.125rem; height: 1.125rem; }
+
+.srx-callout__body { font-size: var(--fs-body-s); line-height: var(--lh-body); }
+
+.srx-callout__title { font-weight: var(--fw-semibold); margin-bottom: 0.125rem; color: var(--text); }

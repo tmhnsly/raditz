@@ -1,0 +1,12 @@
+// Auto-split from components.css — this component's styles, co-located.
+// Uses SuperRadix tokens (var(--…)); re-skins/re-themes with the system.
+/* ═══════════════════════ Progress ═══════════════════════ */
+.srx-progress { position: relative; height: 0.5rem; width: 100%; border-radius: var(--radius-full); background: var(--surface-strong); overflow: hidden; }
+
+.srx-progress--sm { height: 0.3125rem; }
+
+.srx-progress--lg { height: 0.75rem; }
+
+.srx-progress__indicator { height: 100%; width: var(--srx-progress-pct, 100%); border-radius: var(--radius-full); background: var(--accent); transition: width var(--duration-slow) var(--ease-standard); }
+
+.srx-progress--indeterminate .srx-progress__indicator { width: 40%; animation: srxProgressSlide 1.2s var(--ease-smooth) infinite; }

@@ -1,0 +1,92 @@
+// Auto-split from components.css — this component's styles, co-located.
+// Uses SuperRadix tokens (var(--…)); re-skins/re-themes with the system.
+ /* Rule 6: clip media to the card corner */
+.srx-clip { overflow: hidden; border-radius: inherit; }
+
+@keyframes srxProgressSlide { 0% { transform: translateX(-110%); } 100% { transform: translateX(360%); } }
+
+@keyframes srxFade { from { opacity: 0; } to { opacity: 1; } }
+
+@keyframes srxPop { from { opacity: 0; transform: translateY(var(--motion-rise)) scale(var(--motion-pop)); } to { opacity: 1; transform: none; } }
+
+@keyframes srxPopover { from { opacity: 0; transform: translateY(calc(-0.5 * var(--motion-rise))) scale(var(--motion-pop)); } to { opacity: 1; transform: none; } }
+
+@keyframes srxToastIn { from { opacity: 0; transform: translateY(var(--motion-rise)); } to { opacity: 1; transform: none; } }
+
+
+/* ═══════════════════════ Responsive utilities ═══════════════════════
+   Reusable layout helpers so consumers get clean reflow without writing
+   their own media queries. Column counts derive from available width, not
+   breakpoints, so they adapt at every size. */
+.srx-auto-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(var(--col-min, 16rem), 100%), 1fr));
+  gap: var(--gap, var(--space-5));
+}
+
+.srx-auto-grid--tight { grid-template-columns: repeat(auto-fill, minmax(min(11rem, 100%), 1fr)); }
+
+.srx-auto-grid--wide  { grid-template-columns: repeat(auto-fill, minmax(min(22rem, 100%), 1fr)); }
+
+
+/* Sidebar + content: side-by-side when there's room, stacks when the content
+   column would drop below --content-min. Uses flex-wrap, no breakpoints. */
+.srx-shell { display: flex; flex-wrap: wrap; gap: var(--gap, var(--space-7)); }
+
+.srx-shell > .srx-shell__aside { flex: 1 1 13rem; max-width: 16rem; min-width: 12rem; }
+
+.srx-shell > .srx-shell__main { flex: 999 1 var(--content-min, 22rem); min-width: 0; }
+
+
+/* Hide/show by viewport — paired with the breakpoint tokens. */
+@media (max-width: 768px)  { .srx-hide-mobile { display: none !important; } }
+
+@media (min-width: 769px)  { .srx-only-mobile { display: none !important; } }
+
+@media (max-width: 768px) { .srx-gallery { grid-template-columns: repeat(2, 1fr) !important; } .srx-gallery--masonry { column-count: 2 !important; } }
+
+@media (max-width: 460px) { .srx-gallery { grid-template-columns: 1fr !important; } .srx-gallery--masonry { column-count: 1 !important; } }
+
+@media (max-width: 640px) {
+  .srx-carousel__arrow--prev { transform: translate(0, -50%); left: 0.5rem; }
+  .srx-carousel__arrow--prev:hover { transform: translate(0, -50%) scale(1.06); }
+  .srx-carousel__arrow--next { transform: translate(0, -50%); right: 0.5rem; }
+  .srx-carousel__arrow--next:hover { transform: translate(0, -50%) scale(1.06); }
+}
+
+@keyframes srxDrawerR { from { transform: translateX(100%); } to { transform: none; } }
+
+@keyframes srxDrawerL { from { transform: translateX(-100%); } to { transform: none; } }
+
+@keyframes srxDrawerT { from { transform: translateY(-100%); } to { transform: none; } }
+
+@keyframes srxDrawerB { from { transform: translateY(100%); } to { transform: none; } }
+
+@keyframes srxShimmer { from { background-position: 100% 0; } to { background-position: 0 0; } }
+
+@keyframes srxSpin { to { transform: rotate(360deg); } }
+
+/* notification dot/count — wrap a trigger in .srx-indicator and add .srx-indicator__dot */
+.srx-indicator { position: relative; display: inline-flex; }
+
+.srx-indicator__dot { position: absolute; top: -0.125rem; right: -0.125rem; min-width: 1.05rem; height: 1.05rem; padding: 0 0.3125rem; display: inline-grid; place-items: center; border-radius: var(--radius-full); background: var(--danger); color: var(--white-a12); font-family: var(--font-mono); font-size: 0.625rem; font-weight: 700; line-height: 1; border: 2px solid var(--bg); }
+
+.srx-indicator__dot--bare { min-width: 0; width: 0.625rem; height: 0.625rem; padding: 0; top: 0; right: 0; }
+
+
+@media (prefers-reduced-motion: reduce) {
+  .srx-btn, .srx-card, .srx-input, .srx-switch__thumb, .srx-check__box svg, .srx-tooltip__bubble,
+  .srx-slider__thumb, .srx-accordion__chevron, .srx-collapsible__chevron, .srx-progress__indicator { transition-duration: 0.01ms !important; }
+  .srx-progress--indeterminate .srx-progress__indicator { animation-duration: 0.01ms !important; }
+  .srx-overlay__scrim, .srx-dialog { animation-duration: 0.01ms !important; }
+  .srx-popover, .srx-hovercard, .srx-menu { animation-duration: 0.01ms !important; }
+  .srx-navmenu__panel, .srx-toast { animation-duration: 0.01ms !important; }
+  .srx-lightbox__scrim, .srx-lightbox__img { animation-duration: 0.01ms !important; }
+  .srx-gallery__cell:hover img { transform: none; }
+  .srx-carousel__viewport { scroll-behavior: auto; }
+  .srx-drawer--right, .srx-drawer--left, .srx-drawer--top, .srx-drawer--bottom, .srx-calendar { animation-duration: 0.01ms !important; }
+  .srx-skeleton { animation-duration: 0.01ms !important; }
+  .srx-spinner svg { animation-duration: 1.2s !important; }
+  .srx-rating:not(.is-readonly) .srx-rating__star:hover { transform: none; }
+  .srx-card--interactive:hover { transform: none; }
+}

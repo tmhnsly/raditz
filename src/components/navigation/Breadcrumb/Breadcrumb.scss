@@ -1,0 +1,14 @@
+// Auto-split from components.css — this component's styles, co-located.
+// Uses SuperRadix tokens (var(--…)); re-skins/re-themes with the system.
+/* ═══════════════════════ Breadcrumb ═══════════════════════ */
+.srx-breadcrumb ol { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); list-style: none; margin: 0; padding: 0; }
+
+.srx-breadcrumb__item { display: inline-flex; align-items: center; gap: var(--space-2); font-size: var(--fs-body-s); }
+
+.srx-breadcrumb__link { color: var(--text-soft); text-decoration: none; transition: color var(--duration-fast) var(--ease-standard); }
+
+.srx-breadcrumb__link:hover { color: var(--text); }
+
+.srx-breadcrumb__current { color: var(--text); font-weight: var(--fw-medium); }
+
+.srx-breadcrumb__sep { color: var(--text-faint); }

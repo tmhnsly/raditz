@@ -1,0 +1,45 @@
+/* ──────────────────────────────────────────────────────────────────────────
+   Typography tokens
+   ----------------------------------------------------------------------------
+   Two families: Space Grotesk (display + UI) and Space Mono (eyebrows, code,
+   metadata). A fluid display scale (clamp) for hero type; fixed steps below it.
+   ────────────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* families */
+  --font-display: "Space Grotesk", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "Space Mono", "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  /* weights */
+  --fw-regular: 400;   /* @kind font */
+  --fw-medium: 500;    /* @kind font */
+  --fw-semibold: 600;  /* @kind font */
+  --fw-bold: 700;      /* @kind font */
+
+  /* display scale — fluid (scales with viewport between the two bounds) */
+  --fs-display-2xl: clamp(3.5rem, 9vw, 7.5rem);  /* @kind font */
+  --fs-display-xl:  clamp(2.75rem, 7vw, 5.25rem);   /* @kind font */
+  --fs-display-l:   clamp(2.375rem, 5.4vw, 4rem); /* @kind font */
+  --fs-display:     clamp(2rem, 4vw, 3.25rem);   /* @kind font */
+
+  /* heading + body steps (fixed) */
+  --fs-h1: 2.5rem; --fs-h2: 1.875rem; --fs-h3: 1.4375rem; --fs-h4: 1.1875rem;
+  --fs-body-l: 1.1875rem; --fs-body: 1rem; --fs-body-s: 0.875rem;
+  --fs-caption: 0.8125rem; --fs-label: 0.75rem;
+  --fs-mono: 0.8125rem; --fs-mono-s: 0.75rem; --fs-mono-xs: 0.6875rem;
+
+  /* letter-spacing — tighten as type gets bigger; track out eyebrows */
+  --ls-display: -0.04em;  /* @kind font */
+  --ls-h1: -0.03em;       /* @kind font */
+  --ls-h2: -0.025em;      /* @kind font */
+  --ls-h3: -0.02em;       /* @kind font */
+  --ls-body: -0.005em;    /* @kind font */
+  --ls-mono: 0.0em;       /* @kind font */
+  --ls-eyebrow: 0.16em;   /* @kind font */
+
+  /* line-heights */
+  --lh-display: 0.96;   /* @kind font */
+  --lh-heading: 1.15;   /* @kind font */
+  --lh-body: 1.55;      /* @kind font */
+  --lh-mono: 1.55;      /* @kind font */
+}

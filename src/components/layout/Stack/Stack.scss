@@ -1,0 +1,10 @@
+// Co-located styles for Stack. Uses SuperRadix tokens (var(--…)).
+.srx-stack {
+  display: flex;
+  flex-direction: var(--srx-stack-dir, column);
+  gap: var(--srx-stack-gap, var(--space-4));
+  align-items: var(--srx-stack-align);
+  justify-content: var(--srx-stack-justify);
+}
+
+.srx-stack[data-wrap] { flex-wrap: wrap; }

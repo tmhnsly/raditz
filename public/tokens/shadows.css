@@ -1,0 +1,31 @@
+/* ──────────────────────────────────────────────────────────────────────────
+   Shadows / elevation — Radix Themes shadow scale (1–6)
+   ----------------------------------------------------------------------------
+   Built on the fixed black-alpha ramp so they read correctly on any surface and
+   deepen automatically in dark mode (the .dark block bumps the alphas). shadow-1
+   is an inset hairline (Radix's "raised but flush" look); 2→6 climb in lift.
+   ────────────────────────────────────────────────────────────────────────── */
+
+:root {
+  --shadow-1: inset 0 0 0 1px var(--slate-a5);
+  --shadow-2: 0 1px 2px var(--black-a3), 0 1px 1px var(--black-a3);
+  --shadow-3: 0 2px 8px var(--black-a3), 0 1px 2px var(--black-a4);
+  --shadow-4: 0 8px 20px var(--black-a4), 0 2px 6px var(--black-a3);
+  --shadow-5: 0 14px 32px var(--black-a5), 0 4px 10px var(--black-a4);
+  --shadow-6: 0 24px 56px var(--black-a6), 0 8px 18px var(--black-a4);
+
+  /* semantic aliases */
+  --shadow-card: var(--shadow-3);
+  --shadow-card-hover: var(--shadow-5);
+  --shadow-pop: var(--shadow-5);     /* menus, tooltips, popovers */
+  --shadow-dialog: var(--shadow-6);
+  --shadow-accent: 0 6px 18px var(--accent-glow);  /* colored lift under primary buttons */
+}
+
+.dark {
+  --shadow-2: 0 1px 2px var(--black-a6), 0 1px 1px var(--black-a6);
+  --shadow-3: 0 2px 8px var(--black-a7), 0 1px 2px var(--black-a6);
+  --shadow-4: 0 8px 20px var(--black-a8), 0 2px 6px var(--black-a6);
+  --shadow-5: 0 14px 32px var(--black-a9), 0 4px 10px var(--black-a7);
+  --shadow-6: 0 24px 56px var(--black-a11), 0 8px 18px var(--black-a8);
+}

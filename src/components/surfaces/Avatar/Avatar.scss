@@ -1,0 +1,12 @@
+// Auto-split from components.css — this component's styles, co-located.
+// Uses SuperRadix tokens (var(--…)); re-skins/re-themes with the system.
+.srx-avatar {
+  display: inline-flex; align-items: center; justify-content: center; overflow: hidden;
+  border-radius: var(--radius-full); background: var(--accent-surface); color: var(--accent-ink);
+  font-family: var(--font-display); font-weight: var(--fw-semibold); flex: none; user-select: none;
+  width: var(--srx-avatar-size); height: var(--srx-avatar-size); font-size: var(--srx-avatar-fs);
+}
+
+.srx-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+.srx-avatar--orb { background: radial-gradient(circle at 30% 28%, var(--on-media), var(--accent) 62%, color-mix(in srgb, var(--accent) 45%, black) 100%); }

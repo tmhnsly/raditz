@@ -1,0 +1,30 @@
+/* ── Showcase explorer: the left rail composes the reusable <Tree> library
+      component (srx-tree) for navigation; this file only adds the Overview button
+      and the main-panel overview cards. Shell/rail/main/pagehead/sec come from
+      App.css. ── */
+
+.rail__nav { display: flex; flex-direction: column; gap: var(--space-2); }
+
+.tree__home { text-align: left; width: 100%; background: none; border: none; cursor: pointer;
+  padding: 0.375rem var(--space-2); border-radius: var(--radius-sm);
+  color: var(--text-soft); font: inherit; font-size: var(--fs-body-s); transition: var(--transition-control); }
+.tree__home:hover { background: var(--surface); color: var(--text); }
+.tree__home--active { background: var(--surface); color: var(--accent-ink); }
+
+/* entry description under a heading */
+.sec__desc { color: var(--text-soft); font-size: var(--fs-body-s); max-width: 70ch; margin-bottom: var(--space-4); }
+
+/* full-bleed entries (pages) get a framed surface so they read as a discrete artifact */
+.sec--fullscreen .variant { border: 1px solid var(--surface-edge); border-radius: var(--radius-lg);
+  overflow: hidden; background: var(--bg); }
+
+/* overview group cards */
+.overview-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
+  gap: var(--space-4); }
+.overview-card { display: flex; flex-direction: column; gap: var(--space-2); align-items: flex-start;
+  padding: var(--space-5); border: 1px solid var(--surface-edge); border-radius: var(--radius-lg);
+  background: var(--panel); cursor: pointer; text-align: left; transition: var(--transition-control); }
+.overview-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+.overview-card__name { font-weight: 700; font-size: var(--fs-body-l); letter-spacing: -0.01em; }
+.overview-card__count { font-family: var(--font-mono); font-size: var(--fs-mono-xs); color: var(--text-faint); }
+.exp-accent { color: var(--accent-ink); }

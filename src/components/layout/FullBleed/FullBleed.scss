@@ -1,0 +1,5 @@
+// Co-located styles for FullBleed. Uses SuperRadix tokens (var(--…)).
+.srx-full-bleed {
+  width: 100vw;
+  margin-inline: calc(50% - 50vw);
+}

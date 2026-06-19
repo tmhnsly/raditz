@@ -1,0 +1,44 @@
+// Auto-split from components.css — this component's styles, co-located.
+// Uses SuperRadix tokens (var(--…)); re-skins/re-themes with the system.
+/* ═══════════════════════ Button ═══════════════════════ */
+.srx-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2);
+  font-family: var(--font-display); font-weight: var(--fw-semibold);
+  font-size: var(--fs-body-s); line-height: 1; letter-spacing: -0.005em; white-space: nowrap;
+  padding: var(--pad-control); height: var(--control-h);
+  border-radius: var(--radius-control); cursor: pointer; text-decoration: none;
+  border: var(--border-width) solid transparent;
+  transition: var(--transition-control);
+}
+
+.srx-btn:active { transform: translateY(1px); }
+
+.srx-btn:disabled, .srx-btn[aria-disabled="true"] { opacity: 0.5; cursor: not-allowed; }
+
+.srx-btn svg { width: 1.15em; height: 1.15em; }
+
+
+.srx-btn--sm { height: var(--control-h-sm); padding: var(--pad-control-sm); font-size: var(--fs-label); }
+
+.srx-btn--lg { height: var(--control-h-lg); padding: 0.8125rem 1.375rem; font-size: var(--fs-body); }
+
+
+.srx-btn--primary { background: var(--accent); color: var(--on-accent); box-shadow: var(--shadow-accent); }
+
+.srx-btn--primary:hover { background: var(--accent-hover); }
+
+.srx-btn--secondary { background: var(--text); color: var(--bg); }
+
+.srx-btn--secondary:hover { opacity: 0.9; }
+
+.srx-btn--soft { background: var(--accent-surface); color: var(--accent-ink); }
+
+.srx-btn--soft:hover { background: color-mix(in srgb, var(--accent-surface) 70%, var(--accent)); }
+
+.srx-btn--outline { background: transparent; color: var(--text); border-color: var(--rule); }
+
+.srx-btn--outline:hover { background: var(--surface); border-color: var(--rule-strong); }
+
+.srx-btn--ghost { background: transparent; color: var(--text); }
+
+.srx-btn--ghost:hover { background: var(--surface); }

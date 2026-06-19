@@ -1,0 +1,21 @@
+// Auto-split from components.css — this component's styles, co-located.
+// Uses SuperRadix tokens (var(--…)); re-skins/re-themes with the system.
+/* ═══════════════════════ Surfaces ═══════════════════════ */
+.srx-card {
+  background: var(--panel); border: var(--border-width) solid var(--surface-edge);
+  border-radius: var(--radius-card); padding: var(--pad-card);
+  box-shadow: var(--shadow-card); transition: var(--transition-hover);
+}
+
+.srx-card--glass {
+  background: var(--glass); backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur));
+  box-shadow: var(--shadow-card), inset 0 1px 0 var(--glass-sheen);
+}
+
+.srx-card--flat { box-shadow: none; }
+
+.srx-card--interactive { cursor: pointer; }
+
+.srx-card--interactive:hover { transform: translateY(calc(-1 * var(--motion-lift))); box-shadow: var(--shadow-card-hover); border-color: var(--rule); }
+
+.srx-card--clip { overflow: hidden; }

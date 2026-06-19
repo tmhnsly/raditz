@@ -1,0 +1,48 @@
+/* ── Catalog page chrome (rail + main column). Sections themselves use tokens
+      + srx-* classes; this only styles the browsing shell. ── */
+body { font-family: var(--font-display); background-color: var(--bg-subtle); color: var(--text);
+  transition: background-color var(--duration-base) var(--ease-standard), color var(--duration-base) var(--ease-standard); }
+/* `minmax(0, 1fr)` (not `1fr`) + `min-width:0` on .main let the content track
+   shrink below its children's intrinsic width — otherwise the default grid
+   `min-width:auto` forces .main to its content width and the page overflows
+   the viewport horizontally. */
+.shell { display: grid; grid-template-columns: 14.5rem minmax(0, 1fr); align-items: start; max-width: 100%; }
+
+/* left rail */
+.rail { position: sticky; top: 0; height: 100vh; overflow-y: auto; padding: var(--space-5) var(--space-4);
+  background: var(--panel); border-right: 1px solid var(--surface-edge); display: flex; flex-direction: column; gap: var(--space-2); }
+.rail__brand { display: flex; align-items: center; gap: 0.625rem; font-weight: 700; font-size: 0.9375rem; letter-spacing: -0.02em; padding: 0 var(--space-2) var(--space-3); }
+.rail__brand .mark { width: 1.625rem; height: 1.625rem; border-radius: var(--radius-md); background: var(--accent); display: inline-grid; place-items: center; color: var(--on-accent); font-family: var(--font-mono); font-size: 0.875rem; }
+.rail nav { display: flex; flex-direction: column; gap: var(--space-2); }
+.rail a { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); padding: 0.4375rem var(--space-3); border-radius: var(--radius-sm); color: var(--text-soft); font-size: var(--fs-body-s); text-decoration: none; transition: var(--transition-control); }
+.rail a:hover { background: var(--surface); color: var(--text); }
+.rail a .ct { font-family: var(--font-mono); font-size: 0.625rem; color: var(--text-faint); }
+
+/* main column — fills the full width beside the rail (capped on ultra-wide for
+   readability, but far wider than before so sections actually use the space). */
+.main { min-width: 0; padding: var(--space-7) clamp(var(--space-5), 4vw, var(--space-11)) var(--space-12); max-width: 110rem; margin-inline: auto; width: 100%; }
+.pagehead { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-5); flex-wrap: wrap; margin-bottom: var(--space-8); }
+.pagehead h1 { font-size: var(--fs-h1); letter-spacing: var(--ls-h1); line-height: var(--lh-heading); margin-top: var(--space-2); }
+.pagehead p { color: var(--text-soft); font-size: var(--fs-body-l); margin-top: var(--space-2); max-width: 60ch; }
+
+.sec { margin-bottom: var(--space-9); scroll-margin-top: var(--space-5); }
+.sec__head { display: flex; align-items: baseline; gap: var(--space-3); margin-bottom: var(--space-4); }
+.sec__head h2 { font-family: var(--font-mono); font-size: var(--fs-mono-s); text-transform: uppercase; letter-spacing: var(--ls-eyebrow); color: var(--text); }
+.sec__head .sec__meta { font-family: var(--font-mono); font-size: var(--fs-mono-xs); color: var(--text-faint); }
+.sec__head::after { content: ""; flex: 1; height: 0.0625rem; background: var(--rule-soft); align-self: center; }
+
+.variant { margin-bottom: var(--space-5); }
+/* block so the label always sits ABOVE its component, never inline beside an
+   inline component like Badge/Button. */
+.variant__tag { display: block; width: fit-content; font-family: var(--font-mono); font-size: 0.625rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 0.5rem; }
+
+.themeBtn { position: fixed; top: 0.875rem; right: 1rem; z-index: 50; }
+
+@media (max-width: 860px) {
+  .shell { grid-template-columns: minmax(0, 1fr); }
+  .rail { position: static; height: auto; flex-direction: row; flex-wrap: wrap; border-right: none; border-bottom: 1px solid var(--surface-edge); }
+  .rail nav { flex-direction: row; flex-wrap: wrap; }
+}
+@media (max-width: 680px) {
+  .main { padding: var(--space-5) var(--space-4) var(--space-9); }
+}

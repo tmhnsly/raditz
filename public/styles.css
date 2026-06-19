@@ -1,0 +1,33 @@
+/* ════════════════════════════════════════════════════════════════════════════
+   SuperRadix Design System — global entry point
+   ----------------------------------------------------------------------------
+   Consuming projects link THIS one file. It is an @import manifest only — never
+   add rules here. Order matters: Radix scales → fonts → tokens → reset →
+   components. Toggle dark mode with class="dark" on <html> (or any subtree).
+
+   Production note: the Radix scales come from the jsDelivr CDN (prototyping).
+   For production, swap tokens/radix-colors.css for the npm @radix-ui/colors
+   imports and self-host the fonts — token names are identical, nothing breaks.
+   ════════════════════════════════════════════════════════════════════════════ */
+
+/* 1 — Radix Colors raw scales (must precede anything that aliases them) */
+@import url("tokens/radix-colors.css");
+
+/* 2 — webfonts */
+@import url("tokens/fonts.css");
+
+/* 3 — design tokens */
+@import url("tokens/colors.css");
+@import url("tokens/typography.css");
+@import url("tokens/spacing.css");
+@import url("tokens/radius.css");
+@import url("tokens/shadows.css");
+@import url("tokens/motion.css");
+@import url("tokens/layout.css");
+
+/* 4 — base reset */
+@import url("tokens/reset.css");
+
+/* 5 — component styles are now co-located per component
+       (src/components/<cat>/<Name>/<Name>.scss) and aggregated by
+       src/styles/components.ts, imported by the app + Storybook. */

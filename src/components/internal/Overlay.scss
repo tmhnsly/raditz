@@ -1,0 +1,12 @@
+// Overlay positioning for anchored/point topologies. The component receives the
+// computed coordinates as CSS custom properties (data, not inline styling) and
+// CSS turns them into position — keeping all presentation in the stylesheet.
+.srx-overlay__panel {
+  position: fixed;
+  top: var(--srx-overlay-top, 0);
+  left: var(--srx-overlay-left, 0);
+  width: var(--srx-overlay-width, auto);
+  visibility: hidden; // gated until measured, so it never flashes at the origin
+}
+
+.srx-overlay__panel[data-ready="true"] { visibility: visible; }

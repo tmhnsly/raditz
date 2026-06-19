@@ -1,0 +1,68 @@
+import type { CSSProperties, HTMLAttributes, ReactNode, ReactElement } from 'react';
+import { cx, Overlay } from '../../internal';
+
+export interface DrawerProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
+  /** Open state (controlled). */
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  /** Edge it slides from. @default "right" */
+  side?: 'left' | 'right' | 'top' | 'bottom';
+  /** Width (left/right) or height (top/bottom). @default "22rem" */
+  size?: string;
+  title?: ReactNode;
+  description?: ReactNode;
+  footer?: ReactNode;
+  children?: ReactNode;
+}
+
+/**
+ * Drawer — a panel that slides in from an edge (Radix-style sheet). Controlled
+ * with `open` / `onOpenChange`. `side` picks the edge; `size` sets width (left/
+ * right) or height (top/bottom). Closes on Escape, scrim click or the close
+ * button; focus is trapped and body scroll locked while open.
+ *
+ * An adapter face over {@link Overlay} (`side` topology, focus trap).
+ */
+export function Drawer({
+  open,
+  onOpenChange,
+  side = 'right',
+  size = '22rem',
+  title,
+  description,
+  footer,
+  children,
+  className,
+  ...rest
+}: DrawerProps): ReactElement | null {
+  const close = (): void => { if (onOpenChange) onOpenChange(false); };
+  const horizontal = side === 'left' || side === 'right';
+  const style: CSSProperties = horizontal ? { width: size, maxWidth: '92vw' } : { height: size, maxHeight: '92vh' };
+  return (
+    <Overlay
+      open={!!open}
+      onDismiss={close}
+      position={{ kind: 'side', side }}
+      focus="trap"
+      role="dialog"
+      aria-label={typeof title === 'string' ? title : undefined}
+      className={cx('srx-drawer', `srx-drawer--${side}`, className)}
+      style={style}
+      {...rest}
+    >
+      {title || description ? (
+        <div className="srx-drawer__header">
+          <div>
+            {title ? <h2 className="srx-drawer__title">{title}</h2> : null}
+            {description ? <p className="srx-drawer__desc">{description}</p> : null}
+          </div>
+          <button type="button" className="srx-drawer__close" aria-label="Close" onClick={close}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="6" y1="6" x2="18" y2="18" /><line x1="18" y1="6" x2="6" y2="18" /></svg>
+          </button>
+        </div>
+      ) : null}
+      <div className="srx-drawer__body">{children}</div>
+      {footer ? <div className="srx-drawer__footer">{footer}</div> : null}
+    </Overlay>
+  );
+}

@@ -1,0 +1,27 @@
+// Auto-split from components.css — this component's styles, co-located.
+// Uses SuperRadix tokens (var(--…)); re-skins/re-themes with the system.
+/* ═══════════════════════ Toggle ═══════════════════════ */
+.srx-toggle {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2);
+  height: var(--control-h); padding: 0 var(--space-4); border-radius: var(--radius-control);
+  font-family: var(--font-display); font-weight: var(--fw-medium); font-size: var(--fs-body-s);
+  color: var(--text-soft); background: var(--surface); transition: var(--transition-control);
+}
+
+.srx-toggle svg { width: 1.15em; height: 1.15em; }
+
+.srx-toggle:hover { background: var(--surface-strong); color: var(--text); }
+
+.srx-toggle[data-state="on"] { background: var(--accent-surface); color: var(--accent-ink); box-shadow: inset 0 0 0 1px var(--accent-border); }
+
+.srx-toggle--outline { background: transparent; box-shadow: inset 0 0 0 1px var(--rule); }
+
+.srx-toggle--outline:hover { background: var(--surface); }
+
+.srx-toggle--sm { height: var(--control-h-sm); padding: 0 var(--space-3); font-size: var(--fs-label); }
+
+.srx-toggle--lg { height: var(--control-h-lg); padding: 0 var(--space-5); }
+
+.srx-toggle:active { transform: translateY(1px); }
+
+.srx-toggle:disabled { opacity: 0.5; cursor: not-allowed; }

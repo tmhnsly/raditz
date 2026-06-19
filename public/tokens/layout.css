@@ -1,0 +1,24 @@
+/* ──────────────────────────────────────────────────────────────────────────
+   Layout tokens — z-index ladder + breakpoints
+   ----------------------------------------------------------------------------
+   Breakpoints are mirrored in scss/mixins/_breakpoints.scss (keep in sync). The
+   z ladder is a fixed vocabulary — never write a raw z-index, pick a rung.
+   ────────────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* z-index ladder */
+  --z-base: 0;        /* @kind other */
+  --z-content: 1;     /* @kind other */
+  --z-overlay-local: 2;/* @kind other */
+  --z-raised: 10;     /* @kind other */
+  --z-nav: 100;       /* @kind other */
+  --z-popover: 500;   /* @kind other */
+  --z-modal: 1000;    /* @kind other */
+  --z-toast: 1100;    /* @kind other */
+
+  /* breakpoints (px values, for reference in JS / clamp math) */
+  --bp-tablet: 768px;   /* @kind other */
+  --bp-lg: 1024px;      /* @kind other */
+  --bp-desktop: 1200px; /* @kind other */
+  --bp-wide: 1440px;    /* @kind other */
+}
