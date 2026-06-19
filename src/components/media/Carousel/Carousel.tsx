@@ -20,6 +20,9 @@ export interface CarouselProps extends React.HTMLAttributes<HTMLDivElement> {
   arrows?: boolean;
   /** Show dot indicators. @default true */
   dots?: boolean;
+  /** Let the track bleed past the section's horizontal padding so peeking slides
+   * reach the edges instead of being clipped by the gutter. @default false */
+  bleed?: boolean;
 }
 
 const CHEV = (dir: 'prev' | 'next'): React.ReactElement => (
@@ -43,6 +46,7 @@ export function Carousel({
   loop = true,
   arrows = true,
   dots = true,
+  bleed = false,
   className,
   ...rest
 }: CarouselProps): React.ReactElement {
@@ -109,7 +113,7 @@ export function Carousel({
   }, [autoplay, interval, n, scrollTo]);
 
   return (
-    <div className={cx('srx-carousel', className)} {...rest}>
+    <div className={cx('srx-carousel', bleed && 'srx-carousel--bleed', className)} {...rest}>
       <div
         className="srx-carousel__viewport"
         ref={trackRef}

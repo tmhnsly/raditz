@@ -6,6 +6,16 @@
 
 .srx-carousel__viewport::-webkit-scrollbar { display: none; }
 
+/* Bleed: the track extends past the section's horizontal padding (matched here)
+   so peeking slides reach the edges; padding + scroll-padding keep the first/last
+   slide aligned to the content and snapping correct. Controls (bar) don't bleed. */
+.srx-carousel--bleed .srx-carousel__viewport {
+  --srx-carousel-bleed: clamp(1.5rem, 5vw, 4.5rem);
+  margin-inline: calc(-1 * var(--srx-carousel-bleed));
+  padding-inline: var(--srx-carousel-bleed);
+  scroll-padding-inline: var(--srx-carousel-bleed);
+}
+
 .srx-carousel__slide { flex: 0 0 calc((100% - (var(--srx-per-view) - 1) * var(--srx-carousel-gap, var(--space-4))) / var(--srx-per-view)); scroll-snap-align: center; min-width: 0; }
 
 .srx-carousel__slide > * { width: 100%; }
