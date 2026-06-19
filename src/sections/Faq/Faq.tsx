@@ -4,7 +4,7 @@ import { Accordion } from '../../components/disclosure/Accordion';
 const FAQ_ITEMS = [
   { value: '0', title: 'How do I install it?', content: 'Link one stylesheet in your <head>. styles.css is an import manifest that pulls in scales, tokens and components.' },
   { value: '1', title: 'Can I change the accent color?', content: 'Repoint the accent token block — every component, state and shadow follows automatically.' },
-  { value: '2', title: 'Is dark mode included?', content: 'Yes. Add class="dark" to <html> or any subtree and the whole surface flips.' },
+  { value: '2', title: 'Is dark mode included?', content: 'Yes — it follows the OS by default with a toggle to override. class="dark" on the root flips every token; content over dark media uses the on-dark surface context.' },
 ];
 
 export function FaqA({ background = 'surface-2', parallax, image, video }: SectionVariantProps = {}) {

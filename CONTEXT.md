@@ -125,6 +125,29 @@ concept across two namespaces and blur the line with the *neutral* surface roles
 semantic tints). This mirrors Radix: a scale owns its step roles; the alias owns its
 concept's roles. _Avoid_: `--surface-info`, `--surface-success`.
 
+### Theming (deepened 2026-06-19)
+
+**Color-scheme**:
+Light vs dark resolution — the `useColorScheme` hook (`src/lib`, framework primitive
+for any project). Starts from the OS (`prefers-color-scheme`) and **live-follows**
+it; a toggle sets an explicit override that wins over the OS; toggling back to the
+OS's current value clears the override (so we follow the system again). Only an
+explicit override is persisted (`srx-color-scheme`), so a fresh project honours the
+OS until the user opts in. Drives `class="dark"` on the root.
+_Avoid_: `useDarkMode` (removed — a boolean can't express "follow system").
+
+**Surface context**:
+How a region declares its colour context. Two named contexts:
+- **`.dark`** — flips the whole app (Radix scales self-scope to `.dark`, and the
+  semantic aliases resolve against the root scales). It is **root-only**: a `.dark`
+  on a *subtree* flips raw scales but NOT the resolved semantic tokens
+  (`--text → --neutral-12 → --slate-12` is substituted at `:root`), so text doesn't
+  change. (This trap caused a real bug; do not claim `.dark` works on a subtree.)
+- **`.srx-on-dark`** — the subtree-safe context for content over dark media/scrim:
+  re-points the *semantic* tokens (`--text`, rules, `--accent-surface`, …) to the
+  `--on-media` (white-alpha) family in **one level**, so it works anywhere.
+_Avoid_: applying `.dark` to a region (use `.srx-on-dark`); hardcoding white text.
+
 ## Flagged ambiguities
 
 - "anchor" vs "trigger" — resolved: the **Trigger** is what the user interacts with to

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useDarkMode } from '../lib/useDarkMode';
+import { useColorScheme } from '../lib/useColorScheme';
 import { ThemePicker } from '../lib/ThemePicker';
 import { Popover } from '../components/overlay/Popover';
 import { cx } from '../components/internal';
@@ -23,7 +23,7 @@ const Burger = () => (
 );
 
 export default function Explorer() {
-  const [dark, setDark] = useDarkMode();
+  const { isDark, toggle: toggleScheme } = useColorScheme();
   const { route, navigate } = useHashRoute();
   // The section currently in view (scroll-spy) — drives the tree highlight/expand.
   const [activeSlug, setActiveSlug] = useState(route);
@@ -68,10 +68,10 @@ export default function Explorer() {
             <button
               type="button"
               className="srx-btn srx-btn--soft"
-              aria-pressed={dark}
-              onClick={() => setDark((d) => !d)}
+              aria-pressed={isDark}
+              onClick={toggleScheme}
             >
-              {dark ? 'Light' : 'Dark'}
+              {isDark ? 'Light' : 'Dark'}
             </button>
           </div>
         </header>
