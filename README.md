@@ -60,13 +60,15 @@ pnpm build-storybook
   IntelliSense), dependency-free pure React (no `@radix-ui/react-*` — they ship their own
   primitives in `src/components/internal/`), and render `srx-*` classes.
 - **Shared hooks/utils** live in `src/components/internal` and are reused across components
-  instead of re-implemented: `cx` (class names), `onKeys`/`onActivate`/`rovingIndex`/`KEYS`
-  (keyboard), `useControllableState`, `composeRefs`, `useStableId`, and the overlay hooks
-  (`useDismiss`, `useFocusTrap`, `useScrollLock`, `useAnchoredPosition`, `useRovingMenu`).
+  instead of re-implemented: `cx` (class names), `onKeys`/`rovingIndex`/`KEYS`
+  (keyboard), `useControllableState`, `useTrigger` (overlay open-state), `useStableId`,
+  and the overlay hooks (`useDismiss`, `useFocusTrap`, `useScrollLock`,
+  `useOverlayPosition`, `useRovingMenu`).
 - **Accessibility** is enforced by `src/a11y.test.tsx`, which renders every component and
   asserts zero axe-core violations (part of `pnpm test`).
 - **Theming**: toggling `class="dark"` on `<html>` re-themes everything — the app's
-  `useDarkMode` button and Storybook's **Theme** toolbar toggle both do this.
+  `useColorScheme` toggle (system-aware: follows the OS until the user overrides) and
+  Storybook's **Theme** toolbar toggle both do this.
 - **Sections** export one component per variant (`HeroA`, `HeroB`, …) plus an aggregate.
   Interactive ones use React state (Navbar dropdown, FAQ accordion, Pricing toggle).
 - **Pages** wrap section variants in `.srx-page`, which flattens the preview frame so they

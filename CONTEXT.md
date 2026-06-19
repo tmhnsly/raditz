@@ -29,6 +29,12 @@ _Avoid_: variant, type, mode.
 The element that opens an **Overlay** and the state-driver behind it (click for
 Popover, hover timers for HoverCard, external control for Dialog). A *separate
 concern* from the Overlay surface — it stays in each component, not in **Overlay**.
+Now a real module (realized 2026-06-19): `useTrigger` (`internal/trigger.ts`) owns the
+controlled/uncontrolled open state + the anchor ref + `toggle`/`close`, so faces stop
+copy-pasting it. Faces drive it their own way — Popover/DropdownMenu/DatePicker
+click→`toggle`, HoverCard hover-timers→`setOpen` (which restored HoverCard's lost
+controllability). Deliberately NOT folded into Overlay (the surface stays separate from
+what opens it — this honours the decision below, it just kills the duplication).
 _Avoid_: anchor (the anchor is the ref **Overlay** positions against; the trigger is
 what the user interacts with — often the same DOM node, but distinct roles).
 
@@ -70,8 +76,21 @@ call it instead of inlining math in JSX — so the math is unit-tested.
 _Avoid_: in-closure scaling math.
 
 **Page-model**:
-Pure paging math (`pageCount`, `buildPages`) in `internal/pageModel.ts`, shared
-by Pagination and DataTable.
+Pure paging math in `internal/pageModel.ts` — `pageCount` + `buildPages` (the
+ellipsised page list, used by Pagination) plus `pageSlice` + `pageRange` (the current
+page's rows and its 1-based "from–to of total" label, used by DataTable). Genuinely
+shared now: both call it instead of inlining slice/clamp/window math (DataTable used to
+only call `pageCount` and hand-roll the rest).
+
+**Table-model** (deepened 2026-06-19):
+The pure logic behind DataTable, in `internal/tableModel.ts`: the sort comparator
+(`compareValues` — type-aware, nullish-last in **both** directions) + `sortRows` +
+`nextSort` (the asc→desc→off header-click cycle), and the selection algebra
+(`toggleSelected`; `togglePage` — select-all-on-page that preserves off-page picks;
+`pageSelectionState` — the header checkbox's all/some/none tri-state). DataTable is now
+a thin **adapter** wiring React state to this + the **Page-model**, so the comparator's
+null/locale edges and the selection algebra are unit-tested instead of hiding in JSX.
+_Avoid_: re-implementing sort/select state inside a component.
 
 **SectionShell** _(showcase infra, `src/lib`)_:
 The one home for section layout — Frame + `.s-pad` + `.s-wrap` (where the responsive
@@ -81,11 +100,31 @@ shell choice. **HeroBleed** is now a thin *preset* of SectionShell (gradient + n
 + media-scrim defaults), not its own Frame/background/padding stack. Variants take
 `props: SectionVariantProps` and **spread** them (`background="…" {...props}`),
 keeping a curated backdrop default without re-threading 4 props each. Navbar
-(ref/data on the wrap) stays bespoke.
+(ref/data on the wrap) stays bespoke. The dead per-section gallery aggregates
+(`export function Hero()` etc.) were removed (2026-06-19): each variant's label lives
+once, as its story `name`, and the explorer renders the `.variant`/`.variant__tag`
+gallery from the stories — one source, no drift.
 
 **Search**:
 The shared search input (`forms/Search`) + the `fuzzyFilter` matcher, used by
 Combobox, CommandPalette and the explorer so every search looks/behaves alike.
+
+**Overlay internals** (split 2026-06-19):
+`overlayHooks.ts` is now a thin re-export barrel over one file per concern —
+`useDismiss`, `useFocusTrap`, `useScrollLock`, `overlayPosition` (`useOverlayPosition`),
+`useRovingMenu` — and the barrel documents the combination contract (`<Overlay>` calls
+position → scroll-lock → focus-trap → dismiss; dismiss defers its outside listener so the
+opening click never self-dismisses). The dead `useAnchoredPosition` (a verbatim duplicate
+of `useOverlayPosition`) and the zero-caller `onActivate` / `composeRefs` seams were
+deleted (one adapter = hypothetical seam; zero = delete).
+
+**Pure cores** (extracted 2026-06-19):
+Form-control logic that used to hide in JSX closures now lives in tested pure modules,
+the same play as **Scale** / **Page-model**: `internal/datetime.ts` (calendar math for
+DatePicker), `internal/format.ts` (`formatBytes`), and co-located `OneTimePasswordField/
+otp.ts`, `TagInput/tags.ts`, `Form/validate.ts`. Each control is the thin consumer; the
+high-leverage `useControllableState` finally has tests, and Rating's fractional fill
+reuses the `clamp` primitive.
 
 (Lightbox is now an **Adapter face** over **Overlay**, alongside Dialog/Drawer/etc.)
 
@@ -159,7 +198,12 @@ the single source of truth. Every globally-stacked element (overlays, app chrome
 drawer/scrim, nav) references a rung; never a raw z-index. Rungs:
 `base < content < overlay-local < raised < sticky < nav < scrim < drawer < popover
 < modal < toast`. Components may still use 0/1/2 for *local* stacking inside their
-own isolation context — that's not part of the global ladder.
+own isolation context — that's not part of the global ladder. All modal **Adapter
+faces** share one `.srx-overlay` container at `--z-modal`, and their panels (Drawer,
+Dialog, CommandPalette) stack *locally* above the shared scrim via the **named**
+`--z-overlay-local` rung — not a bare `1` (the magic numbers read like leaks). The
+`--z-scrim` / `--z-drawer` rungs are reserved for a future app-level off-canvas drawer;
+no such component exists today (the Overlay unification superseded them).
 _Avoid_: raw z-index numbers in app/section CSS (they collide — that caused a bug).
 
 ## Flagged ambiguities
