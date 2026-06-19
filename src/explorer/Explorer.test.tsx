@@ -16,16 +16,19 @@ describe('Explorer', () => {
     }
   });
 
-  it('navigates to a leaf and renders only that entry', () => {
+  it('renders the whole system on one page; nav links deep-link via the hash', () => {
     render(<Explorer />);
     const tree = screen.getByRole('tree', { name: /showcase navigation/i });
+
+    // Everything is on one page, so the Button section is already present.
+    expect(screen.getByRole('heading', { name: 'Button' })).toBeTruthy();
 
     // Drill in: Components → Controls → Button (file-browser: click folders to open).
     fireEvent.click(within(tree).getByText('Components').closest('[role="treeitem"]')!);
     fireEvent.click(within(tree).getByText('Controls').closest('[role="treeitem"]')!);
     fireEvent.click(within(tree).getByText('Button').closest('[role="treeitem"]')!);
 
+    // The link updates the hash (for deep-linking + scroll), not what's rendered.
     expect(window.location.hash).toBe('#/components/controls/button');
-    expect(screen.getByRole('heading', { level: 1, name: /Button/ })).toBeTruthy();
   });
 });

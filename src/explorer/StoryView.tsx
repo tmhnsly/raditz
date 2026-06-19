@@ -1,8 +1,27 @@
-import { useEffect } from 'react';
-import { entries, entriesUnder, findNode, type Entry, type TreeNode } from './registry';
+import { useEffect, useMemo } from 'react';
+import { cx } from '../components/internal';
+import { entries, type Entry, type TreeNode } from './registry';
 import { LazyMount } from './LazyMount';
 
 const VARIANT_TOTAL = entries.reduce((n, e) => n + e.variants.length, 0);
+
+type PageRow =
+  | { kind: 'group'; slug: string; name: string; level: number }
+  | { kind: 'entry'; slug: string; entry: Entry };
+
+// Pre-order the tree into a flat list of group headings + entries, so the whole
+// system renders on one page in tree order with anchorable ids.
+function pageRows(tree: TreeNode[], level = 0, out: PageRow[] = []): PageRow[] {
+  for (const node of tree) {
+    if (node.entry) {
+      out.push({ kind: 'entry', slug: node.slug, entry: node.entry });
+    } else {
+      out.push({ kind: 'group', slug: node.slug, name: node.name, level });
+      if (node.children) pageRows(node.children, level + 1, out);
+    }
+  }
+  return out;
+}
 
 function EntryBlock({ entry }: { entry: Entry }) {
   const leafName = entry.segments[entry.segments.length - 1];
@@ -28,27 +47,47 @@ function EntryBlock({ entry }: { entry: Entry }) {
 }
 
 /** Scroll-spy: report the section nearest the top of the viewport so the tree
- * can highlight + expand to whatever the user is currently looking at. */
-function useScrollSpy(route: string, onActiveChange?: (slug: string) => void): void {
+ * highlights + expands to whatever the user is scrolled to. */
+function useScrollSpy(onActiveChange?: (slug: string) => void): void {
   useEffect(() => {
     if (!onActiveChange) return undefined;
     const secs = Array.from(document.querySelectorAll<HTMLElement>('.sec[id]'));
-    if (secs.length < 2) return undefined; // single section — nothing to spy
+    if (!secs.length) return undefined;
     const io = new IntersectionObserver(
-      (entriesList) => {
-        const visible = entriesList
+      (list) => {
+        const visible = list
           .filter((e) => e.isIntersecting)
           .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
         if (visible[0]) onActiveChange((visible[0].target as HTMLElement).id);
       },
-      { rootMargin: '0px 0px -70% 0px', threshold: 0 },
+      { rootMargin: '0px 0px -75% 0px', threshold: 0 },
     );
     secs.forEach((s) => io.observe(s));
     return () => io.disconnect();
-  }, [route, onActiveChange]);
+  }, [onActiveChange]);
 }
 
-function Overview({ tree, onNavigate }: { tree: TreeNode[]; onNavigate: (s: string) => void }) {
+export function StoryView({
+  tree,
+  route,
+  onActiveChange,
+}: {
+  tree: TreeNode[];
+  route: string;
+  onActiveChange?: (slug: string) => void;
+}) {
+  const rows = useMemo(() => pageRows(tree), [tree]);
+  useScrollSpy(onActiveChange);
+
+  // Deep-link: on first load, jump to the section named in the hash.
+  useEffect(() => {
+    if (!route) return;
+    const el = document.getElementById(route);
+    el?.scrollIntoView?.({ block: 'start' });
+    // run once on mount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <>
       <div className="pagehead">
@@ -61,9 +100,8 @@ function Overview({ tree, onNavigate }: { tree: TreeNode[]; onNavigate: (s: stri
             Component Library<span className="exp-accent">.</span>
           </h1>
           <p>
-            Every foundation, component, section, and page in the system — browse the tree on the
-            left. Pick a single entry to see just its variants, or a whole group to see everything
-            beneath it. All rendered straight from the same stories Storybook uses.
+            Every foundation, component, section and page on one scrollable page — jump with the tree
+            or search; offscreen sections lazy-load so it stays fast to scan for regressions.
           </p>
         </div>
         <div className="row">
@@ -72,83 +110,15 @@ function Overview({ tree, onNavigate }: { tree: TreeNode[]; onNavigate: (s: stri
         </div>
       </div>
 
-      <div className="overview-grid">
-        {tree.map((node) => {
-          const count = entriesUnder(node.slug).length;
-          return (
-            <button
-              type="button"
-              className="overview-card"
-              key={node.slug}
-              onClick={() => onNavigate(node.slug)}
-            >
-              <span className="overview-card__name">{node.name}</span>
-              <span className="overview-card__count">
-                {count} {count === 1 ? 'entry' : 'entries'}
-              </span>
-            </button>
-          );
-        })}
-      </div>
-    </>
-  );
-}
-
-export function StoryView({
-  tree,
-  route,
-  onNavigate,
-  onActiveChange,
-}: {
-  tree: TreeNode[];
-  route: string;
-  onNavigate: (slug: string) => void;
-  onActiveChange?: (slug: string) => void;
-}) {
-  const node = findNode(tree, route);
-  const list = entriesUnder(route);
-  useScrollSpy(route, onActiveChange);
-
-  if (route === '') return <Overview tree={tree} onNavigate={onNavigate} />;
-
-  if (!list.length) {
-    return (
-      <div className="pagehead">
-        <div>
-          <h1>Nothing here</h1>
-          <p>
-            No stories match <code>{route}</code>.{' '}
-            <button type="button" className="srx-btn srx-btn--soft" onClick={() => onNavigate('')}>
-              Back to overview
-            </button>
-          </p>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <>
-      <div className="pagehead">
-        <div>
-          <span className="srx-eyebrow">
-            <span className="srx-eyebrow__dot" />
-            {node?.entry ? node.entry.title : route}
-          </span>
-          <h1>
-            {node?.name ?? route}
-            <span className="exp-accent">.</span>
-          </h1>
-        </div>
-        <div className="row">
-          <span className="srx-badge srx-badge--soft">
-            {list.length} {list.length === 1 ? 'entry' : 'entries'}
-          </span>
-        </div>
-      </div>
-      {list.map((entry) => (
-        <EntryBlock entry={entry} key={entry.slug} />
-      ))}
+      {rows.map((r) =>
+        r.kind === 'group' ? (
+          <h2 key={r.slug} id={r.slug} className={cx('page-group', `page-group--l${r.level}`)}>
+            {r.name}
+          </h2>
+        ) : (
+          <EntryBlock key={r.slug} entry={r.entry} />
+        ),
+      )}
     </>
   );
 }

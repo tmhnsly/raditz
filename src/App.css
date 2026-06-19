@@ -25,7 +25,26 @@ body { font-family: var(--font-display); background-color: var(--bg-subtle); col
 .pagehead h1 { font-size: var(--fs-h1); letter-spacing: var(--ls-h1); line-height: var(--lh-heading); margin-top: var(--space-2); }
 .pagehead p { color: var(--text-soft); font-size: var(--fs-body-l); margin-top: var(--space-2); max-width: 60ch; }
 
-.sec { margin-bottom: var(--space-9); scroll-margin-top: var(--space-5); }
+.sec { margin-bottom: var(--space-9); scroll-margin-top: 4.5rem; }
+
+/* group headings on the single scrollable page (tree order); anchorable */
+.page-group { font-family: var(--font-mono); text-transform: uppercase; letter-spacing: var(--ls-eyebrow); color: var(--text-muted); scroll-margin-top: 4.5rem; }
+.page-group--l0 { font-size: var(--fs-body); color: var(--text); margin: var(--space-11) 0 var(--space-6); padding-bottom: var(--space-3); border-bottom: 1px solid var(--rule); }
+.page-group--l0:first-of-type { margin-top: var(--space-4); }
+.page-group--l1 { font-size: var(--fs-mono-s); margin: var(--space-8) 0 var(--space-4); }
+.page-group--l2 { font-size: var(--fs-mono-xs); color: var(--text-faint); margin: var(--space-5) 0 var(--space-3); }
+
+/* sticky top bar inside the main column: theme/dark always (right); brand +
+   nav burger appear only on mobile (left). */
+.expbar { position: sticky; top: 0; z-index: 30; display: flex; align-items: center; gap: var(--space-3);
+  padding: var(--space-3) 0; margin-bottom: var(--space-4);
+  background: color-mix(in srgb, var(--bg-subtle) 86%, transparent); -webkit-backdrop-filter: blur(var(--glass-blur)); backdrop-filter: blur(var(--glass-blur)); }
+.expbar__left { display: none; align-items: center; gap: var(--space-2); }
+.expbar__actions { display: flex; gap: var(--space-2); margin-left: auto; }
+.expbar__burger { width: 2.25rem; height: 2.25rem; display: inline-grid; place-items: center; border: 1px solid var(--rule); border-radius: var(--radius-control); background: var(--panel); color: var(--text-soft); }
+.expbar__burger svg { width: 1.25rem; height: 1.25rem; }
+.expbar__brand { padding: 0; }
+.rail-scrim { display: none; }
 .sec__head { display: flex; align-items: baseline; gap: var(--space-3); margin-bottom: var(--space-4); }
 .sec__head h2 { font-family: var(--font-mono); font-size: var(--fs-mono-s); text-transform: uppercase; letter-spacing: var(--ls-eyebrow); color: var(--text); }
 .sec__head .sec__meta { font-family: var(--font-mono); font-size: var(--fs-mono-xs); color: var(--text-faint); }
@@ -36,13 +55,20 @@ body { font-family: var(--font-display); background-color: var(--bg-subtle); col
    inline component like Badge/Button. */
 .variant__tag { display: block; width: fit-content; font-family: var(--font-mono); font-size: 0.625rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 0.5rem; }
 
-.themeBtn { position: fixed; top: 0.875rem; right: 1rem; z-index: 50; }
-
+/* ── Mobile: the rail becomes an off-canvas drawer behind a burger, instead of
+      wrapping the whole tree into a cramped row. ── */
 @media (max-width: 860px) {
-  .shell { grid-template-columns: minmax(0, 1fr); }
-  .rail { position: static; height: auto; flex-direction: row; flex-wrap: wrap; border-right: none; border-bottom: 1px solid var(--surface-edge); }
-  .rail nav { flex-direction: row; flex-wrap: wrap; }
-}
-@media (max-width: 680px) {
-  .main { padding: var(--space-5) var(--space-4) var(--space-9); }
+  .shell { display: block; }
+  .expbar__left { display: flex; }
+  .main { padding: var(--space-4) var(--space-4) var(--space-9); }
+
+  .rail { position: fixed; top: 0; left: 0; height: 100dvh; width: min(18rem, 86vw);
+    transform: translateX(-100%); transition: transform var(--duration-base) var(--ease-standard);
+    z-index: 60; box-shadow: var(--shadow-6); border-right: 1px solid var(--surface-edge); }
+  .shell--nav-open .rail { transform: none; }
+  .rail__brand--desktop { display: none; }
+
+  .rail-scrim { display: block; position: fixed; inset: 0; z-index: 55; background: var(--overlay-scrim);
+    opacity: 0; pointer-events: none; transition: opacity var(--duration-base) var(--ease-standard); }
+  .shell--nav-open .rail-scrim { opacity: 1; pointer-events: auto; }
 }

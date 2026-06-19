@@ -31,6 +31,10 @@ if (!('scrollTo' in window)) {
   (window as any).scrollTo = () => {};
 }
 
+if (!Element.prototype.scrollIntoView) {
+  Element.prototype.scrollIntoView = () => {};
+}
+
 // jsdom has no IntersectionObserver. Fire once as "intersecting" so lazy content
 // mounts and scroll-spy resolves during tests.
 if (!('IntersectionObserver' in globalThis)) {
