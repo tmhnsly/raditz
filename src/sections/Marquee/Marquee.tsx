@@ -1,8 +1,8 @@
-import { SectionShell } from '../../lib/SectionShell';
+import { SectionShell, type SectionVariantProps } from '../../lib/SectionShell';
 
-export function MarqueeA() {
+export function MarqueeA({ background = 'none', parallax, image, video }: SectionVariantProps = {}) {
   return (
-    <SectionShell pad="sm" padClassName="sx-mq__band" wrap="col sx-grid-center sx-gap-4">
+    <SectionShell pad="sm" padClassName="sx-mq__band" wrap="col sx-grid-center sx-gap-4" background={background} parallax={parallax} image={image} video={video}>
       <span className="muted sx-fs-body-s">Trusted by fast-moving teams</span>
       <div className="mq"><div className="mq__row">
         <strong>Northwind</strong><strong className="sx-mq__mono">ACME</strong><strong>LUMEN</strong><strong className="sx-mq__italic">Vertex</strong><strong className="sx-mq__tight">Hatch</strong><strong>Aurora</strong>

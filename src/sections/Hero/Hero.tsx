@@ -1,8 +1,8 @@
-import { SectionShell } from '../../lib/SectionShell';
+import { SectionShell, type SectionVariantProps } from '../../lib/SectionShell';
 
-export function HeroA() {
+export function HeroA({ background = 'none', parallax, image, video }: SectionVariantProps = {}) {
   return (
-    <SectionShell wrap="col sx-center sx-gap-5">
+    <SectionShell wrap="col sx-center sx-gap-5" background={background} parallax={parallax} image={image} video={video}>
       <span className="srx-badge srx-badge--soft">New · v2 components</span>
       <h2 className="h-display sx-hero__title">
         The design foundation that re-skins in one line
@@ -20,9 +20,9 @@ export function HeroA() {
   );
 }
 
-export function HeroB() {
+export function HeroB({ background = 'surface-2', parallax, image, video }: SectionVariantProps = {}) {
   return (
-    <SectionShell wrap="sx-split sx-feat__spotlight">
+    <SectionShell wrap="sx-split sx-feat__spotlight" background={background} parallax={parallax} image={image} video={video}>
       <div className="col sx-gap-4">
         <span className="eyebrow2">Design system</span>
         <h2 className="h-display">Ship a polished UI on day one</h2>
@@ -39,9 +39,9 @@ export function HeroB() {
   );
 }
 
-export function HeroC() {
+export function HeroC({ background = 'gradient-aurora', parallax = true, image, video }: SectionVariantProps = {}) {
   return (
-    <SectionShell padClassName="sx-hero__band" wrap="col sx-center sx-gap-5">
+    <SectionShell padClassName="sx-hero__band" wrap="col sx-center sx-gap-5" background={background} parallax={parallax} image={image} video={video}>
       <h2 className="h-display sx-hero__band-title">
         One accent token. Infinite themes.
       </h2>

@@ -1,8 +1,8 @@
-import { SectionShell } from '../../lib/SectionShell';
+import { SectionShell, type SectionVariantProps } from '../../lib/SectionShell';
 
-export function NotFoundA() {
+export function NotFoundA({ background = 'none', parallax, image, video }: SectionVariantProps = {}) {
   return (
-    <SectionShell wrap="col sx-center sx-gap-4">
+    <SectionShell wrap="col sx-center sx-gap-4" background={background} parallax={parallax} image={image} video={video}>
       <span className="sx-nf__code">404</span>
       <h3 className="h-section">This page wandered off</h3>
       <p className="lede sx-nf__lede">The page you’re after doesn’t exist or has moved. Let’s get you back on track.</p>

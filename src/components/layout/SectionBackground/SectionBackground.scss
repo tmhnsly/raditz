@@ -34,6 +34,15 @@
     var(--bg-subtle);
 }
 
+/* Auto-glass: cards/panels inside a gradient section turn translucent + blurred
+   so the gradient reads through — this is what gives the glass tokens a purpose. */
+.srx-secbg--gradient :is(.srx-card, .sx-price__card, .sx-price__card-pop, .sx-tst__card, .sx-blog__card, .sx-news__card, .tcar__card, .sx-stat__cell) {
+  background: var(--glass);
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  backdrop-filter: blur(var(--glass-blur));
+  border-color: var(--surface-edge);
+}
+
 /* parallax — the layer is oversized and translated from a scroll-driven var */
 .srx-secbg--parallax .srx-secbg__layer { top: -12%; height: 124%; transform: translate3d(0, var(--srx-parallax-y, 0), 0); will-change: transform; }
 

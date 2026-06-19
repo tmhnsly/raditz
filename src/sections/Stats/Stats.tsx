@@ -1,8 +1,8 @@
-import { SectionShell } from '../../lib/SectionShell';
+import { SectionShell, type SectionVariantProps } from '../../lib/SectionShell';
 
-export function StatsA() {
+export function StatsA({ background = 'none', parallax, image, video }: SectionVariantProps = {}) {
   return (
-    <SectionShell wrap="sx-g4 sx-gap-5">
+    <SectionShell wrap="sx-g4 sx-gap-5" background={background} parallax={parallax} image={image} video={video}>
       <div className="col sx-stat__cell">
         <span className="sx-stat__num">53</span>
         <span className="muted sx-fs-body-s">components</span>
@@ -23,9 +23,9 @@ export function StatsA() {
   );
 }
 
-export function StatsB() {
+export function StatsB({ background = 'none', parallax, image, video }: SectionVariantProps = {}) {
   return (
-    <SectionShell padClassName="sx-stat__band" wrap="sx-g3 sx-gap-5 sx-stat__band-grid">
+    <SectionShell padClassName="sx-stat__band" wrap="sx-g3 sx-gap-5 sx-stat__band-grid" background={background} parallax={parallax} image={image} video={video}>
       <div className="col sx-stat__cell">
         <span className="sx-stat__band-num">99.9%</span>
         <span className="sx-stat__band-label">uptime</span>

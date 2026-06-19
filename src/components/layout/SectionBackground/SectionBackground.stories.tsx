@@ -55,3 +55,24 @@ export const SurfaceLevels: Story = {
     </div>
   ),
 };
+
+/** Parallax shifts the backdrop layer on scroll (gentle; respects reduced-motion). */
+export const Parallax: Story = {
+  render: () => <SectionBackground background="gradient-aurora" parallax><GlassPanel label="gradient-aurora + parallax" /></SectionBackground>,
+};
+
+export const Image: Story = {
+  render: () => (
+    <SectionBackground image="https://picsum.photos/1200/600" parallax>
+      <GlassPanel label="image backdrop" />
+    </SectionBackground>
+  ),
+};
+
+export const Video: Story = {
+  render: () => (
+    <SectionBackground video="https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/360/Big_Buck_Bunny_360_10s_1MB.mp4">
+      <GlassPanel label="video backdrop" />
+    </SectionBackground>
+  ),
+};

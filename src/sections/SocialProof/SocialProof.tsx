@@ -1,8 +1,8 @@
-import { SectionShell } from '../../lib/SectionShell';
+import { SectionShell, type SectionVariantProps } from '../../lib/SectionShell';
 
-export function SocialProofA() {
+export function SocialProofA({ background = 'none', parallax, image, video }: SectionVariantProps = {}) {
   return (
-    <SectionShell pad="sm" padClassName="sx-sp__band" wrap="row sx-sp__row">
+    <SectionShell pad="sm" padClassName="sx-sp__band" wrap="row sx-sp__row" background={background} parallax={parallax} image={image} video={video}>
       <strong className="sx-sp__logo sx-sp__logo-tight">Northwind</strong>
       <strong className="sx-sp__logo sx-sp__logo-mono">ACME</strong>
       <strong className="sx-sp__logo sx-sp__logo-wide">LUMEN</strong>
@@ -12,9 +12,9 @@ export function SocialProofA() {
   );
 }
 
-export function SocialProofB() {
+export function SocialProofB({ background = 'none', parallax, image, video }: SectionVariantProps = {}) {
   return (
-    <SectionShell pad="sm" padClassName="sx-sp__band" wrap="col sx-items-center sx-gap-4">
+    <SectionShell pad="sm" padClassName="sx-sp__band" wrap="col sx-items-center sx-gap-4" background={background} parallax={parallax} image={image} video={video}>
       <span className="muted sx-fs-body-s">Trusted by teams at</span>
       <div className="row sx-sp__row-b">
         <strong className="sx-sp__logo-b">Northwind</strong>

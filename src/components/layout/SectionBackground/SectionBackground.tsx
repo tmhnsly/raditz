@@ -70,7 +70,7 @@ export function SectionBackground({
   return (
     <div
       ref={rootRef}
-      className={cx('srx-secbg', background !== 'none' && `srx-secbg--${background}`, parallax && 'srx-secbg--parallax', className)}
+      className={cx('srx-secbg', background !== 'none' && `srx-secbg--${background}`, GRADIENTS.has(background) && 'srx-secbg--gradient', parallax && 'srx-secbg--parallax', className)}
       {...rest}
     >
       {hasLayer ? (

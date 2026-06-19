@@ -1,4 +1,4 @@
-import { SectionShell } from '../../lib/SectionShell';
+import { SectionShell, type SectionVariantProps } from '../../lib/SectionShell';
 import { Accordion } from '../../components/disclosure/Accordion';
 
 const FAQ_ITEMS = [
@@ -7,17 +7,17 @@ const FAQ_ITEMS = [
   { value: '2', title: 'Is dark mode included?', content: 'Yes. Add class="dark" to <html> or any subtree and the whole surface flips.' },
 ];
 
-export function FaqA() {
+export function FaqA({ background = 'surface-2', parallax, image, video }: SectionVariantProps = {}) {
   return (
-    <SectionShell wrap="sx-faq__wrap">
+    <SectionShell wrap="sx-faq__wrap" background={background} parallax={parallax} image={image} video={video}>
       <Accordion id="faqAcc" type="single" collapsible defaultValue="0" items={FAQ_ITEMS} />
     </SectionShell>
   );
 }
 
-export function FaqB() {
+export function FaqB({ background = 'none', parallax, image, video }: SectionVariantProps = {}) {
   return (
-    <SectionShell wrap="sx-faq2 sx-gap-6">
+    <SectionShell wrap="sx-faq2 sx-gap-6" background={background} parallax={parallax} image={image} video={video}>
       <div className="col sx-faq__item"><strong>What's the license?</strong><span className="muted sx-body-s">MIT — use it in commercial products freely.</span></div>
       <div className="col sx-faq__item"><strong>Does it need a build step?</strong><span className="muted sx-body-s">No. It works from a CDN link, or self-host for production.</span></div>
       <div className="col sx-faq__item"><strong>Which frameworks?</strong><span className="muted sx-body-s">Components are React; tokens and classes are framework-agnostic.</span></div>

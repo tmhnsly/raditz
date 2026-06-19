@@ -4,6 +4,17 @@ import { cx } from '../components/internal';
 import { SectionBackground } from '../components/layout/SectionBackground';
 import type { SectionBg } from '../components/layout/SectionBackground/SectionBackground';
 
+export type { SectionBg } from '../components/layout/SectionBackground/SectionBackground';
+
+/** Background controls every section variant accepts, so backgrounds are
+ * configurable per instance (with a curated default) — not hard-wired. */
+export interface SectionVariantProps {
+  background?: SectionBg;
+  parallax?: boolean;
+  image?: string;
+  video?: string;
+}
+
 export interface SectionShellProps {
   /** Extra classes on the inner `.s-wrap` (grid + gap, e.g. "sx-g3 sx-gap-5"). */
   wrap?: string;
@@ -15,6 +26,10 @@ export interface SectionShellProps {
   background?: SectionBg;
   /** Parallax the backdrop. @default false */
   parallax?: boolean;
+  /** Image URL backdrop (overrides gradient). */
+  image?: string;
+  /** Video URL backdrop (overrides image + gradient). */
+  video?: string;
   /** Class on the preview Frame (e.g. "nav-frame", "ph--neutral"). */
   frameClassName?: string;
   /** Constrain the Frame width. */
@@ -35,6 +50,8 @@ export function SectionShell({
   padClassName,
   background = 'none',
   parallax = false,
+  image,
+  video,
   frameClassName,
   frameMaxWidth,
   children,
@@ -45,10 +62,11 @@ export function SectionShell({
       <div className={cx('s-wrap', wrap)}>{children}</div>
     </div>
   );
+  const hasBg = background !== 'none' || !!image || !!video;
   return (
     <Frame className={frameClassName} maxWidth={frameMaxWidth}>
-      {background !== 'none' ? (
-        <SectionBackground background={background} parallax={parallax}>{inner}</SectionBackground>
+      {hasBg ? (
+        <SectionBackground background={background} parallax={parallax} image={image} video={video}>{inner}</SectionBackground>
       ) : (
         inner
       )}

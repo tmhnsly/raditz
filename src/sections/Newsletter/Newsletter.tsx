@@ -1,8 +1,8 @@
-import { SectionShell } from '../../lib/SectionShell';
+import { SectionShell, type SectionVariantProps } from '../../lib/SectionShell';
 
-export function NewsletterA() {
+export function NewsletterA({ background = 'gradient-aurora', parallax, image, video }: SectionVariantProps = {}) {
   return (
-    <SectionShell wrap="sx-news__wrap">
+    <SectionShell wrap="sx-news__wrap" background={background} parallax={parallax} image={image} video={video}>
       <div className="srx-card col sx-news__card">
         <span className="feat-ico"><svg className="ico" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="m3 7 9 6 9-6" /></svg></span>
         <div className="col sx-news__copy"><strong className="sx-news__title">Get the changelog</strong><span className="muted sx-fs-body-s">New components and tokens, monthly. No spam.</span></div>
