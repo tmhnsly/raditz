@@ -21,6 +21,8 @@ export interface SectionBackgroundProps extends HTMLAttributes<HTMLDivElement> {
   video?: string;
   /** Subtle scroll parallax on the media/gradient layer. @default false */
   parallax?: boolean;
+  /** Darken the backdrop (image/video/gradient) so overlaid text stays legible. */
+  scrim?: boolean;
   children?: ReactNode;
 }
 
@@ -39,6 +41,7 @@ export function SectionBackground({
   image,
   video,
   parallax = false,
+  scrim = false,
   className,
   children,
   ...rest
@@ -70,7 +73,7 @@ export function SectionBackground({
   return (
     <div
       ref={rootRef}
-      className={cx('srx-secbg', background !== 'none' && `srx-secbg--${background}`, GRADIENTS.has(background) && 'srx-secbg--gradient', parallax && 'srx-secbg--parallax', className)}
+      className={cx('srx-secbg', background !== 'none' && `srx-secbg--${background}`, GRADIENTS.has(background) && 'srx-secbg--gradient', parallax && 'srx-secbg--parallax', scrim && 'srx-secbg--scrim', className)}
       {...rest}
     >
       {hasLayer ? (

@@ -52,7 +52,8 @@
 .sx-g4 { display: grid; grid-template-columns: repeat(4, 1fr); }
 .sx-split { display: grid; grid-template-columns: 1fr 1fr; }
 .sx-bento { display: grid; grid-template-columns: repeat(3, 1fr); }
-.sx-price2 { display: grid; grid-template-columns: repeat(2, minmax(0, 16.25rem)); justify-content: center; }
+.sx-price2 { display: flex; flex-wrap: wrap; align-items: stretch; justify-content: center; }
+.sx-price2 > * { flex: 1 1 16rem; max-width: 20rem; min-width: 0; }
 .sx-faq2 { display: grid; grid-template-columns: 1fr 1fr; }
 .sx-footer { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; }
 @container (max-width: 1000px) {
@@ -60,7 +61,7 @@
   .sx-footer { grid-template-columns: repeat(2, 1fr); }
 }
 @container (max-width: 680px) {
-  .sx-split, .sx-faq2, .sx-bento, .sx-price2 { grid-template-columns: 1fr; }
+  .sx-split, .sx-faq2, .sx-bento { grid-template-columns: 1fr; }
   .sx-bento > * { grid-column: auto !important; grid-row: auto !important; }
   .sx-g4 { grid-template-columns: repeat(2, 1fr); }
 }
@@ -71,6 +72,10 @@
 /* HeroBleed — the nav floats (transparent) over the hero's shared background, so
    the background reaches the top with no seam. Content layout is decoupled. */
 .hero-bleed__nav { padding: var(--space-4) clamp(1.5rem, 5vw, 4.5rem) 0; }
+/* On a photo/video bleed the backdrop is scrimmed dark — make text + nav light. */
+.hero-bleed--media :is(.h-display, h1, h2) { color: var(--white-a12); }
+.hero-bleed--media :is(.lede, p, .eyebrow2) { color: var(--white-a11); }
+.hero-bleed--media :is(.nav-bar__links a, .sx-nav__brand, strong) { color: var(--white-a12); }
 
 /* ── Navbar demos — respond to the FRAME width via container queries, so the
       preview shows real responsive behavior (frame width ≠ viewport). ── */
@@ -266,10 +271,10 @@
 /* ── Pricing ── */
 .sx-price__num { font-size: 2.25rem; font-weight: 700; letter-spacing: -0.03em; }
 .sx-price__list { gap: 0.5rem; list-style: none; padding: 0; margin: 0; font-size: var(--fs-body-s); color: var(--text-soft); }
-/* 3 tiers go straight 3 → 1 (never an orphaned 2+1), equal-height cards. */
-.sx-price__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-4); align-items: stretch; }
-/* stacked: cap + centre the column so single cards aren't stretched wide/sparse */
-@container (max-width: 44rem) { .sx-price__grid { grid-template-columns: 1fr; max-width: 24rem; margin-inline: auto; } }
+/* Equal-size cards that fill when 3-up; a lone trailing card caps to the same
+   width and CENTRES (justify-content) instead of stretching wide or sitting left. */
+.sx-price__grid { display: flex; flex-wrap: wrap; gap: var(--space-4); align-items: stretch; justify-content: center; }
+.sx-price__grid > * { flex: 1 1 16rem; max-width: 20rem; min-width: 0; }
 .sx-price__card { gap: var(--space-4); }
 .sx-price__plan { gap: 0.125rem; }
 .sx-price__btn { width: 100%; }

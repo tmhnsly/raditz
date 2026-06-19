@@ -47,3 +47,34 @@ export const Dusk: Story = {
     </HeroBleed>
   ),
 };
+
+// Photo + video share the same content/layout (only the media source differs),
+// and the same URLs as the SectionBackground demos for consistency. Media auto-
+// enables a scrim + light text so the hero stays legible.
+const mediaHero = (
+  <>
+    <span className="eyebrow2">On any backdrop</span>
+    <h1 className="h-display">Bleed a photo or video behind the nav</h1>
+    <p className="lede" style={{ maxWidth: '42ch' }}>The backdrop is scrimmed and the text goes light automatically, so the hero stays readable over busy media.</p>
+    <div className="row sx-row-center">
+      <button className="srx-btn srx-btn--primary srx-btn--lg">Start building</button>
+      <button className="srx-btn srx-btn--outline srx-btn--lg">Live demo</button>
+    </div>
+  </>
+);
+
+export const Image: Story = {
+  render: () => (
+    <HeroBleed image="https://picsum.photos/1200/600" parallax nav={<FloatingNav />} wrap="col sx-center sx-gap-5">
+      {mediaHero}
+    </HeroBleed>
+  ),
+};
+
+export const Video: Story = {
+  render: () => (
+    <HeroBleed video="https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/360/Big_Buck_Bunny_360_10s_1MB.mp4" nav={<FloatingNav />} wrap="col sx-center sx-gap-5">
+      {mediaHero}
+    </HeroBleed>
+  ),
+};

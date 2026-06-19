@@ -43,6 +43,12 @@
   border-color: var(--surface-edge);
 }
 
+/* scrim — darken the backdrop (esp. image/video) so overlaid text stays legible */
+.srx-secbg--scrim .srx-secbg__layer::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.32));
+}
+
 /* parallax — the layer is oversized and translated from a scroll-driven var */
 .srx-secbg--parallax .srx-secbg__layer { top: -12%; height: 124%; transform: translate3d(0, var(--srx-parallax-y, 0), 0); will-change: transform; }
 
