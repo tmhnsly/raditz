@@ -1,36 +1,6 @@
 import type { HTMLAttributes, ReactElement } from 'react';
-import { useControllableState } from '../../internal';
+import { useControllableState, buildPages, cx } from '../../internal';
 import { Icon } from '../../foundation/Icon/Icon';
-import { cx } from '../../internal';
-
-type PageEntry = number | '…';
-
-/**
- * Build a FIXED-length page list so the control never changes width as you page.
- * For large totals it always returns `siblings*2 + 5` slots: near an end the
- * window expands to fill (no single-page ellipsis), in the middle both ends
- * ellipsise. Paired with equal-width slots in CSS, the layout stays put.
- */
-function buildPages(page: number, total: number, siblings: number): PageEntry[] {
-  const out: PageEntry[] = [];
-  const range = (a: number, b: number): void => { for (let i = a; i <= b; i++) out.push(i); };
-  const slots = siblings * 2 + 5;
-  if (total <= slots) { range(1, total); return out; }
-  const showLeftDots = page > siblings + 3;
-  const showRightDots = page < total - (siblings + 2);
-  if (!showLeftDots && showRightDots) {
-    range(1, siblings * 2 + 3);
-    out.push('…', total);
-  } else if (showLeftDots && !showRightDots) {
-    out.push(1, '…');
-    range(total - (siblings * 2 + 2), total);
-  } else {
-    out.push(1, '…');
-    range(page - siblings, page + siblings);
-    out.push('…', total);
-  }
-  return out;
-}
 
 export interface PaginationProps extends Omit<HTMLAttributes<HTMLElement>, 'onChange'> {
   /** Total number of pages. @default 1 */

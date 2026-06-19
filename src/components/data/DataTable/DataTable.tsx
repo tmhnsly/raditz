@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useControllableState, cx } from '../../internal';
+import { useControllableState, cx, pageCount } from '../../internal';
 
 const { useMemo, useState } = React;
 
@@ -90,7 +90,7 @@ export function DataTable<Row = DefaultRow>({
     });
   }, [rows, sort, columns]);
 
-  const pages = pageSize > 0 ? Math.ceil(sorted.length / pageSize) : 1;
+  const pages = pageCount(sorted.length, pageSize);
   const pageRows = pageSize > 0 ? sorted.slice(page * pageSize, page * pageSize + pageSize) : sorted;
 
   const toggleSort = (col: DataTableColumn<Row>): void => {

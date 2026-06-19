@@ -8,3 +8,4 @@ export * from './overlayHooks';
 export * from './Overlay';
 export * from './fuzzy';
 export * from './scale';
+export * from './pageModel';
