@@ -1,7 +1,10 @@
 // Auto-split from components.css — this component's styles, co-located.
 // Uses SuperRadix tokens (var(--…)); re-skins/re-themes with the system.
 /* ═══════════════════════ Media · Lightbox · Gallery · Carousel ═══════════════════════ */
-.srx-lightbox { position: fixed; inset: 0; z-index: var(--z-modal); display: flex; flex-direction: column; }
+/* Lightbox is an Overlay adapter face: the .srx-overlay container provides the
+   fixed full-screen layer + z-index; this panel fills it edge-to-edge. */
+.srx-overlay--lightbox { padding: 0; }
+.srx-lightbox { position: absolute; inset: 0; display: flex; flex-direction: column; }
 
 .srx-lightbox__scrim { position: absolute; inset: 0; background: color-mix(in srgb, var(--slate-1) 92%, black); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); animation: srxFade var(--duration-base) var(--ease-standard); }
 

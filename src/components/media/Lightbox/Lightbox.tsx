@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useControllableState, useScrollLock, onKeys, KEYS, cx } from '../../internal';
+import { useControllableState, Overlay, onKeys, KEYS, cx } from '../../internal';
 
 const { useState, useEffect, useRef, useCallback } = React;
 
@@ -64,7 +64,6 @@ export function Lightbox({
   const [idx, setIdx] = useControllableState<number>({ value: index, defaultValue: defaultIndex, onChange: onIndexChange });
   const [zoom, setZoom] = useState(false);
   const count = images.length;
-  useScrollLock(isOpen);
 
   const go = useCallback(
     (d: number) => {
@@ -74,17 +73,9 @@ export function Lightbox({
     [count, setIdx],
   );
   const close = useCallback(() => setOpen(false), [setOpen]);
-
-  useEffect(() => {
-    if (!isOpen) return undefined;
-    const onKey = onKeys<KeyboardEvent>({
-      [KEYS.Escape]: close,
-      [KEYS.ArrowRight]: () => go(1),
-      [KEYS.ArrowLeft]: () => go(-1),
-    });
-    document.addEventListener('keydown', onKey);
-    return () => document.removeEventListener('keydown', onKey);
-  }, [isOpen, go, close]);
+  // Escape / scroll-lock / focus-trap / scrim sizing come from Overlay; arrows
+  // (paging) stay here as a Lightbox concern.
+  const onKeyDown = onKeys({ [KEYS.ArrowRight]: () => go(1), [KEYS.ArrowLeft]: () => go(-1) });
 
   const startX = useRef<number | null>(null);
   const onPointerDown = (e: React.PointerEvent): void => {
@@ -97,10 +88,21 @@ export function Lightbox({
     if (!zoom && Math.abs(dx) > 48 && count > 1) go(dx < 0 ? 1 : -1);
   };
 
-  if (!isOpen || !count) return null;
   const cur: LightboxImage = images[idx] || { src: '' };
   return (
-    <div className={cx('srx-lightbox', className)} role="dialog" aria-modal="true" aria-label="Image viewer" {...rest}>
+    <Overlay
+      open={isOpen && count > 0}
+      onDismiss={close}
+      position={{ kind: 'centered' }}
+      scrim={false}
+      containerClassName="srx-overlay--lightbox"
+      focus="trap"
+      role="dialog"
+      aria-label="Image viewer"
+      className={cx('srx-lightbox', className)}
+      onKeyDown={onKeyDown}
+      {...rest}
+    >
       <div className="srx-lightbox__scrim" onClick={close} />
       <button type="button" className="srx-lightbox__close" aria-label="Close" onClick={close}>
         {X}
@@ -160,6 +162,6 @@ export function Lightbox({
           </div>
         ) : null}
       </div>
-    </div>
+    </Overlay>
   );
 }
