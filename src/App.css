@@ -8,15 +8,13 @@ body { font-family: var(--font-display); background-color: var(--bg-subtle); col
 .shell { display: grid; grid-template-columns: 14.5rem minmax(0, 1fr); align-items: start; max-width: 100%; }
 
 /* left rail */
-.rail { position: sticky; top: 0; height: 100vh; overflow-y: auto; padding: var(--space-5) var(--space-4);
-  background: var(--panel); border-right: 1px solid var(--surface-edge); display: flex; flex-direction: column; gap: var(--space-2); }
-/* Logo + search pin to the top of the rail (frosted) while the tree scrolls
-   behind them — negative insets bleed the glass to the rail edges. */
-.rail__brand { position: sticky; top: 0; z-index: 3; display: flex; align-items: center; gap: 0.625rem; font-weight: 700; font-size: 0.9375rem; letter-spacing: -0.02em;
-  margin: calc(-1 * var(--space-5)) calc(-1 * var(--space-4)) 0; padding: var(--space-5) calc(var(--space-4) + var(--space-2)) var(--space-3);
-  background: color-mix(in srgb, var(--panel) 86%, transparent); -webkit-backdrop-filter: blur(var(--glass-blur)); backdrop-filter: blur(var(--glass-blur)); }
-.rail__search { position: sticky; top: 3.5rem; z-index: 3; margin: 0 calc(-1 * var(--space-4)); padding: 0 var(--space-4) var(--space-3);
-  background: color-mix(in srgb, var(--panel) 86%, transparent); -webkit-backdrop-filter: blur(var(--glass-blur)); backdrop-filter: blur(var(--glass-blur)); }
+/* The rail stays in view as the page scrolls; INSIDE it the logo/search/tools are
+   a fixed header and ONLY the tree scrolls in the area below it — no overlap. */
+.rail { position: sticky; top: 0; height: 100vh; overflow: hidden; background: var(--panel); border-right: 1px solid var(--surface-edge); display: flex; flex-direction: column; }
+.rail__nav { display: flex; flex-direction: column; min-height: 0; flex: 1; }
+.rail__head { flex: none; display: flex; flex-direction: column; gap: var(--space-3); padding: var(--space-5) var(--space-4) var(--space-3); border-bottom: 1px solid var(--surface-edge); }
+.rail__list { flex: 1; min-height: 0; overflow-y: auto; padding: var(--space-3) var(--space-4) var(--space-5); }
+.rail__brand { display: flex; align-items: center; gap: 0.625rem; font-weight: 700; font-size: 0.9375rem; letter-spacing: -0.02em; }
 .rail__tools { display: flex; align-items: center; gap: var(--space-2); }
 .rail__tools .tree__home { flex: 1; }
 .rail__collapse { flex: none; font-family: var(--font-mono); font-size: 0.625rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-faint); background: none; border: 0; cursor: pointer; padding: 0.3125rem 0.5rem; border-radius: var(--radius-sm); transition: var(--transition-control); }
@@ -30,7 +28,7 @@ body { font-family: var(--font-display); background-color: var(--bg-subtle); col
 
 /* main column — fills the full width beside the rail (capped on ultra-wide for
    readability, but far wider than before so sections actually use the space). */
-.main { min-width: 0; padding: var(--space-7) clamp(var(--space-5), 4vw, var(--space-11)) var(--space-12); max-width: 110rem; margin-inline: auto; width: 100%; }
+.main { --main-pad-x: clamp(var(--space-5), 4vw, var(--space-11)); min-width: 0; padding: var(--space-7) var(--main-pad-x) var(--space-12); max-width: 110rem; margin-inline: auto; width: 100%; }
 .pagehead { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-5); flex-wrap: wrap; margin-bottom: var(--space-8); }
 .pagehead h1 { font-size: var(--fs-h1); letter-spacing: var(--ls-h1); line-height: var(--lh-heading); margin-top: var(--space-2); }
 .pagehead p { color: var(--text-soft); font-size: var(--fs-body-l); margin-top: var(--space-2); max-width: 60ch; }
@@ -42,9 +40,15 @@ body { font-family: var(--font-display); background-color: var(--bg-subtle); col
 /* L0 — major section (Foundations / Components / Sections): large + bold, and it
    sticks just under the bar so you always know which top-level group you're in. */
 .page-group--l0 { position: sticky; top: 3.4rem; z-index: 6; font-size: var(--fs-h3); font-weight: var(--fw-bold); color: var(--text); letter-spacing: -0.01em; margin: var(--space-11) 0 var(--space-6); padding: var(--space-3) 0; border-bottom: 1px solid var(--rule); }
-/* The sticky top bar and the sticky group title share one frosted surface so
-   they read as a single sticky unit (change one → both follow). */
-.expbar, .page-group--l0 { background: color-mix(in srgb, var(--bg-subtle) 86%, transparent); -webkit-backdrop-filter: blur(var(--glass-blur)); backdrop-filter: blur(var(--glass-blur)); }
+/* The sticky top bar and the sticky group title share one frosted surface AND
+   bleed to the main column's edges (padding-inline restores the content position),
+   so they read as one full-width glass panel that bordered cards scroll cleanly
+   behind — instead of cards poking out past a content-width strip. */
+.expbar, .page-group--l0 {
+  background: color-mix(in srgb, var(--bg-subtle) 86%, transparent);
+  -webkit-backdrop-filter: blur(var(--glass-blur)); backdrop-filter: blur(var(--glass-blur));
+  margin-inline: calc(-1 * var(--main-pad-x)); padding-inline: var(--main-pad-x);
+}
 .page-group--l0:first-of-type { margin-top: var(--space-2); }
 /* L1 — sub-group (Controls / Disclosure / Data): medium sans, clearly larger
    than the small mono entry labels so folders read as folders. */

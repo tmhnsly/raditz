@@ -81,34 +81,38 @@ export function Sidebar({
 
   return (
     <div className="rail__nav">
-      <Search
-        className="rail__search"
-        size="sm"
-        placeholder="Search…"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-      />
-      <div className="rail__tools">
-        <button
-          type="button"
-          className={'tree__home' + (route === '' ? ' tree__home--active' : '')}
-          aria-current={route === '' ? 'page' : undefined}
-          onClick={() => onNavigate('')}
-        >
-          Overview
-        </button>
-        {!searching && (
+      <div className="rail__head">
+        <div className="rail__brand rail__brand--desktop"><span className="mark">S</span>SuperRadix</div>
+        <Search
+          className="rail__search"
+          size="sm"
+          placeholder="Search…"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+        />
+        <div className="rail__tools">
           <button
             type="button"
-            className="rail__collapse"
-            onClick={() => setUserExpanded([])}
-            disabled={userExpanded.length === 0}
-            title="Collapse all groups"
+            className={'tree__home' + (route === '' ? ' tree__home--active' : '')}
+            aria-current={route === '' ? 'page' : undefined}
+            onClick={() => onNavigate('')}
           >
-            Collapse all
+            Overview
           </button>
-        )}
+          {!searching && (
+            <button
+              type="button"
+              className="rail__collapse"
+              onClick={() => setUserExpanded([])}
+              disabled={userExpanded.length === 0}
+              title="Collapse all groups"
+            >
+              Collapse all
+            </button>
+          )}
+        </div>
       </div>
+      <div className="rail__list">
       {searching && filtered.length === 0 ? (
         <p className="rail__empty">No matches</p>
       ) : (
@@ -122,6 +126,7 @@ export function Sidebar({
           toggleOnRowClick={false}
         />
       )}
+      </div>
     </div>
   );
 }

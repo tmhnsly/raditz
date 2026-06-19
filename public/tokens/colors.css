@@ -139,4 +139,9 @@
   --rule-soft: var(--on-media-border);
   --surface-edge: var(--on-media-border);
   --accent-ink: var(--on-media);
+  /* accent fills/borders adapt to the dark surface (translucent accent) so
+     chips like the brand mark read consistently — not a light-tinted island. */
+  --accent-surface: color-mix(in srgb, var(--accent) 28%, transparent);
+  --accent-surface-soft: color-mix(in srgb, var(--accent) 16%, transparent);
+  --accent-border: color-mix(in srgb, var(--accent) 45%, transparent);
 }

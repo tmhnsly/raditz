@@ -44,9 +44,6 @@ export default function Explorer() {
       <div className="rail-scrim" onClick={() => setNavOpen(false)} aria-hidden="true" />
 
       <aside className="rail">
-        <div className="rail__brand rail__brand--desktop">
-          <span className="mark">S</span>SuperRadix
-        </div>
         <Sidebar tree={tree} route={route} activeSlug={activeSlug} onNavigate={go} />
       </aside>
 
