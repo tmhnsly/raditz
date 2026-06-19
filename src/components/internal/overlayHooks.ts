@@ -2,9 +2,9 @@ import { useEffect, useLayoutEffect, useState, useCallback } from 'react';
 import type { RefObject, Dispatch, SetStateAction, KeyboardEvent as ReactKeyboardEvent } from 'react';
 import { useRoving, KEYS } from './keyboard';
 
-// Overlay internals for SuperRadix — React-only (no react-dom dependency).
-// Overlays render inline with position:fixed and are positioned from client
-// rects, so they escape normal flow without a portal.
+// Overlay internals for SuperRadix. Panels are positioned from client rects and
+// portaled to <body> (see Overlay.tsx) so position:fixed stays viewport-relative
+// even under a transformed/filtered ancestor.
 const useIso = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
 
 export interface DismissOptions {

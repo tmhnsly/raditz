@@ -13,7 +13,10 @@ leverage, locality, depth) is defined separately in the
 **Overlay**:
 The internal module that renders any "thing in a fixed layer that opens, dismisses,
 and disappears" — owning visibility-gating, dismissal, scroll-lock, focus, scrim,
-and positioning behind one interface. Lives in `src/components/internal/`.
+and positioning behind one interface. Lives in `src/components/internal/`. It
+portals to `<body>` so `position: fixed` stays viewport-relative even when an
+ancestor (transform/filter/backdrop-filter) would otherwise become its containing
+block; positions are passed to CSS as custom properties, not presentational styles.
 _Avoid_: portal, popup, layer, modal (those name topologies or mechanisms, not the module).
 
 **Topology**:

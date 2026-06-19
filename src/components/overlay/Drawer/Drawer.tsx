@@ -36,8 +36,9 @@ export function Drawer({
   ...rest
 }: DrawerProps): ReactElement | null {
   const close = (): void => { if (onOpenChange) onOpenChange(false); };
-  const horizontal = side === 'left' || side === 'right';
-  const style: CSSProperties = horizontal ? { width: size, maxWidth: '92vw' } : { height: size, maxHeight: '92vh' };
+  // Dynamic size flows through a CSS custom property (data, not inline styling);
+  // the side class decides whether it drives width or height.
+  const style = { '--srx-drawer-size': size } as CSSProperties;
   return (
     <Overlay
       open={!!open}
