@@ -13,7 +13,12 @@ body { font-family: var(--font-display); background-color: var(--bg-subtle); col
 .rail { position: sticky; top: 0; height: 100vh; overflow: hidden; background: var(--panel); border-right: 1px solid var(--surface-edge); display: flex; flex-direction: column; }
 .rail__nav { display: flex; flex-direction: column; min-height: 0; flex: 1; }
 .rail__head { flex: none; display: flex; flex-direction: column; gap: var(--space-3); padding: var(--space-5) var(--space-4) var(--space-3); border-bottom: 1px solid var(--surface-edge); }
-.rail__list { flex: 1; min-height: 0; overflow-y: auto; padding: var(--space-3) var(--space-4) var(--space-5); }
+/* top/bottom fade so rows scrolling past the fixed head fade out gracefully
+   instead of hard-clipping mid-text; the top fade sits within the padding so the
+   first row reads fully when unscrolled. */
+.rail__list { flex: 1; min-height: 0; overflow-y: auto; padding: var(--space-3) var(--space-4) var(--space-5);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 var(--space-3), #000 calc(100% - var(--space-4)), transparent);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 var(--space-3), #000 calc(100% - var(--space-4)), transparent); }
 .rail__brand { display: flex; align-items: center; gap: 0.625rem; font-weight: 700; font-size: 0.9375rem; letter-spacing: -0.02em; }
 .rail__tools { display: flex; align-items: center; gap: var(--space-2); }
 .rail__tools .tree__home { flex: 1; }
@@ -39,7 +44,7 @@ body { font-family: var(--font-display); background-color: var(--bg-subtle); col
 .page-group { scroll-margin-top: 6rem; }
 /* L0 — major section (Foundations / Components / Sections): large + bold, and it
    sticks just under the bar so you always know which top-level group you're in. */
-.page-group--l0 { position: sticky; top: 3.4rem; z-index: 6; font-size: var(--fs-h3); font-weight: var(--fw-bold); color: var(--text); letter-spacing: -0.01em; margin: var(--space-11) 0 var(--space-6); padding: var(--space-3) 0; border-bottom: 1px solid var(--rule); }
+.page-group--l0 { position: sticky; top: 4rem; z-index: 6; font-size: var(--fs-h3); font-weight: var(--fw-bold); color: var(--text); letter-spacing: -0.01em; margin: var(--space-11) 0 var(--space-6); padding: var(--space-3) 0; border-bottom: 1px solid var(--rule); }
 /* The sticky top bar and the sticky group title share one frosted surface AND
    bleed to the main column's edges (padding-inline restores the content position),
    so they read as one full-width glass panel that bordered cards scroll cleanly

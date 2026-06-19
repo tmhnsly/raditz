@@ -3,7 +3,8 @@
       and the main-panel overview cards. Shell/rail/main/pagehead/sec come from
       App.css. ── */
 
-.rail__nav { display: flex; flex-direction: column; gap: var(--space-2); }
+/* (.rail__nav layout lives in App.css — no gap, so the fixed head sits flush
+   against the scrolling tree below it.) */
 
 .tree__home { text-align: left; width: 100%; background: none; border: none; cursor: pointer;
   padding: 0.375rem var(--space-2); border-radius: var(--radius-sm);
@@ -28,7 +29,6 @@
 .overview-card__name { font-weight: 700; font-size: var(--fs-body-l); letter-spacing: -0.01em; }
 .overview-card__count { font-family: var(--font-mono); font-size: var(--fs-mono-xs); color: var(--text-faint); }
 .exp-accent { color: var(--accent-ink); }
-.rail__search { margin-bottom: var(--space-3); }
 .rail__empty { padding: var(--space-3); color: var(--text-muted); font-size: var(--fs-body-s); }
 
 /* Theme picker */
