@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { HTMLAttributes, ReactElement, CSSProperties } from 'react';
-import { cx, useControllableState } from '../../internal';
+import { cx, useControllableState, clamp } from '../../internal';
 
 export interface RatingProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange' | 'defaultValue'> {
   /** Controlled value. */
@@ -60,7 +60,7 @@ export function Rating({
     >
       {Array.from({ length: count }, (_, i) => {
         const n = i + 1;
-        const fill = Math.max(0, Math.min(1, shown - i)); // 0..1 fraction of this star
+        const fill = clamp(shown - i, 0, 1); // 0..1 fraction of this star
         return (
           <span className="srx-rating__star" key={n}>
             <span className="srx-rating__bg">{STAR}</span>

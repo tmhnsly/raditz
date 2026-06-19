@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import type { ChangeEvent, DragEvent, HTMLAttributes, ReactElement, ReactNode } from 'react';
-import { cx, useControllableState } from '../../internal';
+import { cx, useControllableState, formatBytes } from '../../internal';
 
 export interface FileDropzoneProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange' | 'defaultValue'> {
   /** Controlled file list. */
@@ -48,7 +48,6 @@ export function FileDropzone({
     setFiles(multiple ? [...files, ...next] : next.slice(0, 1));
   };
   const remove = (i: number): void => setFiles(files.filter((_, x) => x !== i));
-  const fmt = (b: number): string => (b < 1024 ? b + ' B' : b < 1048576 ? (b / 1024).toFixed(0) + ' KB' : (b / 1048576).toFixed(1) + ' MB');
 
   return (
     <div className={cx('srx-dropzone-wrap', className)} {...rest}>
@@ -84,7 +83,7 @@ export function FileDropzone({
             <li className="srx-dropzone__file" key={i}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z" /><polyline points="14 2 14 8 20 8" /></svg>
               <span className="srx-dropzone__name">{f.name}</span>
-              <span className="srx-dropzone__size">{fmt(f.size)}</span>
+              <span className="srx-dropzone__size">{formatBytes(f.size)}</span>
               <button type="button" className="srx-dropzone__remove" aria-label={`Remove ${f.name}`} onClick={() => remove(i)}>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="6" y1="6" x2="18" y2="18" /><line x1="18" y1="6" x2="6" y2="18" /></svg>
               </button>

@@ -1,6 +1,6 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import type { HTMLAttributes, ReactElement } from 'react';
-import { cx, useControllableState, Overlay } from '../../internal';
+import { cx, useControllableState, Overlay, useTrigger, parseISO, toISO, sameDay, outOfRange, monthGrid } from '../../internal';
 
 export interface DatePickerProps extends Omit<HTMLAttributes<HTMLSpanElement>, 'onChange' | 'defaultValue'> {
   /** ISO YYYY-MM-DD (controlled). */
@@ -18,10 +18,6 @@ export interface DatePickerProps extends Omit<HTMLAttributes<HTMLSpanElement>, '
 
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 const DOW = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
-
-function ymd(d: Date | null): string { return d ? `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}` : ''; }
-function parse(v: string | undefined): Date | null { if (!v) return null; const [y, m, d] = v.split('-').map(Number); return new Date(y, m - 1, d); }
-function sameDay(a: Date | null, b: Date | null): boolean { return !!a && !!b && a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate(); }
 
 /**
  * DatePicker — a text trigger that opens a calendar popover (Radix-style).
@@ -42,22 +38,15 @@ export function DatePicker({
   ...rest
 }: DatePickerProps): ReactElement {
   const [val, setVal] = useControllableState<string>({ value, defaultValue, onChange });
-  const [open, setOpen] = useState(false);
-  const selected = parse(val);
+  const { open, toggle, close, anchorRef } = useTrigger<HTMLButtonElement>({});
+  const selected = parseISO(val);
   const [view, setView] = useState<Date>(() => selected || new Date());
-  const anchorRef = useRef<HTMLButtonElement>(null);
 
-  const minD = parse(min); const maxD = parse(max);
+  const minD = parseISO(min); const maxD = parseISO(max);
   const y = view.getFullYear(); const m = view.getMonth();
-  const first = new Date(y, m, 1);
-  const startIdx = (first.getDay() + 6) % 7; // Monday-first
-  const days = new Date(y, m + 1, 0).getDate();
-  const cells: Array<Date | null> = [];
-  for (let i = 0; i < startIdx; i++) cells.push(null);
-  for (let d = 1; d <= days; d++) cells.push(new Date(y, m, d));
+  const cells = monthGrid(y, m);
 
-  const outOfRange = (d: Date): boolean => Boolean((minD && d < minD) || (maxD && d > maxD));
-  const pick = (d: Date): void => { if (outOfRange(d)) return; setVal(ymd(d)); setOpen(false); };
+  const pick = (d: Date): void => { if (outOfRange(d, minD, maxD)) return; setVal(toISO(d)); close(); };
   const shiftMonth = (delta: number): void => setView(new Date(y, m + delta, 1));
 
   const label = selected ? selected.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' }) : '';
@@ -71,14 +60,14 @@ export function DatePicker({
         disabled={disabled}
         aria-haspopup="dialog"
         aria-expanded={open}
-        onClick={() => { if (selected) setView(selected); setOpen((o) => !o); }}
+        onClick={() => { if (selected) setView(selected); toggle(); }}
       >
         <svg className="srx-datepicker__cal" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" /><line x1="3" y1="9" x2="21" y2="9" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="16" y1="2" x2="16" y2="6" /></svg>
         <span>{label || placeholder}</span>
       </button>
       <Overlay
         open={open}
-        onDismiss={() => setOpen(false)}
+        onDismiss={close}
         position={{ kind: 'anchored', anchor: anchorRef, side: 'bottom', align: 'start' }}
         ignore={anchorRef}
         focus="none"
@@ -98,7 +87,7 @@ export function DatePicker({
               key={i}
               type="button"
               className={cx('srx-calendar__day', sameDay(d, selected) && 'is-selected', sameDay(d, new Date()) && 'is-today')}
-              disabled={outOfRange(d)}
+              disabled={outOfRange(d, minD, maxD)}
               aria-current={sameDay(d, new Date()) ? 'date' : undefined}
               onClick={() => pick(d)}
             >{d.getDate()}</button>

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { ChangeEvent, HTMLAttributes, KeyboardEvent, ReactElement } from 'react';
 import { cx, useControllableState, onKeys, KEYS } from '../../internal';
+import { addTag } from './tags';
 
 export interface TagInputProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange' | 'defaultValue'> {
   /** Controlled tags. */
@@ -39,10 +40,8 @@ export function TagInput({
   const [draft, setDraft] = useState('');
 
   const add = (raw: string): void => {
-    const t = raw.trim();
-    if (!t || tags.includes(t) || (max && tags.length >= max)) return;
-    setTags([...tags, t]);
-    setDraft('');
+    const next = addTag(tags, raw, max);
+    if (next) { setTags(next); setDraft(''); }
   };
   const removeAt = (i: number): void => setTags(tags.filter((_, x) => x !== i));
   const onKeyDown = onKeys<KeyboardEvent<HTMLInputElement>>({

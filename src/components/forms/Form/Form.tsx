@@ -2,10 +2,10 @@ import { useState, useRef } from 'react';
 import type { ChangeEvent, FormEvent, ReactElement, ReactNode } from 'react';
 import { cx } from '../../internal';
 import { Field } from '../Field/Field';
+import { resolveFieldError } from './validate';
+import type { ValidityKey } from './validate';
 
-export type ValidityKey =
-  | 'valueMissing' | 'typeMismatch' | 'tooShort' | 'tooLong'
-  | 'patternMismatch' | 'rangeUnderflow' | 'rangeOverflow' | 'stepMismatch';
+export type { ValidityKey };
 
 export interface FormFieldSpec {
   /** Key in the submitted values object. */
@@ -38,8 +38,6 @@ export interface FormProps extends Omit<React.FormHTMLAttributes<HTMLFormElement
   footer?: ReactNode;
 }
 
-const VALIDITY_KEYS: ValidityKey[] = ['valueMissing', 'typeMismatch', 'tooShort', 'tooLong', 'patternMismatch', 'rangeUnderflow', 'rangeOverflow', 'stepMismatch'];
-
 type FieldElement = HTMLInputElement | HTMLTextAreaElement;
 
 /**
@@ -60,15 +58,8 @@ export function Form({ fields = [], submitLabel = 'Submit', onSubmit, footer, cl
 
   const validateField = (f: FormFieldSpec, value: string, all: Record<string, string>): string => {
     const el = refs.current[f.name];
-    if (el && el.validity && !el.validity.valid) {
-      const msgs = f.messages || {};
-      for (const key of VALIDITY_KEYS) {
-        if (el.validity[key] && msgs[key]) return msgs[key] as string;
-      }
-      return el.validationMessage;
-    }
-    if (f.validate) return f.validate(value, all) || '';
-    return '';
+    const customError = f.validate ? (f.validate(value, all) || '') : '';
+    return resolveFieldError(el?.validity, el?.validationMessage ?? '', f.messages, customError);
   };
 
   const recompute = (name: string, vals: Record<string, string>): void => {

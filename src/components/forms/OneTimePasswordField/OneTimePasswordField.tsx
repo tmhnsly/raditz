@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import type { ChangeEvent, ClipboardEvent, FocusEvent, HTMLAttributes, KeyboardEvent, ReactElement } from 'react';
 import { cx, useControllableState, onKeys, KEYS } from '../../internal';
+import { otpDigits, withOtpChar, sanitizeOtpPaste } from './otp';
 
 export interface OneTimePasswordFieldProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange' | 'defaultValue'> {
   /** Number of boxes. @default 6 */
@@ -36,19 +37,16 @@ export function OneTimePasswordField({
 }: OneTimePasswordFieldProps): ReactElement {
   const [val, setVal] = useControllableState<string>({ value, defaultValue, onChange });
   const refs = useRef<Array<HTMLInputElement | null>>([]);
-  const chars = Array.from({ length }, (_, i) => val[i] || '');
+  const chars = otpDigits(val, length);
 
   const focusBox = (i: number): void => { const el = refs.current[i]; if (el) { el.focus(); el.select(); } };
-  const commit = (joined: string): string => {
-    const clean = joined.slice(0, length);
-    setVal(clean);
-    if (clean.length === length && onComplete) onComplete(clean);
-    return clean;
+  const commit = (code: string): string => {
+    setVal(code);
+    if (code.length === length && onComplete) onComplete(code);
+    return code;
   };
   const setChar = (i: number, ch: string): void => {
-    const next = chars.slice();
-    next[i] = ch;
-    commit(next.join(''));
+    commit(withOtpChar(val, i, ch, length));
     if (ch && i < length - 1) focusBox(i + 1);
   };
   const onKeyDown = (i: number, e: KeyboardEvent<HTMLInputElement>): void => {
@@ -63,8 +61,7 @@ export function OneTimePasswordField({
   };
   const onPaste = (e: ClipboardEvent<HTMLDivElement>): void => {
     e.preventDefault();
-    const txt = (e.clipboardData.getData('text') || '').replace(/\s/g, '').slice(0, length);
-    const clean = commit(txt);
+    const clean = commit(sanitizeOtpPaste(e.clipboardData.getData('text') || '', length));
     focusBox(Math.min(clean.length, length - 1));
   };
 
