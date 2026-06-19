@@ -41,12 +41,3 @@ export function StatsB({ background = 'none', ...props }: SectionVariantProps = 
     </SectionShell>
   );
 }
-
-export function Stats() {
-  return (
-    <div className="col sx-gap-5">
-      <div className="variant"><span className="variant__tag">A · 4 across</span><StatsA /></div>
-      <div className="variant"><span className="variant__tag">B · Accent band</span><StatsB /></div>
-    </div>
-  );
-}

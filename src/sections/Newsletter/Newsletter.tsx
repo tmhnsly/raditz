@@ -11,11 +11,3 @@ export function NewsletterA({ background = 'gradient-aurora', ...props }: Sectio
     </SectionShell>
   );
 }
-
-export function Newsletter() {
-  return (
-    <div className="col sx-gap-5">
-      <div className="variant"><span className="variant__tag">A · Card signup</span><NewsletterA /></div>
-    </div>
-  );
-}

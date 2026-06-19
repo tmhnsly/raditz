@@ -19,12 +19,3 @@ export function BlogB({ background = 'surface-2', ...props }: SectionVariantProp
     </SectionShell>
   );
 }
-
-export function Blog() {
-  return (
-    <div className="col sx-gap-5">
-      <div className="variant"><span className="variant__tag">A · Card grid with cover</span><BlogA /></div>
-      <div className="variant"><span className="variant__tag">B · Editorial list rows</span><BlogB /></div>
-    </div>
-  );
-}

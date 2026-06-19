@@ -25,12 +25,3 @@ export function FaqB({ background = 'none', ...props }: SectionVariantProps = {}
     </SectionShell>
   );
 }
-
-export function Faq() {
-  return (
-    <div className="col sx-gap-5">
-      <div className="variant"><span className="variant__tag">A · Accordion</span><FaqA /></div>
-      <div className="variant"><span className="variant__tag">B · 2-column list</span><FaqB /></div>
-    </div>
-  );
-}

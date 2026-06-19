@@ -56,13 +56,3 @@ export function HeroC({ background = 'gradient-aurora', parallax = true, ...prop
     </SectionShell>
   );
 }
-
-export function Hero() {
-  return (
-    <div className="col sx-gap-5">
-      <div className="variant"><span className="variant__tag">A · Centered, dual CTA</span><HeroA /></div>
-      <div className="variant"><span className="variant__tag">B · Split — copy + media</span><HeroB /></div>
-      <div className="variant"><span className="variant__tag">C · Accent full-bleed</span><HeroC /></div>
-    </div>
-  );
-}

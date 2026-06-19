@@ -17,12 +17,3 @@ export function AnnouncementB({ background = 'none', ...props }: SectionVariantP
     </SectionShell>
   );
 }
-
-export function Announcement() {
-  return (
-    <div className="col sx-gap-5">
-      <div className="variant"><span className="variant__tag">A · Accent strip + CTA</span><AnnouncementA /></div>
-      <div className="variant"><span className="variant__tag">B · Cookie / consent banner</span><AnnouncementB /></div>
-    </div>
-  );
-}

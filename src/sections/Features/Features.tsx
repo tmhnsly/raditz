@@ -109,13 +109,3 @@ export function FeaturesC({ background = 'surface-2', ...props }: SectionVariant
     </SectionShell>
   );
 }
-
-export function Features() {
-  return (
-    <div className="col sx-gap-5">
-      <div className="variant"><span className="variant__tag">A · 3-up icon cards</span><FeaturesA /></div>
-      <div className="variant"><span className="variant__tag">B · Bento grid</span><FeaturesB /></div>
-      <div className="variant"><span className="variant__tag">C · Alternating spotlight</span><FeaturesC /></div>
-    </div>
-  );
-}

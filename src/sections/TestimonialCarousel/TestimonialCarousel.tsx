@@ -12,11 +12,3 @@ export function TestimonialCarouselA({ background = 'none', ...props }: SectionV
     </SectionShell>
   );
 }
-
-export function TestimonialCarousel() {
-  return (
-    <div className="col sx-gap-5">
-      <div className="variant"><span className="variant__tag">A · Scroll-snap quotes (drag / swipe)</span><TestimonialCarouselA /></div>
-    </div>
-  );
-}

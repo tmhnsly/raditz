@@ -97,12 +97,3 @@ export function PricingB({ background = 'gradient-accent', ...props }: SectionVa
     </SectionShell>
   );
 }
-
-export function Pricing() {
-  return (
-    <div className="col sx-gap-5">
-      <div className="variant"><span className="variant__tag">A · 3 tiers, popular highlighted</span><PricingA /></div>
-      <div className="variant"><span className="variant__tag">B · Monthly / annual toggle</span><PricingB /></div>
-    </div>
-  );
-}

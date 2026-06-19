@@ -29,12 +29,3 @@ export function SocialProofB({ background = 'none', ...props }: SectionVariantPr
     </SectionShell>
   );
 }
-
-export function SocialProof() {
-  return (
-    <div className="col sx-gap-5">
-      <div className="variant"><span className="variant__tag">A · Logo row</span><SocialProofA /></div>
-      <div className="variant"><span className="variant__tag">B · Heading + logos</span><SocialProofB /></div>
-    </div>
-  );
-}

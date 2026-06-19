@@ -10,11 +10,3 @@ export function NotFoundA({ background = 'none', ...props }: SectionVariantProps
     </SectionShell>
   );
 }
-
-export function NotFound() {
-  return (
-    <div className="col sx-gap-5">
-      <div className="variant"><span className="variant__tag">A · Centered, big code</span><NotFoundA /></div>
-    </div>
-  );
-}

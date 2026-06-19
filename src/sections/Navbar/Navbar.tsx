@@ -223,14 +223,3 @@ export function NavbarD() {
     </Frame>
   );
 }
-
-export function Navbar() {
-  return (
-    <div className="col sx-gap-5">
-      <div className="variant"><span className="variant__tag">A · Logo + links + CTAs</span><NavbarA /></div>
-      <div className="variant"><span className="variant__tag">B · Glass, centered links</span><NavbarB /></div>
-      <div className="variant"><span className="variant__tag">C · Mobile — links collapse into a dropdown menu</span><NavbarC /></div>
-      <div className="variant"><span className="variant__tag">D · Bottom tab bar (iOS-style)</span><NavbarD /></div>
-    </div>
-  );
-}

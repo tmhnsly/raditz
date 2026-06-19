@@ -17,11 +17,3 @@ export function MarqueeA({ background = 'none', ...props }: SectionVariantProps 
     </SectionShell>
   );
 }
-
-export function Marquee() {
-  return (
-    <div className="col sx-gap-5">
-      <div className="variant"><span className="variant__tag">A · Auto-scrolling logo strip</span><MarqueeA /></div>
-    </div>
-  );
-}

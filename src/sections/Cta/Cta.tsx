@@ -17,12 +17,3 @@ export function CtaB({ background = 'none', ...props }: SectionVariantProps = {}
     </SectionShell>
   );
 }
-
-export function Cta() {
-  return (
-    <div className="col sx-gap-5">
-      <div className="variant"><span className="variant__tag">A · Centered</span><CtaA /></div>
-      <div className="variant"><span className="variant__tag">B · Split, accent surface</span><CtaB /></div>
-    </div>
-  );
-}

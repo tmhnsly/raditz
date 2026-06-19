@@ -13,11 +13,3 @@ export function TeamA({ background = 'none', ...props }: SectionVariantProps = {
     </SectionShell>
   );
 }
-
-export function Team() {
-  return (
-    <div className="col sx-gap-5">
-      <div className="variant"><span className="variant__tag">A · 4-up member grid</span><TeamA /></div>
-    </div>
-  );
-}

@@ -19,11 +19,3 @@ export function ComparisonA({ background = 'surface-2', ...props }: SectionVaria
     </SectionShell>
   );
 }
-
-export function Comparison() {
-  return (
-    <div className="col sx-gap-5">
-      <div className="variant"><span className="variant__tag">A · Plans × features, popular highlighted</span><ComparisonA /></div>
-    </div>
-  );
-}

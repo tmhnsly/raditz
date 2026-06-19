@@ -19,12 +19,3 @@ export function FooterB({ background = 'none', ...props }: SectionVariantProps =
     </SectionShell>
   );
 }
-
-export function Footer() {
-  return (
-    <div className="col sx-gap-5">
-      <div className="variant"><span className="variant__tag">A · Multi-column</span><FooterA /></div>
-      <div className="variant"><span className="variant__tag">B · Minimal bar</span><FooterB /></div>
-    </div>
-  );
-}

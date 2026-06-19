@@ -19,12 +19,3 @@ export function TestimonialsB({ background = 'gradient-dusk', ...props }: Sectio
     </SectionShell>
   );
 }
-
-export function Testimonials() {
-  return (
-    <div className="col sx-gap-5">
-      <div className="variant"><span className="variant__tag">A · 3 quote cards</span><TestimonialsA /></div>
-      <div className="variant"><span className="variant__tag">B · Single large quote</span><TestimonialsB /></div>
-    </div>
-  );
-}
