@@ -23,6 +23,16 @@ function pageRows(tree: TreeNode[], level = 0, out: PageRow[] = []): PageRow[] {
   return out;
 }
 
+/** A group heading in the long page. Top-level (l0) sticks under the bar and
+ * shares its frosted surface (see App.css) so the two read as one sticky unit. */
+function GroupHeading({ slug, name, level }: { slug: string; name: string; level: number }) {
+  return (
+    <h2 id={slug} className={cx('page-group', `page-group--l${level}`)}>
+      {name}
+    </h2>
+  );
+}
+
 function EntryBlock({ entry }: { entry: Entry }) {
   const leafName = entry.segments[entry.segments.length - 1];
   return (
@@ -112,9 +122,7 @@ export function StoryView({
 
       {rows.map((r) =>
         r.kind === 'group' ? (
-          <h2 key={r.slug} id={r.slug} className={cx('page-group', `page-group--l${r.level}`)}>
-            {r.name}
-          </h2>
+          <GroupHeading key={r.slug} slug={r.slug} name={r.name} level={r.level} />
         ) : (
           <EntryBlock key={r.slug} entry={r.entry} />
         ),

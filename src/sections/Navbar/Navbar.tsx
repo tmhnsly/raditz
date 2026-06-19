@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import type { ReactElement } from 'react';
 import { Frame } from '../../lib/Frame';
 import { Overlay } from '../../components/internal';
 
@@ -33,7 +34,7 @@ export function NavbarA() {
   const [open, setOpen] = useState(false);
   const burgerRef = useRef<HTMLButtonElement>(null);
   return (
-    <Frame>
+    <Frame className="nav-section">
       <div className="s-pad-sm">
         <div className="s-wrap navcq">
           <div className="nav-bar">
@@ -83,7 +84,7 @@ export function NavbarB() {
   const [open, setOpen] = useState(false);
   const burgerRef = useRef<HTMLButtonElement>(null);
   return (
-    <Frame className="ph--neutral sx-nav__frame-b">
+    <Frame className="ph--neutral sx-nav__frame-b nav-section">
       <div className="s-pad-sm">
         <div className="s-wrap navcq">
           <div className="nav-bar sx-nav__bar-glass">
@@ -129,7 +130,7 @@ export function NavbarC() {
   const [open, setOpen] = useState(false);
   const burgerRef = useRef<HTMLButtonElement>(null);
   return (
-    <Frame maxWidth="22.5rem">
+    <Frame maxWidth="22.5rem" className="nav-section">
       <div className="sx-nav__pad">
         <div className="s-wrap navcq">
           <div className="nav-bar">
@@ -177,12 +178,60 @@ export function NavbarC() {
   );
 }
 
+const TAB_ICONS: Record<string, ReactElement> = {
+  home: <path d="M3 11.5 12 4l9 7.5M5 10v9h5v-5h4v5h5v-9" />,
+  search: <><circle cx="11" cy="11" r="7" /><path d="m21 21-4.3-4.3" /></>,
+  create: <><circle cx="12" cy="12" r="9" /><path d="M12 8.5v7M8.5 12h7" /></>,
+  activity: <path d="M3 12h4l2.5 7 5-14L17 12h4" />,
+  profile: <><circle cx="12" cy="8" r="3.5" /><path d="M5.5 20a6.5 6.5 0 0 1 13 0" /></>,
+};
+
+/** D — an iOS/Android-style bottom tab bar: pinned to the bottom, icon+label
+ * tabs with an accent active state. All SuperRadix tokens, so it re-themes. */
+export function NavbarD() {
+  const [active, setActive] = useState('home');
+  const tabs = [
+    { id: 'home', label: 'Home' },
+    { id: 'search', label: 'Search' },
+    { id: 'create', label: 'Create' },
+    { id: 'activity', label: 'Activity' },
+    { id: 'profile', label: 'Profile' },
+  ];
+  return (
+    <Frame maxWidth="22.5rem" className="nav-section">
+      <div className="nav-tabframe">
+        <div className="nav-tabframe__body">
+          <div className="ph nav-tabframe__ph">app content</div>
+        </div>
+        <nav className="nav-tabbar" role="tablist" aria-label="Primary">
+          {tabs.map((t) => (
+            <button
+              key={t.id}
+              type="button"
+              role="tab"
+              aria-selected={active === t.id}
+              className={'nav-tab' + (active === t.id ? ' is-active' : '')}
+              onClick={() => setActive(t.id)}
+            >
+              <svg className="nav-tab__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                {TAB_ICONS[t.id]}
+              </svg>
+              <span className="nav-tab__label">{t.label}</span>
+            </button>
+          ))}
+        </nav>
+      </div>
+    </Frame>
+  );
+}
+
 export function Navbar() {
   return (
     <div className="col sx-gap-5">
       <div className="variant"><span className="variant__tag">A · Logo + links + CTAs</span><NavbarA /></div>
       <div className="variant"><span className="variant__tag">B · Glass, centered links</span><NavbarB /></div>
       <div className="variant"><span className="variant__tag">C · Mobile — links collapse into a dropdown menu</span><NavbarC /></div>
+      <div className="variant"><span className="variant__tag">D · Bottom tab bar (iOS-style)</span><NavbarD /></div>
     </div>
   );
 }

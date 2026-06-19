@@ -14,6 +14,10 @@
    ────────────────────────────────────────────────────────────────────────── */
 
 :root {
+  /* Tell the UA to render native scrollbars / form controls in the light scheme
+     (the .dark scope flips this) — otherwise Safari keeps a light-scheme
+     scrollbar in dark mode, which reads wrong. */
+  color-scheme: light;
   /* ── neutral scale indirection ──
      Surfaces / text / rules read from --neutral-* (NOT a raw Radix gray) so the
      theme picker can repoint the whole neutral ramp to any of the six Radix grays
@@ -109,6 +113,7 @@
 /* dark glass needs a touch more body to read as frosted; sheen dims so the rim
    light stays subtle on a dark panel. (Radix scales already flip via .dark.) */
 .dark {
+  color-scheme: dark;
   --glass: color-mix(in srgb, var(--bg) 74%, transparent);
   --glass-soft: color-mix(in srgb, var(--bg) 58%, transparent);
   --glass-sheen: var(--white-a4);

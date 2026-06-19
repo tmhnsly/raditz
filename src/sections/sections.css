@@ -11,6 +11,9 @@
    stack seamlessly edge-to-edge instead of as separate cards. */
 .srx-page { background: var(--bg); }
 .srx-page .frame { border: 0; border-radius: 0; box-shadow: none; }
+/* In a composed page the navbar pins to the top; its panel bg covers content
+   scrolling underneath. (In the isolated showcase it's just a framed preview.) */
+.srx-page .nav-section { position: sticky; top: 0; z-index: 50; }
 .srx-page .variant { margin: 0; }
 .srx-page .variant__tag { display: none; }
 
@@ -94,6 +97,18 @@
   .nav-bar__links, .nav-hide-sm { display: none; }
   .nav-bar__burger { display: inline-flex; }
 }
+
+/* Bottom tab bar (iOS-style) — pinned to the bottom of an app frame; icon+label
+   tabs with an accent active state. Glass surface like the top bar. */
+.nav-tabframe { display: flex; flex-direction: column; min-height: 22rem; }
+.nav-tabframe__body { flex: 1; padding: var(--space-4); display: flex; }
+.nav-tabframe__ph { flex: 1; }
+.nav-tabbar { display: flex; justify-content: space-around; gap: var(--space-1); padding: var(--space-2) var(--space-2) calc(var(--space-2) + env(safe-area-inset-bottom, 0px)); background: color-mix(in srgb, var(--bg-subtle) 86%, transparent); -webkit-backdrop-filter: blur(var(--glass-blur)); backdrop-filter: blur(var(--glass-blur)); border-top: 1px solid var(--rule); }
+.nav-tab { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 0.125rem; padding: var(--space-2) 0; border: 0; background: none; color: var(--text-muted); cursor: pointer; border-radius: var(--radius-md); transition: color var(--duration-fast) var(--ease-standard); }
+.nav-tab:hover { color: var(--text-soft); }
+.nav-tab__icon { width: 1.5rem; height: 1.5rem; }
+.nav-tab__label { font-size: var(--fs-caption); font-weight: var(--fw-medium); }
+.nav-tab.is-active { color: var(--accent); }
 
 /* marquee */
 .mq { width: 100%; overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
@@ -291,7 +306,7 @@
 /* ── Stats ── */
 .sx-stat__num { font-size: clamp(1.75rem, 4vw, 2.75rem); font-weight: 700; letter-spacing: -0.03em; }
 .sx-stat__band-num { font-size: clamp(1.75rem, 4vw, 2.875rem); font-weight: 700; letter-spacing: -0.03em; }
-.sx-stat__cell { gap: 0.25rem; }
+.sx-stat__cell { gap: 0.25rem; align-items: center; text-align: center; }
 .sx-stat__band { background: var(--accent); color: var(--on-accent); }
 .sx-stat__band-grid { text-align: center; }
 .sx-stat__band-label { opacity: 0.85; font-size: var(--fs-body-s); }

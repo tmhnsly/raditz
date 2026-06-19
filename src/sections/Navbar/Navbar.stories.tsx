@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { NavbarA, NavbarB, NavbarC } from './Navbar';
+import { NavbarA, NavbarB, NavbarC, NavbarD } from './Navbar';
 
 const meta: Meta = { title: 'Sections/Navbar' };
 export default meta;
@@ -11,3 +11,4 @@ export const C_MobileDropdown: Story = {
   name: 'C · Mobile — links collapse into a dropdown menu',
   render: () => <NavbarC />,
 };
+export const D_BottomTabBar: Story = { name: 'D · Bottom tab bar (iOS-style)', render: () => <NavbarD /> };
