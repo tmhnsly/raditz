@@ -28,6 +28,10 @@ export function resolveGray(accent: Accent, choice: GrayChoice): Gray {
   return choice === 'auto' ? PAIRED_GRAY[accent] : choice;
 }
 
+/** Radix accents whose step 9/10 are LIGHT — they need dark foreground text
+ * (the rest pair with white). From the Radix Colors "understanding the scale" docs. */
+export const LIGHT_ACCENTS = new Set<Accent>(['sky', 'mint', 'lime', 'yellow', 'amber']);
+
 /** Repoint the accent + neutral ramps on <html> to the chosen Radix scales.
  * Values stay as var() references so a `.dark` toggle keeps flipping them. */
 export function applyTheme(accent: Accent, choice: GrayChoice): void {
@@ -41,6 +45,8 @@ export function applyTheme(accent: Accent, choice: GrayChoice): void {
   for (let i = 1; i <= 6; i++) {
     root.style.setProperty(`--neutral-a${i}`, `var(--${gray}-a${i})`);
   }
+  // Light accents (sky/mint/lime/yellow/amber) need dark text on their step 9/10.
+  root.style.setProperty('--on-accent', LIGHT_ACCENTS.has(accent) ? 'var(--black-a12)' : 'var(--white-a12)');
 }
 
 const KEY = 'srx-theme';
