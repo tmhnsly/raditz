@@ -66,6 +66,11 @@ body { font-family: var(--font-display); background-color: var(--bg-subtle); col
 .expbar { position: sticky; top: 0; z-index: 30; display: flex; align-items: center; gap: var(--space-3);
   padding: var(--space-3) 0; margin-bottom: var(--space-4);
   background: color-mix(in srgb, var(--bg-subtle) 86%, transparent); -webkit-backdrop-filter: blur(var(--glass-blur)); backdrop-filter: blur(var(--glass-blur)); }
+/* A composed page preview scrolls in the window beside the explorer chrome, so a
+   page's window-sticky navbar (z 50) would render OVER the sticky expbar (z 30)
+   and cover the Theme/Dark controls. Keep that navbar in-flow inside the
+   showcase; it still sticks on a real .srx-page page (no .main / expbar there). */
+.main .srx-page .nav-section { position: static; }
 .expbar__left { display: none; align-items: center; gap: var(--space-2); }
 .expbar__actions { display: flex; gap: var(--space-2); margin-left: auto; }
 .expbar__burger { width: 2.25rem; height: 2.25rem; display: inline-grid; place-items: center; border: 1px solid var(--rule); border-radius: var(--radius-control); background: var(--panel); color: var(--text-soft); }
