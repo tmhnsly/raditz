@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { cx } from '../../internal';
+import { cx, sparklinePath } from '../../internal';
 
 export interface SparklineProps extends React.SVGAttributes<SVGSVGElement> {
   data?: number[];
@@ -29,18 +29,10 @@ export function Sparkline({
   style,
   ...rest
 }: SparklineProps): React.ReactElement | null {
-  const n = data.length;
-  if (n < 2) return null;
+  if (data.length < 2) return null;
   const W = 100;
   const H = 32;
-  const pad = strokeWidth;
-  const min = Math.min(...data);
-  const max = Math.max(...data);
-  const span = max - min || 1;
-  const x = (i: number): number => (i / (n - 1)) * W;
-  const y = (v: number): number => H - pad - ((v - min) / span) * (H - pad * 2);
-  const line = data.map((v, i) => `${i === 0 ? 'M' : 'L'}${x(i).toFixed(2)} ${y(v).toFixed(2)}`).join(' ');
-  const fill = `${line} L${W} ${H} L0 ${H} Z`;
+  const { line, area: fill } = sparklinePath(data, { w: W, h: H, pad: strokeWidth });
   return (
     <svg
       className={cx('srx-sparkline', className)}

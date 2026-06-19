@@ -7,3 +7,4 @@ export * from './primitiveUtils';
 export * from './overlayHooks';
 export * from './Overlay';
 export * from './fuzzy';
+export * from './scale';

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { cx } from '../../internal';
+import { cx, toPercent } from '../../internal';
 
 export interface ProgressProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Current value (0–max). Omit / null for indeterminate. */
@@ -19,7 +19,7 @@ export interface ProgressProps extends React.HTMLAttributes<HTMLDivElement> {
  */
 export function Progress({ value = null, max = 100, size = 'md', indeterminate = false, className, ...rest }: ProgressProps): React.ReactElement {
   const isInd = indeterminate || value == null;
-  const pct = isInd ? null : Math.max(0, Math.min(100, (value / max) * 100));
+  const pct = isInd ? null : toPercent(value as number, max);
   const cls = cx(
     'srx-progress',
     size !== 'md' && `srx-progress--${size}`,

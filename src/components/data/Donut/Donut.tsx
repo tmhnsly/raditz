@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { cx } from '../../internal';
+import { cx, toPercent, donutDashes } from '../../internal';
 
 export interface DonutSegment {
   value: number;
@@ -57,17 +57,12 @@ export function Donut({
   const C = 2 * Math.PI * r;
   let parts: DonutPart[];
   if (segments && segments.length) {
-    const total = segments.reduce((s, x) => s + x.value, 0) || 1;
-    let offset = 0;
-    parts = segments.map((s, i) => {
-      const len = (s.value / total) * C;
-      const el: DonutPart = { dash: len, gap: C - len, off: -offset, color: s.color || `var(--accent)`, key: i };
-      offset += len;
-      return el;
-    });
+    parts = donutDashes(segments.map((s) => s.value), C).map((d, i) => ({
+      dash: d.dash, gap: d.gap, off: d.offset, color: segments[i].color || 'var(--accent)', key: i,
+    }));
   } else {
-    const pct = Math.max(0, Math.min(1, (value || 0) / max));
-    parts = [{ dash: pct * C, gap: C - pct * C, off: 0, color, key: 0 }];
+    const frac = toPercent(value || 0, max) / 100;
+    parts = [{ dash: frac * C, gap: C - frac * C, off: 0, color, key: 0 }];
   }
   return (
     <div className={cx('srx-donut', className)} style={{ '--srx-donut-size': size, ...style } as React.CSSProperties} role="img" aria-label="Donut chart" {...rest}>

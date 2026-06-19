@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { cx } from '../../internal';
+import { cx, minMax, toPercent } from '../../internal';
 
 export interface BarDatum {
   label: React.ReactNode;
@@ -31,7 +31,7 @@ export function BarChart({
   style,
   ...rest
 }: BarChartProps): React.ReactElement {
-  const max = Math.max(...data.map((d) => d.value), 1);
+  const max = Math.max(minMax(data.map((d) => d.value)).max, 1);
   return (
     <div
       className={cx('srx-barchart', horizontal && 'srx-barchart--h')}
@@ -41,7 +41,7 @@ export function BarChart({
       {...rest}
     >
       {data.map((d, i) => {
-        const pct = (d.value / max) * 100;
+        const pct = toPercent(d.value, max);
         const fill = d.color || 'var(--accent)';
         return (
           <div className="srx-barchart__cell" key={i}>
