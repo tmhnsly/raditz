@@ -260,7 +260,9 @@
 /* ── Pricing ── */
 .sx-price__num { font-size: 2.25rem; font-weight: 700; letter-spacing: -0.03em; }
 .sx-price__list { gap: 0.5rem; list-style: none; padding: 0; margin: 0; font-size: var(--fs-body-s); color: var(--text-soft); }
-.sx-price__grid { gap: var(--space-4); align-items: start; }
+/* 3 tiers go straight 3 → 1 (never an orphaned 2+1), equal-height cards. */
+.sx-price__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-4); align-items: stretch; }
+@container (max-width: 44rem) { .sx-price__grid { grid-template-columns: 1fr; } }
 .sx-price__card { gap: var(--space-4); }
 .sx-price__plan { gap: 0.125rem; }
 .sx-price__btn { width: 100%; }

@@ -9,7 +9,7 @@ export function PricingA({ background = 'surface-2', parallax, image, video }: S
         <h3 className="h-section">Simple, scalable pricing</h3>
         <p className="muted">Start free. Upgrade when your team grows.</p>
       </div>
-      <div className="sx-g3 sx-price__grid">
+      <div className="sx-price__grid">
         <div className="srx-card col sx-price__card">
           <div className="col sx-price__plan">
             <strong>Starter</strong>
