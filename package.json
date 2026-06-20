@@ -33,7 +33,8 @@
     "build:lib": "vite build --config vite.lib.ts",
     "build:css": "vite build --config vite.css.ts",
     "build:pkg": "pnpm build:lib && pnpm build:css",
-    "prepare": "pnpm build:pkg"
+    "prepare": "pnpm build:pkg",
+    "release:preflight": "node scripts/release-preflight.mjs"
   },
   "dependencies": {
     "@fontsource-variable/space-grotesk": "^5.2.10",
