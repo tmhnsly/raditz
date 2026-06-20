@@ -5,3 +5,6 @@ storybook-static
 *.log
 pnpm-debug.log*
 tsconfig.tsbuildinfo
+
+# subagent-driven-development scratch (briefs, reports, diffs, ledger)
+.superpowers/
