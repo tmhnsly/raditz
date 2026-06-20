@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { cx } from '../../internal';
+import { cx, OverlayClose } from '../../internal';
 
 const { useState, useEffect } = React;
 
@@ -94,12 +94,7 @@ export const Toast: ToastComponent = function Toast({
               {it.action.label}
             </button>
           ) : null}
-          <button type="button" className="srx-toast__close" aria-label="Dismiss" onClick={() => dismiss(it.id)}>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-              <line x1="6" y1="6" x2="18" y2="18" />
-              <line x1="18" y1="6" x2="6" y2="18" />
-            </svg>
-          </button>
+          <OverlayClose size="sm" className="srx-toast__close" label="Dismiss" onClick={() => dismiss(it.id)} />
         </div>
       ))}
     </div>

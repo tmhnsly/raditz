@@ -11,7 +11,7 @@
   transition: var(--transition-control);
 }
 
-.srx-btn:active { transform: translateY(1px); }
+.srx-btn:active { transform: var(--press-down); }
 
 .srx-btn:disabled, .srx-btn[aria-disabled="true"] { opacity: var(--disabled-opacity); cursor: not-allowed; }
 
@@ -42,3 +42,15 @@
 .srx-btn--ghost { background: transparent; color: var(--text); }
 
 .srx-btn--ghost:hover { background: var(--surface); }
+
+
+/* Frosted glass — translucent + blurred, for buttons over media/gradients
+   (e.g. the Hero "Live demo" CTA, Lightbox controls). Shares the --glass* tokens
+   with .srx-glass so it re-themes with cards + chrome. */
+.srx-btn--glass {
+  background: var(--glass); color: var(--text); border-color: var(--glass-sheen);
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  backdrop-filter: blur(var(--glass-blur));
+}
+
+.srx-btn--glass:hover { background: color-mix(in srgb, var(--bg) 90%, transparent); border-color: var(--rule); }

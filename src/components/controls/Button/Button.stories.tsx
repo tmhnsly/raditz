@@ -6,7 +6,7 @@ const meta = {
   component: Button,
   parameters: { docs: { description: { component: 'The primary action component. `variant` sets the visual weight, `size` the scale.' } } },
   argTypes: {
-    variant: { control: 'select', options: ['primary', 'secondary', 'soft', 'outline', 'ghost'] },
+    variant: { control: 'select', options: ['primary', 'secondary', 'soft', 'outline', 'ghost', 'glass'] },
     size: { control: 'select', options: ['sm', 'md', 'lg'] },
   },
   args: { children: 'Button' },
@@ -24,6 +24,16 @@ export const Variants: Story = {
       <Button {...args} variant="soft">Soft</Button>
       <Button {...args} variant="outline">Outline</Button>
       <Button {...args} variant="ghost">Ghost</Button>
+    </div>
+  ),
+};
+
+// Glass needs something behind it to frost — shown over a gradient.
+export const Glass: Story = {
+  render: (args) => (
+    <div style={{ padding: '2.5rem', borderRadius: 'var(--radius-card)', background: 'linear-gradient(120deg, var(--accent-surface), var(--accent-2-surface))', display: 'flex', gap: '0.75rem', flexWrap: 'wrap', alignItems: 'center' }}>
+      <Button {...args} variant="glass">Glass</Button>
+      <Button {...args} variant="glass" size="lg">Live demo →</Button>
     </div>
   ),
 };

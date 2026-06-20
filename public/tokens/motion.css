@@ -46,6 +46,7 @@
   /* ── Common transition recipes ── */
   --transition-control: background var(--duration-fast) var(--ease-standard), border-color var(--duration-fast) var(--ease-standard), box-shadow var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard), transform var(--duration-fast) var(--ease-standard); /* @kind other */
   --transition-hover: transform var(--duration-base) var(--ease-standard), box-shadow var(--duration-base) var(--ease-standard); /* @kind other */
+  --press-down: translateY(1px); /* @kind other */ /* shared tactile button-press transform */
 }
 
 /* ══════════════════════ Feel presets ══════════════════════

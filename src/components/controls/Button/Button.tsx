@@ -5,7 +5,7 @@ import { cx } from '../../internal';
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   /** Visual weight. @default "primary" */
-  variant?: 'primary' | 'secondary' | 'soft' | 'outline' | 'ghost';
+  variant?: 'primary' | 'secondary' | 'soft' | 'outline' | 'ghost' | 'glass';
   /** Size. @default "md" */
   size?: 'sm' | 'md' | 'lg';
   /** Render an anchor instead of a button. */

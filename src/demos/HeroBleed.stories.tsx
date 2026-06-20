@@ -33,7 +33,7 @@ export const Aurora: Story = {
       <p className="lede" style={{ maxWidth: '42ch' }}>One accent token retones the entire product — accessible, themeable, dependency-free.</p>
       <div className="row sx-row-center">
         <button className="srx-btn srx-btn--primary srx-btn--lg">Start building</button>
-        <button className="srx-btn srx-btn--outline srx-btn--lg">Live demo</button>
+        <button className="srx-btn srx-btn--glass srx-btn--lg">Live demo</button>
       </div>
     </HeroBleed>
   ),
@@ -58,7 +58,7 @@ const mediaHero = (
     <p className="lede" style={{ maxWidth: '42ch' }}>The backdrop is scrimmed and the text goes light automatically, so the hero stays readable over busy media.</p>
     <div className="row sx-row-center">
       <button className="srx-btn srx-btn--primary srx-btn--lg">Start building</button>
-      <button className="srx-btn srx-btn--outline srx-btn--lg">Live demo</button>
+      <button className="srx-btn srx-btn--glass srx-btn--lg">Live demo</button>
     </div>
   </>
 );

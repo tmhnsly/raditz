@@ -33,8 +33,5 @@
 
 .srx-toast__action:hover { background: var(--accent-surface); }
 
-.srx-toast__close { flex: none; color: var(--text-muted); width: 1.375rem; height: 1.375rem; display: inline-grid; place-items: center; border-radius: var(--radius-sm); }
-
-.srx-toast__close:hover { background: var(--surface); color: var(--text); }
-
-.srx-toast__close svg { width: 0.875rem; height: 0.875rem; }
+/* Close = the shared OverlayClose disc (currentColor tint); keep it top-aligned. */
+.srx-toast__close { align-self: flex-start; }

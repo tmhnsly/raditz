@@ -25,4 +25,15 @@
 
 .srx-icon-btn--ghost:hover { background: var(--surface); }
 
+.srx-icon-btn:active { transform: var(--press-down); }
+
+/* Frosted glass — shares the --glass* tokens with .srx-glass / Button's glass. */
+.srx-icon-btn--glass {
+  background: var(--glass); border-color: var(--glass-sheen);
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  backdrop-filter: blur(var(--glass-blur));
+}
+
+.srx-icon-btn--glass:hover { background: color-mix(in srgb, var(--bg) 90%, transparent); }
+
 .srx-icon-btn:disabled { opacity: var(--disabled-opacity); cursor: not-allowed; }

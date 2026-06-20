@@ -31,7 +31,7 @@ export function HeroB({ background = 'surface-2', ...props }: SectionVariantProp
         </p>
         <div className="row">
           <button className="srx-btn srx-btn--primary srx-btn--lg">Start building</button>
-          <button className="srx-btn srx-btn--ghost srx-btn--lg">Live demo →</button>
+          <button className="srx-btn srx-btn--glass srx-btn--lg">Live demo →</button>
         </div>
       </div>
       <div className="ph sx-hero__media">product shot</div>

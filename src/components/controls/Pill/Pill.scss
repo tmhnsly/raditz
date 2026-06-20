@@ -12,6 +12,8 @@
 
 .srx-pill:hover { background: var(--surface-strong); color: var(--text); }
 
+.srx-pill:active { transform: var(--press-down); }
+
 .srx-pill--active { background: var(--accent); color: var(--on-accent); }
 
 .srx-pill--active:hover { background: var(--accent-hover); color: var(--on-accent); }

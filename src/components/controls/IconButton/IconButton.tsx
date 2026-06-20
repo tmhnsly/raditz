@@ -5,7 +5,7 @@ import { cx } from '../../internal';
 
 export interface IconButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   /** @default "ghost" */
-  variant?: 'solid' | 'soft' | 'outline' | 'ghost';
+  variant?: 'solid' | 'soft' | 'outline' | 'ghost' | 'glass';
   /** @default "md" */
   size?: 'sm' | 'md';
   href?: string;

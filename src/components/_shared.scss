@@ -11,6 +11,18 @@
 .srx-scrollbar::-webkit-scrollbar-thumb:hover { background: var(--rule-strong); background-clip: content-box; }
 .srx-scrollbar::-webkit-scrollbar-track { background: transparent; }
 
+/* Canonical glass surface — a frosted translucent panel. ONE recipe, driven by
+   the --glass* tokens (colors.css), so the Button/IconButton glass variants,
+   cards, the navbar and overlay chrome all frost identically and re-theme
+   together. Needs something behind it for the blur to read. */
+.srx-glass {
+  background: var(--glass);
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  backdrop-filter: blur(var(--glass-blur));
+  border: var(--border-width) solid var(--glass-sheen);
+}
+.srx-glass--soft { background: var(--glass-soft); }
+
 /* Shared overlay icon button — the close affordance (srx-oclose) and media nav
    carets (srx-ovbtn). The disc tint derives from currentColor, so one style reads
    on a light panel (Dialog/Drawer) and on a dark scrim (Lightbox) alike: set the
@@ -29,6 +41,8 @@
 .srx-oclose svg, .srx-ovbtn svg { width: 1.1rem; height: 1.1rem; }
 .srx-oclose--lg, .srx-ovbtn--lg { --srx-oclose-size: 2.75rem; }
 .srx-oclose--lg svg, .srx-ovbtn--lg svg { width: 1.25rem; height: 1.25rem; }
+.srx-oclose--sm, .srx-ovbtn--sm { --srx-oclose-size: 1.625rem; }
+.srx-oclose--sm svg, .srx-ovbtn--sm svg { width: 0.9rem; height: 0.9rem; }
 
 @keyframes srxProgressSlide { 0% { transform: translateX(-110%); } 100% { transform: translateX(360%); } }
 
