@@ -28,8 +28,10 @@ export interface AvatarGroupProps extends HTMLAttributes<HTMLDivElement> {
 
 const hasProfile = (it: AvatarGroupItem): boolean => Boolean(it.name || it.role || it.href);
 
-/** The overlapping avatar chip — a link when the item has an `href`, else a span. */
-function Chip({ it }: { it: AvatarGroupItem }): ReactElement {
+/** The overlapping avatar chip — a link when the item has an `href`, else a span.
+ *  `focusable` makes the (non-link) span keyboard-focusable so the hover card is
+ *  reachable without a mouse. */
+function Chip({ it, focusable = false }: { it: AvatarGroupItem; focusable?: boolean }): ReactElement {
   const cls = 'srx-avatar srx-avatar-group__item';
   const style = (it.src ? { '--srx-avatar-group-img': `url(${it.src})` } : {}) as CSSProperties;
   const content = it.src ? null : it.initials || '';
@@ -37,7 +39,7 @@ function Chip({ it }: { it: AvatarGroupItem }): ReactElement {
   return it.href ? (
     <a className={cls} href={it.href} data-image={it.src ? '' : undefined} style={style} aria-label={label}>{content}</a>
   ) : (
-    <span className={cls} data-image={it.src ? '' : undefined} style={style} title={label}>{content}</span>
+    <span className={cls} data-image={it.src ? '' : undefined} style={style} title={label} aria-label={focusable ? label : undefined} tabIndex={focusable ? 0 : undefined}>{content}</span>
   );
 }
 
@@ -74,7 +76,7 @@ export function AvatarGroup({ items = [], max = 4, size = 'md', className, ...re
     <div className={cx('srx-avatar-group', className)} style={{ '--srx-avatar-group-dim': dim } as CSSProperties} {...rest}>
       {shown.map((it, i) => (
         <span className="srx-avatar-group__slot" key={i} style={{ '--srx-avatar-z': i + 1 } as CSSProperties}>
-          {hasProfile(it) ? <HoverCard side="top" trigger={<Chip it={it} />}><ProfileRow it={it} /></HoverCard> : <Chip it={it} />}
+          {hasProfile(it) ? <HoverCard side="top" trigger={<Chip it={it} focusable />}><ProfileRow it={it} /></HoverCard> : <Chip it={it} />}
         </span>
       ))}
       {extra > 0 ? (

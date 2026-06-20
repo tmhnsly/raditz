@@ -26,10 +26,10 @@
 
 /* Animate open/close via grid-template-rows (0fr→1fr) rather than the `hidden`
    attribute, which snaps the layout and flickers the window scrollbar. */
-.srx-accordion__panel { display: grid; grid-template-rows: 0fr; transition: grid-template-rows var(--duration-base) var(--ease-standard); }
+.srx-accordion__panel { display: grid; grid-template-rows: 0fr; visibility: hidden; transition: grid-template-rows var(--duration-base) var(--ease-standard), visibility var(--duration-base) var(--ease-standard); }
 
-.srx-accordion__item[data-state="open"] .srx-accordion__panel { grid-template-rows: 1fr; }
+.srx-accordion__item[data-state="open"] .srx-accordion__panel { grid-template-rows: 1fr; visibility: visible; }
 
-.srx-accordion__content { min-height: 0; overflow: hidden; visibility: hidden; transition: visibility var(--duration-base) var(--ease-standard); padding: 0 var(--space-5) var(--space-5); color: var(--text-soft); font-size: var(--fs-body-s); line-height: var(--lh-body); }
-
-.srx-accordion__item[data-state="open"] .srx-accordion__content { visibility: visible; }
+/* visibility lives on the PANEL (not the content) so the whole role="region" —
+   not just its text — leaves the a11y tree + tab order when collapsed. */
+.srx-accordion__content { min-height: 0; overflow: hidden; padding: 0 var(--space-5) var(--space-5); color: var(--text-soft); font-size: var(--fs-body-s); line-height: var(--lh-body); }

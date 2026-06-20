@@ -65,6 +65,10 @@ export function Carousel({
   // Original scroll-snap value, captured once while an animation owns it — so
   // overlapping paging (rapid clicks) can't leave snapping permanently disabled.
   const snapSaved = useRef<string | null>(null);
+  // Latest active index, so the autoplay interval reads it without a stale closure
+  // (and without a side effect inside the setState updater).
+  const activeRef = useRef(0);
+  activeRef.current = active;
 
   // Token-timed smooth scroll. Native `scroll-behavior:smooth` ignores the motion
   // tokens AND fights `scroll-snap-type:mandatory` (the browser yanks to a snap
@@ -74,12 +78,15 @@ export function Carousel({
     const track = trackRef.current;
     if (!track) return;
     cancelAnimationFrame(raf.current);
+    // Restore snapping on any non-animating exit, else a cancelled in-flight
+    // animation leaves scrollSnapType stuck at 'none'.
+    const restoreSnap = (): void => { if (snapSaved.current !== null) { track.style.scrollSnapType = snapSaved.current; snapSaved.current = null; } };
     const start = track.scrollLeft;
     const dist = left - start;
-    if (Math.abs(dist) < 1) return;
+    if (Math.abs(dist) < 1) { restoreSnap(); return; }
     const scale = parseFloat(getComputedStyle(track).getPropertyValue('--motion-scale')) || 1;
     const dur = 460 * scale;
-    if (dur < 30) { track.scrollLeft = left; return; } // "none" preset / reduced motion
+    if (dur < 30) { track.scrollLeft = left; restoreSnap(); return; } // "none" preset / reduced motion
     if (snapSaved.current === null) snapSaved.current = track.style.scrollSnapType;
     track.style.scrollSnapType = 'none';
     const t0 = performance.now();
@@ -87,7 +94,7 @@ export function Carousel({
       const t = Math.min(1, (now - t0) / dur);
       track.scrollLeft = start + dist * easeOut(t);
       if (t < 1) raf.current = requestAnimationFrame(step);
-      else { track.style.scrollSnapType = snapSaved.current ?? ''; snapSaved.current = null; }
+      else restoreSnap();
     };
     raf.current = requestAnimationFrame(step);
   }, []);
@@ -147,11 +154,9 @@ export function Carousel({
   useEffect(() => {
     if (!autoplay || n < 2) return undefined;
     const id = setInterval(() => {
-      setActive((a) => {
-        const next = (a + 1) % n;
-        scrollToIndex(next);
-        return next;
-      });
+      const next = (activeRef.current + 1) % n;
+      setActive(next);
+      scrollToIndex(next);
     }, interval);
     return () => clearInterval(id);
   }, [autoplay, interval, n, scrollToIndex]);

@@ -69,27 +69,27 @@ export function TimePicker({
         aria-label="Choose time"
       >
         <div className="srx-timemenu__cols">
-          <div className="srx-timemenu__col srx-scrollbar" role="listbox" aria-label="Hour">
+          <div className="srx-timemenu__col srx-scrollbar" role="group" aria-label="Hour">
             {hours.map((hh) => {
               const active = !!t && (hour12 ? hh === h12 : hh === h);
               return (
-                <button key={hh} type="button" role="option" aria-selected={active} className={cx('srx-timemenu__opt', active && 'is-selected')} onClick={() => commit(hour12 ? to24(hh, period) : hh, m)}>
+                <button key={hh} type="button" aria-pressed={active} className={cx('srx-timemenu__opt', active && 'is-selected')} onClick={() => commit(hour12 ? to24(hh, period) : hh, m)}>
                   {hour12 ? hh : String(hh).padStart(2, '0')}
                 </button>
               );
             })}
           </div>
-          <div className="srx-timemenu__col srx-scrollbar" role="listbox" aria-label="Minute">
+          <div className="srx-timemenu__col srx-scrollbar" role="group" aria-label="Minute">
             {minutes.map((mm) => (
-              <button key={mm} type="button" role="option" aria-selected={!!t && mm === m} className={cx('srx-timemenu__opt', !!t && mm === m && 'is-selected')} onClick={() => commit(h, mm)}>
+              <button key={mm} type="button" aria-pressed={!!t && mm === m} className={cx('srx-timemenu__opt', !!t && mm === m && 'is-selected')} onClick={() => commit(h, mm)}>
                 {String(mm).padStart(2, '0')}
               </button>
             ))}
           </div>
           {hour12 ? (
-            <div className="srx-timemenu__col" role="listbox" aria-label="AM or PM">
+            <div className="srx-timemenu__col" role="group" aria-label="AM or PM">
               {(['AM', 'PM'] as const).map((p) => (
-                <button key={p} type="button" role="option" aria-selected={!!t && p === period} className={cx('srx-timemenu__opt', !!t && p === period && 'is-selected')} onClick={() => commit(to24(h12, p), m)}>
+                <button key={p} type="button" aria-pressed={!!t && p === period} className={cx('srx-timemenu__opt', !!t && p === period && 'is-selected')} onClick={() => commit(to24(h12, p), m)}>
                   {p}
                 </button>
               ))}

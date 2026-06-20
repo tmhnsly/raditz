@@ -53,7 +53,7 @@ export function ScatterChart({
       ariaLabel={ariaLabel}
       margin={{ left: 40, right: 18, top: 14, bottom: 28 }}
       overlay={({ margin, innerWidth, innerHeight }) => {
-        if (active == null) return null;
+        if (active == null || active >= data.length) return null;
         const x = xFor(innerWidth);
         const y = yFor(innerHeight);
         const d = data[active];

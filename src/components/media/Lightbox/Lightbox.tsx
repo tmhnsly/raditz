@@ -81,8 +81,11 @@ export function Lightbox({
   const drag = useRef<{ x: number; y: number; px: number; py: number } | null>(null);
   const startX = useRef<number | null>(null);
   const moved = useRef(false);
+  // Synchronous mirror of `scale` so a burst of wheel events accumulates instead
+  // of each reading the same stale render-closure value.
+  const scaleRef = useRef(1);
 
-  const resetView = useCallback(() => { setScale(1); setPan({ x: 0, y: 0 }); }, []);
+  const resetView = useCallback(() => { setScale(1); scaleRef.current = 1; setPan({ x: 0, y: 0 }); }, []);
   // Reset zoom/pan whenever the viewer opens.
   useEffect(() => { if (isOpen) resetView(); }, [isOpen, resetView]);
 
@@ -111,6 +114,7 @@ export function Lightbox({
 
   const zoomTo = useCallback((s: number) => {
     const ns = clamp(s, 1, MAX_SCALE);
+    scaleRef.current = ns;
     setScale(ns);
     if (ns === 1) setPan({ x: 0, y: 0 });
     else setPan((p) => clampPan(p.x, p.y, ns));
@@ -146,7 +150,7 @@ export function Lightbox({
     startX.current = null;
     if (Math.abs(dx) > 48 && count > 1) go(dx < 0 ? 1 : -1);
   };
-  const onWheel = (e: React.WheelEvent): void => { zoomTo(scale - e.deltaY * 0.0016); };
+  const onWheel = (e: React.WheelEvent): void => { zoomTo(scaleRef.current - e.deltaY * 0.0016); };
   const onImgClick = (e: React.MouseEvent): void => {
     e.stopPropagation();
     if (moved.current) { moved.current = false; return; }
