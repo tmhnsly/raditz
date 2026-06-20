@@ -2,12 +2,12 @@ import { addons } from 'storybook/internal/manager-api';
 import { create } from 'storybook/internal/theming/create';
 
 // Brand the whole Storybook UI (sidebar + toolbar chrome), not just the canvas, so
-// the manager reads as part of SuperRadix. (Manager theme is set once here; the
+// the manager reads as part of Raditz. (Manager theme is set once here; the
 // canvas still flips light/dark live via the toolbar toggle in preview.tsx.)
 addons.setConfig({
   theme: create({
     base: 'dark',
-    brandTitle: 'SuperRadix',
+    brandTitle: 'Raditz',
     brandUrl: '/',
     colorPrimary: '#00a2c7', // cyan-9 (default accent)
     colorSecondary: '#5b5bd6', // iris-9 (secondary accent)

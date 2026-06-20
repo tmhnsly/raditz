@@ -1,6 +1,6 @@
 import { useState, useCallback, useRef, useId } from 'react';
 
-// Shared internals for SuperRadix primitives. Kept dependency-free (React only)
+// Shared internals for Raditz primitives. Kept dependency-free (React only)
 // so the whole library still ships as a single CDN-friendly bundle.
 
 export interface ControllableStateOptions<T> {

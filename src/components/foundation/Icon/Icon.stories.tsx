@@ -10,7 +10,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Renders a named icon from the SuperRadix registry. Inherits color via currentColor and sizes to 1em by default.',
+          'Renders a named icon from the Raditz registry. Inherits color via currentColor and sizes to 1em by default.',
       },
     },
   },

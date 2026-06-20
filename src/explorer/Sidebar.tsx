@@ -85,7 +85,7 @@ export function Sidebar({
   return (
     <div className="rail__nav">
       <div className="rail__head">
-        <div className="rail__brand rail__brand--desktop"><span className="mark">S</span>SuperRadix</div>
+        <div className="rail__brand rail__brand--desktop"><span className="mark">S</span>Raditz</div>
         <Search
           className="rail__search"
           size="sm"

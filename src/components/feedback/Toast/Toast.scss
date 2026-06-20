@@ -1,5 +1,5 @@
 // Auto-split from components.css — this component's styles, co-located.
-// Uses SuperRadix tokens (var(--…)); re-skins/re-themes with the system.
+// Uses Raditz tokens (var(--…)); re-skins/re-themes with the system.
 /* ═══════════════════════ Toast ═══════════════════════ */
 .rdz-toast-viewport { position: fixed; z-index: var(--z-toast); display: flex; flex-direction: column; gap: var(--space-3); padding: var(--space-5); max-width: min(92vw, 23.75rem); pointer-events: none; }
 

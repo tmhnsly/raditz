@@ -1,5 +1,5 @@
 // Auto-split from components.css — this component's styles, co-located.
-// Uses SuperRadix tokens (var(--…)); re-skins/re-themes with the system.
+// Uses Raditz tokens (var(--…)); re-skins/re-themes with the system.
 .rdz-gallery { display: grid; grid-template-columns: repeat(var(--rdz-gallery-cols, 3), 1fr); gap: var(--rdz-gallery-gap, var(--space-3)); }
 
 .rdz-gallery--masonry { display: block; column-count: var(--rdz-gallery-cols, 3); column-gap: var(--rdz-gallery-gap, var(--space-3)); }

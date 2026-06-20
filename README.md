@@ -1,7 +1,7 @@
-# SuperRadix
+# Raditz
 
 A personal React + Vite + TypeScript UI library with Storybook, built on the
-**SuperRadix** design system (Radix Colors + semantic tokens). Real, editable
+**Raditz** design system (Radix Colors + semantic tokens). Real, editable
 components, sections, and full example pages — all re-skin and re-theme from one
 accent token.
 

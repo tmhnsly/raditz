@@ -14,7 +14,7 @@ export function TestimonialsB({ background = 'gradient-dusk', ...props }: Sectio
   return (
     <SectionShell wrap="col sx-center sx-gap-5" background={background} {...props}>
       <span className="eyebrow2">Customer story</span>
-      <p className="sx-tst__big-quote">“SuperRadix is the first design system our designers and engineers actually agree on.”</p>
+      <p className="sx-tst__big-quote">“Raditz is the first design system our designers and engineers actually agree on.”</p>
       <div className="row sx-tst__person-center"><span className="rdz-avatar sx-tst__avatar-md">MO</span><div className="col sx-tst__person-meta"><strong className="sx-fs-body-s">Maya Okafor</strong><span className="muted sx-fs-caption">Design Lead, Aurora</span></div></div>
     </SectionShell>
   );

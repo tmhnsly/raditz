@@ -104,7 +104,7 @@ export function StoryView({
         <div>
           <span className="rdz-eyebrow">
             <span className="rdz-eyebrow__dot" />
-            SuperRadix · Showcase
+            Raditz · Showcase
           </span>
           <h1>
             Component Library<span className="exp-accent">.</span>

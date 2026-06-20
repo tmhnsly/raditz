@@ -1,5 +1,5 @@
 // Auto-split from components.css — this component's styles, co-located.
-// Uses SuperRadix tokens (var(--…)); re-skins/re-themes with the system.
+// Uses Raditz tokens (var(--…)); re-skins/re-themes with the system.
 .rdz-emptystate { display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--space-3); padding: var(--space-8) var(--space-5); }
 
 .rdz-emptystate__icon { width: 3.5rem; height: 3.5rem; display: grid; place-items: center; border-radius: var(--radius-lg); background: var(--surface-strong); color: var(--text-soft); }

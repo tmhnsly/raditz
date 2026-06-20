@@ -1,5 +1,5 @@
 // Auto-split from components.css — this component's styles, co-located.
-// Uses SuperRadix tokens (var(--…)); re-skins/re-themes with the system.
+// Uses Raditz tokens (var(--…)); re-skins/re-themes with the system.
 /* ═══════════════════════ Overlay · Dialog · AlertDialog ═══════════════════════ */
 .rdz-overlay { position: fixed; inset: 0; z-index: var(--z-modal); display: grid; place-items: center; padding: var(--space-5); }
 

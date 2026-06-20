@@ -1,4 +1,4 @@
-// SuperRadix icon registry — data-only so it bundles without JSX transpilation.
+// Raditz icon registry — data-only so it bundles without JSX transpilation.
 // Each icon is an array of [svgTag, attrs] parts on a 24×24 grid, stroked with
 // currentColor (lucide-style geometry). Add an icon by adding an entry here.
 type IconPart = [tag: string, attrs: Record<string, string | number>];

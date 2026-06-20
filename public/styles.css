@@ -1,5 +1,5 @@
 /* ════════════════════════════════════════════════════════════════════════════
-   SuperRadix Design System — global entry point
+   Raditz Design System — global entry point
    ----------------------------------------------------------------------------
    Consuming projects link THIS one file. It is an @import manifest only — never
    add rules here. Order matters: Radix scales → fonts → tokens → reset →

@@ -4,7 +4,7 @@ export function FeaturesA({ background = 'none', ...props }: SectionVariantProps
   return (
     <SectionShell wrap="col sx-gap-6" background={background} {...props}>
       <div className="col sx-feat__head">
-        <span className="eyebrow2">Why SuperRadix</span>
+        <span className="eyebrow2">Why Raditz</span>
         <h3 className="h-section">Everything wired together</h3>
       </div>
       <div className="sx-g3 sx-gap-5">

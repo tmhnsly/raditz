@@ -21,7 +21,7 @@ export const Default: Story = {
       trigger={<Button>Hover me</Button>}
     >
       <div style={{ padding: '0.5rem 0.25rem', maxWidth: '16rem' }}>
-        <strong>@superradix</strong>
+        <strong>@raditz</strong>
         <p>A React component library. Hover the trigger to reveal this preview card.</p>
       </div>
     </HoverCard>

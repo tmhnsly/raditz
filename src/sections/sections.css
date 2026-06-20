@@ -1,7 +1,7 @@
 /* ──────────────────────────────────────────────────────────────────────────
    Section helpers — shared layout/utility classes the section components use.
    Lifted from the original sections catalog <style> block. Everything reads
-   from SuperRadix tokens, so sections re-skin and re-theme with the system.
+   from Raditz tokens, so sections re-skin and re-theme with the system.
    ────────────────────────────────────────────────────────────────────────── */
 
 /* a frame to preview a section inside (used by stories + the catalog) */

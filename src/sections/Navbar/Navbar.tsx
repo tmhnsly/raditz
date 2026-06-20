@@ -42,7 +42,7 @@ export function NavbarA() {
               <span className="feat-ico sx-nav__logo">
                 <span className="sx-nav__logo-glyph">S</span>
               </span>
-              <strong className="sx-nav__brand">SuperRadix</strong>
+              <strong className="sx-nav__brand">Raditz</strong>
             </div>
             <nav className="nav-bar__links">
               <a href="#">Product</a>
@@ -92,7 +92,7 @@ export function NavbarB() {
               <span className="feat-ico sx-nav__logo-md">
                 <span className="sx-nav__logo-glyph-md">S</span>
               </span>
-              <strong>SuperRadix</strong>
+              <strong>Raditz</strong>
             </div>
             <nav className="nav-bar__links">
               <a href="#">Features</a>
@@ -138,7 +138,7 @@ export function NavbarC() {
               <span className="feat-ico sx-nav__logo-md">
                 <span className="sx-nav__logo-glyph-md">S</span>
               </span>
-              <strong>SuperRadix</strong>
+              <strong>Raditz</strong>
             </div>
             <nav className="nav-bar__links">
               <a href="#">Product</a>
@@ -187,7 +187,7 @@ const TAB_ICONS: Record<string, ReactElement> = {
 };
 
 /** D — an iOS/Android-style bottom tab bar: pinned to the bottom, icon+label
- * tabs with an accent active state. All SuperRadix tokens, so it re-themes. */
+ * tabs with an accent active state. All Raditz tokens, so it re-themes. */
 export function NavbarD() {
   const [active, setActive] = useState('home');
   const tabs = [

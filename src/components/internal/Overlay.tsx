@@ -46,7 +46,7 @@ export interface OverlayProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 /**
- * Overlay — the one module behind every SuperRadix overlay. Owns dismissal
+ * Overlay — the one module behind every Raditz overlay. Owns dismissal
  * (Escape / outside-click / scrim), scroll-lock, focus (trap/auto/none), the
  * scrim, and positioning for all four {@link OverlayPosition} topologies.
  *

@@ -1,5 +1,5 @@
 // Auto-split from components.css — this component's styles, co-located.
-// Uses SuperRadix tokens (var(--…)); re-skins/re-themes with the system.
+// Uses Raditz tokens (var(--…)); re-skins/re-themes with the system.
 .rdz-barchart { display: flex; align-items: flex-end; gap: var(--space-3); height: var(--rdz-barchart-h); }
 
 .rdz-barchart__cell { flex: 1; display: flex; flex-direction: column; align-items: center; gap: var(--space-2); min-width: 0; height: 100%; }

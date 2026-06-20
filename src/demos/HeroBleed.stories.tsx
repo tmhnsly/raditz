@@ -17,7 +17,7 @@ function FloatingNav() {
     <div className="nav-bar">
       <div className="row sx-nav__brand-row">
         <span className="feat-ico sx-nav__logo"><span className="sx-nav__logo-glyph">S</span></span>
-        <strong className="sx-nav__brand">SuperRadix</strong>
+        <strong className="sx-nav__brand">Raditz</strong>
       </div>
       <nav className="nav-bar__links"><a href="#">Product</a><a href="#">Pricing</a><a href="#">Docs</a></nav>
       <div className="nav-bar__cta"><button className="rdz-btn rdz-btn--primary">Get started</button></div>

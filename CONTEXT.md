@@ -1,6 +1,6 @@
-# SuperRadix
+# Raditz
 
-The domain language of the SuperRadix component library. These terms name the
+The domain language of the Raditz component library. These terms name the
 seams and modules the library is built from, so architecture reviews and refactors
 speak the same way. Architecture vocabulary (module, interface, seam, adapter,
 leverage, locality, depth) is defined separately in the
