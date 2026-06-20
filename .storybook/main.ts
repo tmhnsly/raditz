@@ -13,8 +13,6 @@ const config: StorybookConfig = {
   },
   // a Docs page for every component story group
   docs: { autodocs: 'tag' },
-  // serve the design-system CSS (styles.css + tokens/ + components.css) at site root
-  staticDirs: ['../public'],
 };
 
 export default config;
