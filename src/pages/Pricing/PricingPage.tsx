@@ -14,7 +14,25 @@ export function PricingPage() {
   return (
     <div className="rdz-page">
       <NavbarB />
-      <PricingB />
+      <PricingB
+        heading="Pay monthly or save yearly"
+        tiers={[
+          {
+            name: 'Pro',
+            price: '$24',
+            priceYearly: '$19',
+            period: '/mo',
+            action: { label: 'Choose Pro', href: '#', variant: 'primary' },
+          },
+          {
+            name: 'Business',
+            price: '$60',
+            priceYearly: '$48',
+            period: '/mo',
+            action: { label: 'Choose Business', href: '#', variant: 'outline' },
+          },
+        ]}
+      />
       <ComparisonA />
       <FaqB />
       <CtaB

@@ -46,7 +46,36 @@ export function Landing() {
         ]}
       />
       <TestimonialsA />
-      <PricingA />
+      <PricingA
+        heading="Simple, scalable pricing"
+        sub="Start free. Upgrade when your team grows."
+        tiers={[
+          {
+            name: 'Starter',
+            blurb: 'For solo builders',
+            price: '$0',
+            period: '/mo',
+            action: { label: 'Get started', href: '#', variant: 'outline' },
+            features: ['1 project', 'Community support', 'Core components'],
+          },
+          {
+            name: 'Team',
+            blurb: 'For growing teams',
+            price: '$24',
+            period: '/seat/mo',
+            action: { label: 'Start trial', href: '#', variant: 'primary' },
+            features: ['Unlimited projects', 'Priority support', 'All components', 'Dark mode + themes'],
+            popular: true,
+          },
+          {
+            name: 'Enterprise',
+            blurb: 'For organizations',
+            price: 'Custom',
+            action: { label: 'Contact sales', href: '#', variant: 'outline' },
+            features: ['SSO & SAML', 'Dedicated support', 'Custom themes'],
+          },
+        ]}
+      />
       <FaqA />
       <CtaA
         title="Ready to build something consistent?"
