@@ -1,3 +1,4 @@
+'use client';
 import { useEffect, useState } from 'react';
 
 // All Radix accent scales loaded in tokens/radix-colors.css.

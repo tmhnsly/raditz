@@ -5,7 +5,12 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const ROOTS = ['src/components', 'src/sections'];
-const EXTRA = ['src/lib/ThemePicker.tsx'];
+// Public lib modules that are hook-bearing client code. They're re-exported from
+// the barrel, so a consumer's Server Component pulls them into the RSC graph —
+// without "use client" the Next build fails. theme.ts also exports server-safe
+// values (ACCENTS, applyTheme); marking it client binds those to the client too
+// (acceptable — they're consumed via the client theme runtime / CSS in practice).
+const EXTRA = ['src/lib/ThemePicker.tsx', 'src/lib/useColorScheme.ts', 'src/lib/theme.ts'];
 
 // A module must run on the client if it uses hooks, JSX event handlers, or browser globals.
 const CLIENT_RE =
