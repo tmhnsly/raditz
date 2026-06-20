@@ -105,10 +105,10 @@ product-foo/                      ← independent repo, scaffolded by raditz-new
 A mechanical, codebase-wide rename runs first, since everything below assumes the
 new name:
 - Package `name` and all imports → `raditz`; repo directory + git remote → `raditz`.
-- CSS class prefix `rdz-` → `rdz-` across every `.scss` and any class references
-  in `.tsx` (e.g. `.rdz-btn` → `.rdz-btn`). The `.rdz-on-dark` / `.rdz-overlay`
+- CSS class prefix `srx-` → `rdz-` across every `.scss` and any class references
+  in `.tsx` (e.g. `.srx-btn` → `.rdz-btn`). The `.srx-on-dark` / `.srx-overlay`
   context classes rename too (`.rdz-on-dark`, `.rdz-overlay`).
-- Storage keys and any user-facing strings (e.g. the `rdz-color-scheme`
+- Storage keys and any user-facing strings (e.g. the `srx-color-scheme`
   localStorage key → `rdz-color-scheme`).
 - pnpm scripts use the `rdz:` namespace (`rdz:link`, `rdz:unlink`); skills use the
   `/raditz` command namespace.
