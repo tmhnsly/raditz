@@ -1,5 +1,5 @@
 // Uses SuperRadix tokens (var(--…)); re-skins/re-themes with the system.
-.srx-marquee { overflow: hidden; }
+.srx-marquee { overflow: hidden; container-type: inline-size; }
 
 .srx-marquee--fade {
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
@@ -15,10 +15,18 @@
 
 .srx-marquee--pause:hover .srx-marquee__track { animation-play-state: paused; }
 
+/* Each group is floored at the container width (100cqw) so two copies always
+   span ≥ 2× the viewport — otherwise, with few/short items, one copy is narrower
+   than the screen and the -50% loop reveals empty space and visibly jumps.
+   space-around spreads a short row to fill; with the gap/2 edge padding the seam
+   spacing equals the intra-item spacing, so the loop stays invisible. A row that
+   already overflows ignores the floor and keeps its natural gap. */
 .srx-marquee__group {
   display: flex;
   align-items: center;
   flex: none;
+  min-width: 100cqw;
+  justify-content: space-around;
   gap: var(--srx-marquee-gap, var(--space-7));
   padding-inline: calc(var(--srx-marquee-gap, var(--space-7)) / 2);
 }
