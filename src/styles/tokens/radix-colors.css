@@ -5,11 +5,9 @@
    alias in colors.css. The dark files self-scope to `.dark, .dark-theme`, so a
    single `class="dark"` high up flips every scale.
 
-   PROTOTYPING: the jsDelivr CDN below works out of the box (and is what the
-   Design System tab previews use). PRODUCTION: install the package instead —
-   `npm i @radix-ui/colors` — and replace these with bare imports
-   (`@import '@radix-ui/colors/cyan.css';` …). Same custom-property names, so
-   nothing else changes. Add a scale here AND alias it in colors.css to use it.
+   Scales are imported from the vendored `@radix-ui/colors` npm package —
+   no CDN dependency, works offline. Add a scale here AND alias it in
+   colors.css to use it.
    ────────────────────────────────────────────────────────────────────────── */
 
 /* neutral — Slate (cool gray) */

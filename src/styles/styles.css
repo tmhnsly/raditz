@@ -8,9 +8,9 @@
    over dark media, scope it with .rdz-on-dark — .dark itself is root-only because
    the semantic tokens resolve against the root scales.
 
-   Production note: the Radix scales come from the jsDelivr CDN (prototyping).
-   For production, swap tokens/radix-colors.css for the npm @radix-ui/colors
-   imports and self-host the fonts — token names are identical, nothing breaks.
+   Note: Radix colour scales are vendored from the `@radix-ui/colors` npm
+   package (offline-safe, no CDN). Fonts are still loaded from a CDN and will
+   be self-hosted in a later task.
    ════════════════════════════════════════════════════════════════════════════ */
 
 /* 1 — Radix Colors raw scales (must precede anything that aliases them) */
