@@ -17,9 +17,9 @@ Import: `import { Badge } from 'raditz'`
 A small status / category label. `variant` is the fill style, `color` the semantic tone. Pass `dot` for a leading status dot.
 
 Props:
-  - color?: enum (default: accent) — Semantic tone.
+  - color?: "accent" | "neutral" | "success" | "warning" | "danger" | "info" (default: accent) — Semantic tone.
   - dot?: boolean (default: false) — Leading status dot.
-  - variant?: enum (default: soft) — Fill style.
+  - variant?: "solid" | "soft" | "outline" (default: soft) — Fill style.
 
 Examples (Storybook stories): Default, Variants, Colors
 
@@ -37,8 +37,8 @@ Props:
   - href?: string — Render an anchor instead of a button.
   - icon?: ReactNode — Leading icon — a registry name or a node.
   - iconTrailing?: ReactNode — Trailing icon — a registry name or a node.
-  - size?: enum (default: md) — Size.
-  - variant?: enum (default: primary) — Visual weight.
+  - size?: "sm" | "md" | "lg" (default: md) — Size.
+  - variant?: "primary" | "secondary" | "soft" | "outline" | "ghost" | "glass" (default: primary) — Visual weight.
 
 Examples (Storybook stories): Primary, Variants, Glass, Sizes
 
@@ -74,8 +74,8 @@ Props:
   - aria-label: string — Required for accessibility.
   - href?: string
   - icon?: ReactNode — Icon registry name or node.
-  - size?: enum (default: md)
-  - variant?: enum (default: ghost)
+  - size?: "sm" | "md" (default: md)
+  - variant?: "solid" | "soft" | "outline" | "ghost" | "glass" (default: ghost)
 
 Examples (Storybook stories): Default, Variants, Glass
 
@@ -107,7 +107,7 @@ Progress — a determinate or indeterminate progress bar (Radix Progress). Pass 
 Props:
   - indeterminate?: boolean (default: false) — Force the looping indeterminate state.
   - max?: number (default: 100) — Maximum value.
-  - size?: enum (default: md) — Bar thickness.
+  - size?: "sm" | "md" | "lg" (default: md) — Bar thickness.
   - value?: number | null (default: null) — Current value (0–max). Omit / null for indeterminate.
 
 Examples (Storybook stories): Default, Indeterminate, Sizes
@@ -145,7 +145,7 @@ Props:
   - items?: RadioGroupItem[] (default: []) — Options to render.
   - name?: string — Shared input name (auto-generated if omitted).
   - onValueChange?: ((value: string) => void) — Fires when the selection changes.
-  - orientation?: enum (default: vertical) — Layout direction.
+  - orientation?: "vertical" | "horizontal" (default: vertical) — Layout direction.
   - value?: string — Controlled selected value.
 
 Examples (Storybook stories): Default, Horizontal
@@ -204,8 +204,8 @@ Props:
   - disabled?: boolean (default: false)
   - onPressedChange?: ((pressed: boolean) => void) — Fires when the pressed state changes.
   - pressed?: boolean — Controlled pressed state.
-  - size?: enum (default: md) — Control size.
-  - variant?: enum (default: soft) — Visual treatment.
+  - size?: "sm" | "md" | "lg" (default: md) — Control size.
+  - variant?: "soft" | "outline" (default: soft) — Visual treatment.
 
 Examples (Storybook stories): Default, Variants
 
@@ -224,8 +224,8 @@ Props:
   - disabled?: boolean (default: false)
   - items?: ToggleGroupItem[] (default: []) — Buttons to render.
   - onValueChange?: ((value: string | string[]) => void) — Fires when selection changes.
-  - size?: enum (default: md) — Control size.
-  - type?: enum (default: single) — Single-select (radio-like) or multi-select.
+  - size?: "sm" | "md" | "lg" (default: md) — Control size.
+  - type?: "single" | "multiple" (default: single) — Single-select (radio-like) or multi-select.
   - value?: string | string[] — Controlled value — string for single, string[] for multiple.
 
 Examples (Storybook stories): Single, Multiple
@@ -374,7 +374,7 @@ Props:
   - defaultValue?: string | string[] — Initial open value(s) (uncontrolled).
   - items?: AccordionItem[] (default: []) — Sections to render.
   - onValueChange?: ((value: string | string[]) => void) — Fires when the open value(s) change.
-  - type?: enum (default: single) — One-open or many-open.
+  - type?: "single" | "multiple" (default: single) — One-open or many-open.
   - value?: string | string[] — Controlled open value(s) — string for single, string[] for multiple.
 
 Examples (Storybook stories): Default
@@ -415,7 +415,7 @@ Props:
   - icon?: string — Override the leading icon (registry name).
   - onClose?: (() => void) — Show a dismiss button wired to this handler.
   - title?: ReactNode
-  - tone?: enum (default: info)
+  - tone?: "info" | "success" | "warning" | "danger" (default: info)
 
 Examples (Storybook stories): Default
 
@@ -434,7 +434,7 @@ Props:
   - lines?: number (default: 1) — For variant="text", number of lines (last is shortened).
   - loading?: boolean (default: true) — When false, renders children instead of the placeholder.
   - radius?: string — Override border-radius.
-  - variant?: enum (default: text) — Shape.
+  - variant?: "text" | "circle" | "rect" (default: text) — Shape.
   - width?: string — CSS width.
 
 Examples (Storybook stories): Default
@@ -468,7 +468,7 @@ Toast — transient notifications (Radix Toast). Mount ONE `<Toast />` near the 
 
 Props:
   - duration?: number (default: 4000) — Default auto-dismiss ms.
-  - position?: enum (default: "bottom-right") — Where toasts stack.
+  - position?: "bottom-right" | "bottom-left" | "top-right" | "top-left" | "bottom-center" | "top-center" (default: "bottom-right") — Where toasts stack.
 
 Examples (Storybook stories): Default
 
@@ -640,7 +640,7 @@ Props:
   - length?: number (default: 6) — Number of boxes.
   - onChange?: ((value: string) => void)
   - onComplete?: ((value: string) => void) — Fires when every box is filled.
-  - type?: enum (default: text) — 'text' (visible) or 'password' (masked).
+  - type?: "text" | "password" (default: text) — 'text' (visible) or 'password' (masked).
   - value?: string — Controlled value (the concatenated code).
 
 Examples (Storybook stories): Default
@@ -681,9 +681,9 @@ Props:
   - defaultValue?: number (default: 0) — Initial value (uncontrolled).
   - disabled?: boolean (default: false) — Disable interaction — dimmed and non-interactive.
   - onChange?: ((value: number) => void)
-  - precision?: enum (default: full) — Input granularity: whole or half stars. (Read-only display is always exact.)
+  - precision?: "full" | "half" (default: full) — Input granularity: whole or half stars. (Read-only display is always exact.)
   - readOnly?: boolean (default: false) — Display only (renders any fractional value, e.g. 3.2).
-  - size?: enum (default: md)
+  - size?: "sm" | "md" | "lg" (default: md)
   - value?: number — Controlled value.
 
 Examples (Storybook stories): Default, HalfStars, ReadOnlyFractional
@@ -700,8 +700,8 @@ Search — the one search input used everywhere search appears (Combobox, Comman
 
 Props:
   - hint?: ReactNode — Trailing hint, e.g. a `<kbd>esc</kbd>`.
-  - size?: enum (default: md)
-  - variant?: enum (default: field) — Bordered standalone box, or a plain header row (inside popovers/menus).
+  - size?: "sm" | "md" (default: md)
+  - variant?: "field" | "plain" (default: field) — Bordered standalone box, or a plain header row (inside popovers/menus).
 
 Examples (Storybook stories): Field, Plain
 
@@ -814,7 +814,7 @@ Centers content and applies responsive gutters. The outermost layout primitive o
 Props:
   - as?: ElementType (default: div) — Element to render.
   - bleed?: boolean (default: false) — Remove side gutters.
-  - size?: enum (default: default) — Max-width cap.
+  - size?: "default" | "narrow" | "wide" | "prose" (default: default) — Max-width cap.
 
 Examples (Storybook stories): Default
 
@@ -867,7 +867,7 @@ Props:
   - bordered?: boolean (default: false) — Add hairline top/bottom rules across the bleed.
   - contentStyle?: CSSProperties — Extra style for the inner (contained) content wrapper.
   - pad?: number (default: 11) — Block padding on the content (spacing step 1–12).
-  - size?: enum (default: default) — Inner content max-width cap (matches Container).
+  - size?: "default" | "narrow" | "wide" | "prose" (default: default) — Inner content max-width cap (matches Container).
 
 Examples (Storybook stories): Default
 
@@ -899,9 +899,9 @@ Import: `import { SectionBackground } from 'raditz'`
 SectionBackground — an optional decorative backdrop for a section: a neutral surface level (alternate `surface`/`surface-2` to differentiate sections), a templated gradient, or an image/video — with optional scroll parallax. Content sits above the layer, so glass/translucent panels finally have something to sit over. Default is `none` (plain, fast) so wireframing stays quick; flourishes are opt-in. All gradients are token-driven and re-theme with the accent.
 
 Props:
-  - background?: enum (default: none) — Background fill.
+  - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none) — Background fill.
   - image?: string — Image URL — painted as a cover layer (overrides the gradient).
-  - motion?: enum — Background motion mode. `'parallax'` scroll-shifts the layer, `'static'` pins it. Takes precedence over `parallax` — handy for a runtime toggle.
+  - motion?: "static" | "parallax" — Background motion mode. `'parallax'` scroll-shifts the layer, `'static'` pins it. Takes precedence over `parallax` — handy for a runtime toggle.
   - parallax?: boolean (default: false) — Subtle scroll parallax on the media/gradient layer.
   - scrim?: boolean (default: false) — Darken the backdrop (image/video/gradient) so overlaid text stays legible.
   - video?: string — Video URL — autoplaying muted cover layer (overrides image + gradient).
@@ -921,7 +921,7 @@ Flexbox stack. Vertical by default; pass `direction="row"` for a horizontal row.
 Props:
   - align?: AlignItems — align-items value.
   - as?: ElementType (default: div)
-  - direction?: enum (default: column) — Flex direction.
+  - direction?: "row" | "column" (default: column) — Flex direction.
   - gap?: number (default: 4) — Gap as a spacing step (1–12).
   - justify?: JustifyContent — justify-content value.
   - wrap?: boolean (default: false) — Allow wrapping.
@@ -1017,12 +1017,12 @@ Import: `import { SectionShell } from 'raditz'`
 SectionShell — the one home for the section layout boilerplate every section variant used to repeat: the preview Frame + `.s-pad` padding + `.s-wrap` max-width wrapper (where the responsive container-query lives), with an optional SectionBackground. Sections become content + a shell choice instead of re-typing the triple-nested wrapper ~50 times.
 
 Props:
-  - background?: enum (default: none) — Optional decorative backdrop (composes SectionBackground).
+  - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none) — Optional decorative backdrop (composes SectionBackground).
   - frameClassName?: string — Class on the preview Frame (e.g. "nav-frame", "ph--neutral").
   - frameMaxWidth?: string — Constrain the Frame width.
   - image?: string — Image URL backdrop (overrides gradient).
   - nav?: ReactNode — A transparent nav rendered above the content, floating over the shared background (the "hero bleed" effect). Pass a nav with no background.
-  - pad?: enum (default: default) — Section padding.
+  - pad?: "default" | "sm" | "none" (default: default) — Section padding.
   - padClassName?: string — Extra classes on the padding element (e.g. a section band background).
   - parallax?: boolean (default: false) — Parallax the backdrop.
   - scrim?: boolean (default: false) — Darken the backdrop (scrim); the surface then scopes content to on-dark.
@@ -1040,7 +1040,7 @@ Import: `import { HeroBleed } from 'raditz'`
 HeroBleed — a thin preset of {@link SectionShell}: one background fills the block (default a gradient) so it reaches the top BEHIND a transparent `nav` slot, with the hero content below. The bleed mechanism is decoupled from the content, so any hero design slots in. Media auto-scrims (and SectionShell then scopes the content to the on-dark context). It's a named preset, not its own Frame/SectionBackground/padding stack — that all lives in SectionShell.
 
 Props:
-  - background?: enum (default: gradient-aurora)
+  - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: gradient-aurora)
   - children?: ReactNode — The hero content — any design; the bleed mechanism is decoupled from it.
   - image?: string
   - nav?: ReactNode — A transparent nav rendered at the very top, floating over the shared background (pass a nav with no background of its own).
@@ -1125,7 +1125,7 @@ Import: `import { Marquee } from 'raditz'`
 Marquee — a seamless, infinitely-scrolling row of its children (logos, tags, quotes…). The content is duplicated so the loop has no seam. Pauses on hover and respects `prefers-reduced-motion` (animation stops, duplicate hidden, so it degrades to a static, readable row). All token-driven, so it re-themes.
 
 Props:
-  - direction?: enum (default: left) — Scroll direction.
+  - direction?: "left" | "right" (default: left) — Scroll direction.
   - duration?: number (default: 26) — Seconds for one full loop.
   - fade?: boolean (default: true) — Fade the edges with a mask.
   - gap?: string (default: var(--space-7)) — Gap between items (CSS length).
@@ -1163,12 +1163,12 @@ Import: `import { DropdownMenu } from 'raditz'`
 DropdownMenu — a button-triggered menu (Radix DropdownMenu). Items are `{ label, icon?, shortcut?, onSelect?, disabled?, danger? }`, plus `{ separator: true }` and `{ heading: true, label }`. Arrow keys move focus, Enter selects, Escape closes. An adapter face: the trigger lives here; {@link MenuSurface} owns positioning, dismissal, roving, and item rendering.
 
 Props:
-  - align?: enum (default: start) — Cross-axis alignment.
+  - align?: "start" | "center" | "end" (default: start) — Cross-axis alignment.
   - defaultOpen?: boolean (default: false)
   - items?: MenuItem[] (default: []) — Menu rows — items, `{separator:true}`, or `{heading:true,label}`.
   - onOpenChange?: ((open: boolean) => void)
   - open?: boolean
-  - side?: enum (default: bottom) — Preferred side.
+  - side?: "top" | "bottom" | "left" | "right" (default: bottom) — Preferred side.
   - trigger?: ReactNode — Trigger element (click toggles the menu).
 
 Examples (Storybook stories): Default
@@ -1220,8 +1220,8 @@ Props:
   - defaultActive?: string — Initial active key (uncontrolled; defaults to the first item).
   - items?: NavBarItem[] (default: [])
   - onChange?: ((key: string) => void)
-  - orientation?: enum (default: horizontal)
-  - variant?: enum (default: pill) — Sliding highlight style.
+  - orientation?: "horizontal" | "vertical" (default: horizontal)
+  - variant?: "pill" | "underline" (default: pill) — Sliding highlight style.
 
 Examples (Storybook stories): Default
 
@@ -1272,7 +1272,7 @@ Stepper — a horizontal (or vertical) progress indicator for multi-step flows. 
 Props:
   - current?: number (default: 0) — Active 0-based index.
   - onStepClick?: ((index: number) => void) — Makes completed/current steps clickable.
-  - orientation?: enum (default: horizontal)
+  - orientation?: "horizontal" | "vertical" (default: horizontal)
   - steps?: StepperStep[] (default: [])
 
 Examples (Storybook stories): Default
@@ -1293,7 +1293,7 @@ Props:
   - onValueChange?: ((value: string) => void) — Fires on tab change.
   - tabs?: TabItem[] (default: []) — Tab definitions.
   - value?: string — Controlled active value.
-  - variant?: enum (default: segmented)
+  - variant?: "segmented" | "underline" (default: segmented)
 
 Examples (Storybook stories): Default
 
@@ -1323,10 +1323,10 @@ Import: `import { Tooltip } from 'raditz'`
 A hover/focus tooltip. Wraps a focusable trigger; `label` is the bubble. The bubble renders through the shared {@link Overlay} machinery — portaled to <body> and collision-positioned (flips + clamps to the viewport), so it never runs off-screen the way the old pure-CSS bubble did. The trigger must be focusable (a button/link) so keyboard users get the tooltip too.
 
 Props:
-  - align?: enum (default: center) — Cross-axis alignment of the bubble vs. the trigger.
+  - align?: "center" | "start" | "end" (default: center) — Cross-axis alignment of the bubble vs. the trigger.
   - delay?: number (default: 200) — Open delay on hover/focus (ms).
   - label: ReactNode — Bubble content.
-  - side?: enum (default: top) — Side of the trigger the bubble opens on; flips to the opposite side on overflow.
+  - side?: "top" | "bottom" | "left" | "right" (default: top) — Side of the trigger the bubble opens on; flips to the opposite side on overflow.
 
 Examples (Storybook stories): Default
 
@@ -1372,7 +1372,7 @@ Props:
   - onOpenChange?: ((open: boolean) => void) — Fires to request open/close.
   - open?: boolean — Open state (controlled).
   - title?: ReactNode
-  - tone?: enum (default: danger) — Confirm-button tone.
+  - tone?: "danger" | "accent" (default: danger) — Confirm-button tone.
 
 Examples (Storybook stories): Default
 
@@ -1410,7 +1410,7 @@ Props:
   - footer?: ReactNode — Footer node (usually action buttons).
   - onOpenChange?: ((open: boolean) => void) — Fires to request open/close.
   - open?: boolean — Open state (controlled).
-  - size?: enum (default: md) — Panel width.
+  - size?: "sm" | "md" | "lg" (default: md) — Panel width.
   - title?: ReactNode — Heading text.
 
 Examples (Storybook stories): Default
@@ -1430,7 +1430,7 @@ Props:
   - footer?: ReactNode
   - onOpenChange?: ((open: boolean) => void)
   - open?: boolean — Open state (controlled).
-  - side?: enum (default: right) — Edge it slides from.
+  - side?: "left" | "right" | "top" | "bottom" (default: right) — Edge it slides from.
   - size?: string (default: 22rem) — Width (left/right) or height (top/bottom).
   - title?: ReactNode
 
@@ -1447,13 +1447,13 @@ Import: `import { HoverCard } from 'raditz'`
 HoverCard — preview content shown on hover/focus of a trigger (Radix HoverCard). Opens after `openDelay`, closes after `closeDelay`; staying over the card keeps it open. An adapter face over {@link Overlay} (`anchored` topology). HoverCard drives its own open state via hover timers, so it disables Overlay's dismissal.
 
 Props:
-  - align?: enum (default: center) — Cross-axis alignment.
+  - align?: "start" | "center" | "end" (default: center) — Cross-axis alignment.
   - closeDelay?: number (default: 150) — Ms before closing.
   - defaultOpen?: boolean (default: false) — Initial open state (uncontrolled).
   - onOpenChange?: ((open: boolean) => void)
   - open?: boolean — Open state (controlled).
   - openDelay?: number (default: 200) — Ms before opening.
-  - side?: enum (default: bottom) — Preferred side.
+  - side?: "top" | "bottom" | "left" | "right" (default: bottom) — Preferred side.
   - trigger?: ReactNode — Element that reveals the card on hover/focus.
 
 Examples (Storybook stories): Default
@@ -1469,11 +1469,11 @@ Import: `import { Popover } from 'raditz'`
 Popover — floating content anchored to a trigger (Radix Popover). Click the trigger to toggle; closes on Escape or outside click. Non-modal (focus is not trapped). `side`/`align` place the panel and flip near the viewport edge. An adapter face over {@link Overlay} (`anchored` topology, focus `none`). The trigger and its click-to-toggle stay here; Overlay owns the surface.
 
 Props:
-  - align?: enum (default: center) — Cross-axis alignment.
+  - align?: "start" | "center" | "end" (default: center) — Cross-axis alignment.
   - defaultOpen?: boolean (default: false) — Initial open state (uncontrolled).
   - onOpenChange?: ((open: boolean) => void)
   - open?: boolean — Open state (controlled).
-  - side?: enum (default: bottom) — Preferred side.
+  - side?: "top" | "bottom" | "left" | "right" (default: bottom) — Preferred side.
   - trigger?: ReactNode — Trigger element (click toggles the popover).
 
 Examples (Storybook stories): Default
@@ -1496,7 +1496,7 @@ Props:
   - icon?: enum
   - loading?: boolean (default: false) — Show a Spinner instead of the icon (loading state).
   - title?: ReactNode
-  - tone?: enum (default: default)
+  - tone?: "default" | "accent" | "danger" (default: default)
 
 Examples (Storybook stories): Default
 
@@ -1530,7 +1530,7 @@ Usage:
 Import: `import { AnnouncementB } from 'raditz'`
 
 Props:
-  - background?: enum (default: none)
+  - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
   - image?: string
   - parallax?: boolean
   - video?: string
@@ -1546,7 +1546,7 @@ Usage:
 Import: `import { BlogA } from 'raditz'`
 
 Props:
-  - background?: enum (default: none)
+  - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
   - image?: string
   - parallax?: boolean
   - video?: string
@@ -1562,7 +1562,7 @@ Usage:
 Import: `import { BlogB } from 'raditz'`
 
 Props:
-  - background?: enum (default: surface-2)
+  - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: surface-2)
   - image?: string
   - parallax?: boolean
   - video?: string
@@ -1578,7 +1578,7 @@ Usage:
 Import: `import { ComparisonA } from 'raditz'`
 
 Props:
-  - background?: enum (default: surface-2)
+  - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: surface-2)
   - image?: string
   - parallax?: boolean
   - video?: string
@@ -1594,7 +1594,7 @@ Usage:
 Import: `import { CtaA } from 'raditz'`
 
 Props:
-  - background?: enum (default: gradient-dusk)
+  - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: gradient-dusk)
   - image?: string
   - parallax?: boolean
   - video?: string
@@ -1610,7 +1610,7 @@ Usage:
 Import: `import { CtaB } from 'raditz'`
 
 Props:
-  - background?: enum (default: none)
+  - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
   - image?: string
   - parallax?: boolean
   - video?: string
@@ -1626,7 +1626,7 @@ Usage:
 Import: `import { FaqA } from 'raditz'`
 
 Props:
-  - background?: enum (default: surface-2)
+  - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: surface-2)
   - image?: string
   - parallax?: boolean
   - video?: string
@@ -1642,7 +1642,7 @@ Usage:
 Import: `import { FaqB } from 'raditz'`
 
 Props:
-  - background?: enum (default: none)
+  - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
   - image?: string
   - parallax?: boolean
   - video?: string
@@ -1658,7 +1658,7 @@ Usage:
 Import: `import { FeaturesA } from 'raditz'`
 
 Props:
-  - background?: enum (default: none)
+  - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
   - image?: string
   - parallax?: boolean
   - video?: string
@@ -1674,7 +1674,7 @@ Usage:
 Import: `import { FeaturesB } from 'raditz'`
 
 Props:
-  - background?: enum (default: gradient-mesh)
+  - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: gradient-mesh)
   - image?: string
   - parallax?: boolean
   - video?: string
@@ -1690,7 +1690,7 @@ Usage:
 Import: `import { FeaturesC } from 'raditz'`
 
 Props:
-  - background?: enum (default: surface-2)
+  - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: surface-2)
   - image?: string
   - parallax?: boolean
   - video?: string
@@ -1706,7 +1706,7 @@ Usage:
 Import: `import { FooterA } from 'raditz'`
 
 Props:
-  - background?: enum (default: none)
+  - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
   - image?: string
   - parallax?: boolean
   - video?: string
@@ -1722,7 +1722,7 @@ Usage:
 Import: `import { FooterB } from 'raditz'`
 
 Props:
-  - background?: enum (default: none)
+  - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
   - image?: string
   - parallax?: boolean
   - video?: string
@@ -1738,7 +1738,7 @@ Usage:
 Import: `import { HeroA } from 'raditz'`
 
 Props:
-  - background?: enum (default: none)
+  - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
   - image?: string
   - parallax?: boolean
   - video?: string
@@ -1754,7 +1754,7 @@ Usage:
 Import: `import { HeroB } from 'raditz'`
 
 Props:
-  - background?: enum (default: surface-2)
+  - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: surface-2)
   - image?: string
   - parallax?: boolean
   - video?: string
@@ -1770,7 +1770,7 @@ Usage:
 Import: `import { HeroC } from 'raditz'`
 
 Props:
-  - background?: enum (default: gradient-aurora)
+  - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: gradient-aurora)
   - image?: string
   - parallax?: boolean (default: true)
   - video?: string
@@ -1786,7 +1786,7 @@ Usage:
 Import: `import { MarqueeA } from 'raditz'`
 
 Props:
-  - background?: enum (default: none)
+  - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
   - image?: string
   - parallax?: boolean
   - video?: string
@@ -1816,7 +1816,7 @@ Usage:
 Import: `import { NewsletterA } from 'raditz'`
 
 Props:
-  - background?: enum (default: gradient-aurora)
+  - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: gradient-aurora)
   - image?: string
   - parallax?: boolean
   - video?: string
@@ -1832,7 +1832,7 @@ Usage:
 Import: `import { NotFoundA } from 'raditz'`
 
 Props:
-  - background?: enum (default: none)
+  - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
   - image?: string
   - parallax?: boolean
   - video?: string
@@ -1848,7 +1848,7 @@ Usage:
 Import: `import { PricingA } from 'raditz'`
 
 Props:
-  - background?: enum (default: surface-2)
+  - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: surface-2)
   - image?: string
   - parallax?: boolean
   - video?: string
@@ -1864,7 +1864,7 @@ Usage:
 Import: `import { PricingB } from 'raditz'`
 
 Props:
-  - background?: enum (default: gradient-accent)
+  - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: gradient-accent)
   - image?: string
   - parallax?: boolean
   - video?: string
@@ -1880,7 +1880,7 @@ Usage:
 Import: `import { SocialProofA } from 'raditz'`
 
 Props:
-  - background?: enum (default: none)
+  - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
   - image?: string
   - parallax?: boolean
   - video?: string
@@ -1896,7 +1896,7 @@ Usage:
 Import: `import { SocialProofB } from 'raditz'`
 
 Props:
-  - background?: enum (default: none)
+  - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
   - image?: string
   - parallax?: boolean
   - video?: string
@@ -1912,7 +1912,7 @@ Usage:
 Import: `import { StatsA } from 'raditz'`
 
 Props:
-  - background?: enum (default: none)
+  - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
   - image?: string
   - parallax?: boolean
   - video?: string
@@ -1928,7 +1928,7 @@ Usage:
 Import: `import { StatsB } from 'raditz'`
 
 Props:
-  - background?: enum (default: none)
+  - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
   - image?: string
   - parallax?: boolean
   - video?: string
@@ -1944,7 +1944,7 @@ Usage:
 Import: `import { TeamA } from 'raditz'`
 
 Props:
-  - background?: enum (default: none)
+  - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
   - image?: string
   - parallax?: boolean
   - video?: string
@@ -1960,7 +1960,7 @@ Usage:
 Import: `import { TestimonialCarouselA } from 'raditz'`
 
 Props:
-  - background?: enum (default: none)
+  - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
   - image?: string
   - parallax?: boolean
   - video?: string
@@ -1976,7 +1976,7 @@ Usage:
 Import: `import { TestimonialsA } from 'raditz'`
 
 Props:
-  - background?: enum (default: gradient-dusk)
+  - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: gradient-dusk)
   - image?: string
   - parallax?: boolean
   - video?: string
@@ -1992,7 +1992,7 @@ Usage:
 Import: `import { TestimonialsB } from 'raditz'`
 
 Props:
-  - background?: enum (default: gradient-dusk)
+  - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: gradient-dusk)
   - image?: string
   - parallax?: boolean
   - video?: string
@@ -2016,7 +2016,7 @@ Props:
   - initials?: string — Monogram fallback when there's no image.
   - size?: number | "sm" | "md" | "lg" | "xl" (default: md)
   - src?: string — Image source.
-  - variant?: enum (default: solid) — "orb" renders the accent gradient sphere.
+  - variant?: "solid" | "orb" (default: solid) — "orb" renders the accent gradient sphere.
 
 Examples (Storybook stories): Default, Orb, OrbInitials, Sizes
 
@@ -2033,7 +2033,7 @@ AvatarGroup — overlapping avatars with a "+N" overflow chip. `items` is `[{ in
 Props:
   - items?: AvatarGroupItem[] (default: [])
   - max?: number (default: 4) — Max avatars before collapsing to "+N".
-  - size?: enum (default: md)
+  - size?: "sm" | "md" | "lg" (default: md)
 
 Examples (Storybook stories): Default
 
@@ -2048,7 +2048,7 @@ Import: `import { Callout } from 'raditz'`
 A bordered, tinted message panel for inline notices. `color` sets the tone; pass an `icon` element and optional `title`.
 
 Props:
-  - color?: enum (default: info) — Tone.
+  - color?: "accent" | "info" | "success" | "warning" | "danger" (default: info) — Tone.
   - icon?: ReactNode — Leading icon element.
   - title?: ReactNode — Optional bold title line.
 
@@ -2067,7 +2067,7 @@ The base surface. `variant` is "solid" (default), "glass" (frosted blur) or "fla
 Props:
   - as?: ElementType (default: div)
   - interactive?: boolean (default: false) — Add a hover lift for clickable cards.
-  - variant?: enum (default: solid) — Surface style.
+  - variant?: "solid" | "glass" | "flat" (default: solid) — Surface style.
 
 Examples (Storybook stories): Default
 
@@ -2082,7 +2082,7 @@ Import: `import { Separator } from 'raditz'`
 A hairline rule. Horizontal by default; `orientation="vertical"` for inline dividers between row items.
 
 Props:
-  - orientation?: enum (default: horizontal)
+  - orientation?: "horizontal" | "vertical" (default: horizontal)
 
 Examples (Storybook stories): Horizontal, Vertical
 
@@ -2131,8 +2131,8 @@ Section / page heading in the display typeface. `level` picks both the tag (h1�
 
 Props:
   - as?: ElementType<any, keyof IntrinsicElements>
-  - level?: enum (default: 2) — Tag + size: 1–4, or a display size.
-  - size?: enum — Override the visual size independent of the tag.
+  - level?: 1 | 2 | 3 | 4 (default: 2) — Tag + size: 1–4, or a display size.
+  - size?: 1 | 2 | 3 | 4 | "display" | "display-2xl" — Override the visual size independent of the tag.
 
 Examples (Storybook stories): Default, Scale
 
@@ -2163,9 +2163,9 @@ Body copy. `as="p"` for paragraphs (default), `as="span"` for inline. `size` and
 Props:
   - as?: ElementType<any, keyof IntrinsicElements> (default: p)
   - measure?: boolean (default: false) — Clamp to a readable measure for long-form prose.
-  - size?: enum (default: base) — Type size.
-  - tone?: enum (default: soft) — Ink level.
-  - weight?: enum — Font weight token (regular|medium|semibold|bold).
+  - size?: "base" | "caption" | "s" | "l" (default: base) — Type size.
+  - tone?: "default" | "soft" | "muted" | "faint" | "accent" (default: soft) — Ink level.
+  - weight?: "regular" | "medium" | "semibold" | "bold" — Font weight token (regular|medium|semibold|bold).
 
 Examples (Storybook stories): Default, Sizes, Tones
 
@@ -2230,7 +2230,7 @@ Import: `import { ScrollArea } from 'raditz'`
 ScrollArea — a scroll container with a slim, themed scrollbar (Radix ScrollArea). Set `maxHeight` (vertical) or a fixed width (horizontal).
 
 Props:
-  - axis?: enum (default: vertical) — Scroll direction.
+  - axis?: "vertical" | "horizontal" | "both" (default: vertical) — Scroll direction.
   - maxHeight?: string | number — Max height before vertical scrolling kicks in.
 
 Examples (Storybook stories): Default

@@ -42,7 +42,14 @@ function storyExampleNames(dir, base) {
 
 function fmtProp(p) {
   const opt = p.required ? '' : '?';
-  const type = (p.type && p.type.name) || 'unknown';
+  let type = (p.type && p.type.name) || 'unknown';
+  // Expand enums/unions to their literal members: enum -> 'a' | 'b' | 'c'
+  if (type === 'enum' && p.type && Array.isArray(p.type.value)) {
+    const members = p.type.value.map((m) => m.value).filter(Boolean);
+    // Drop the noisy `undefined` member optionals carry; keep it readable.
+    const cleaned = members.filter((m) => m !== 'undefined');
+    if (cleaned.length && cleaned.length <= 12) type = cleaned.join(' | ');
+  }
   const dv = p.defaultValue && p.defaultValue.value;
   const def = dv !== undefined && dv !== null && dv !== '' ? ` (default: ${dv})` : '';
   const desc = p.description ? ` — ${p.description.replace(/\s+/g, ' ').trim()}` : '';
