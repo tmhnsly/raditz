@@ -1,58 +1,65 @@
-import { SectionShell, type SectionVariantProps } from '../../lib/SectionShell';
+import type { ReactNode } from 'react';
+import { SectionShell, SectionActions, type SectionBaseProps, type SectionAction } from '../../lib/SectionShell';
 
-export function HeroA({ background = 'none', ...props }: SectionVariantProps = {}) {
+export interface HeroProps extends SectionBaseProps {
+  /** Headline (required). */
+  title: ReactNode;
+  /** Small label/badge above the title. */
+  eyebrow?: ReactNode;
+  /** Lead paragraph under the title. */
+  lede?: ReactNode;
+  /** Call-to-action buttons. */
+  actions?: SectionAction[];
+  /** Media slot (used by the split/full-bleed variants). */
+  media?: ReactNode;
+}
+
+/** Hero A — centered column, dual CTA. */
+export function HeroA({ title, eyebrow, lede, actions, background = 'none', children, ...props }: HeroProps) {
   return (
     <SectionShell wrap="col sx-center sx-gap-5" background={background} {...props}>
-      <span className="rdz-badge rdz-badge--soft">New · v2 components</span>
-      <h2 className="h-display sx-hero__title">
-        The design foundation that re-skins in one line
-      </h2>
-      <p className="lede sx-hero__lede">
-        Radix Colors and a token system wired into 53 components. Change one accent and the whole product follows.
-      </p>
-      <div className="row sx-row-center">
-        <button className="rdz-btn rdz-btn--primary rdz-btn--lg sx-hero__pill">
-          Get started
-        </button>
-        <button className="rdz-btn rdz-btn--outline rdz-btn--lg">Read the docs</button>
-      </div>
+      {children ?? (
+        <>
+          {eyebrow && <span className="rdz-badge rdz-badge--soft">{eyebrow}</span>}
+          <h2 className="h-display sx-hero__title">{title}</h2>
+          {lede && <p className="lede sx-hero__lede">{lede}</p>}
+          <SectionActions actions={actions} size="lg" />
+        </>
+      )}
     </SectionShell>
   );
 }
 
-export function HeroB({ background = 'surface-2', ...props }: SectionVariantProps = {}) {
+/** Hero B — split: copy beside a media slot. */
+export function HeroB({ title, eyebrow, lede, actions, media, background = 'surface-2', children, ...props }: HeroProps) {
   return (
     <SectionShell wrap="sx-split sx-feat__spotlight" background={background} {...props}>
-      <div className="col sx-gap-4">
-        <span className="eyebrow2">Design system</span>
-        <h2 className="h-display">Ship a polished UI on day one</h2>
-        <p className="lede">
-          Accessible components, semantic tokens, dark mode and motion — all consistent, all themeable.
-        </p>
-        <div className="row">
-          <button className="rdz-btn rdz-btn--primary rdz-btn--lg">Start building</button>
-          <button className="rdz-btn rdz-btn--glass rdz-btn--lg">Live demo →</button>
-        </div>
-      </div>
-      <div className="ph sx-hero__media">product shot</div>
+      {children ?? (
+        <>
+          <div className="col sx-gap-4">
+            {eyebrow && <span className="eyebrow2">{eyebrow}</span>}
+            <h2 className="h-display">{title}</h2>
+            {lede && <p className="lede">{lede}</p>}
+            <SectionActions actions={actions} size="lg" className="row" />
+          </div>
+          {media}
+        </>
+      )}
     </SectionShell>
   );
 }
 
-export function HeroC({ background = 'gradient-aurora', parallax = true, ...props }: SectionVariantProps = {}) {
+/** Hero C — accent full-bleed band. */
+export function HeroC({ title, lede, actions, background = 'gradient-aurora', parallax = true, children, ...props }: HeroProps) {
   return (
     <SectionShell padClassName="sx-hero__band" wrap="col sx-center sx-gap-5" background={background} parallax={parallax} {...props}>
-      <h2 className="h-display sx-hero__band-title">
-        One accent token. Infinite themes.
-      </h2>
-      <p className="sx-hero__band-lede">
-        Cyan, iris, jade — flip a variable and every surface, state and shadow recolors in place.
-      </p>
-      <div className="row sx-row-center">
-        <button className="rdz-btn rdz-btn--lg sx-hero__band-btn">
-          Try the switcher
-        </button>
-      </div>
+      {children ?? (
+        <>
+          <h2 className="h-display sx-hero__band-title">{title}</h2>
+          {lede && <p className="sx-hero__band-lede">{lede}</p>}
+          <SectionActions actions={actions} size="lg" />
+        </>
+      )}
     </SectionShell>
   );
 }

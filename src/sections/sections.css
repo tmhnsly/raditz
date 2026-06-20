@@ -259,7 +259,7 @@
 .sx-hero__band { background: var(--accent); color: var(--on-accent); }
 .sx-hero__band-title { max-width: 20ch; }
 .sx-hero__band-lede { font-size: var(--fs-body-l); max-width: 50ch; opacity: 0.92; }
-.sx-hero__band-btn { background: var(--on-accent); color: var(--accent); border-radius: var(--radius-full); }
+.sx-hero__band-btn, .sx-hero__band .rdz-btn { background: var(--on-accent); color: var(--accent); border-radius: var(--radius-full); }
 
 /* ── Marquee ── */
 .sx-mq__band { padding-top: var(--space-6); padding-bottom: var(--space-6); }

@@ -1,8 +1,10 @@
-import type { ReactNode } from 'react';
+import type { ReactElement, ReactNode } from 'react';
 import { Frame } from './Frame';
 import { cx } from '../components/internal';
 import { SectionBackground } from '../components/layout/SectionBackground';
 import type { SectionBg } from '../components/layout/SectionBackground/SectionBackground';
+import { Button, type ButtonProps } from '../components/controls/Button';
+import type { IconName } from '../components/foundation/Icon/Icon';
 
 export type { SectionBg } from '../components/layout/SectionBackground/SectionBackground';
 
@@ -81,5 +83,73 @@ export function SectionShell({
         inner
       )}
     </Frame>
+  );
+}
+
+/**
+ * A call-to-action a section renders as a {@link Button}. Prefer `href`
+ * (Server-Component-safe) over `onClick` (which requires a client boundary).
+ * Shared by every content-driven section's `actions` prop.
+ */
+export type SectionAction = {
+  /** Visible button text. */
+  label: string;
+  /** Link target — renders an `<a>`. */
+  href?: string;
+  /** Click handler — renders a `<button>` (needs a client boundary). */
+  onClick?: () => void;
+  /** Button visual weight. @default Button's own default ("primary") */
+  variant?: ButtonProps['variant'];
+  /** Per-action size override (else inherits the `SectionActions` size). */
+  size?: ButtonProps['size'];
+  /** Leading icon — a registry name or a node. */
+  icon?: IconName | ReactNode;
+};
+
+/**
+ * The props every content-driven section variant accepts: the decorative
+ * backdrop options ({@link SectionVariantProps}) plus a `children` escape hatch
+ * that, when provided, replaces the section's auto-rendered body. Section prop
+ * interfaces (e.g. `HeroProps`) extend this and add their content fields.
+ */
+export type SectionBaseProps = SectionVariantProps & {
+  /** Replaces the auto-rendered body inside the themed shell when provided. */
+  children?: ReactNode;
+};
+
+/**
+ * Renders a row of CTAs from `actions` as {@link Button}s. Returns `null` when
+ * there are no actions, so callers can drop it in unconditionally. `size` sets
+ * the default for every button (each action may override via its own `size`).
+ * The shared CTA renderer for all content-driven sections.
+ */
+export function SectionActions({
+  actions,
+  size,
+  className = 'row sx-row-center',
+}: {
+  /** The CTAs to render. */
+  actions?: SectionAction[];
+  /** Default size applied to every button (per-action `size` wins). */
+  size?: ButtonProps['size'];
+  /** Class on the wrapping row. @default "row sx-row-center" */
+  className?: string;
+}): ReactElement | null {
+  if (!actions || actions.length === 0) return null;
+  return (
+    <div className={className}>
+      {actions.map((action, i) => (
+        <Button
+          key={action.href ?? action.label ?? i}
+          href={action.href}
+          onClick={action.onClick}
+          variant={action.variant}
+          size={action.size ?? size}
+          icon={action.icon}
+        >
+          {action.label}
+        </Button>
+      ))}
+    </div>
   );
 }

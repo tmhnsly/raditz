@@ -18,7 +18,16 @@ export function Landing() {
   return (
     <div className="rdz-page">
       <NavbarA />
-      <HeroB />
+      <HeroB
+        eyebrow="Design system"
+        title="Ship a polished UI on day one"
+        lede="Accessible components, semantic tokens, dark mode and motion — all consistent, all themeable."
+        actions={[
+          { label: 'Start building', href: '#' },
+          { label: 'Live demo →', href: '#', variant: 'glass' },
+        ]}
+        media={<div className="ph sx-hero__media">product shot</div>}
+      />
       <SocialProofA />
       <FeaturesA />
       <StatsB />
