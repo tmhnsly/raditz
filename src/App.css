@@ -66,7 +66,10 @@ body { font-family: var(--font-display); background-color: var(--bg-subtle); col
 /* sticky top bar inside the main column: theme/dark always (right); brand +
    nav burger appear only on mobile (left). */
 .expbar { position: sticky; top: 0; z-index: var(--z-sticky); display: flex; align-items: center; gap: var(--space-3);
-  padding: var(--space-3) 0; margin-bottom: var(--space-4);
+  /* Inline padding back to the content margin: the background still bleeds edge-
+     to-edge (negative margin above), but the title/icons/burger align with the
+     section content instead of hugging the viewport edge. */
+  padding: var(--space-3) var(--main-pad-x); margin-bottom: var(--space-4);
   background: color-mix(in srgb, var(--bg-subtle) 86%, transparent); -webkit-backdrop-filter: blur(var(--glass-blur)); backdrop-filter: blur(var(--glass-blur)); }
 /* A composed page preview scrolls in the window beside the explorer chrome, so a
    page's window-sticky navbar (z 50) would render OVER the sticky expbar (z 30)
