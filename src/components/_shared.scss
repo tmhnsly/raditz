@@ -32,6 +32,9 @@
   width: var(--srx-oclose-size, 2rem); height: var(--srx-oclose-size, 2rem);
   border: 0; padding: 0; border-radius: var(--radius-full);
   color: var(--text-soft); background: color-mix(in srgb, currentColor 16%, transparent);
+  /* Frosted glass so the disc stays legible over photos (Lightbox) and any panel —
+     driven by the same --glass-blur knob as cards/panels/glass buttons. */
+  -webkit-backdrop-filter: blur(var(--glass-blur)); backdrop-filter: blur(var(--glass-blur));
   cursor: pointer; transition: var(--transition-control);
 }
 .srx-oclose:hover, .srx-ovbtn:hover { background: color-mix(in srgb, currentColor 30%, transparent); color: var(--text); transform: scale(1.06); }
