@@ -1,0 +1,12 @@
+/* ──────────────────────────────────────────────────────────────────────────
+   Fonts — Space Grotesk (display) + Space Mono (mono), self-hosted.
+   Vendored via @fontsource* (pnpm) → woff2 bundled into dist at build time.
+   No runtime CDN dependency; works offline.
+   ────────────────────────────────────────────────────────────────────────── */
+
+/* Space Grotesk — variable, covers 400–700 */
+@import "@fontsource-variable/space-grotesk";
+
+/* Space Mono — static 400 + 700 */
+@import "@fontsource/space-mono/400.css";
+@import "@fontsource/space-mono/700.css";
