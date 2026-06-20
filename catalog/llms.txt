@@ -7,7 +7,7 @@ component that exists here, and never edit `node_modules/raditz`.
 - Import the stylesheet ONCE at the app root: `import 'raditz/styles.css'`.
 - Props below are the component-specific API; standard HTML attributes also pass through.
 
-117 exported components across 16 categories.
+124 exported components across 17 categories.
 
 ## controls
 
@@ -931,6 +931,126 @@ Examples (Storybook stories): Vertical, Horizontal
 Usage:
 ```tsx
 <Stack />
+```
+
+## lib
+
+### useColorScheme
+Import: `import { ColorPreference, ColorScheme, useColorScheme } from 'raditz'`
+
+Utility module — see exports below.
+
+Exports:
+  - ColorPreference
+  - ColorScheme
+  - useColorScheme
+
+> Note: This is a utility/hook module, not a React component — do not render as JSX.
+
+### ThemePicker
+Import: `import { ThemePicker } from 'raditz'`
+
+ThemePicker — pick an accent, gray, corner radius, and motion feel; the whole app re-themes live. Accent swatches repoint the accent ramp; "Auto" uses Radix's recommended paired gray; radius scales --radius-factor; motion maps to the data-motion presets. Persists.
+
+Props: none
+
+Usage:
+```tsx
+<ThemePicker />
+```
+
+### theme
+Import: `import { ACCENTS, Accent, COMPLEMENT, GRAYS, Gray, GrayChoice, LIGHT_ACCENTS, MOTIONS, MotionChoice, PAIRED_GRAY, RADII, RadiusChoice, applyTheme, resolveGray, useTheme } from 'raditz'`
+
+Utility module — see exports below.
+
+Exports:
+  - ACCENTS
+  - Accent
+  - COMPLEMENT
+  - GRAYS
+  - Gray
+  - GrayChoice
+  - LIGHT_ACCENTS
+  - MOTIONS
+  - MotionChoice
+  - PAIRED_GRAY
+  - RADII
+  - RadiusChoice
+  - applyTheme
+  - resolveGray
+  - useTheme
+
+> Note: This is a utility/hook module, not a React component — do not render as JSX.
+
+### Frame
+Import: `import { Frame } from 'raditz'`
+
+Frame — previews a section inside a bordered, rounded card (matching the original catalog). Use `bleed` for sections that paint their own full-bleed background (accent bands, announcement strips) so the frame just clips them.
+
+Props:
+  - className?: string
+  - maxWidth?: string
+  - style?: CSSProperties
+
+Usage:
+```tsx
+<Frame />
+```
+
+### SectionBg
+Import: `import { SectionBg } from 'raditz'`
+
+Templated background fills (all token-driven, so they re-theme).
+
+Props: none
+
+Usage:
+```tsx
+<SectionBg />
+```
+
+### SectionShell
+Import: `import { SectionShell } from 'raditz'`
+
+SectionShell — the one home for the section layout boilerplate every section variant used to repeat: the preview Frame + `.s-pad` padding + `.s-wrap` max-width wrapper (where the responsive container-query lives), with an optional SectionBackground. Sections become content + a shell choice instead of re-typing the triple-nested wrapper ~50 times.
+
+Props:
+  - background?: enum (default: none) — Optional decorative backdrop (composes SectionBackground).
+  - frameClassName?: string — Class on the preview Frame (e.g. "nav-frame", "ph--neutral").
+  - frameMaxWidth?: string — Constrain the Frame width.
+  - image?: string — Image URL backdrop (overrides gradient).
+  - nav?: ReactNode — A transparent nav rendered above the content, floating over the shared background (the "hero bleed" effect). Pass a nav with no background.
+  - pad?: enum (default: default) — Section padding.
+  - padClassName?: string — Extra classes on the padding element (e.g. a section band background).
+  - parallax?: boolean (default: false) — Parallax the backdrop.
+  - scrim?: boolean (default: false) — Darken the backdrop (scrim); the surface then scopes content to on-dark.
+  - video?: string — Video URL backdrop (overrides image + gradient).
+  - wrap?: string — Extra classes on the inner `.s-wrap` (grid + gap, e.g. "sx-g3 sx-gap-5").
+
+Usage:
+```tsx
+<SectionShell />
+```
+
+### HeroBleed
+Import: `import { HeroBleed } from 'raditz'`
+
+HeroBleed — a thin preset of {@link SectionShell}: one background fills the block (default a gradient) so it reaches the top BEHIND a transparent `nav` slot, with the hero content below. The bleed mechanism is decoupled from the content, so any hero design slots in. Media auto-scrims (and SectionShell then scopes the content to the on-dark context). It's a named preset, not its own Frame/SectionBackground/padding stack — that all lives in SectionShell.
+
+Props:
+  - background?: enum (default: gradient-aurora)
+  - children?: ReactNode — The hero content — any design; the bleed mechanism is decoupled from it.
+  - image?: string
+  - nav?: ReactNode — A transparent nav rendered at the very top, floating over the shared background (pass a nav with no background of its own).
+  - parallax?: boolean
+  - scrim?: boolean — Darken the backdrop for legible text. Defaults on when image/video is set.
+  - video?: string
+  - wrap?: string — Extra classes on the hero content's `.s-wrap`.
+
+Usage:
+```tsx
+<HeroBleed>…</HeroBleed>
 ```
 
 ## media
