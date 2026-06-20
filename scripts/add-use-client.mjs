@@ -13,6 +13,9 @@ const ROOTS = ['src/components', 'src/sections'];
 const EXTRA = ['src/lib/ThemePicker.tsx', 'src/lib/useColorScheme.ts', 'src/lib/theme.ts'];
 
 // A module must run on the client if it uses hooks, JSX event handlers, or browser globals.
+// This is a heuristic, not a parser: it can over-mark (e.g. a local var named `document`)
+// — which is the safe direction (a needless client boundary, never a broken server one) —
+// and `stripComments` only crudely ignores comment prose, not `//` inside string literals.
 const CLIENT_RE =
   /\b(useState|useEffect|useLayoutEffect|useReducer|useRef|useContext|useId|useImperativeHandle|useSyncExternalStore|useTransition|useDeferredValue|useMemo|useCallback|useInsertionEffect)\b|\bon[A-Z][A-Za-z]*=|\b(document|window|localStorage|sessionStorage|navigator|matchMedia|requestAnimationFrame|IntersectionObserver|ResizeObserver)\b/;
 

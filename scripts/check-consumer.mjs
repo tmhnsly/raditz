@@ -29,4 +29,13 @@ const btn = 'dist/components/controls/Button/Button.js';
 must(fs.existsSync(btn), `${btn} missing (preserveModules layout changed?)`);
 must(!/@visx|date-fns/.test(fs.readFileSync(btn, 'utf8')), 'Button.js inlined an externalized dep');
 
-console.log('OK: package is consumable (artifacts, exports, tree-shaking all pass)');
+// RSC guard: hook modules must keep their "use client" directive in dist. A build
+// regression that strips directives would silently break every Next consumer.
+const hookMod = 'dist/lib/useColorScheme.js';
+must(fs.existsSync(hookMod), `${hookMod} missing (lib layout changed?)`);
+must(
+  /^["']use client["']/.test(fs.readFileSync(hookMod, 'utf8').trimStart()),
+  'dist lost the "use client" directive (RSC/Next consumers would break)',
+);
+
+console.log('OK: package is consumable (artifacts, exports, tree-shaking, RSC all pass)');
