@@ -1,3 +1,4 @@
+'use client';
 import { cloneElement, createContext, isValidElement, useContext } from 'react';
 import type { HTMLAttributes, ReactElement, ReactNode } from 'react';
 import { cx, useStableId } from '../../internal';

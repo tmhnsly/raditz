@@ -1,3 +1,4 @@
+'use client';
 import * as React from 'react';
 import { useRef, useCallback } from 'react';
 import { useControllableState, clamp, roundToStep, onKeys, KEYS, cx } from '../../internal';

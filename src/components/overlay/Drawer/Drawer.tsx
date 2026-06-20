@@ -1,3 +1,4 @@
+'use client';
 import type { CSSProperties, HTMLAttributes, ReactNode, ReactElement } from 'react';
 import { cx, Overlay, OverlayClose } from '../../internal';
 

@@ -1,3 +1,4 @@
+'use client';
 import { useState } from 'react';
 import type { HTMLAttributes, ReactElement, CSSProperties } from 'react';
 import { cx, useControllableState, clamp } from '../../internal';

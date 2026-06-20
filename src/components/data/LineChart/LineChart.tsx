@@ -1,3 +1,4 @@
+'use client';
 import { useId, useState } from 'react';
 import type { MouseEvent, ReactNode } from 'react';
 import { scaleLinear } from '@visx/scale';

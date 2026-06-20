@@ -1,3 +1,4 @@
+'use client';
 import * as React from 'react';
 import { Lightbox } from '../Lightbox/Lightbox';
 import type { LightboxImage } from '../Lightbox/Lightbox';

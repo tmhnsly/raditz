@@ -1,3 +1,4 @@
+'use client';
 import { useRef, useState, useLayoutEffect, useCallback } from 'react';
 import type { CSSProperties, HTMLAttributes, KeyboardEvent as ReactKeyboardEvent, ReactElement, ReactNode } from 'react';
 import { useControllableState, cx, rovingIndex } from '../../internal';

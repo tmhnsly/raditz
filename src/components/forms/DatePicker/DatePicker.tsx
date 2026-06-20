@@ -1,3 +1,4 @@
+'use client';
 import { useState } from 'react';
 import type { HTMLAttributes, ReactElement } from 'react';
 import { addMonths, addYears, format, getMonth, getYear, setMonth, setYear } from 'date-fns';

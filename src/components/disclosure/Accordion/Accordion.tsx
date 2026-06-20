@@ -1,3 +1,4 @@
+'use client';
 import { useId } from 'react';
 import type { HTMLAttributes, ReactElement, ReactNode } from 'react';
 import { useControllableState, cx } from '../../internal';

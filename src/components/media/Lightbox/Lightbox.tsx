@@ -1,3 +1,4 @@
+'use client';
 import * as React from 'react';
 import { useControllableState, Overlay, onKeys, KEYS, cx, OverlayClose } from '../../internal';
 

@@ -1,3 +1,4 @@
+'use client';
 import { useState } from 'react';
 import { scaleLinear } from '@visx/scale';
 import { Circle } from '@visx/shape';

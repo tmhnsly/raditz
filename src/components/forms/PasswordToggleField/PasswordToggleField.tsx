@@ -1,3 +1,4 @@
+'use client';
 import { useState } from 'react';
 import type { ChangeEvent, InputHTMLAttributes, ReactElement } from 'react';
 import { cx, useControllableState } from '../../internal';
