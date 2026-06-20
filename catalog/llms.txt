@@ -1,0 +1,2135 @@
+# Raditz Component Catalog
+
+Raditz is a pre-built design-system package. CONSUME it — never re-implement a
+component that exists here, and never edit `node_modules/raditz`.
+
+- Import components/sections from the package root: `import { Button, HeroA } from 'raditz'`.
+- Import the stylesheet ONCE at the app root: `import 'raditz/styles.css'`.
+- Props below are the component-specific API; standard HTML attributes also pass through.
+
+117 exported components across 16 categories.
+
+## controls
+
+### Badge
+Import: `import { Badge } from 'raditz'`
+
+A small status / category label. `variant` is the fill style, `color` the semantic tone. Pass `dot` for a leading status dot.
+
+Props:
+  - color?: enum (default: accent) — Semantic tone.
+  - dot?: boolean (default: false) — Leading status dot.
+  - variant?: enum (default: soft) — Fill style.
+
+Examples (Storybook stories): Default, Variants, Colors
+
+Usage:
+```tsx
+<Badge />
+```
+
+### Button
+Import: `import { Button } from 'raditz'`
+
+The primary action component. `variant` sets the visual weight, `size` the scale. Renders an `<a>` when `href` is set, otherwise a `<button>`. Pass `icon` / `iconTrailing` (a registry name or node) for auto-sized icons.
+
+Props:
+  - href?: string — Render an anchor instead of a button.
+  - icon?: ReactNode — Leading icon — a registry name or a node.
+  - iconTrailing?: ReactNode — Trailing icon — a registry name or a node.
+  - size?: enum (default: md) — Size.
+  - variant?: enum (default: primary) — Visual weight.
+
+Examples (Storybook stories): Primary, Variants, Glass, Sizes
+
+Usage:
+```tsx
+<Button />
+```
+
+### Checkbox
+Import: `import { Checkbox } from 'raditz'`
+
+A checkbox with the accent fill + animated check. Controlled or uncontrolled like a native input. Renders as a `<label>` so clicking the box — or the optional `label` text — reliably toggles it. Pass `aria-label` when you omit `label` so the control still has an accessible name.
+
+Props:
+  - checked?: boolean
+  - defaultChecked?: boolean
+  - label?: ReactNode — Optional inline label rendered beside the box; clicking it toggles too.
+  - onChange?: ChangeEventHandler<HTMLInputElement>
+
+Examples (Storybook stories): Default, States
+
+Usage:
+```tsx
+<Checkbox />
+```
+
+### IconButton
+Import: `import { IconButton } from 'raditz'`
+
+Square, icon-only button. Always pass an `aria-label`. Provide the glyph via the `icon` prop (a registry name) or as a child. `variant` matches Button's weights (solid / soft / outline / ghost).
+
+Props:
+  - aria-label: string — Required for accessibility.
+  - href?: string
+  - icon?: ReactNode — Icon registry name or node.
+  - size?: enum (default: md)
+  - variant?: enum (default: ghost)
+
+Examples (Storybook stories): Default, Variants, Glass
+
+Usage:
+```tsx
+<IconButton />
+```
+
+### Pill
+Import: `import { Pill } from 'raditz'`
+
+A rounded, toggleable chip — filter rows, tag selectors. `active` flips it to the accent fill. Renders a <button> so it's keyboard-operable.
+
+Props:
+  - active?: boolean (default: false) — Selected state (accent fill).
+
+Examples (Storybook stories): Default, Active, FilterRow
+
+Usage:
+```tsx
+<Pill />
+```
+
+### Progress
+Import: `import { Progress } from 'raditz'`
+
+Progress — a determinate or indeterminate progress bar (Radix Progress). Pass `value` (0–`max`) for determinate; omit it or set `indeterminate` for a looping indeterminate bar.
+
+Props:
+  - indeterminate?: boolean (default: false) — Force the looping indeterminate state.
+  - max?: number (default: 100) — Maximum value.
+  - size?: enum (default: md) — Bar thickness.
+  - value?: number | null (default: null) — Current value (0–max). Omit / null for indeterminate.
+
+Examples (Storybook stories): Default, Indeterminate, Sizes
+
+Usage:
+```tsx
+<Progress />
+```
+
+### Radio
+Import: `import { Radio } from 'raditz'`
+
+A single radio control. Give every radio in a group the same `name`.
+
+Props:
+  - checked?: boolean
+  - defaultChecked?: boolean
+  - name?: string — Group name — shared across a radio set.
+
+Examples (Storybook stories): Default, Group
+
+Usage:
+```tsx
+<Radio />
+```
+
+### RadioGroup
+Import: `import { RadioGroup } from 'raditz'`
+
+RadioGroup — a set of mutually-exclusive radios (Radix RadioGroup). Items are `{ value, label, description?, disabled? }`. Controlled with `value`, uncontrolled with `defaultValue`.
+
+Props:
+  - defaultValue?: string — Initial selected value (uncontrolled).
+  - disabled?: boolean (default: false)
+  - items?: RadioGroupItem[] (default: []) — Options to render.
+  - name?: string — Shared input name (auto-generated if omitted).
+  - onValueChange?: ((value: string) => void) — Fires when the selection changes.
+  - orientation?: enum (default: vertical) — Layout direction.
+  - value?: string — Controlled selected value.
+
+Examples (Storybook stories): Default, Horizontal
+
+Usage:
+```tsx
+<RadioGroup />
+```
+
+### Slider
+Import: `import { Slider } from 'raditz'`
+
+Slider — a single-thumb range input (Radix Slider). Drag the track/thumb or use arrow / Home / End keys. Controlled with `value`, uncontrolled with `defaultValue`. Emits numbers in `[min, max]` snapped to `step`.
+
+Props:
+  - defaultValue?: number (default: 0) — Initial value (uncontrolled).
+  - disabled?: boolean (default: false)
+  - max?: number (default: 100)
+  - min?: number (default: 0)
+  - onValueChange?: ((value: number) => void) — Fires with the new value on drag/keyboard.
+  - step?: number (default: 1) — Snap increment.
+  - ticks?: boolean (default: false) — Show notches at each interior step (not at the 0%/100% ends).
+  - value?: number — Controlled value.
+
+Examples (Storybook stories): Default, WithTicks
+
+Usage:
+```tsx
+<Slider />
+```
+
+### Switch
+Import: `import { Switch } from 'raditz'`
+
+An on/off toggle. Controlled via `checked` + `onChange`, or uncontrolled with `defaultChecked`. Wrap with a <label> (or pass `aria-label`) for a hit target.
+
+Props:
+  - checked?: boolean
+  - defaultChecked?: boolean
+  - onChange?: ChangeEventHandler<HTMLInputElement>
+
+Examples (Storybook stories): Default, States
+
+Usage:
+```tsx
+<Switch />
+```
+
+### Toggle
+Import: `import { Toggle } from 'raditz'`
+
+Toggle — a two-state on/off button (Radix Toggle). Controlled with `pressed` or uncontrolled with `defaultPressed`; `onPressedChange` fires on change.
+
+Props:
+  - defaultPressed?: boolean (default: false) — Initial pressed state (uncontrolled).
+  - disabled?: boolean (default: false)
+  - onPressedChange?: ((pressed: boolean) => void) — Fires when the pressed state changes.
+  - pressed?: boolean — Controlled pressed state.
+  - size?: enum (default: md) — Control size.
+  - variant?: enum (default: soft) — Visual treatment.
+
+Examples (Storybook stories): Default, Variants
+
+Usage:
+```tsx
+<Toggle />
+```
+
+### ToggleGroup
+Import: `import { ToggleGroup } from 'raditz'`
+
+ToggleGroup — a segmented set of toggle buttons (Radix ToggleGroup). `type="single"` behaves like a radio set; `type="multiple"` lets any number stay pressed. Items are `{ value, label?, icon?, disabled? }`.
+
+Props:
+  - defaultValue?: string | string[] — Initial value (uncontrolled).
+  - disabled?: boolean (default: false)
+  - items?: ToggleGroupItem[] (default: []) — Buttons to render.
+  - onValueChange?: ((value: string | string[]) => void) — Fires when selection changes.
+  - size?: enum (default: md) — Control size.
+  - type?: enum (default: single) — Single-select (radio-like) or multi-select.
+  - value?: string | string[] — Controlled value — string for single, string[] for multiple.
+
+Examples (Storybook stories): Single, Multiple
+
+Usage:
+```tsx
+<ToggleGroup />
+```
+
+## data
+
+### BarChart
+Import: `import { BarChart } from 'raditz'`
+
+BarChart — a compact categorical bar chart (pure SVG/flex). `data` is `[{ label, value, color? }]`. Bars use the accent unless a per-bar `color` is given. `horizontal` flips orientation; `showValues` prints values.
+
+Props:
+  - data?: BarDatum[] (default: [])
+  - height?: string (default: 10rem) — Chart height (vertical mode).
+  - horizontal?: boolean (default: false) — Horizontal bars.
+  - showValues?: boolean (default: true) — Print values on bars.
+
+Examples (Storybook stories): Default
+
+Usage:
+```tsx
+<BarChart />
+```
+
+### DataTable
+Import: `import { DataTable } from 'raditz'`
+
+DataTable — a sortable, selectable table with a sticky header and optional pagination. `columns` is `[{ key, header, align?, width?, sortable?, render? }]` and `rows` is an array of objects keyed by `rowKey` (default "id"). `render(value, row)` customizes a cell. Set `selectable` for row checkboxes (controlled via `selected` / `onSelectedChange`), and `pageSize` to paginate.
+
+Props:
+  - columns?: DataTableColumn<Row>[] (default: [])
+  - defaultSort?: { key: string; dir: "asc" | "desc"; } | null (default: null) — Initial sort, e.g. { key: 'name', dir: 'asc' }.
+  - dense?: boolean (default: false) — Tighter row height.
+  - onSelectedChange?: ((selected: RowKey[]) => void)
+  - pageSize?: number (default: 0) — Rows per page (0 = no pagination).
+  - rowKey?: string (default: id) — Unique key field on each row.
+  - rows?: Row[] (default: [])
+  - selectable?: boolean (default: false) — Show row-selection checkboxes.
+  - selected?: RowKey[] — Controlled selected row keys.
+
+Examples (Storybook stories): Default
+
+Usage:
+```tsx
+<DataTable />
+```
+
+### Donut
+Import: `import { Donut } from 'raditz'`
+
+Donut — a ring chart (pure SVG) for a single percentage or multiple segments. Pass `value` (+ optional `max`, default 100) for a single ring, or `segments` (`[{ value, color?, label? }]`) for a multi-part donut. `label` renders in the centre.
+
+Props:
+  - color?: string (default: var(--accent)) — Single-ring color.
+  - label?: ReactNode — Centre label.
+  - max?: number (default: 100)
+  - segments?: DonutSegment[] — Multi-segment data (overrides `value`).
+  - size?: string (default: 8rem) — Diameter (CSS length).
+  - thickness?: number (default: 12) — Ring thickness in viewBox units.
+  - trackColor?: string (default: var(--surface-strong))
+  - value?: number — Single-ring value (with `max`).
+
+Examples (Storybook stories): Default
+
+Usage:
+```tsx
+<Donut />
+```
+
+### LineChart
+Import: `import { LineChart } from 'raditz'`
+
+LineChart — a responsive line/area chart (visx) with an optional value-mapped gradient stroke, labelled point markers, vertical reference-line annotations, and an interactive crosshair + tooltip. The engagement/"episode" chart is just this with a rich `renderTooltip` and a "STOP" reference (see the stories).
+
+Props:
+  - area?: boolean (default: false) — Fill the area under the line.
+  - ariaLabel?: string (default: Line chart)
+  - data: LinePoint[]
+  - formatY?: ((y: number) => string) (default: (y) => String(y)) — Y tick formatter.
+  - gradient?: boolean (default: false) — Value-mapped gradient stroke (accent → warning → danger).
+  - height?: number (default: 240) — Chart height in px.
+  - markers?: LineAnnotation[] (default: []) — Labelled point markers (e.g. a "PEAK" dot).
+  - references?: LineAnnotation[] (default: []) — Vertical dashed reference lines (e.g. a "STOP" annotation).
+  - renderTooltip?: ((point: LinePoint, index: number) => ReactNode) — Custom hover tooltip content; omit for a simple value tooltip.
+
+Examples (Storybook stories): Default, Engagement
+
+Usage:
+```tsx
+<LineChart />
+```
+
+### ScatterChart
+Import: `import { ScatterChart } from 'raditz'`
+
+ScatterChart — a responsive scatter / bubble plot (visx). Pass `[{ x, y, size?, label? }]`; `size` drives the bubble radius. Hovering a point shows a tooltip.
+
+Props:
+  - ariaLabel?: string (default: Scatter chart)
+  - data: ScatterPoint[]
+  - formatX?: ((x: number) => string) (default: (v) => String(v))
+  - formatY?: ((y: number) => string) (default: (v) => String(v))
+  - height?: number (default: 260)
+
+Examples (Storybook stories): Default
+
+Usage:
+```tsx
+<ScatterChart />
+```
+
+### Sparkline
+Import: `import { Sparkline } from 'raditz'`
+
+Sparkline — a tiny inline trend line (pure SVG). `data` is an array of numbers; the line auto-scales to its min/max. `area` fills under the line. Color comes from `currentColor` (defaults to the accent) — set `color` to override. Width/height are CSS lengths.
+
+Props:
+  - area?: boolean (default: true) — Fill the area under the line.
+  - color?: string (default: var(--accent)) — Stroke/fill color.
+  - data?: number[] (default: [])
+  - height?: string (default: 2rem)
+  - strokeWidth?: number (default: 2)
+  - width?: string (default: 7rem)
+
+Examples (Storybook stories): Default
+
+Usage:
+```tsx
+<Sparkline />
+```
+
+## disclosure
+
+### Accordion
+Import: `import { Accordion } from 'raditz'`
+
+Accordion — a stack of collapsible sections (Radix Accordion). `type="single"` keeps one open (set `collapsible` to allow none); `type="multiple"` lets any number open. Items are `{ value, title, content, disabled? }`.
+
+Props:
+  - collapsible?: boolean (default: true) — In single mode, allow closing the open item.
+  - defaultValue?: string | string[] — Initial open value(s) (uncontrolled).
+  - items?: AccordionItem[] (default: []) — Sections to render.
+  - onValueChange?: ((value: string | string[]) => void) — Fires when the open value(s) change.
+  - type?: enum (default: single) — One-open or many-open.
+  - value?: string | string[] — Controlled open value(s) — string for single, string[] for multiple.
+
+Examples (Storybook stories): Default
+
+Usage:
+```tsx
+<Accordion />
+```
+
+### Collapsible
+Import: `import { Collapsible } from 'raditz'`
+
+Collapsible — a single show/hide region with a trigger (Radix Collapsible). Controlled with `open`, or uncontrolled with `defaultOpen`.
+
+Props:
+  - defaultOpen?: boolean (default: false) — Initial open state (uncontrolled).
+  - disabled?: boolean (default: false)
+  - onOpenChange?: ((open: boolean) => void) — Fires when open state changes.
+  - open?: boolean — Controlled open state.
+  - trigger?: ReactNode — Trigger label/content.
+
+Examples (Storybook stories): Default
+
+Usage:
+```tsx
+<Collapsible />
+```
+
+## feedback
+
+### Banner
+Import: `import { Banner } from 'raditz'`
+
+Banner — an inline, full-width alert that sits in the layout (unlike the floating Toast). `tone`: info | success | warning | danger. Optional `title`, `action` node and `onClose`.
+
+Props:
+  - action?: ReactNode — Trailing action node (e.g. a Button).
+  - icon?: string — Override the leading icon (registry name).
+  - onClose?: (() => void) — Show a dismiss button wired to this handler.
+  - title?: ReactNode
+  - tone?: enum (default: info)
+
+Examples (Storybook stories): Default
+
+Usage:
+```tsx
+<Banner />
+```
+
+### Skeleton
+Import: `import { Skeleton } from 'raditz'`
+
+Skeleton — a shimmering placeholder for loading states. `variant` picks the shape: 'text' (a line; use `lines` for a paragraph), 'circle', 'rect'. Size with `width` / `height` (CSS lengths). Set `loading={false}` to render `children` instead — handy as a wrapper.
+
+Props:
+  - height?: string — CSS height.
+  - lines?: number (default: 1) — For variant="text", number of lines (last is shortened).
+  - loading?: boolean (default: true) — When false, renders children instead of the placeholder.
+  - radius?: string — Override border-radius.
+  - variant?: enum (default: text) — Shape.
+  - width?: string — CSS width.
+
+Examples (Storybook stories): Default
+
+Usage:
+```tsx
+<Skeleton />
+```
+
+### Spinner
+Import: `import { Spinner } from 'raditz'`
+
+Spinner — an indeterminate loading indicator. Sizes to `1.25em` by default (or pass `size`), inherits `currentColor`, so it sits inline in buttons, inputs and surfaces. `label` is announced to screen readers.
+
+Props:
+  - label?: string (default: Loading) — Screen-reader label.
+  - size?: string | number — Any CSS length; defaults to 1.25em so it scales with text.
+  - strokeWidth?: number (default: 2.5) — Ring stroke weight.
+
+Examples (Storybook stories): Default
+
+Usage:
+```tsx
+<Spinner />
+```
+
+### Toast
+Import: `import { Toast } from 'raditz'`
+
+Toast — transient notifications (Radix Toast). Mount ONE `<Toast />` near the root, then call `Toast.show({ title, description?, variant?, action?, duration? })` (or `Toast.show('Saved')`) from anywhere. `variant`: 'default' | 'success' | 'warning' | 'danger'.
+
+Props:
+  - duration?: number (default: 4000) — Default auto-dismiss ms.
+  - position?: enum (default: "bottom-right") — Where toasts stack.
+
+Examples (Storybook stories): Default
+
+Usage:
+```tsx
+<Toast />
+```
+
+## forms
+
+### Combobox
+Import: `import { Combobox } from 'raditz'`
+
+Combobox — a searchable single-select. `options` is `[{ value, label }]` (or plain strings). Controlled with `value` / `onChange`, or uncontrolled with `defaultValue`. Type to filter; Arrow/Enter/Escape navigate. Renders its listbox directly into an {@link Overlay} (`anchored`, matchWidth, focus the search input on open).
+
+Props:
+  - defaultValue?: string
+  - disabled?: boolean (default: false)
+  - emptyText?: string (default: No results)
+  - onChange?: ((value: string) => void)
+  - options?: (string | ComboboxOption)[] (default: [])
+  - placeholder?: string (default: Select…)
+  - value?: string
+
+Examples (Storybook stories): Default
+
+Usage:
+```tsx
+<Combobox />
+```
+
+### DatePicker
+Import: `import { DatePicker } from 'raditz'`
+
+DatePicker — a text trigger that opens a calendar popover with drill-up navigation: the title steps day → month → year (click "June 2026" to pick a month, "2026" to pick a year), and the arrows page the current view. Value is an ISO `YYYY-MM-DD` string (controlled `value`/`onChange` or `defaultValue`); `min`/`max` bound the range. Built on date-fns; renders into an {@link Overlay}.
+
+Props:
+  - defaultValue?: string — Initial ISO date (uncontrolled).
+  - disabled?: boolean (default: false)
+  - max?: string — Latest selectable ISO date.
+  - min?: string — Earliest selectable ISO date.
+  - onChange?: ((value: string) => void)
+  - placeholder?: string (default: Select date)
+  - value?: string — ISO YYYY-MM-DD (controlled).
+
+Examples (Storybook stories): Default
+
+Usage:
+```tsx
+<DatePicker />
+```
+
+### DateTimePicker
+Import: `import { DateTimePicker } from 'raditz'`
+
+DateTimePicker — the drill-up {@link DatePicker} and the {@link TimePicker} composed into one control. Emits a combined `YYYY-MM-DDTHH:mm` string (or just the date until a time is chosen).
+
+Props:
+  - defaultValue?: string — Initial combined value (uncontrolled).
+  - disabled?: boolean (default: false)
+  - hour12?: boolean (default: true) — 12-hour time display.
+  - onChange?: ((value: string) => void)
+  - value?: string — Combined value `YYYY-MM-DDTHH:mm` (controlled).
+
+Examples (Storybook stories): Default
+
+Usage:
+```tsx
+<DateTimePicker />
+```
+
+### Field
+Import: `import { Field } from 'raditz'`
+
+A labelled form row that OWNS the field wiring: it generates an id and links the label, the control, and the hint/error message (`for` / `id` / `aria-describedby`), and sets `aria-invalid` + `required` on the control. The wiring is injected into the direct control child via cloneElement (existing controls need no changes) and also published through {@link useField} for nested/custom controls. Deleting Field now genuinely loses the wiring — it is a deep module, not a structural wrapper.
+
+Props:
+  - disabled?: boolean (default: false) — Disable the control (injected into the child) and dim the label.
+  - error?: ReactNode — Error message (replaces hint, applies danger styling + aria-invalid).
+  - hint?: ReactNode — Helper text below the control.
+  - htmlFor?: string — Override the generated control id (else one is generated and linked).
+  - label?: ReactNode — Label text.
+  - required?: boolean (default: false) — Show a required asterisk and mark the control required.
+
+Examples (Storybook stories): Default, WithError
+
+Usage:
+```tsx
+<Field />
+```
+
+### useField
+Import: `import { useField } from 'raditz'`
+
+Read the wiring published by the enclosing {@link Field} — for controls that aren't Field's direct child (nested/custom layouts) and so miss cloneElement.
+
+Props: none
+
+Examples (Storybook stories): Default, WithError
+
+Usage:
+```tsx
+const result = useField();
+```
+
+### FileDropzone
+Import: `import { FileDropzone } from 'raditz'`
+
+FileDropzone — a drag-and-drop file input with click-to-browse and a file list. Uncontrolled by default; pass `value` / `onChange` (File[]) to control. `accept` (input accept string), `multiple`, and `maxSize` (bytes) filter what's accepted. This is UI only — it does not upload; read the files in `onChange`.
+
+Props:
+  - accept?: string — Input accept string, e.g. "image/*,.pdf".
+  - defaultValue?: File[] (default: []) — Initial files (uncontrolled).
+  - disabled?: boolean (default: false)
+  - hint?: ReactNode — Helper line under the prompt (e.g. "PNG, JPG up to 5MB").
+  - maxSize?: number — Max bytes per file (larger are ignored).
+  - multiple?: boolean (default: true) — Allow multiple files.
+  - onChange?: ((files: File[]) => void)
+  - value?: File[] — Controlled file list.
+
+Examples (Storybook stories): Default
+
+Usage:
+```tsx
+<FileDropzone />
+```
+
+### Form
+Import: `import { Form } from 'raditz'`
+
+Form — a data-driven form with native + custom validation and per-field messages (Radix Form). `fields` is an array of `{ name, label, type?, required?, placeholder?, hint?, minLength?, maxLength?, pattern?, messages?, validate? }`. Validation runs on submit, then live on change/blur for fields the user has touched. `messages` maps ValidityState keys (valueMissing, typeMismatch, tooShort, patternMismatch, …) to copy; `validate(value, allValues)` returns a custom error string (or ''). `onSubmit(values)` fires only when everything is valid.
+
+Props:
+  - fields?: FormFieldSpec[] (default: []) — Field specs to render and validate.
+  - footer?: ReactNode — Extra node placed in the actions row, before the submit button.
+  - onSubmit?: ((values: Record<string, string>) => void) — Fires with the values object only when all fields are valid.
+  - submitLabel?: ReactNode (default: Submit) — Submit button label.
+
+Examples (Storybook stories): Default
+
+Usage:
+```tsx
+<Form />
+```
+
+### Input
+Import: `import { Input } from 'raditz'`
+
+A text input. `invalid` switches to the danger ring. Spread any native input attribute (type, placeholder, value, onChange…).
+
+Props:
+  - invalid?: boolean (default: false) — Show the danger ring + aria-invalid.
+
+Examples (Storybook stories): Default, Invalid
+
+Usage:
+```tsx
+<Input />
+```
+
+### OneTimePasswordField
+Import: `import { OneTimePasswordField } from 'raditz'`
+
+OneTimePasswordField — a segmented one-time-code input (Radix OTP field). `length` boxes (default 6); auto-advances on entry, backspaces to the previous box, supports paste and arrow keys. Controlled with `value`, uncontrolled with `defaultValue`. `onComplete` fires when all boxes fill.
+
+Props:
+  - defaultValue?: string — Initial value (uncontrolled).
+  - disabled?: boolean (default: false)
+  - length?: number (default: 6) — Number of boxes.
+  - onChange?: ((value: string) => void)
+  - onComplete?: ((value: string) => void) — Fires when every box is filled.
+  - type?: enum (default: text) — 'text' (visible) or 'password' (masked).
+  - value?: string — Controlled value (the concatenated code).
+
+Examples (Storybook stories): Default
+
+Usage:
+```tsx
+<OneTimePasswordField />
+```
+
+### PasswordToggleField
+Import: `import { PasswordToggleField } from 'raditz'`
+
+PasswordToggleField — a password input with a show/hide button (Radix Password Toggle field). Controlled with `value`, uncontrolled with `defaultValue`. `defaultVisible` starts revealed.
+
+Props:
+  - defaultValue?: string — Initial value (uncontrolled).
+  - defaultVisible?: boolean (default: false) — Start with the password revealed.
+  - disabled?: boolean (default: false)
+  - invalid?: boolean (default: false) — Render the invalid (danger) state.
+  - onChange?: ((value: string) => void)
+  - placeholder?: string
+  - value?: string — Controlled value.
+
+Examples (Storybook stories): Default
+
+Usage:
+```tsx
+<PasswordToggleField />
+```
+
+### Rating
+Import: `import { Rating } from 'raditz'`
+
+Rating — a star rating input (or read-only display). Controlled with `value` / `onChange`, or uncontrolled with `defaultValue`. `count` sets the number of stars. Read-only mode renders any fractional value with an accurate CSS percentage fill (e.g. 3.2 → the 4th star is 20% filled). For input, `precision` selects whole (`full`) or `half` stars.
+
+Props:
+  - count?: number (default: 5) — Number of stars.
+  - defaultValue?: number (default: 0) — Initial value (uncontrolled).
+  - disabled?: boolean (default: false) — Disable interaction — dimmed and non-interactive.
+  - onChange?: ((value: number) => void)
+  - precision?: enum (default: full) — Input granularity: whole or half stars. (Read-only display is always exact.)
+  - readOnly?: boolean (default: false) — Display only (renders any fractional value, e.g. 3.2).
+  - size?: enum (default: md)
+  - value?: number — Controlled value.
+
+Examples (Storybook stories): Default, HalfStars, ReadOnlyFractional
+
+Usage:
+```tsx
+<Rating />
+```
+
+### Search
+Import: `import { Search } from 'raditz'`
+
+Search — the one search input used everywhere search appears (Combobox, CommandPalette, the explorer tree). A leading search icon + a borderless input, so every "search" looks, feels and behaves the same. `variant="field"` is a bordered standalone box; `variant="plain"` is a header row for popovers. Forwards its ref so callers can autofocus it. Pair with `fuzzyFilter`.
+
+Props:
+  - hint?: ReactNode — Trailing hint, e.g. a `<kbd>esc</kbd>`.
+  - size?: enum (default: md)
+  - variant?: enum (default: field) — Bordered standalone box, or a plain header row (inside popovers/menus).
+
+Examples (Storybook stories): Field, Plain
+
+Usage:
+```tsx
+<Search />
+```
+
+### Select
+Import: `import { Select } from 'raditz'`
+
+A styled native <select> with a custom chevron. Pass <option> children, or an `options` array of { value, label }.
+
+Props:
+  - invalid?: boolean (default: false)
+  - options?: SelectOption[] — Options array; alternatively pass <option> children.
+
+Examples (Storybook stories): Default
+
+Usage:
+```tsx
+<Select />
+```
+
+### TagInput
+Import: `import { TagInput } from 'raditz'`
+
+TagInput — a multi-value text input. Type and press Enter or comma to add a tag; Backspace on an empty field removes the last. Controlled with `value` (string[]) / `onChange`, or uncontrolled with `defaultValue`. `suggestions` offers quick-add chips; `max` caps the count.
+
+Props:
+  - defaultValue?: string[] (default: []) — Initial tags (uncontrolled).
+  - disabled?: boolean (default: false)
+  - max?: number — Max number of tags.
+  - onChange?: ((tags: string[]) => void)
+  - placeholder?: string (default: Add tag…)
+  - suggestions?: string[] (default: []) — Quick-add suggestion chips.
+  - value?: string[] — Controlled tags.
+
+Examples (Storybook stories): Default
+
+Usage:
+```tsx
+<TagInput />
+```
+
+### Textarea
+Import: `import { Textarea } from 'raditz'`
+
+A multi-line text input. Vertically resizable; shares the Input styling.
+
+Props:
+  - invalid?: boolean (default: false)
+  - rows?: number (default: 4)
+
+Examples (Storybook stories): Default
+
+Usage:
+```tsx
+<Textarea />
+```
+
+### TimePicker
+Import: `import { TimePicker } from 'raditz'`
+
+TimePicker — a trigger that opens hour / minute (/ AM-PM) columns. The value is a canonical 24-hour `HH:mm` string; the display follows `hour12`. Controlled with `value`/`onChange` or uncontrolled with `defaultValue`. Built on the pure `time` helpers (see time.test.ts); renders into an {@link Overlay}.
+
+Props:
+  - defaultValue?: string — Initial "HH:mm" (uncontrolled).
+  - disabled?: boolean (default: false)
+  - hour12?: boolean (default: true) — 12-hour display with AM/PM.
+  - minuteStep?: number (default: 5) — Minute increment in the list.
+  - onChange?: ((value: string) => void)
+  - placeholder?: string (default: Select time)
+  - value?: string — 24-hour "HH:mm" (controlled).
+
+Examples (Storybook stories): Default, TwentyFourHour, Disabled
+
+Usage:
+```tsx
+<TimePicker />
+```
+
+## foundation
+
+### Icon
+Import: `import { Icon } from 'raditz'`
+
+Icon — renders a named icon from the Raditz registry. Inherits color via `currentColor` and sizes to `1em` by default, so it scales with surrounding text and tints with the parent's color. <Icon name="search" /> <Icon name="bell" size="1.25rem" />
+
+Props:
+  - name: enum — Registry icon name (see icons.ts).
+  - size?: string | number (default: 1em) — Width/height — defaults to `1em` so it scales with surrounding text.
+  - strokeWidth?: number (default: 2)
+  - title?: string — When set, the icon is a labelled image for screen readers; otherwise aria-hidden.
+
+Examples (Storybook stories): AllIcons
+
+Usage:
+```tsx
+<Icon />
+```
+
+## layout
+
+### Container
+Import: `import { Container } from 'raditz'`
+
+Centers content and applies responsive gutters. The outermost layout primitive on most pages. `size` caps the max-width; `bleed` removes the side padding.
+
+Props:
+  - as?: ElementType (default: div) — Element to render.
+  - bleed?: boolean (default: false) — Remove side gutters.
+  - size?: enum (default: default) — Max-width cap.
+
+Examples (Storybook stories): Default
+
+Usage:
+```tsx
+<Container />
+```
+
+### FullBleed
+Import: `import { FullBleed } from 'raditz'`
+
+Breaks an element out of its container to span the full viewport width, while keeping it in normal document flow. Use for full-bleed media bands and color sections inside a constrained Container.
+
+Props:
+  - as?: ElementType (default: div)
+
+Examples (Storybook stories): Default
+
+Usage:
+```tsx
+<FullBleed />
+```
+
+### Grid
+Import: `import { Grid } from 'raditz'`
+
+CSS grid. Either pass a fixed `columns` count, or `minItem` to get a responsive auto-fill grid that wraps when items get narrower than that width.
+
+Props:
+  - as?: ElementType (default: div)
+  - columns?: number — Fixed column count. Omit to use a responsive auto-fill grid.
+  - gap?: number (default: 5) — Gap as a spacing step (1–12).
+  - minItem?: string (default: 240px) — Min item width for the auto-fill grid.
+
+Examples (Storybook stories): FixedColumns, AutoFill
+
+Usage:
+```tsx
+<Grid />
+```
+
+### Popout
+Import: `import { Popout } from 'raditz'`
+
+Full-bleed BACKGROUND, container-aligned CONTENT — the "popout" pattern. The element breaks out to span the full viewport width (so its background, border bands and color ignore the page gutters), while the inner wrapper keeps the content on the same max-width and gutters as the rest of the page. Use for colored CTAs, feature strips and media bands inside a constrained Container. Built on the same `width:100vw; margin-inline: calc(50% - 50vw)` breakout as FullBleed, plus an inner Container so you don't have to nest the two by hand.
+
+Props:
+  - as?: ElementType (default: section) — Element to render.
+  - bg?: string (default: var(--accent-surface)) — Full-bleed background — any CSS background value or token.
+  - bordered?: boolean (default: false) — Add hairline top/bottom rules across the bleed.
+  - contentStyle?: CSSProperties — Extra style for the inner (contained) content wrapper.
+  - pad?: number (default: 11) — Block padding on the content (spacing step 1–12).
+  - size?: enum (default: default) — Inner content max-width cap (matches Container).
+
+Examples (Storybook stories): Default
+
+Usage:
+```tsx
+<Popout />
+```
+
+### Section
+Import: `import { Section } from 'raditz'`
+
+A vertical page section with consistent block rhythm. Use between major page regions; `gap` is the inner stack gap, the block padding is the section rhythm.
+
+Props:
+  - as?: ElementType (default: section)
+  - gap?: number (default: 5) — Inner stack gap (spacing step 1–12).
+  - pad?: number (default: 11) — Block padding (spacing step 1–12).
+
+Examples (Storybook stories): Default
+
+Usage:
+```tsx
+<Section />
+```
+
+### SectionBackground
+Import: `import { SectionBackground } from 'raditz'`
+
+SectionBackground — an optional decorative backdrop for a section: a neutral surface level (alternate `surface`/`surface-2` to differentiate sections), a templated gradient, or an image/video — with optional scroll parallax. Content sits above the layer, so glass/translucent panels finally have something to sit over. Default is `none` (plain, fast) so wireframing stays quick; flourishes are opt-in. All gradients are token-driven and re-theme with the accent.
+
+Props:
+  - background?: enum (default: none) — Background fill.
+  - image?: string — Image URL — painted as a cover layer (overrides the gradient).
+  - motion?: enum — Background motion mode. `'parallax'` scroll-shifts the layer, `'static'` pins it. Takes precedence over `parallax` — handy for a runtime toggle.
+  - parallax?: boolean (default: false) — Subtle scroll parallax on the media/gradient layer.
+  - scrim?: boolean (default: false) — Darken the backdrop (image/video/gradient) so overlaid text stays legible.
+  - video?: string — Video URL — autoplaying muted cover layer (overrides image + gradient).
+
+Examples (Storybook stories): GradientAccent, Aurora, Dusk, Mesh, SurfaceLevels, Parallax, Image, Video
+
+Usage:
+```tsx
+<SectionBackground />
+```
+
+### Stack
+Import: `import { Stack } from 'raditz'`
+
+Flexbox stack. Vertical by default; pass `direction="row"` for a horizontal row. `gap` is a spacing-scale step (1–12). `align` / `justify` map to flexbox.
+
+Props:
+  - align?: AlignItems — align-items value.
+  - as?: ElementType (default: div)
+  - direction?: enum (default: column) — Flex direction.
+  - gap?: number (default: 4) — Gap as a spacing step (1–12).
+  - justify?: JustifyContent — justify-content value.
+  - wrap?: boolean (default: false) — Allow wrapping.
+
+Examples (Storybook stories): Vertical, Horizontal
+
+Usage:
+```tsx
+<Stack />
+```
+
+## media
+
+### Carousel
+Import: `import { Carousel } from 'raditz'`
+
+Carousel — a horizontal scroll-snap slider. Each child is a slide. `perView` sets how many slides show at once (fractional peeks the next); omit it for a responsive default. Arrows + dots are built in; `autoplay` advances every `interval` ms and `loop` wraps. Touch/trackpad swipe works via native scroll-snap; programmatic paging is a token-timed smooth scroll (it honours the project motion scale and `prefers-reduced-motion`).
+
+Props:
+  - arrows?: boolean (default: true) — Show prev/next arrows.
+  - autoplay?: boolean (default: false) — Auto-advance.
+  - bleed?: boolean (default: false) — Let the track bleed past the section's horizontal padding so peeking slides reach the edges instead of being clipped by the gutter.
+  - children?: ReactNode — Each child is a slide.
+  - dots?: boolean (default: true) — Show dot indicators.
+  - gap?: string (default: var(--space-4)) — Gap between slides (CSS length).
+  - interval?: number (default: 4500) — Auto-advance interval in ms.
+  - loop?: boolean (default: true) — Wrap past the ends.
+  - perView?: number — Slides visible at once (fractional peeks the next). Omit for a responsive default: ~1.15 on small screens scaling up to ~2.5 on wide ones, so there's always more than one slide hinting at further content.
+
+Examples (Storybook stories): Default, SingleSlide
+
+Usage:
+```tsx
+<Carousel>…</Carousel>
+```
+
+### Gallery
+Import: `import { Gallery } from 'raditz'`
+
+Gallery — a responsive thumbnail grid that opens a Lightbox on click. Pass the same `images` shape as Lightbox (`[{ src, thumb?, alt?, caption? }]`). `columns` sets the grid (it auto-collapses on small screens); `aspect` sets each cell's aspect-ratio (e.g. "1", "4/3", "3/4"), or "masonry" for natural heights.
+
+Props:
+  - aspect?: string (default: 1) — Cell aspect-ratio (e.g. "1", "4/3"), or "masonry" for natural heights.
+  - columns?: number (default: 3) — Columns on wide screens (auto-collapses on small).
+  - gap?: string (default: var(--space-3)) — Grid gap (CSS length).
+  - images?: LightboxImage[] (default: [])
+
+Examples (Storybook stories): Default
+
+Usage:
+```tsx
+<Gallery />
+```
+
+### Lightbox
+Import: `import { Lightbox } from 'raditz'`
+
+Lightbox — a full-screen image viewer (gallery modal). Controlled with `open` + `index`, or uncontrolled with `defaultOpen` / `defaultIndex`. Arrow keys and the on-screen arrows page; the image follows your finger and slides on swipe. Zoom with the wheel, the +/− buttons, a click, or a two-finger pinch; drag to pan when zoomed. Swipe down (or click the black space, or Escape) to close. Pan/zoom/swipe are driven imperatively (the transform is written straight to the image, not through React state) so a drag stays at the display's frame rate instead of thrashing a render per pointer move. The chrome always renders on a dark scrim (identical in light + dark themes) via `.rdz-on-dark`.
+
+Props:
+  - defaultIndex?: number (default: 0) — Initial index (uncontrolled).
+  - defaultOpen?: boolean (default: false) — Initial open state (uncontrolled).
+  - filmstrip?: boolean (default: false) — Show the thumbnail filmstrip.
+  - images?: LightboxImage[] (default: [])
+  - index?: number — Active image index (controlled).
+  - onIndexChange?: ((index: number) => void)
+  - onOpenChange?: ((open: boolean) => void)
+  - open?: boolean — Open state (controlled).
+
+Examples (Storybook stories): Default
+
+Usage:
+```tsx
+<Lightbox />
+```
+
+### Marquee
+Import: `import { Marquee } from 'raditz'`
+
+Marquee — a seamless, infinitely-scrolling row of its children (logos, tags, quotes…). The content is duplicated so the loop has no seam. Pauses on hover and respects `prefers-reduced-motion` (animation stops, duplicate hidden, so it degrades to a static, readable row). All token-driven, so it re-themes.
+
+Props:
+  - direction?: enum (default: left) — Scroll direction.
+  - duration?: number (default: 26) — Seconds for one full loop.
+  - fade?: boolean (default: true) — Fade the edges with a mask.
+  - gap?: string (default: var(--space-7)) — Gap between items (CSS length).
+  - pauseOnHover?: boolean (default: true) — Pause the scroll on hover.
+
+Examples (Storybook stories): Logos, Reverse
+
+Usage:
+```tsx
+<Marquee />
+```
+
+## menu
+
+### ContextMenu
+Import: `import { ContextMenu } from 'raditz'`
+
+ContextMenu — a right-click (desktop) / long-press (touch) menu over an area (Radix ContextMenu). Wrap the target; right-click or press-and-hold opens the same menu model as DropdownMenu at the pointer. Items: `{ label, icon?, shortcut?, onSelect?, disabled?, danger? }`, plus `{ separator: true }` and `{ heading: true, label }`. An adapter face over {@link MenuSurface} (`point` topology) — so it shares keyboard roving with the other menus.
+
+Props:
+  - children?: ReactNode — The area that responds to right-click / long-press.
+  - items?: MenuItem[] (default: []) — Menu rows — same model as DropdownMenu.
+  - longPressMs?: number (default: 480) — Touch press-and-hold duration (ms) that opens the menu.
+
+Examples (Storybook stories): Default
+
+Usage:
+```tsx
+<ContextMenu>…</ContextMenu>
+```
+
+### DropdownMenu
+Import: `import { DropdownMenu } from 'raditz'`
+
+DropdownMenu — a button-triggered menu (Radix DropdownMenu). Items are `{ label, icon?, shortcut?, onSelect?, disabled?, danger? }`, plus `{ separator: true }` and `{ heading: true, label }`. Arrow keys move focus, Enter selects, Escape closes. An adapter face: the trigger lives here; {@link MenuSurface} owns positioning, dismissal, roving, and item rendering.
+
+Props:
+  - align?: enum (default: start) — Cross-axis alignment.
+  - defaultOpen?: boolean (default: false)
+  - items?: MenuItem[] (default: []) — Menu rows — items, `{separator:true}`, or `{heading:true,label}`.
+  - onOpenChange?: ((open: boolean) => void)
+  - open?: boolean
+  - side?: enum (default: bottom) — Preferred side.
+  - trigger?: ReactNode — Trigger element (click toggles the menu).
+
+Examples (Storybook stories): Default
+
+Usage:
+```tsx
+<DropdownMenu />
+```
+
+### Menubar
+Import: `import { Menubar } from 'raditz'`
+
+Menubar — a horizontal row of menus (Radix Menubar), like an app menu bar. `menus` is `[{ label, items }]` where `items` use the DropdownMenu model (`{ label, icon?, shortcut?, onSelect?, disabled?, danger? }`, `{ separator }`, `{ heading, label }`). Once a menu is open, hovering siblings switches to them.
+
+Props:
+  - menus?: MenubarMenu[] (default: []) — Top-level menus, each with its own item list.
+
+Examples (Storybook stories): Default
+
+Usage:
+```tsx
+<Menubar />
+```
+
+## navigation
+
+### Breadcrumb
+Import: `import { Breadcrumb } from 'raditz'`
+
+Breadcrumb — hierarchical trail. `items` is `[{ label, href? }]`; the last is the current page. Separators are chevrons.
+
+Props:
+  - items?: BreadcrumbItem[] (default: [])
+
+Examples (Storybook stories): Default
+
+Usage:
+```tsx
+<Breadcrumb />
+```
+
+### NavBar
+Import: `import { NavBar } from 'raditz'`
+
+NavBar — a route nav with a single indicator that *flows* between items as the active one changes (measured from the live item rects, so it works at any width). `items` is `[{ key, label, icon?, href? }]`. Controlled with `active` / `onChange`, or uncontrolled with `defaultActive`. `variant`: 'pill' (filled highlight that slides) or 'underline' (sliding bottom bar). `orientation` 'horizontal' | 'vertical'.
+
+Props:
+  - active?: string — Active item key (controlled).
+  - defaultActive?: string — Initial active key (uncontrolled; defaults to the first item).
+  - items?: NavBarItem[] (default: [])
+  - onChange?: ((key: string) => void)
+  - orientation?: enum (default: horizontal)
+  - variant?: enum (default: pill) — Sliding highlight style.
+
+Examples (Storybook stories): Default
+
+Usage:
+```tsx
+<NavBar />
+```
+
+### NavigationMenu
+Import: `import { NavigationMenu } from 'raditz'`
+
+NavigationMenu — a horizontal site nav (Radix NavigationMenu). `items` is `[{ label, href?, content? }]`: entries with `content` open a dropdown panel on hover/focus; plain entries are links. Panels render through the shared Overlay, so they match the rest of the overlay system.
+
+Props:
+  - items?: NavigationMenuItem[] (default: [])
+
+Examples (Storybook stories): Default
+
+Usage:
+```tsx
+<NavigationMenu />
+```
+
+### Pagination
+Import: `import { Pagination } from 'raditz'`
+
+Pagination — page navigation with prev/next and an ellipsised page list. Controlled with `page` / `onChange`, or uncontrolled with `defaultPage`. `siblings` controls how many pages show around the current one.
+
+Props:
+  - defaultPage?: number (default: 1) — Initial page (uncontrolled).
+  - onChange?: ((page: number) => void)
+  - page?: number — Current page, 1-based (controlled).
+  - siblings?: number (default: 1) — Pages shown each side of the current one.
+  - total?: number (default: 1) — Total number of pages.
+
+Examples (Storybook stories): Default
+
+Usage:
+```tsx
+<Pagination />
+```
+
+### Stepper
+Import: `import { Stepper } from 'raditz'`
+
+Stepper — a horizontal (or vertical) progress indicator for multi-step flows. `steps` is `[{ label, description? }]`; `current` is the active 0-based index. Steps before `current` render complete (check), the rest upcoming. Clickable when `onStepClick` is provided.
+
+Props:
+  - current?: number (default: 0) — Active 0-based index.
+  - onStepClick?: ((index: number) => void) — Makes completed/current steps clickable.
+  - orientation?: enum (default: horizontal)
+  - steps?: StepperStep[] (default: [])
+
+Examples (Storybook stories): Default
+
+Usage:
+```tsx
+<Stepper />
+```
+
+### Tabs
+Import: `import { Tabs } from 'raditz'`
+
+A tab switcher. Pass `tabs` as { value, label } items. Controlled via `value` + `onValueChange`, or uncontrolled with `defaultValue`. `variant` is the segmented control (default) or an underline bar.
+
+Props:
+  - className?: string
+  - defaultValue?: string — Initial value (uncontrolled).
+  - onValueChange?: ((value: string) => void) — Fires on tab change.
+  - tabs?: TabItem[] (default: []) — Tab definitions.
+  - value?: string — Controlled active value.
+  - variant?: enum (default: segmented)
+
+Examples (Storybook stories): Default
+
+Usage:
+```tsx
+<Tabs />
+```
+
+### Toolbar
+Import: `import { Toolbar } from 'raditz'`
+
+Toolbar — a horizontal container that groups actions (Radix Toolbar). Put IconButtons, Buttons, Toggles and ToggleGroups inside; separate groups with `<Separator orientation="vertical" />`.
+
+Props:
+  - as?: ElementType (default: div)
+
+Examples (Storybook stories): Default
+
+Usage:
+```tsx
+<Toolbar />
+```
+
+### Tooltip
+Import: `import { Tooltip } from 'raditz'`
+
+A hover/focus tooltip. Wraps a focusable trigger; `label` is the bubble. The bubble renders through the shared {@link Overlay} machinery — portaled to <body> and collision-positioned (flips + clamps to the viewport), so it never runs off-screen the way the old pure-CSS bubble did. The trigger must be focusable (a button/link) so keyboard users get the tooltip too.
+
+Props:
+  - align?: enum (default: center) — Cross-axis alignment of the bubble vs. the trigger.
+  - delay?: number (default: 200) — Open delay on hover/focus (ms).
+  - label: ReactNode — Bubble content.
+  - side?: enum (default: top) — Side of the trigger the bubble opens on; flips to the opposite side on overflow.
+
+Examples (Storybook stories): Default
+
+Usage:
+```tsx
+<Tooltip />
+```
+
+### Tree
+Import: `import { Tree } from 'raditz'`
+
+Tree — an accessible, file-browser-style tree view (WAI-ARIA `tree` pattern). Folders toggle open/closed on click; selection and expansion are each controllable or uncontrolled. Full keyboard support: Up/Down move between visible rows, Right/Left expand/collapse (or step in/out), Enter/Space select, Home/End jump to ends. Roving tabindex keeps a single tab stop.
+
+Props:
+  - defaultExpandedIds?: string[] — Initially expanded ids (uncontrolled).
+  - defaultSelectedId?: string — Initial selected id (uncontrolled).
+  - expandedIds?: string[] — Controlled set of expanded ids.
+  - items: TreeNode[] — The node forest to render.
+  - onExpandedChange?: ((ids: string[]) => void) — Fires when the expanded set changes.
+  - onSelect?: ((id: string, node: TreeNode) => void) — Fires when a row is activated.
+  - selectedId?: string — Controlled selected id.
+  - toggleOnRowClick?: boolean (default: true) — Whether clicking a folder row toggles it (the chevron always toggles). Set false when the row should only select/navigate.
+
+Examples (Storybook stories): Default, Controlled
+
+Usage:
+```tsx
+<Tree />
+```
+
+## overlay
+
+### AlertDialog
+Import: `import { AlertDialog } from 'raditz'`
+
+AlertDialog — a modal confirmation (Radix AlertDialog). Like Dialog but requires an explicit choice: it does NOT close on scrim click (Escape cancels). `tone` colors the confirm action. An adapter face over {@link Overlay}: the "no outside-dismiss" behavior is one honest flag (`dismissOnOutside={false}`), not a ref-targeting trick.
+
+Props:
+  - actionText?: string (default: Confirm) — Confirm button label.
+  - cancelText?: string (default: Cancel) — Cancel button label.
+  - description?: ReactNode
+  - onAction?: (() => void) — Fires when the confirm action is chosen (dialog then closes).
+  - onOpenChange?: ((open: boolean) => void) — Fires to request open/close.
+  - open?: boolean — Open state (controlled).
+  - title?: ReactNode
+  - tone?: enum (default: danger) — Confirm-button tone.
+
+Examples (Storybook stories): Default
+
+Usage:
+```tsx
+<AlertDialog />
+```
+
+### CommandPalette
+Import: `import { CommandPalette } from 'raditz'`
+
+CommandPalette — a ⌘K / Ctrl-K command launcher. `groups` is `[{ heading, items: [{ id, label, icon?, shortcut?, keywords?, onSelect }] }]`. Controlled with `open` / `onOpenChange`. With `hotkey` (default true) it binds ⌘K/Ctrl-K globally to toggle. Type to fuzzy-filter; Arrow/Enter run. An adapter face over {@link Overlay} (`centered` modal, focus trap).
+
+Props:
+  - groups?: CommandGroup[] (default: [])
+  - hotkey?: boolean (default: true) — Bind ⌘K / Ctrl-K globally to toggle.
+  - onOpenChange?: ((open: boolean) => void)
+  - open?: boolean
+  - placeholder?: string (default: Type a command or search…)
+
+Examples (Storybook stories): Default
+
+Usage:
+```tsx
+<CommandPalette />
+```
+
+### Dialog
+Import: `import { Dialog } from 'raditz'`
+
+Dialog — a modal overlay (Radix Dialog). Controlled with `open` / `onOpenChange`; render your own trigger. Closes on Escape, scrim click, or the close button. Focus is trapped while open and restored on close. An adapter face over {@link Overlay} (`centered` topology, focus trap).
+
+Props:
+  - description?: ReactNode — Sub-heading / description text.
+  - footer?: ReactNode — Footer node (usually action buttons).
+  - onOpenChange?: ((open: boolean) => void) — Fires to request open/close.
+  - open?: boolean — Open state (controlled).
+  - size?: enum (default: md) — Panel width.
+  - title?: ReactNode — Heading text.
+
+Examples (Storybook stories): Default
+
+Usage:
+```tsx
+<Dialog />
+```
+
+### Drawer
+Import: `import { Drawer } from 'raditz'`
+
+Drawer — a panel that slides in from an edge (Radix-style sheet). Controlled with `open` / `onOpenChange`. `side` picks the edge; `size` sets width (left/ right) or height (top/bottom). Closes on Escape, scrim click or the close button; focus is trapped and body scroll locked while open. An adapter face over {@link Overlay} (`side` topology, focus trap).
+
+Props:
+  - description?: ReactNode
+  - footer?: ReactNode
+  - onOpenChange?: ((open: boolean) => void)
+  - open?: boolean — Open state (controlled).
+  - side?: enum (default: right) — Edge it slides from.
+  - size?: string (default: 22rem) — Width (left/right) or height (top/bottom).
+  - title?: ReactNode
+
+Examples (Storybook stories): Default
+
+Usage:
+```tsx
+<Drawer />
+```
+
+### HoverCard
+Import: `import { HoverCard } from 'raditz'`
+
+HoverCard — preview content shown on hover/focus of a trigger (Radix HoverCard). Opens after `openDelay`, closes after `closeDelay`; staying over the card keeps it open. An adapter face over {@link Overlay} (`anchored` topology). HoverCard drives its own open state via hover timers, so it disables Overlay's dismissal.
+
+Props:
+  - align?: enum (default: center) — Cross-axis alignment.
+  - closeDelay?: number (default: 150) — Ms before closing.
+  - defaultOpen?: boolean (default: false) — Initial open state (uncontrolled).
+  - onOpenChange?: ((open: boolean) => void)
+  - open?: boolean — Open state (controlled).
+  - openDelay?: number (default: 200) — Ms before opening.
+  - side?: enum (default: bottom) — Preferred side.
+  - trigger?: ReactNode — Element that reveals the card on hover/focus.
+
+Examples (Storybook stories): Default
+
+Usage:
+```tsx
+<HoverCard />
+```
+
+### Popover
+Import: `import { Popover } from 'raditz'`
+
+Popover — floating content anchored to a trigger (Radix Popover). Click the trigger to toggle; closes on Escape or outside click. Non-modal (focus is not trapped). `side`/`align` place the panel and flip near the viewport edge. An adapter face over {@link Overlay} (`anchored` topology, focus `none`). The trigger and its click-to-toggle stay here; Overlay owns the surface.
+
+Props:
+  - align?: enum (default: center) — Cross-axis alignment.
+  - defaultOpen?: boolean (default: false) — Initial open state (uncontrolled).
+  - onOpenChange?: ((open: boolean) => void)
+  - open?: boolean — Open state (controlled).
+  - side?: enum (default: bottom) — Preferred side.
+  - trigger?: ReactNode — Trigger element (click toggles the popover).
+
+Examples (Storybook stories): Default
+
+Usage:
+```tsx
+<Popover />
+```
+
+## patterns
+
+### EmptyState
+Import: `import { EmptyState } from 'raditz'`
+
+EmptyState — one component for the empty / loading / error placeholder patterns. Pass `icon` + `title` + `description` (+ optional `action`) for an empty state; set `loading` to swap the icon for a Spinner; use `tone="danger"` (with `icon="alert-triangle"`) for an error state.
+
+Props:
+  - action?: ReactNode
+  - description?: ReactNode
+  - icon?: enum
+  - loading?: boolean (default: false) — Show a Spinner instead of the icon (loading state).
+  - title?: ReactNode
+  - tone?: enum (default: default)
+
+Examples (Storybook stories): Default
+
+Usage:
+```tsx
+<EmptyState />
+```
+
+### PageHeader
+Import: `import { PageHeader } from 'raditz'`
+
+PageHeader — the standard top-of-page block: optional breadcrumb, an eyebrow, a title, a description, and a right-aligned `actions` slot. Keeps every page's header consistent instead of re-laying-out each time.
+
+Props:
+  - actions?: ReactNode — Right-aligned actions (buttons, etc.).
+  - breadcrumb?: ReactNode — Breadcrumb node placed above the title.
+  - description?: ReactNode
+  - eyebrow?: ReactNode
+  - title?: ReactNode
+
+Examples (Storybook stories): Default
+
+Usage:
+```tsx
+<PageHeader />
+```
+
+## sections
+
+### AnnouncementB
+Import: `import { AnnouncementB } from 'raditz'`
+
+Props:
+  - background?: enum (default: none)
+  - image?: string
+  - parallax?: boolean
+  - video?: string
+
+Examples (Storybook stories): A_AccentStrip, B_CookieBanner
+
+Usage:
+```tsx
+<AnnouncementB />
+```
+
+### BlogA
+Import: `import { BlogA } from 'raditz'`
+
+Props:
+  - background?: enum (default: none)
+  - image?: string
+  - parallax?: boolean
+  - video?: string
+
+Examples (Storybook stories): A_CardGrid, B_EditorialList
+
+Usage:
+```tsx
+<BlogA />
+```
+
+### BlogB
+Import: `import { BlogB } from 'raditz'`
+
+Props:
+  - background?: enum (default: surface-2)
+  - image?: string
+  - parallax?: boolean
+  - video?: string
+
+Examples (Storybook stories): A_CardGrid, B_EditorialList
+
+Usage:
+```tsx
+<BlogB />
+```
+
+### ComparisonA
+Import: `import { ComparisonA } from 'raditz'`
+
+Props:
+  - background?: enum (default: surface-2)
+  - image?: string
+  - parallax?: boolean
+  - video?: string
+
+Examples (Storybook stories): A_PlansFeatures
+
+Usage:
+```tsx
+<ComparisonA />
+```
+
+### CtaA
+Import: `import { CtaA } from 'raditz'`
+
+Props:
+  - background?: enum (default: gradient-dusk)
+  - image?: string
+  - parallax?: boolean
+  - video?: string
+
+Examples (Storybook stories): A_Centered, B_Split
+
+Usage:
+```tsx
+<CtaA />
+```
+
+### CtaB
+Import: `import { CtaB } from 'raditz'`
+
+Props:
+  - background?: enum (default: none)
+  - image?: string
+  - parallax?: boolean
+  - video?: string
+
+Examples (Storybook stories): A_Centered, B_Split
+
+Usage:
+```tsx
+<CtaB />
+```
+
+### FaqA
+Import: `import { FaqA } from 'raditz'`
+
+Props:
+  - background?: enum (default: surface-2)
+  - image?: string
+  - parallax?: boolean
+  - video?: string
+
+Examples (Storybook stories): A_Accordion, B_TwoColumn
+
+Usage:
+```tsx
+<FaqA />
+```
+
+### FaqB
+Import: `import { FaqB } from 'raditz'`
+
+Props:
+  - background?: enum (default: none)
+  - image?: string
+  - parallax?: boolean
+  - video?: string
+
+Examples (Storybook stories): A_Accordion, B_TwoColumn
+
+Usage:
+```tsx
+<FaqB />
+```
+
+### FeaturesA
+Import: `import { FeaturesA } from 'raditz'`
+
+Props:
+  - background?: enum (default: none)
+  - image?: string
+  - parallax?: boolean
+  - video?: string
+
+Examples (Storybook stories): A_IconCards, B_BentoGrid, C_AlternatingSpotlight
+
+Usage:
+```tsx
+<FeaturesA />
+```
+
+### FeaturesB
+Import: `import { FeaturesB } from 'raditz'`
+
+Props:
+  - background?: enum (default: gradient-mesh)
+  - image?: string
+  - parallax?: boolean
+  - video?: string
+
+Examples (Storybook stories): A_IconCards, B_BentoGrid, C_AlternatingSpotlight
+
+Usage:
+```tsx
+<FeaturesB />
+```
+
+### FeaturesC
+Import: `import { FeaturesC } from 'raditz'`
+
+Props:
+  - background?: enum (default: surface-2)
+  - image?: string
+  - parallax?: boolean
+  - video?: string
+
+Examples (Storybook stories): A_IconCards, B_BentoGrid, C_AlternatingSpotlight
+
+Usage:
+```tsx
+<FeaturesC />
+```
+
+### FooterA
+Import: `import { FooterA } from 'raditz'`
+
+Props:
+  - background?: enum (default: none)
+  - image?: string
+  - parallax?: boolean
+  - video?: string
+
+Examples (Storybook stories): A_MultiColumn, B_MinimalBar
+
+Usage:
+```tsx
+<FooterA />
+```
+
+### FooterB
+Import: `import { FooterB } from 'raditz'`
+
+Props:
+  - background?: enum (default: none)
+  - image?: string
+  - parallax?: boolean
+  - video?: string
+
+Examples (Storybook stories): A_MultiColumn, B_MinimalBar
+
+Usage:
+```tsx
+<FooterB />
+```
+
+### HeroA
+Import: `import { HeroA } from 'raditz'`
+
+Props:
+  - background?: enum (default: none)
+  - image?: string
+  - parallax?: boolean
+  - video?: string
+
+Examples (Storybook stories): A_CenteredDualCTA, B_SplitCopyMedia, C_AccentFullBleed
+
+Usage:
+```tsx
+<HeroA />
+```
+
+### HeroB
+Import: `import { HeroB } from 'raditz'`
+
+Props:
+  - background?: enum (default: surface-2)
+  - image?: string
+  - parallax?: boolean
+  - video?: string
+
+Examples (Storybook stories): A_CenteredDualCTA, B_SplitCopyMedia, C_AccentFullBleed
+
+Usage:
+```tsx
+<HeroB />
+```
+
+### HeroC
+Import: `import { HeroC } from 'raditz'`
+
+Props:
+  - background?: enum (default: gradient-aurora)
+  - image?: string
+  - parallax?: boolean (default: true)
+  - video?: string
+
+Examples (Storybook stories): A_CenteredDualCTA, B_SplitCopyMedia, C_AccentFullBleed
+
+Usage:
+```tsx
+<HeroC />
+```
+
+### MarqueeA
+Import: `import { MarqueeA } from 'raditz'`
+
+Props:
+  - background?: enum (default: none)
+  - image?: string
+  - parallax?: boolean
+  - video?: string
+
+Examples (Storybook stories): A_LogoStrip
+
+Usage:
+```tsx
+<MarqueeA />
+```
+
+### NavbarD
+Import: `import { NavbarD } from 'raditz'`
+
+D — an iOS/Android-style bottom tab bar: pinned to the bottom, icon+label tabs with an accent active state. All Raditz tokens, so it re-themes.
+
+Props: none
+
+Examples (Storybook stories): A_LogoLinksCTAs, B_GlassCentered, C_MobileDropdown, D_BottomTabBar
+
+Usage:
+```tsx
+<NavbarD />
+```
+
+### NewsletterA
+Import: `import { NewsletterA } from 'raditz'`
+
+Props:
+  - background?: enum (default: gradient-aurora)
+  - image?: string
+  - parallax?: boolean
+  - video?: string
+
+Examples (Storybook stories): A_CardSignup
+
+Usage:
+```tsx
+<NewsletterA />
+```
+
+### NotFoundA
+Import: `import { NotFoundA } from 'raditz'`
+
+Props:
+  - background?: enum (default: none)
+  - image?: string
+  - parallax?: boolean
+  - video?: string
+
+Examples (Storybook stories): A_CenteredBigCode
+
+Usage:
+```tsx
+<NotFoundA />
+```
+
+### PricingA
+Import: `import { PricingA } from 'raditz'`
+
+Props:
+  - background?: enum (default: surface-2)
+  - image?: string
+  - parallax?: boolean
+  - video?: string
+
+Examples (Storybook stories): A_ThreeTiers, B_MonthlyAnnualToggle
+
+Usage:
+```tsx
+<PricingA />
+```
+
+### PricingB
+Import: `import { PricingB } from 'raditz'`
+
+Props:
+  - background?: enum (default: gradient-accent)
+  - image?: string
+  - parallax?: boolean
+  - video?: string
+
+Examples (Storybook stories): A_ThreeTiers, B_MonthlyAnnualToggle
+
+Usage:
+```tsx
+<PricingB />
+```
+
+### SocialProofA
+Import: `import { SocialProofA } from 'raditz'`
+
+Props:
+  - background?: enum (default: none)
+  - image?: string
+  - parallax?: boolean
+  - video?: string
+
+Examples (Storybook stories): A_LogoRow, B_HeadingLogos
+
+Usage:
+```tsx
+<SocialProofA />
+```
+
+### SocialProofB
+Import: `import { SocialProofB } from 'raditz'`
+
+Props:
+  - background?: enum (default: none)
+  - image?: string
+  - parallax?: boolean
+  - video?: string
+
+Examples (Storybook stories): A_LogoRow, B_HeadingLogos
+
+Usage:
+```tsx
+<SocialProofB />
+```
+
+### StatsA
+Import: `import { StatsA } from 'raditz'`
+
+Props:
+  - background?: enum (default: none)
+  - image?: string
+  - parallax?: boolean
+  - video?: string
+
+Examples (Storybook stories): A_FourAcross, B_AccentBand
+
+Usage:
+```tsx
+<StatsA />
+```
+
+### StatsB
+Import: `import { StatsB } from 'raditz'`
+
+Props:
+  - background?: enum (default: none)
+  - image?: string
+  - parallax?: boolean
+  - video?: string
+
+Examples (Storybook stories): A_FourAcross, B_AccentBand
+
+Usage:
+```tsx
+<StatsB />
+```
+
+### TeamA
+Import: `import { TeamA } from 'raditz'`
+
+Props:
+  - background?: enum (default: none)
+  - image?: string
+  - parallax?: boolean
+  - video?: string
+
+Examples (Storybook stories): A_MemberGrid
+
+Usage:
+```tsx
+<TeamA />
+```
+
+### TestimonialCarouselA
+Import: `import { TestimonialCarouselA } from 'raditz'`
+
+Props:
+  - background?: enum (default: none)
+  - image?: string
+  - parallax?: boolean
+  - video?: string
+
+Examples (Storybook stories): A_ScrollSnap
+
+Usage:
+```tsx
+<TestimonialCarouselA />
+```
+
+### TestimonialsA
+Import: `import { TestimonialsA } from 'raditz'`
+
+Props:
+  - background?: enum (default: gradient-dusk)
+  - image?: string
+  - parallax?: boolean
+  - video?: string
+
+Examples (Storybook stories): A_QuoteCards, B_SingleQuote
+
+Usage:
+```tsx
+<TestimonialsA />
+```
+
+### TestimonialsB
+Import: `import { TestimonialsB } from 'raditz'`
+
+Props:
+  - background?: enum (default: gradient-dusk)
+  - image?: string
+  - parallax?: boolean
+  - video?: string
+
+Examples (Storybook stories): A_QuoteCards, B_SingleQuote
+
+Usage:
+```tsx
+<TestimonialsB />
+```
+
+## surfaces
+
+### Avatar
+Import: `import { Avatar } from 'raditz'`
+
+A user / brand avatar. Pass `src` for an image, or `initials` for a tinted monogram. `variant="orb"` renders the accent gradient sphere; combine it with `initials` for a monogram set into the orb surface.
+
+Props:
+  - alt?: string
+  - initials?: string — Monogram fallback when there's no image.
+  - size?: number | "sm" | "md" | "lg" | "xl" (default: md)
+  - src?: string — Image source.
+  - variant?: enum (default: solid) — "orb" renders the accent gradient sphere.
+
+Examples (Storybook stories): Default, Orb, OrbInitials, Sizes
+
+Usage:
+```tsx
+<Avatar />
+```
+
+### AvatarGroup
+Import: `import { AvatarGroup } from 'raditz'`
+
+AvatarGroup — overlapping avatars with a "+N" overflow chip. `items` is `[{ initials?, src?, alt?, name?, role?, href? }]`; `max` caps how many show before collapsing. Items with profile info reveal a hover card (and link out when given an `href`); the "+N" chip — always stacked on top — opens a popover listing everyone.
+
+Props:
+  - items?: AvatarGroupItem[] (default: [])
+  - max?: number (default: 4) — Max avatars before collapsing to "+N".
+  - size?: enum (default: md)
+
+Examples (Storybook stories): Default
+
+Usage:
+```tsx
+<AvatarGroup />
+```
+
+### Callout
+Import: `import { Callout } from 'raditz'`
+
+A bordered, tinted message panel for inline notices. `color` sets the tone; pass an `icon` element and optional `title`.
+
+Props:
+  - color?: enum (default: info) — Tone.
+  - icon?: ReactNode — Leading icon element.
+  - title?: ReactNode — Optional bold title line.
+
+Examples (Storybook stories): Default, Tones
+
+Usage:
+```tsx
+<Callout />
+```
+
+### Card
+Import: `import { Card } from 'raditz'`
+
+The base surface. `variant` is "solid" (default), "glass" (frosted blur) or "flat" (no shadow). `interactive` adds a hover lift for clickable cards.
+
+Props:
+  - as?: ElementType (default: div)
+  - interactive?: boolean (default: false) — Add a hover lift for clickable cards.
+  - variant?: enum (default: solid) — Surface style.
+
+Examples (Storybook stories): Default
+
+Usage:
+```tsx
+<Card />
+```
+
+### Separator
+Import: `import { Separator } from 'raditz'`
+
+A hairline rule. Horizontal by default; `orientation="vertical"` for inline dividers between row items.
+
+Props:
+  - orientation?: enum (default: horizontal)
+
+Examples (Storybook stories): Horizontal, Vertical
+
+Usage:
+```tsx
+<Separator />
+```
+
+## typography
+
+### Code
+Import: `import { Code } from 'raditz'`
+
+Monospace code. Inline by default; pass `block` for a dark code block.
+
+Props:
+  - block?: boolean (default: false) — Render a dark block instead of inline code.
+
+Examples (Storybook stories): Inline, Block
+
+Usage:
+```tsx
+<Code />
+```
+
+### Eyebrow
+Import: `import { Eyebrow } from 'raditz'`
+
+The mono, upper-tracked label that sits above headings. Optional accent dot.
+
+Props:
+  - as?: ElementType<any, keyof IntrinsicElements> (default: span)
+  - withDot?: boolean (default: false) — Show a leading accent dot.
+
+Examples (Storybook stories): Default, WithDot
+
+Usage:
+```tsx
+<Eyebrow />
+```
+
+### Heading
+Import: `import { Heading } from 'raditz'`
+
+Section / page heading in the display typeface. `level` picks both the tag (h1–h4) and the size; override the visual size with `size` (e.g. an h2 that looks like display). `accent` colors a trailing period — the house flourish.
+
+Props:
+  - as?: ElementType<any, keyof IntrinsicElements>
+  - level?: enum (default: 2) — Tag + size: 1–4, or a display size.
+  - size?: enum — Override the visual size independent of the tag.
+
+Examples (Storybook stories): Default, Scale
+
+Usage:
+```tsx
+<Heading />
+```
+
+### Kbd
+Import: `import { Kbd } from 'raditz'`
+
+A keyboard key cap (⌘, Esc, ↵). Render one per key.
+
+Props: none
+
+Examples (Storybook stories): Default, Combination
+
+Usage:
+```tsx
+<Kbd />
+```
+
+### Text
+Import: `import { Text } from 'raditz'`
+
+Body copy. `as="p"` for paragraphs (default), `as="span"` for inline. `size` and `tone` map to the type + ink scales; `measure` clamps line length for long-form prose. Size/tone/weight are data-attributes styled in Text.scss.
+
+Props:
+  - as?: ElementType<any, keyof IntrinsicElements> (default: p)
+  - measure?: boolean (default: false) — Clamp to a readable measure for long-form prose.
+  - size?: enum (default: base) — Type size.
+  - tone?: enum (default: soft) — Ink level.
+  - weight?: enum — Font weight token (regular|medium|semibold|bold).
+
+Examples (Storybook stories): Default, Sizes, Tones
+
+Usage:
+```tsx
+<Text />
+```
+
+## utility
+
+### AccessibleIcon
+Import: `import { AccessibleIcon } from 'raditz'`
+
+AccessibleIcon — wraps a decorative icon with a screen-reader label (Radix AccessibleIcon). The icon is hidden from assistive tech; `label` is announced.
+
+Props:
+  - children?: ReactNode — The icon (hidden from assistive tech).
+  - label: string — Text announced to screen readers.
+
+Examples (Storybook stories): Default
+
+Usage:
+```tsx
+<AccessibleIcon>…</AccessibleIcon>
+```
+
+### AspectRatio
+Import: `import { AspectRatio } from 'raditz'`
+
+AspectRatio — constrains content to a width/height ratio (Radix AspectRatio). Children fill the box; images cover it.
+
+Props:
+  - ratio?: number (default: 16 / 9) — Width / height ratio (e.g. 16/9, 1, 4/3).
+
+Examples (Storybook stories): Default
+
+Usage:
+```tsx
+<AspectRatio />
+```
+
+### Label
+Import: `import { Label } from 'raditz'`
+
+Label — a form label (Radix Label). Associate it with a control via `htmlFor`; `required` appends a danger-colored asterisk.
+
+Props:
+  - disabled?: boolean (default: false) — Dim the label to indicate its control is disabled.
+  - htmlFor?: string — Id of the control this labels.
+  - required?: boolean (default: false) — Append a required asterisk.
+
+Examples (Storybook stories): Default
+
+Usage:
+```tsx
+<Label />
+```
+
+### ScrollArea
+Import: `import { ScrollArea } from 'raditz'`
+
+ScrollArea — a scroll container with a slim, themed scrollbar (Radix ScrollArea). Set `maxHeight` (vertical) or a fixed width (horizontal).
+
+Props:
+  - axis?: enum (default: vertical) — Scroll direction.
+  - maxHeight?: string | number — Max height before vertical scrolling kicks in.
+
+Examples (Storybook stories): Default
+
+Usage:
+```tsx
+<ScrollArea />
+```
+
+### VisuallyHidden
+Import: `import { VisuallyHidden } from 'raditz'`
+
+VisuallyHidden — hides content visually while keeping it for screen readers (Radix VisuallyHidden).
+
+Props:
+  - as?: ElementType (default: span)
+
+Examples (Storybook stories): Default
+
+Usage:
+```tsx
+<VisuallyHidden />
+```
