@@ -112,27 +112,37 @@ interface ThemeState { accent: Accent; gray: GrayChoice; radius: RadiusChoice; m
 
 const DEFAULTS: ThemeState = { accent: 'cyan', gray: 'auto', radius: 'default', motion: 'smooth' };
 
-function load(): ThemeState {
+/** Project-level theme baseline a consuming product can pass to useTheme(). */
+export type ThemeDefaults = {
+  accent?: Accent;
+  gray?: GrayChoice;
+  radius?: RadiusChoice;
+  motion?: MotionChoice;
+};
+
+function load(projectDefaults?: ThemeDefaults): ThemeState {
+  const base: ThemeState = { ...DEFAULTS, ...projectDefaults };
   if (typeof localStorage !== 'undefined') {
     try {
       const v = JSON.parse(localStorage.getItem(KEY) || '');
       if (v && ACCENTS.includes(v.accent)) {
         return {
           accent: v.accent,
-          gray: v.gray ?? 'auto',
-          radius: RADII.includes(v.radius) ? v.radius : 'default',
-          motion: MOTIONS.includes(v.motion) ? v.motion : 'smooth',
+          gray: v.gray ?? base.gray,
+          radius: RADII.includes(v.radius) ? v.radius : base.radius,
+          motion: MOTIONS.includes(v.motion) ? v.motion : base.motion,
         };
       }
     } catch { /* ignore */ }
   }
-  return DEFAULTS;
+  return base;
 }
 
 /** App-wide theme: pick an accent, gray (or 'auto'), corner radius, and motion
- * feel. Applies to <html> and persists to localStorage. */
-export function useTheme() {
-  const [state, setState] = useState<ThemeState>(load);
+ * feel. Applies to <html> and persists to localStorage. A product may pass its
+ * brand baseline via `projectDefaults` (used until the user picks something). */
+export function useTheme(projectDefaults?: ThemeDefaults) {
+  const [state, setState] = useState<ThemeState>(() => load(projectDefaults));
   useEffect(() => {
     applyTheme(state.accent, state.gray, state.radius, state.motion);
     if (typeof localStorage !== 'undefined') localStorage.setItem(KEY, JSON.stringify(state));
@@ -146,6 +156,6 @@ export function useTheme() {
     setGray: (gray: GrayChoice) => setState((s) => ({ ...s, gray })),
     setRadius: (radius: RadiusChoice) => setState((s) => ({ ...s, radius })),
     setMotion: (motion: MotionChoice) => setState((s) => ({ ...s, motion })),
-    reset: () => setState(DEFAULTS),
+    reset: () => setState({ ...DEFAULTS, ...projectDefaults }),
   };
 }
