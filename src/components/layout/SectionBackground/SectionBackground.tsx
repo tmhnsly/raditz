@@ -21,6 +21,9 @@ export interface SectionBackgroundProps extends HTMLAttributes<HTMLDivElement> {
   video?: string;
   /** Subtle scroll parallax on the media/gradient layer. @default false */
   parallax?: boolean;
+  /** Background motion mode. `'parallax'` scroll-shifts the layer, `'static'`
+   *  pins it. Takes precedence over `parallax` — handy for a runtime toggle. */
+  motion?: 'static' | 'parallax';
   /** Darken the backdrop (image/video/gradient) so overlaid text stays legible. */
   scrim?: boolean;
   children?: ReactNode;
@@ -41,6 +44,7 @@ export function SectionBackground({
   image,
   video,
   parallax = false,
+  motion,
   scrim = false,
   className,
   children,
@@ -49,9 +53,11 @@ export function SectionBackground({
   const layerRef = useRef<HTMLDivElement>(null);
   const rootRef = useRef<HTMLDivElement>(null);
   const hasLayer = !!image || !!video || GRADIENTS.has(background);
+  // `motion` overrides the boolean `parallax` alias.
+  const isParallax = motion ? motion === 'parallax' : parallax;
 
   useEffect(() => {
-    if (!parallax || !hasLayer) return undefined;
+    if (!isParallax || !hasLayer) return undefined;
     const root = rootRef.current;
     const layer = layerRef.current;
     if (!root || !layer) return undefined;
@@ -68,12 +74,12 @@ export function SectionBackground({
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScroll);
     return () => { window.removeEventListener('scroll', onScroll); window.removeEventListener('resize', onScroll); cancelAnimationFrame(raf); };
-  }, [parallax, hasLayer]);
+  }, [isParallax, hasLayer]);
 
   return (
     <div
       ref={rootRef}
-      className={cx('srx-secbg', background !== 'none' && `srx-secbg--${background}`, GRADIENTS.has(background) && 'srx-secbg--gradient', parallax && 'srx-secbg--parallax', scrim && 'srx-secbg--scrim', className)}
+      className={cx('srx-secbg', background !== 'none' && `srx-secbg--${background}`, GRADIENTS.has(background) && 'srx-secbg--gradient', isParallax && 'srx-secbg--parallax', scrim && 'srx-secbg--scrim', className)}
       {...rest}
     >
       {hasLayer ? (

@@ -13,4 +13,5 @@ export * from './scale';
 export * from './pageModel';
 export * from './tableModel';
 export * from './datetime';
+export * from './time';
 export * from './format';

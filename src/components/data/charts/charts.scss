@@ -1,0 +1,57 @@
+// Uses SuperRadix tokens (var(--…)); SVG fills/strokes read CSS vars so charts
+// re-theme with the accent + neutral scales like every other component.
+/* ═══════════════════════ Charts (visx) ═══════════════════════ */
+.srx-chart { position: relative; width: 100%; }
+
+.srx-chart__svg { display: block; overflow: visible; }
+
+/* Axis + grid — quiet neutral lines, mono tick labels. */
+.srx-chart__axis text { fill: var(--text-muted); font-family: var(--font-mono); font-size: var(--fs-mono-xs); }
+.srx-chart__axis line, .srx-chart__axis path { stroke: var(--rule); }
+.srx-chart__grid line { stroke: var(--rule-soft); stroke-opacity: 0.7; }
+
+/* Line + area */
+.srx-chart__line { fill: none; stroke: var(--accent); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+.srx-chart__line--gradient { stroke: url(#srx-line-gradient); }
+.srx-chart__area { fill: url(#srx-area-gradient); opacity: 0.9; }
+
+/* Data points + the labelled annotation markers (e.g. PEAK) */
+.srx-chart__dot { fill: var(--accent); stroke: var(--panel); stroke-width: 2; }
+.srx-chart__marker { fill: var(--accent); stroke: var(--panel); stroke-width: 2; }
+.srx-chart__marker-label { fill: var(--text-soft); font-family: var(--font-mono); font-size: var(--fs-mono-xs); text-transform: uppercase; letter-spacing: 0.08em; text-anchor: middle; }
+
+/* Vertical reference / annotation line (e.g. STOP) */
+.srx-chart__ref { stroke: var(--danger); stroke-width: 1.5; stroke-dasharray: 4 4; }
+.srx-chart__ref-label { fill: var(--danger-ink); font-family: var(--font-mono); font-size: var(--fs-mono-xs); text-transform: uppercase; letter-spacing: 0.08em; }
+
+/* Hover crosshair + active dot */
+.srx-chart__crosshair { stroke: var(--rule-strong); stroke-width: 1; stroke-dasharray: 3 3; pointer-events: none; }
+.srx-chart__active-dot { fill: var(--accent); stroke: var(--panel); stroke-width: 2.5; pointer-events: none; }
+.srx-chart__hit { fill: transparent; }
+
+/* Scatter */
+.srx-chart__bubble { fill: var(--accent); fill-opacity: 0.55; stroke: var(--accent); stroke-opacity: 0.9; }
+
+/* Tooltip card (HTML overlay) */
+.srx-chart__tip {
+  position: absolute; z-index: 2; pointer-events: none; left: var(--srx-tip-x, 0); top: var(--srx-tip-y, 0); transform: translate(-50%, calc(-100% - 0.625rem));
+  background: var(--panel); border: 1px solid var(--surface-edge); border-radius: var(--radius-md);
+  box-shadow: var(--shadow-5); padding: var(--space-2) var(--space-3); min-width: 8rem; max-width: 16rem;
+  font-size: var(--fs-body-s); color: var(--text);
+}
+.srx-chart__tip-row { display: flex; align-items: center; gap: var(--space-3); }
+.srx-chart__tip-thumb { width: 2.5rem; height: 2.5rem; border-radius: var(--radius-sm); object-fit: cover; flex: none; }
+.srx-chart__tip-eyebrow { font-family: var(--font-mono); font-size: var(--fs-mono-xs); color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; }
+.srx-chart__tip-title { font-weight: var(--fw-semibold); }
+.srx-chart__tip-meta { display: flex; align-items: center; gap: var(--space-2); margin-top: 0.125rem; color: var(--text-soft); }
+.srx-chart__tip-star { color: var(--warning); }
+.srx-chart__tip-tag { color: var(--accent-ink); }
+.srx-chart__tip-value { font-family: var(--font-mono); font-weight: var(--fw-semibold); }
+
+/* Gradient stop colours live here (not as SVG attributes) so they read tokens and
+   re-theme. Line: value-mapped accent→warning→danger; area: accent fade. */
+#srx-line-gradient stop:nth-of-type(1) { stop-color: var(--accent); }
+#srx-line-gradient stop:nth-of-type(2) { stop-color: var(--warning); }
+#srx-line-gradient stop:nth-of-type(3) { stop-color: var(--danger); }
+#srx-area-gradient stop:nth-of-type(1) { stop-color: var(--accent); stop-opacity: 0.28; }
+#srx-area-gradient stop:nth-of-type(2) { stop-color: var(--accent); stop-opacity: 0; }

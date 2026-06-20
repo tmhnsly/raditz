@@ -13,7 +13,11 @@
 
 .srx-calendar__head { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-3); }
 
-.srx-calendar__title { font-weight: var(--fw-semibold); font-size: var(--fs-body-s); }
+.srx-calendar__title { font-weight: var(--fw-semibold); font-size: var(--fs-body-s); color: var(--text); padding: 0.25rem 0.5rem; border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition-control); }
+
+.srx-calendar__title:hover:not(:disabled) { background: var(--surface); }
+
+.srx-calendar__title:disabled { cursor: default; }
 
 .srx-calendar__nav { width: 1.75rem; height: 1.75rem; display: inline-grid; place-items: center; border-radius: var(--radius-sm); color: var(--text-soft); transition: var(--transition-control); }
 
@@ -38,3 +42,16 @@
 .srx-calendar__day.is-selected { background: var(--accent); color: var(--on-accent); }
 
 .srx-calendar__day.is-selected:hover { background: var(--accent-hover); }
+
+/* Month + year drill-up grids (3 columns). */
+.srx-calendar__cells { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-2); }
+
+.srx-calendar__cell { padding: 0.625rem 0; border-radius: var(--radius-sm); font-size: var(--fs-body-s); color: var(--text); transition: var(--transition-control); }
+
+.srx-calendar__cell:hover { background: var(--surface); }
+
+.srx-calendar__cell.is-muted { color: var(--text-faint); }
+
+.srx-calendar__cell.is-selected { background: var(--accent); color: var(--on-accent); }
+
+.srx-calendar__cell.is-selected:hover { background: var(--accent-hover); }

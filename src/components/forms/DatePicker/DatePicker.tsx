@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { HTMLAttributes, ReactElement } from 'react';
+import { addMonths, addYears, format, getMonth, getYear, setMonth, setYear } from 'date-fns';
 import { cx, useControllableState, Overlay, useTrigger, parseISO, toISO, sameDay, outOfRange, monthGrid } from '../../internal';
 
 export interface DatePickerProps extends Omit<HTMLAttributes<HTMLSpanElement>, 'onChange' | 'defaultValue'> {
@@ -16,15 +17,22 @@ export interface DatePickerProps extends Omit<HTMLAttributes<HTMLSpanElement>, '
   disabled?: boolean;
 }
 
-const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 const DOW = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
+const MONTHS_SHORT = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const Chevron = ({ dir }: { dir: 'prev' | 'next' }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points={dir === 'prev' ? '15 18 9 12 15 6' : '9 18 15 12 9 6'} />
+  </svg>
+);
+
+type Mode = 'day' | 'month' | 'year';
 
 /**
- * DatePicker — a text trigger that opens a calendar popover (Radix-style).
- * Value is an ISO `YYYY-MM-DD` string; controlled with `value` / `onChange` or
- * uncontrolled with `defaultValue`. `min` / `max` (ISO strings) bound the range.
- *
- * Renders its calendar directly into an {@link Overlay} (`anchored` topology).
+ * DatePicker — a text trigger that opens a calendar popover with drill-up
+ * navigation: the title steps day → month → year (click "June 2026" to pick a
+ * month, "2026" to pick a year), and the arrows page the current view. Value is
+ * an ISO `YYYY-MM-DD` string (controlled `value`/`onChange` or `defaultValue`);
+ * `min`/`max` bound the range. Built on date-fns; renders into an {@link Overlay}.
  */
 export function DatePicker({
   value,
@@ -41,15 +49,21 @@ export function DatePicker({
   const { open, toggle, close, anchorRef } = useTrigger<HTMLButtonElement>({});
   const selected = parseISO(val);
   const [view, setView] = useState<Date>(() => selected || new Date());
+  const [mode, setMode] = useState<Mode>('day');
 
-  const minD = parseISO(min); const maxD = parseISO(max);
-  const y = view.getFullYear(); const m = view.getMonth();
-  const cells = monthGrid(y, m);
+  const minD = parseISO(min);
+  const maxD = parseISO(max);
+  const y = getYear(view);
+  const m = getMonth(view);
+  const decadeStart = Math.floor(y / 10) * 10;
 
   const pick = (d: Date): void => { if (outOfRange(d, minD, maxD)) return; setVal(toISO(d)); close(); };
-  const shiftMonth = (delta: number): void => setView(new Date(y, m + delta, 1));
+  const openCal = (): void => { if (selected) setView(selected); setMode('day'); toggle(); };
+  const drillUp = (): void => setMode((mo) => (mo === 'day' ? 'month' : 'year'));
+  const step = (delta: number): void => setView(mode === 'day' ? addMonths(view, delta) : mode === 'month' ? addYears(view, delta) : addYears(view, delta * 10));
 
-  const label = selected ? selected.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' }) : '';
+  const title = mode === 'day' ? format(view, 'MMMM yyyy') : mode === 'month' ? format(view, 'yyyy') : `${decadeStart} – ${decadeStart + 9}`;
+  const label = selected ? format(selected, 'MMM d, yyyy') : '';
 
   return (
     <span className={cx('srx-datepicker', className)} {...rest}>
@@ -60,7 +74,7 @@ export function DatePicker({
         disabled={disabled}
         aria-haspopup="dialog"
         aria-expanded={open}
-        onClick={() => { if (selected) setView(selected); toggle(); }}
+        onClick={openCal}
       >
         <svg className="srx-datepicker__cal" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" /><line x1="3" y1="9" x2="21" y2="9" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="16" y1="2" x2="16" y2="6" /></svg>
         <span>{label || placeholder}</span>
@@ -76,23 +90,50 @@ export function DatePicker({
         aria-label="Choose date"
       >
         <div className="srx-calendar__head">
-          <button type="button" className="srx-calendar__nav" aria-label="Previous month" onClick={() => shiftMonth(-1)}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6" /></svg></button>
-          <span className="srx-calendar__title">{MONTHS[m]} {y}</span>
-          <button type="button" className="srx-calendar__nav" aria-label="Next month" onClick={() => shiftMonth(1)}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6" /></svg></button>
+          <button type="button" className="srx-calendar__nav" aria-label="Previous" onClick={() => step(-1)}><Chevron dir="prev" /></button>
+          <button type="button" className="srx-calendar__title" onClick={drillUp} disabled={mode === 'year'} aria-label={`Current view ${title} — change`}>{title}</button>
+          <button type="button" className="srx-calendar__nav" aria-label="Next" onClick={() => step(1)}><Chevron dir="next" /></button>
         </div>
-        <div className="srx-calendar__dow">{DOW.map((d) => <span key={d}>{d}</span>)}</div>
-        <div className="srx-calendar__grid">
-          {cells.map((d, i) => d ? (
-            <button
-              key={i}
-              type="button"
-              className={cx('srx-calendar__day', sameDay(d, selected) && 'is-selected', sameDay(d, new Date()) && 'is-today')}
-              disabled={outOfRange(d, minD, maxD)}
-              aria-current={sameDay(d, new Date()) ? 'date' : undefined}
-              onClick={() => pick(d)}
-            >{d.getDate()}</button>
-          ) : <span key={i} />)}
-        </div>
+
+        {mode === 'day' ? (
+          <>
+            <div className="srx-calendar__dow">{DOW.map((d) => <span key={d}>{d}</span>)}</div>
+            <div className="srx-calendar__grid">
+              {monthGrid(y, m).map((d, i) => d ? (
+                <button
+                  key={i}
+                  type="button"
+                  className={cx('srx-calendar__day', sameDay(d, selected) && 'is-selected', sameDay(d, new Date()) && 'is-today')}
+                  disabled={outOfRange(d, minD, maxD)}
+                  aria-current={sameDay(d, new Date()) ? 'date' : undefined}
+                  onClick={() => pick(d)}
+                >{d.getDate()}</button>
+              ) : <span key={i} />)}
+            </div>
+          </>
+        ) : mode === 'month' ? (
+          <div className="srx-calendar__cells">
+            {MONTHS_SHORT.map((mn, i) => (
+              <button
+                key={mn}
+                type="button"
+                className={cx('srx-calendar__cell', selected && getYear(selected) === y && getMonth(selected) === i && 'is-selected')}
+                onClick={() => { setView(setMonth(view, i)); setMode('day'); }}
+              >{mn}</button>
+            ))}
+          </div>
+        ) : (
+          <div className="srx-calendar__cells">
+            {Array.from({ length: 12 }, (_, i) => decadeStart - 1 + i).map((yr) => (
+              <button
+                key={yr}
+                type="button"
+                className={cx('srx-calendar__cell', selected && getYear(selected) === yr && 'is-selected', (yr < decadeStart || yr > decadeStart + 9) && 'is-muted')}
+                onClick={() => { setView(setYear(view, yr)); setMode('month'); }}
+              >{yr}</button>
+            ))}
+          </div>
+        )}
       </Overlay>
     </span>
   );
