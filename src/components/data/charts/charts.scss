@@ -11,9 +11,9 @@
 .srx-chart__grid line { stroke: var(--rule-soft); stroke-opacity: 0.7; }
 
 /* Line + area */
-.srx-chart__line { fill: none; stroke: var(--accent); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
-.srx-chart__line--gradient { stroke: url(#srx-line-gradient); }
-.srx-chart__area { fill: url(#srx-area-gradient); opacity: 0.9; }
+.srx-chart__line { fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+.srx-chart__line--solid { stroke: var(--accent); }
+.srx-chart__area { opacity: 0.9; }
 
 /* Data points + the labelled annotation markers (e.g. PEAK) */
 .srx-chart__dot { fill: var(--accent); stroke: var(--panel); stroke-width: 2; }
@@ -50,8 +50,8 @@
 
 /* Gradient stop colours live here (not as SVG attributes) so they read tokens and
    re-theme. Line: value-mapped accent→warning→danger; area: accent fade. */
-#srx-line-gradient stop:nth-of-type(1) { stop-color: var(--accent); }
-#srx-line-gradient stop:nth-of-type(2) { stop-color: var(--warning); }
-#srx-line-gradient stop:nth-of-type(3) { stop-color: var(--danger); }
-#srx-area-gradient stop:nth-of-type(1) { stop-color: var(--accent); stop-opacity: 0.28; }
-#srx-area-gradient stop:nth-of-type(2) { stop-color: var(--accent); stop-opacity: 0; }
+.srx-grad-line-0 { stop-color: var(--accent); }
+.srx-grad-line-1 { stop-color: var(--warning); }
+.srx-grad-line-2 { stop-color: var(--danger); }
+.srx-grad-area-0 { stop-color: var(--accent); stop-opacity: 0.28; }
+.srx-grad-area-1 { stop-color: var(--accent); stop-opacity: 0; }

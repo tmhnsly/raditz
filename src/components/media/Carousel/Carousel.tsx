@@ -62,6 +62,9 @@ export function Carousel({
   const items = React.Children.toArray(children);
   const n = items.length;
   const raf = useRef(0);
+  // Original scroll-snap value, captured once while an animation owns it — so
+  // overlapping paging (rapid clicks) can't leave snapping permanently disabled.
+  const snapSaved = useRef<string | null>(null);
 
   // Token-timed smooth scroll. Native `scroll-behavior:smooth` ignores the motion
   // tokens AND fights `scroll-snap-type:mandatory` (the browser yanks to a snap
@@ -77,14 +80,14 @@ export function Carousel({
     const scale = parseFloat(getComputedStyle(track).getPropertyValue('--motion-scale')) || 1;
     const dur = 460 * scale;
     if (dur < 30) { track.scrollLeft = left; return; } // "none" preset / reduced motion
-    const prevSnap = track.style.scrollSnapType;
+    if (snapSaved.current === null) snapSaved.current = track.style.scrollSnapType;
     track.style.scrollSnapType = 'none';
     const t0 = performance.now();
     const step = (now: number): void => {
       const t = Math.min(1, (now - t0) / dur);
       track.scrollLeft = start + dist * easeOut(t);
       if (t < 1) raf.current = requestAnimationFrame(step);
-      else track.style.scrollSnapType = prevSnap;
+      else { track.style.scrollSnapType = snapSaved.current ?? ''; snapSaved.current = null; }
     };
     raf.current = requestAnimationFrame(step);
   }, []);
@@ -136,6 +139,8 @@ export function Carousel({
       track.removeEventListener('scroll', onScroll);
       cancelAnimationFrame(r);
       cancelAnimationFrame(raf.current);
+      // Restore snapping if we unmount mid-animation.
+      if (snapSaved.current !== null) { track.style.scrollSnapType = snapSaved.current; snapSaved.current = null; }
     };
   }, []);
 

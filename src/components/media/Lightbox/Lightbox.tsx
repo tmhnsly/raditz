@@ -94,22 +94,26 @@ export function Lightbox({
   const close = useCallback(() => setOpen(false), [setOpen]);
 
   // Keep the (scaled) image roughly within the stage so it can't be dragged away.
-  const clampPan = useCallback((x: number, y: number): { x: number; y: number } => {
+  const clampPan = useCallback((x: number, y: number, atScale: number = scale): { x: number; y: number } => {
     const img = imgRef.current;
     const stage = stageRef.current;
     if (!img || !stage) return { x, y };
     const ir = img.getBoundingClientRect();
     const sr = stage.getBoundingClientRect();
-    const mx = Math.max(0, (ir.width - sr.width) / 2 + 24);
-    const my = Math.max(0, (ir.height - sr.height) / 2 + 24);
+    // ir reflects the CURRENT scale; project to atScale so zoom-in clamps against
+    // the new (larger) bounds rather than the stale pre-zoom size.
+    const projW = (ir.width / scale) * atScale;
+    const projH = (ir.height / scale) * atScale;
+    const mx = Math.max(0, (projW - sr.width) / 2 + 24);
+    const my = Math.max(0, (projH - sr.height) / 2 + 24);
     return { x: clamp(x, -mx, mx), y: clamp(y, -my, my) };
-  }, []);
+  }, [scale]);
 
   const zoomTo = useCallback((s: number) => {
     const ns = clamp(s, 1, MAX_SCALE);
     setScale(ns);
     if (ns === 1) setPan({ x: 0, y: 0 });
-    else setPan((p) => clampPan(p.x, p.y));
+    else setPan((p) => clampPan(p.x, p.y, ns));
   }, [clampPan]);
 
   // Escape / scroll-lock / focus-trap come from Overlay; paging + zoom are here.
@@ -222,21 +226,21 @@ export function Lightbox({
           ) : null}
         </div>
         <div className="srx-lightbox__controls">
-          <button type="button" className="srx-ovbtn" aria-label="Zoom out" onClick={() => zoomTo(scale - 0.5)} disabled={scale <= 1}>
+          <button type="button" className="srx-ovbtn srx-ovbtn--lg" aria-label="Zoom out" onClick={() => zoomTo(scale - 0.5)} disabled={scale <= 1}>
             {ZOOM_OUT}
           </button>
-          <button type="button" className="srx-ovbtn" aria-label="Zoom in" onClick={() => zoomTo(scale + 0.5)} disabled={scale >= MAX_SCALE}>
+          <button type="button" className="srx-ovbtn srx-ovbtn--lg" aria-label="Zoom in" onClick={() => zoomTo(scale + 0.5)} disabled={scale >= MAX_SCALE}>
             {ZOOM_IN}
           </button>
           {count > 1 ? (
             <>
-              <button type="button" className="srx-ovbtn" aria-label="Previous image" onClick={() => go(-1)}>
+              <button type="button" className="srx-ovbtn srx-ovbtn--lg" aria-label="Previous image" onClick={() => go(-1)}>
                 {CHEV}
               </button>
               <span className="srx-lightbox__counter">
                 {idx + 1} / {count}
               </span>
-              <button type="button" className="srx-ovbtn srx-lightbox__nav--next" aria-label="Next image" onClick={() => go(1)}>
+              <button type="button" className="srx-ovbtn srx-ovbtn--lg srx-lightbox__nav--next" aria-label="Next image" onClick={() => go(1)}>
                 {CHEV}
               </button>
             </>

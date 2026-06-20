@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import type { MouseEvent, ReactNode } from 'react';
 import { scaleLinear } from '@visx/scale';
 import { LinePath, AreaClosed, Circle, Line } from '@visx/shape';
@@ -58,7 +58,9 @@ export function LineChart({
   ariaLabel = 'Line chart',
 }: LineChartProps) {
   const [active, setActive] = useState<number | null>(null);
+  const uid = useId().replace(/:/g, ''); // unique gradient ids per instance
   const n = data.length;
+  if (n === 0) return <ChartFrame height={height} ariaLabel={ariaLabel}>{() => null}</ChartFrame>;
   const ys = data.map((d) => d.y);
   const lo = Math.min(...ys);
   const hi = Math.max(...ys);
@@ -75,11 +77,11 @@ export function LineChart({
       margin={{ left: 40, right: 18, top: 18, bottom: 16 }}
       defs={
         <>
-          <linearGradient id="srx-line-gradient" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" /><stop offset="55%" /><stop offset="100%" />
+          <linearGradient id={`${uid}-line`} x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" className="srx-grad-line-0" /><stop offset="55%" className="srx-grad-line-1" /><stop offset="100%" className="srx-grad-line-2" />
           </linearGradient>
-          <linearGradient id="srx-area-gradient" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" /><stop offset="100%" />
+          <linearGradient id={`${uid}-area`} x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" className="srx-grad-area-0" /><stop offset="100%" className="srx-grad-area-1" />
           </linearGradient>
         </>
       }
@@ -121,14 +123,15 @@ export function LineChart({
             </Group>
 
             {area ? (
-              <AreaClosed data={data} x={(_d, i) => x(i) ?? 0} y={(d) => y(d.y) ?? 0} yScale={y} curve={curveMonotoneX} className="srx-chart__area" />
+              <AreaClosed data={data} x={(_d, i) => x(i) ?? 0} y={(d) => y(d.y) ?? 0} yScale={y} curve={curveMonotoneX} className="srx-chart__area" style={{ fill: `url(#${uid}-area)` }} />
             ) : null}
             <LinePath
               data={data}
               x={(_d, i) => x(i) ?? 0}
               y={(d) => y(d.y) ?? 0}
               curve={curveMonotoneX}
-              className={gradient ? 'srx-chart__line srx-chart__line--gradient' : 'srx-chart__line'}
+              className={gradient ? 'srx-chart__line' : 'srx-chart__line srx-chart__line--solid'}
+              style={gradient ? { stroke: `url(#${uid}-line)` } : undefined}
             />
 
             {references.map((r) => (

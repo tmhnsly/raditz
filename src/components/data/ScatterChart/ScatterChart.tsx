@@ -38,6 +38,7 @@ export function ScatterChart({
   ariaLabel = 'Scatter chart',
 }: ScatterChartProps) {
   const [active, setActive] = useState<number | null>(null);
+  if (data.length === 0) return <ChartFrame height={height} ariaLabel={ariaLabel}>{() => null}</ChartFrame>;
   const xDomain = pad(Math.min(...data.map((d) => d.x)), Math.max(...data.map((d) => d.x)));
   const yDomain = pad(Math.min(...data.map((d) => d.y)), Math.max(...data.map((d) => d.y)));
   const rMax = Math.max(1, ...data.map((d) => d.size ?? 1));

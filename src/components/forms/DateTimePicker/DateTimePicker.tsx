@@ -14,7 +14,9 @@ export interface DateTimePickerProps extends Omit<HTMLAttributes<HTMLSpanElement
   disabled?: boolean;
 }
 
-const combine = (d: string, t: string): string => (d ? (t ? `${d}T${t}` : d) : '');
+// Combine into `date`, `dateTtime`, or `Ttime` (so a time chosen before a date
+// isn't dropped), or '' when both are empty.
+const combine = (d: string, t: string): string => (d && t ? `${d}T${t}` : d ? d : t ? `T${t}` : '');
 
 /**
  * DateTimePicker — the drill-up {@link DatePicker} and the {@link TimePicker}
@@ -31,8 +33,8 @@ export function DateTimePicker({
   ...rest
 }: DateTimePickerProps): ReactElement {
   const [val, setVal] = useControllableState<string>({ value, defaultValue, onChange });
-  const datePart = val ? val.split('T')[0] : '';
-  const timePart = val && val.includes('T') ? val.split('T')[1] : '';
+  const datePart = val.includes('T') ? val.split('T')[0] : val;
+  const timePart = val.includes('T') ? val.split('T')[1] ?? '' : '';
   return (
     <span className={cx('srx-datetimepicker', className)} {...rest}>
       <DatePicker value={datePart} onChange={(d) => setVal(combine(d, timePart))} disabled={disabled} />
