@@ -1,10 +1,12 @@
 /* ──────────────────────────────────────────────────────────────────────────
-   Fonts — Space Grotesk (display) + Space Mono (mono)
-   ----------------------------------------------------------------------------
-   Pulled from Google Fonts for portability. To self-host, drop the woff2 files
-   into assets/fonts/ and swap these @imports for @font-face rules with the same
-   family names — nothing else changes. (Loaded with display=swap: a metric
-   fallback shows instantly, the webfont swaps in with no invisible-text flash.)
+   Fonts — Space Grotesk (display) + Space Mono (mono), self-hosted.
+   Vendored via @fontsource* (pnpm) → woff2 bundled into dist at build time.
+   No runtime CDN dependency; works offline.
    ────────────────────────────────────────────────────────────────────────── */
 
-@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap");
+/* Space Grotesk — variable, covers 400–700 */
+@import "@fontsource-variable/space-grotesk";
+
+/* Space Mono — static 400 + 700 */
+@import "@fontsource/space-mono/400.css";
+@import "@fontsource/space-mono/700.css";
