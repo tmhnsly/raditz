@@ -13,6 +13,7 @@
     "test:watch": "vitest"
   },
   "dependencies": {
+    "@radix-ui/colors": "^3.0.0",
     "@visx/axis": "^4.0.0",
     "@visx/curve": "^4.0.0",
     "@visx/gradient": "^4.0.0",
