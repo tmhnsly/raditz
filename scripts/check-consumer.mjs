@@ -10,7 +10,10 @@ must(fs.existsSync('dist/raditz.css'), 'dist/raditz.css missing');
 
 const css = fs.readFileSync('dist/raditz.css', 'utf8');
 must(!/cdn\.jsdelivr|googleapis|gstatic/.test(css), 'CDN reference leaked into dist/raditz.css');
-must(/@font-face|--/.test(css), 'dist/raditz.css does not look like real CSS');
+must(css.length > 10000, 'dist/raditz.css is suspiciously small — build likely dropped styles');
+must(/@font-face/.test(css), 'dist/raditz.css has no @font-face — self-hosted fonts missing');
+must(/--accent/.test(css), 'dist/raditz.css missing the --accent token — tokens not bundled');
+must(/\.rdz-/.test(css), 'dist/raditz.css has no .rdz- component rules — component styles not bundled');
 
 // exports map: importing the package entry resolves and yields named exports.
 const mod = await import(new URL('../dist/index.js', import.meta.url));

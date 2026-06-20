@@ -1,8 +1,7 @@
 // Generates src/index.ts — the public barrel (single import door).
-// A component dir is public iff it contains a *.stories.tsx file (the codebase's
-// public/showcase convention — same signal used by gen-tests). internal/ is never
-// exported. Sections still use the index.ts presence check.
-// Plus a curated, hand-maintained lib allowlist.
+// A component or section dir is public iff it contains a *.stories.tsx file (the
+// codebase's public/showcase convention — same signal used by gen-tests).
+// internal/ is never exported. Plus a curated, hand-maintained lib allowlist.
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -44,19 +43,22 @@ function collectSections() {
   for (const name of fs.readdirSync(root).sort()) {
     const dir = path.join(root, name);
     if (!fs.statSync(dir).isDirectory()) continue;
-    if (!fs.existsSync(path.join(dir, 'index.ts'))) continue;
+    if (!fs.readdirSync(dir).some(f => f.endsWith('.stories.tsx'))) continue;
     out.push(`./sections/${name}`);
   }
   return out;
 }
 
+const components = collectComponents();
+const sections = collectSections();
+
 lines.push('// ── components ──');
-for (const p of collectComponents()) lines.push(`export * from '${p}';`);
+for (const p of components) lines.push(`export * from '${p}';`);
 lines.push('', '// ── sections ──');
-for (const p of collectSections()) lines.push(`export * from '${p}';`);
+for (const p of sections) lines.push(`export * from '${p}';`);
 lines.push('', '// ── lib (curated public primitives) ──');
 for (const p of LIB) lines.push(`export * from '${p}';`);
 lines.push('');
 
 fs.writeFileSync('src/index.ts', lines.join('\n'));
-console.log(`wrote src/index.ts (${collectComponents().length} components, ${collectSections().length} sections)`);
+console.log(`wrote src/index.ts (${components.length} components, ${sections.length} sections)`);
