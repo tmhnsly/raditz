@@ -17,10 +17,13 @@
 .srx-secbg--gradient-accent .srx-secbg__layer {
   background: linear-gradient(135deg, var(--accent-surface), color-mix(in srgb, var(--accent-surface) 30%, var(--bg)));
 }
+/* Fade each blob to a colour-matched transparent (not the `transparent` keyword,
+   which interpolates through transparent-black and leaves a muddy ring/hard edge),
+   then run the ramp out to ~85% so it dissolves into --bg with no seam. */
 .srx-secbg--gradient-aurora .srx-secbg__layer {
   background:
-    radial-gradient(60% 80% at 15% 10%, var(--accent-surface), transparent 70%),
-    radial-gradient(50% 70% at 85% 20%, var(--accent-2-surface), transparent 70%),
+    radial-gradient(65% 85% at 15% 10%, var(--accent-surface), color-mix(in srgb, var(--accent-surface) 35%, transparent) 45%, transparent 85%),
+    radial-gradient(55% 75% at 85% 20%, var(--accent-2-surface), color-mix(in srgb, var(--accent-2-surface) 35%, transparent) 45%, transparent 85%),
     var(--bg);
 }
 .srx-secbg--gradient-dusk .srx-secbg__layer {

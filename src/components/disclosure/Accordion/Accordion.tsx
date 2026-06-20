@@ -79,7 +79,9 @@ export function Accordion({
             {/* Always rendered (no `hidden` attr) so height can animate; closed
                 content is visibility:hidden in CSS to stay out of the a11y tree. */}
             <div className="srx-accordion__panel" id={panelId} role="region" aria-labelledby={triggerId}>
-              <div className="srx-accordion__content">{it.content}</div>
+              {/* content = the collapsing grid item (overflow:hidden, min-height:0);
+                  padding lives on __inner so a closed 0fr track leaves no sliver. */}
+              <div className="srx-accordion__content"><div className="srx-accordion__inner">{it.content}</div></div>
             </div>
           </div>
         );

@@ -55,6 +55,11 @@ export const ICONS = {
   pause: [['rect', { x: 6, y: 4, width: 4, height: 16, rx: 1 }], ['rect', { x: 14, y: 4, width: 4, height: 16, rx: 1 }]],
   'arrow-up-right': [['line', { x1: 7, y1: 17, x2: 17, y2: 7 }], ['polyline', { points: '7 7 17 7 17 17' }]],
   sparkles: [['path', { d: 'M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z' }]],
+  paintbrush: [
+    ['path', { d: 'M18.37 2.63 14 7l-1.59-1.59a2 2 0 0 0-2.82 0L8 7l9 9 1.59-1.59a2 2 0 0 0 0-2.82L17 10l4.37-4.37a2.12 2.12 0 1 0-3-3Z' }],
+    ['path', { d: 'M9 8c-2 3-4 3.5-7 4l8 10c2-1 6-5 6-7' }],
+    ['path', { d: 'M14.5 17.5 4.5 15' }],
+  ],
 } satisfies Record<string, IconPart[]>;
 
 export type IconName = keyof typeof ICONS;

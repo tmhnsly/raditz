@@ -32,4 +32,9 @@
 
 /* visibility lives on the PANEL (not the content) so the whole role="region" —
    not just its text — leaves the a11y tree + tab order when collapsed. */
-.srx-accordion__content { min-height: 0; overflow: hidden; padding: 0 var(--space-5) var(--space-5); color: var(--text-soft); font-size: var(--fs-body-s); line-height: var(--lh-body); }
+.srx-accordion__content { min-height: 0; overflow: hidden; }
+
+/* Padding lives on the INNER element, never on the collapsing grid item: a 0fr
+   track can't shrink an item below its own padding, so padding here would leave
+   a sliver poking out under a closed trigger. overflow:hidden clips this flush. */
+.srx-accordion__inner { padding: 0 var(--space-5) var(--space-5); color: var(--text-soft); font-size: var(--fs-body-s); line-height: var(--lh-body); }
