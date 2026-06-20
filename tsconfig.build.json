@@ -7,5 +7,17 @@
     "allowImportingTsExtensions": false
   },
   "include": ["src"],
-  "exclude": ["**/*.stories.tsx", "**/*.test.tsx", "**/*.stories.ts", "**/*.test.ts"]
+  "exclude": [
+    "src/pages/**",
+    "src/explorer/**",
+    "src/demos/**",
+    "src/foundations/**",
+    "src/App.tsx",
+    "src/main.tsx",
+    "src/a11y.test.tsx",
+    "**/*.stories.tsx",
+    "**/*.stories.ts",
+    "**/*.test.tsx",
+    "**/*.test.ts"
+  ]
 }

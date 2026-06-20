@@ -26,7 +26,7 @@ export default defineConfig({
     dts({
       tsconfigPath: 'tsconfig.build.json',
       include: ['src'],
-      exclude: ['**/*.stories.tsx', '**/*.test.tsx'],
+      exclude: ['**/*.stories.tsx', '**/*.stories.ts', '**/*.test.tsx', '**/*.test.ts'],
       rollupTypes: false,
     }),
   ],
@@ -40,7 +40,6 @@ export default defineConfig({
         id === 'react-dom' ||
         id.startsWith('react/') ||
         id.startsWith('react-dom/') ||
-        id.startsWith('react/jsx-runtime') ||
         id.startsWith('@visx/') ||
         id === 'date-fns' ||
         id.startsWith('date-fns/'),
