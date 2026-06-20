@@ -6,16 +6,15 @@
 
 .srx-carousel__viewport::-webkit-scrollbar { display: none; }
 
-/* Bleed: the track pops out to the true viewport edges (same technique as
-   <FullBleed>), escaping the section padding, the .s-wrap max-width cap AND the
-   explorer's .main inset — so peeking slides actually reach the edges in any
-   nesting. padding + scroll-padding re-inset the first/last slide to the content
-   column (never tighter than the section gutter), keeping snapping correct.
-   Controls (bar) stay in the content column. */
+/* Bleed: the track extends past the section's horizontal padding (matched here)
+   so peeking slides reach the section edges; padding + scroll-padding keep the
+   first/last slide aligned to the content and snapping correct. A bounded,
+   SYMMETRIC negative margin — safe in any nesting (no 100vw / centering
+   assumption, which would misalign inside the rail-offset explorer or overflow
+   the page by the scrollbar width). Controls (bar) don't bleed. */
 .srx-carousel--bleed .srx-carousel__viewport {
-  --srx-carousel-bleed: max(clamp(1.5rem, 5vw, 4.5rem), calc(50vw - 50%));
-  width: 100vw;
-  margin-inline: calc(50% - 50vw);
+  --srx-carousel-bleed: clamp(1.5rem, 5vw, 4.5rem);
+  margin-inline: calc(-1 * var(--srx-carousel-bleed));
   padding-inline: var(--srx-carousel-bleed);
   scroll-padding-inline: var(--srx-carousel-bleed);
 }

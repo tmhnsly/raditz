@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { HTMLAttributes, MouseEvent as ReactMouseEvent, PointerEvent as ReactPointerEvent, ReactNode, ReactElement } from 'react';
 import { MenuSurface } from '../MenuSurface/MenuSurface';
 import type { MenuItem } from '../MenuSurface/MenuSurface';
@@ -58,6 +58,8 @@ export function ContextMenu({ items = [], children, className, longPressMs = 480
   const onClickCapture = (e: ReactMouseEvent<HTMLDivElement>): void => {
     if (suppressClick.current) { e.preventDefault(); e.stopPropagation(); suppressClick.current = false; }
   };
+  // Clear a pending long-press timer if the target unmounts mid-press.
+  useEffect(() => () => { if (timer.current) clearTimeout(timer.current); }, []);
 
   return (
     <div

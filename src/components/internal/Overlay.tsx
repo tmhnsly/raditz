@@ -100,17 +100,14 @@ export function Overlay({
 
   if (!open) return null;
 
-  // Anchored/point panels are positioned by CSS from custom properties (data,
-  // not inline presentation); centered/side are positioned by the container.
+  // Anchored/point panels are positioned by --srx-overlay-* custom properties that
+  // useOverlayPosition writes IMPERATIVELY (so a scroll re-position doesn't wait on
+  // a React render). The hook is the SOLE writer of those props — Overlay must not
+  // also set them from `pos`, or a re-render would reassert the last-committed
+  // (stale) coords over the live ones, snapping the panel back. centered/side are
+  // positioned by the container. `pos` still drives data-side / data-ready below.
   const anchored = !modal;
-  const panelStyle = anchored
-    ? ({
-        '--srx-overlay-top': pos.top != null ? `${pos.top}px` : undefined,
-        '--srx-overlay-left': pos.left != null ? `${pos.left}px` : undefined,
-        '--srx-overlay-width': pos.width != null ? `${pos.width}px` : undefined,
-        ...style,
-      } as CSSProperties)
-    : style;
+  const panelStyle = style;
 
   const panel = (
     <div

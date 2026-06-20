@@ -14,5 +14,6 @@
   font-size: var(--fs-caption); font-family: var(--font-display); line-height: var(--lh-body);
   padding: 0.375rem 0.625rem; border-radius: var(--radius-sm); box-shadow: var(--shadow-pop);
   z-index: var(--z-popover);
+  pointer-events: none; /* non-interactive — never intercept the pointer (it's portaled over content) */
   animation: srxPopover var(--duration-fast) var(--ease-standard);
 }

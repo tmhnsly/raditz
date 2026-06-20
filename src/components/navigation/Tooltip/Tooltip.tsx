@@ -1,4 +1,4 @@
-import { useId, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import type { HTMLAttributes, ReactElement, ReactNode } from 'react';
 import { cx, Overlay } from '../../internal';
 
@@ -37,6 +37,8 @@ export function Tooltip({ label, side = 'top', align = 'center', delay = 200, cl
     if (timer.current) clearTimeout(timer.current);
     setOpen(false);
   };
+  // Clear a pending open-delay timer if the trigger unmounts mid-hover.
+  useEffect(() => () => { if (timer.current) clearTimeout(timer.current); }, []);
 
   return (
     <span
