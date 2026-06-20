@@ -1,3 +1,4 @@
+'use client';
 import type { HTMLAttributes, ReactElement } from 'react';
 import { cx, useControllableState, Overlay, useTrigger, parseTime, toISOTime, to12, to24, formatTime } from '../../internal';
 

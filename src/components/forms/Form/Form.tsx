@@ -1,3 +1,4 @@
+'use client';
 import { useState, useRef } from 'react';
 import type { ChangeEvent, FormEvent, ReactElement, ReactNode } from 'react';
 import { cx } from '../../internal';

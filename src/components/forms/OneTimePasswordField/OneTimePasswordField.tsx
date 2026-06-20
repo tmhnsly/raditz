@@ -1,3 +1,4 @@
+'use client';
 import { useRef } from 'react';
 import type { ChangeEvent, ClipboardEvent, FocusEvent, HTMLAttributes, KeyboardEvent, ReactElement } from 'react';
 import { cx, useControllableState, onKeys, KEYS } from '../../internal';

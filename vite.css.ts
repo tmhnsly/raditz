@@ -21,6 +21,11 @@ export default defineConfig({
     cssCodeSplit: false,
     assetsInlineLimit: 0, // emit fonts as files in dist/assets/, never inline
     rollupOptions: {
+      // The CSS build's whole job is to collect every CSS side-effect. Tree-shaking
+      // must stay OFF: package.json `sideEffects: ["**/*.css"]` marks components.ts
+      // (a .ts module) side-effect-free, so Rollup would otherwise drop bundle.ts's
+      // `import './components'` and lose every component's SCSS (only tokens survive).
+      treeshake: false,
       input: { '_styles-bundle': 'src/styles/bundle.ts' },
       output: {
         entryFileNames: '[name].js',

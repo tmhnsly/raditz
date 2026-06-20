@@ -1,3 +1,4 @@
+'use client';
 import { useRef, useState } from 'react';
 import type { HTMLAttributes, ReactElement, ReactNode } from 'react';
 import { cx, Overlay } from '../../internal';

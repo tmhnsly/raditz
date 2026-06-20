@@ -1,3 +1,4 @@
+'use client';
 import { useState, useRef } from 'react';
 import type { ChangeEvent, DragEvent, HTMLAttributes, ReactElement, ReactNode } from 'react';
 import { cx, useControllableState, formatBytes } from '../../internal';

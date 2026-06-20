@@ -34,7 +34,9 @@
     "build:css": "vite build --config vite.css.ts",
     "build:pkg": "pnpm build:lib && pnpm build:css",
     "prepare": "pnpm build:pkg",
-    "release:preflight": "node scripts/release-preflight.mjs"
+    "release:preflight": "node scripts/release-preflight.mjs",
+    "codemod:use-client": "node scripts/add-use-client.mjs",
+    "rdz:install-skills": "node scripts/install-global-skills.mjs"
   },
   "dependencies": {
     "@fontsource-variable/space-grotesk": "^5.2.10",

@@ -1,3 +1,4 @@
+'use client';
 import type { HTMLAttributes, ReactElement } from 'react';
 import { useControllableState, buildPages, cx } from '../../internal';
 import { Icon } from '../../foundation/Icon/Icon';

@@ -960,7 +960,7 @@ Usage:
 ```
 
 ### theme
-Import: `import { ACCENTS, Accent, COMPLEMENT, GRAYS, Gray, GrayChoice, LIGHT_ACCENTS, MOTIONS, MotionChoice, PAIRED_GRAY, RADII, RadiusChoice, applyTheme, resolveGray, useTheme } from 'raditz'`
+Import: `import { ACCENTS, Accent, COMPLEMENT, GRAYS, Gray, GrayChoice, LIGHT_ACCENTS, MOTIONS, MotionChoice, PAIRED_GRAY, RADII, RadiusChoice, ThemeDefaults, applyTheme, resolveGray, useTheme } from 'raditz'`
 
 Utility module — see exports below.
 
@@ -977,6 +977,7 @@ Exports:
   - PAIRED_GRAY
   - RADII
   - RadiusChoice
+  - ThemeDefaults
   - applyTheme
   - resolveGray
   - useTheme

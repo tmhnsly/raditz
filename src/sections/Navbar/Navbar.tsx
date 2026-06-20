@@ -1,3 +1,4 @@
+'use client';
 import { useState, useRef } from 'react';
 import type { ReactElement } from 'react';
 import { Frame } from '../../lib/Frame';

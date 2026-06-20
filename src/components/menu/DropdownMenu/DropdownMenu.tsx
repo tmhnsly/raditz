@@ -1,3 +1,4 @@
+'use client';
 import type { HTMLAttributes, ReactNode, ReactElement } from 'react';
 import { useTrigger } from '../../internal';
 import { MenuSurface } from '../MenuSurface/MenuSurface';

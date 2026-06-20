@@ -1,3 +1,4 @@
+'use client';
 import { useState } from 'react';
 import type { ChangeEvent, HTMLAttributes, KeyboardEvent, ReactElement } from 'react';
 import { cx, useControllableState, onKeys, KEYS } from '../../internal';

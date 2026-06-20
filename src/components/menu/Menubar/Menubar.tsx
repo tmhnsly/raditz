@@ -1,3 +1,4 @@
+'use client';
 import { useRef, useState } from 'react';
 import type { HTMLAttributes, ReactNode, ReactElement } from 'react';
 import { cx, useDismiss } from '../../internal';

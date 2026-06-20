@@ -1,3 +1,4 @@
+'use client';
 import { useEffect, useRef } from 'react';
 import type { Dispatch, HTMLAttributes, KeyboardEvent as ReactKeyboardEvent, MutableRefObject, ReactNode, ReactElement, RefObject, SetStateAction } from 'react';
 import { cx, Overlay, useRovingMenu } from '../../internal';

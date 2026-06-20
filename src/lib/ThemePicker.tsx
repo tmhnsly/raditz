@@ -1,3 +1,4 @@
+'use client';
 import type { CSSProperties } from 'react';
 import { cx } from '../components/internal';
 import { useTheme, ACCENTS, GRAYS, RADII, MOTIONS, resolveGray } from './theme';

@@ -1,3 +1,4 @@
+'use client';
 import { useId, useRef, useState } from 'react';
 import type { ChangeEvent, HTMLAttributes, KeyboardEvent, ReactElement } from 'react';
 import { cx, useControllableState, Overlay, useRoving, fuzzyFilter } from '../../internal';
