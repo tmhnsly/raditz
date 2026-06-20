@@ -17,7 +17,11 @@ export function PricingPage() {
       <PricingB />
       <ComparisonA />
       <FaqB />
-      <CtaB />
+      <CtaB
+        title="Start shipping today"
+        sub="No credit card required."
+        emailCapture={{ placeholder: 'you@studio.com', action: { label: 'Request access' } }}
+      />
       <FooterB />
     </div>
   );

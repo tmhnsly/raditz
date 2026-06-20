@@ -1,19 +1,60 @@
+import type { ReactNode } from 'react';
 import { Frame } from '../../lib/Frame';
-import { SectionShell, type SectionVariantProps } from '../../lib/SectionShell';
+import { Button } from '../../components/controls/Button';
+import { SectionShell, type SectionBaseProps, type SectionAction } from '../../lib/SectionShell';
 
-export function AnnouncementA() {
+export interface AnnouncementProps extends SectionBaseProps {
+  /** Banner body text (required). */
+  text: ReactNode;
+  /** Optional CTA link/button. */
+  action?: SectionAction;
+  /** Show a dismiss (×) affordance. */
+  dismissible?: boolean;
+}
+
+/** Announcement A — accent strip banner. */
+export function AnnouncementA({ text, action, dismissible, children }: AnnouncementProps) {
   return (
     <Frame>
-      <div className="sx-ann__strip"><div className="s-wrap row sx-ann__strip-inner"><strong>Raditz 2.0 is here</strong><span className="sx-ann__dim">— 64 components, theme builder, templates.</span><a href="#" className="sx-ann__link">Read more →</a></div></div>
+      {children ?? (
+        <div className="sx-ann__strip">
+          <div className="s-wrap row sx-ann__strip-inner">
+            {text}
+            {action && (
+              <a href={action.href} onClick={action.onClick} className="sx-ann__link">{action.label}</a>
+            )}
+            {dismissible && (
+              <button className="sx-ann__dismiss" aria-label="Dismiss">×</button>
+            )}
+          </div>
+        </div>
+      )}
     </Frame>
   );
 }
 
-export function AnnouncementB({ background = 'none', ...props }: SectionVariantProps = {}) {
+/** Announcement B — consent / cookie banner. */
+export function AnnouncementB({ text, action, background = 'none', children, ...props }: AnnouncementProps) {
   return (
     <SectionShell pad="sm" wrap="sx-ann__banner" background={background} {...props}>
-      <span className="muted sx-ann__banner-text">We use cookies to improve your experience. By using Raditz you agree to our <a href="#" className="sx-ann__banner-link">cookie policy</a>.</span>
-      <div className="row"><button className="rdz-btn rdz-btn--ghost rdz-btn--sm">Decline</button><button className="rdz-btn rdz-btn--primary rdz-btn--sm">Accept all</button></div>
+      {children ?? (
+        <>
+          <span className="muted sx-ann__banner-text">{text}</span>
+          {action && (
+            <div className="row">
+              <Button
+                variant={action.variant ?? 'primary'}
+                size={action.size ?? 'sm'}
+                href={action.href}
+                onClick={action.onClick}
+                icon={action.icon}
+              >
+                {action.label}
+              </Button>
+            </div>
+          )}
+        </>
+      )}
     </SectionShell>
   );
 }

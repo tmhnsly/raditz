@@ -1,12 +1,27 @@
-import { SectionShell, type SectionVariantProps } from '../../lib/SectionShell';
+import type { ReactNode } from 'react';
+import { SectionShell, SectionActions, type SectionBaseProps, type SectionAction } from '../../lib/SectionShell';
 
-export function NotFoundA({ background = 'none', ...props }: SectionVariantProps = {}) {
+export interface NotFoundProps extends SectionBaseProps {
+  /** Page heading. @default 'Page not found' */
+  title?: ReactNode;
+  /** Body copy. */
+  message?: ReactNode;
+  /** Recovery actions. */
+  actions?: SectionAction[];
+}
+
+/** NotFound A — centered 404 page. */
+export function NotFoundA({ title, message, actions, background = 'none', children, ...props }: NotFoundProps) {
   return (
     <SectionShell wrap="col sx-center sx-gap-4" background={background} {...props}>
-      <span className="sx-nf__code">404</span>
-      <h3 className="h-section">This page wandered off</h3>
-      <p className="lede sx-nf__lede">The page you’re after doesn’t exist or has moved. Let’s get you back on track.</p>
-      <div className="row sx-row-center"><button className="rdz-btn rdz-btn--primary rdz-btn--lg">Back home</button><button className="rdz-btn rdz-btn--ghost rdz-btn--lg">Search docs</button></div>
+      {children ?? (
+        <>
+          <span className="sx-nf__code">404</span>
+          <h3 className="h-section">{title ?? 'Page not found'}</h3>
+          {message && <p className="lede sx-nf__lede">{message}</p>}
+          <SectionActions actions={actions} size="lg" className="row sx-row-center" />
+        </>
+      )}
     </SectionShell>
   );
 }

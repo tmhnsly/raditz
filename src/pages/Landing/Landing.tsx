@@ -34,7 +34,13 @@ export function Landing() {
       <TestimonialsA />
       <PricingA />
       <FaqA />
-      <CtaA />
+      <CtaA
+        title="Ready to build something consistent?"
+        actions={[
+          { label: 'Get started free', href: '#' },
+          { label: 'Talk to us', href: '#', variant: 'outline' },
+        ]}
+      />
       <FooterA />
     </div>
   );
