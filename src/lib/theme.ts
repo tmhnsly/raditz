@@ -32,10 +32,36 @@ export function resolveGray(accent: Accent, choice: GrayChoice): Gray {
  * (the rest pair with white). From the Radix Colors "understanding the scale" docs. */
 export const LIGHT_ACCENTS = new Set<Accent>(['sky', 'mint', 'lime', 'yellow', 'amber']);
 
+/** Curated complement for the SECONDARY accent — a tasteful near-opposite hue so
+ * the secondary always contrasts the accent, whichever you pick. Hand-tuned to
+ * avoid the default semantic hues (grass/amber/red/blue) and the red family, so
+ * the secondary never reads as success/warning/danger/info. */
+export const COMPLEMENT: Record<Accent, Accent> = {
+  tomato: 'teal', red: 'teal', ruby: 'teal', crimson: 'jade', pink: 'teal',
+  plum: 'gold', purple: 'lime', violet: 'gold', iris: 'gold', indigo: 'gold',
+  blue: 'gold', cyan: 'gold', sky: 'orange', mint: 'plum', teal: 'crimson',
+  jade: 'crimson', green: 'plum', grass: 'purple', lime: 'violet', yellow: 'indigo',
+  amber: 'indigo', orange: 'indigo', brown: 'teal', bronze: 'teal', gold: 'indigo',
+};
+
+/** Semantic hues stay conventional (green success, amber warning, red danger,
+ * blue info) but resolve to a scale DISTINCT from the accent — so a green accent
+ * doesn't blur into the green success, an amber accent into the warning, etc.
+ * Ordered preference per family; the first scale that isn't the accent wins. */
+const SEMANTIC_FAMILIES: Record<'success' | 'warning' | 'danger' | 'info', readonly Accent[]> = {
+  success: ['grass', 'jade', 'green', 'teal'],
+  warning: ['amber', 'gold', 'yellow', 'orange'],
+  danger: ['red', 'tomato', 'ruby', 'crimson'],
+  info: ['blue', 'indigo', 'sky', 'cyan'],
+};
+const pickAway = (family: readonly Accent[], accent: Accent): Accent => family.find((s) => s !== accent) ?? family[0];
+/** Step-9 foreground: Radix's light solids (sky/mint/lime/yellow/amber) take dark text. */
+const onSolid = (scale: Accent): string => (LIGHT_ACCENTS.has(scale) ? 'var(--black-a12)' : 'var(--white-a12)');
+
 /** Corner roundness — scales every radius token via --radius-factor. */
 export const RADII = ['sharp', 'default', 'round'] as const;
 export type RadiusChoice = (typeof RADII)[number];
-const RADIUS_FACTOR: Record<RadiusChoice, string> = { sharp: '0.5', default: '1.4', round: '2.6' };
+const RADIUS_FACTOR: Record<RadiusChoice, string> = { sharp: '0.5', default: '1.4', round: '2.0' };
 
 /** Motion feel — maps to the token system's data-motion presets. */
 export const MOTIONS = ['none', 'snappy', 'smooth', 'calm'] as const;
@@ -57,6 +83,25 @@ export function applyTheme(accent: Accent, choice: GrayChoice, radius: RadiusCho
   }
   // Light accents (sky/mint/lime/yellow/amber) need dark text on their step 9/10.
   root.style.setProperty('--on-accent', LIGHT_ACCENTS.has(accent) ? 'var(--black-a12)' : 'var(--white-a12)');
+
+  // Secondary accent — a curated complement of the accent (gradient backgrounds +
+  // the --accent-2 tokens), so it always pairs regardless of which accent is set.
+  const comp = COMPLEMENT[accent];
+  root.style.setProperty('--accent-2-solid', `var(--${comp}-9)`);
+  root.style.setProperty('--accent-2-ink', `var(--${comp}-11)`);
+  root.style.setProperty('--accent-2-surface', `var(--${comp}-3)`);
+
+  // Semantic palette — conventional hue, but a scale distinct from the accent so
+  // a green accent doesn't collide with the green success (etc.). Choose one and
+  // it derives the rest.
+  for (const name of ['success', 'warning', 'danger', 'info'] as const) {
+    const scale = pickAway(SEMANTIC_FAMILIES[name], accent);
+    root.style.setProperty(`--${name}`, `var(--${scale}-9)`);
+    root.style.setProperty(`--${name}-ink`, `var(--${scale}-11)`);
+    root.style.setProperty(`--${name}-surface`, `var(--${scale}-3)`);
+    root.style.setProperty(`--on-${name}`, onSolid(scale));
+  }
+
   root.style.setProperty('--radius-factor', RADIUS_FACTOR[radius]);
   root.setAttribute('data-motion', motion);
 }

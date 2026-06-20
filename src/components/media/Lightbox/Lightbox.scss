@@ -6,7 +6,9 @@
 .srx-lightbox { position: absolute; inset: 0; display: flex; flex-direction: column; }
 
 /* Always-dark, theme-independent scrim so the viewer looks the same in both modes. */
-.srx-lightbox__scrim { position: absolute; inset: 0; background: color-mix(in srgb, black 92%, transparent); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); animation: srxFade var(--duration-base) var(--ease-standard); }
+/* Scrim blur is intentionally light (≈⅓ the panel blur) and, like every frosted
+   surface, derives from --glass-blur so setting it to 0 disables blur project-wide. */
+.srx-lightbox__scrim { position: absolute; inset: 0; background: color-mix(in srgb, black 92%, transparent); -webkit-backdrop-filter: blur(calc(var(--glass-blur) / 3)); backdrop-filter: blur(calc(var(--glass-blur) / 3)); animation: srxFade var(--duration-base) var(--ease-standard); }
 
 /* Close: position only — the disc visual comes from the shared .srx-oclose. */
 .srx-lightbox__close { position: absolute; top: var(--space-4); right: var(--space-4); z-index: 3; }
@@ -43,7 +45,7 @@
 
 .srx-lightbox__tags { display: flex; flex-wrap: wrap; gap: var(--space-2); }
 
-.srx-lightbox__tag { font-family: var(--font-mono); font-size: var(--fs-mono-xs); text-transform: uppercase; letter-spacing: 0.08em; color: var(--on-media); background: var(--white-a4); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); border-radius: var(--radius-full); padding: 0.3125rem 0.75rem; }
+.srx-lightbox__tag { font-family: var(--font-mono); font-size: var(--fs-mono-xs); text-transform: uppercase; letter-spacing: 0.08em; color: var(--on-media); background: var(--white-a4); -webkit-backdrop-filter: blur(var(--glass-blur)); backdrop-filter: blur(var(--glass-blur)); border-radius: var(--radius-full); padding: 0.3125rem 0.75rem; }
 
 .srx-lightbox__controls { display: flex; align-items: center; gap: var(--space-2); margin-left: auto; }
 
