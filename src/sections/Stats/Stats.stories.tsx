@@ -1,9 +1,31 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { StatsA, StatsB } from './Stats';
+import { StatsA, StatsB, type StatItem } from './Stats';
 
 const meta: Meta = { title: 'Sections/Stats' };
 export default meta;
 type Story = StoryObj;
 
-export const A_FourAcross: Story = { name: 'A · 4 across', render: () => <StatsA /> };
-export const B_AccentBand: Story = { name: 'B · Accent band', render: () => <StatsB /> };
+/** Demo stats for Stats A: 4-across */
+const fourStats: StatItem[] = [
+  { value: '53', label: 'components' },
+  { value: '188', label: 'design tokens' },
+  { value: '12', label: 'color steps' },
+  { value: '1', label: 'line to re-skin' },
+];
+
+/** Demo stats for Stats B: accent band, 3 cells */
+const bandStats: StatItem[] = [
+  { value: '99.9%', label: 'uptime' },
+  { value: '40ms', label: 'p95 latency' },
+  { value: '12k+', label: 'teams' },
+];
+
+export const A_FourAcross: Story = {
+  name: 'A · 4 across',
+  render: () => <StatsA stats={fourStats} />,
+};
+
+export const B_AccentBand: Story = {
+  name: 'B · Accent band',
+  render: () => <StatsB stats={bandStats} />,
+};

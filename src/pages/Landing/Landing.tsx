@@ -29,8 +29,22 @@ export function Landing() {
         media={<div className="ph sx-hero__media">product shot</div>}
       />
       <SocialProofA />
-      <FeaturesA />
-      <StatsB />
+      <FeaturesA
+        eyebrow="Why Raditz"
+        heading="Everything wired together"
+        items={[
+          { title: '12-step color', description: 'Radix scales aliased to semantic tokens, light & dark.' },
+          { title: '53 components', description: 'The full Radix primitive surface, styled and accessible.' },
+          { title: 'Re-skin instantly', description: 'One accent variable retones the entire product.' },
+        ]}
+      />
+      <StatsB
+        stats={[
+          { value: '99.9%', label: 'uptime' },
+          { value: '40ms', label: 'p95 latency' },
+          { value: '12k+', label: 'teams' },
+        ]}
+      />
       <TestimonialsA />
       <PricingA />
       <FaqA />
