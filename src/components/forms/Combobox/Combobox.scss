@@ -9,6 +9,10 @@
   font-size: var(--fs-body-s); line-height: 1.2; transition: var(--transition-control);
 }
 
+/* iOS Safari zooms the page when a focused input is < 16px — hold the field at
+   16px on touch devices (desktop keeps the compact 14px scale). */
+@media (pointer: coarse) { .srx-input { font-size: 1rem; } }
+
 .srx-input::placeholder { color: var(--text-faint); }
 
 .srx-input:hover { border-color: var(--rule-strong); }

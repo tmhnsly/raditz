@@ -22,3 +22,12 @@
 .srx-taginput__suggest { display: flex; flex-wrap: wrap; gap: var(--space-2); }
 
 .srx-taginput__suggest .srx-pill { cursor: pointer; }
+
+/* Touch: roomier tags + a bigger remove target, and a 16px field so iOS doesn't
+   zoom — the chips were small and fiddly on mobile. */
+@media (pointer: coarse) {
+  .srx-taginput__field { font-size: 1rem; }
+  .srx-tag { padding: 0.3125rem 0.4375rem 0.3125rem 0.75rem; font-size: var(--fs-body-s); }
+  .srx-tag__x { width: 1.75rem; height: 1.75rem; }
+  .srx-tag__x svg { width: 0.8125rem; height: 0.8125rem; }
+}
