@@ -57,10 +57,13 @@ export function ScatterChart({
         const x = xFor(innerWidth);
         const y = yFor(innerHeight);
         const d = data[active];
+        const py = margin.top + (y(d.y) ?? 0);
+        const below = py < 92; // not enough room above → flip the tip below the point
         return (
           <div
             className="srx-chart__tip"
-            style={{ ['--srx-tip-x' as string]: `${margin.left + (x(d.x) ?? 0)}px`, ['--srx-tip-y' as string]: `${margin.top + (y(d.y) ?? 0)}px` }}
+            data-side={below ? 'below' : 'above'}
+            style={{ ['--srx-tip-x' as string]: `${margin.left + (x(d.x) ?? 0)}px`, ['--srx-tip-y' as string]: `${py}px` }}
           >
             {d.label ? <div className="srx-chart__tip-title">{d.label}</div> : null}
             <div className="srx-chart__tip-meta"><span className="srx-chart__tip-value">{formatX(d.x)}, {formatY(d.y)}</span></div>

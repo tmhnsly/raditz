@@ -36,4 +36,7 @@ a.srx-avatar-group__profile:hover { background: var(--surface); }
 
 .srx-avatar-group__profile-role { font-size: var(--fs-caption); color: var(--text-muted); }
 
-.srx-avatar-group__list { display: flex; flex-direction: column; gap: 0.125rem; max-height: 16rem; overflow-y: auto; min-width: 13rem; }
+/* Reserve the scrollbar gutter so the bar never overlays the last profile row,
+   and inset the end so the final item clears the popover edge (was reading as
+   "padding blocking the view" when scrolled to the bottom). */
+.srx-avatar-group__list { display: flex; flex-direction: column; gap: 0.125rem; max-height: 16rem; overflow-y: auto; min-width: 13rem; scrollbar-gutter: stable; padding-block-end: var(--space-1); }

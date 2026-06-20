@@ -131,7 +131,7 @@
 
 /* comparison table — scrolls horizontally inside its frame on narrow widths
    instead of being clipped (the table can't usefully collapse below ~34rem). */
-.cmp-scroll { overflow-x: auto; scrollbar-width: thin; scrollbar-color: var(--rule-strong) transparent; }
+.cmp-scroll { overflow-x: auto; scrollbar-gutter: stable; scrollbar-width: thin; scrollbar-color: var(--rule-strong) transparent; }
 .cmp-scroll::-webkit-scrollbar { height: 0.625rem; }
 .cmp-scroll::-webkit-scrollbar-thumb { background: var(--surface-strong); border-radius: var(--radius-full); border: 0.1875rem solid transparent; background-clip: content-box; }
 .cmp-scroll::-webkit-scrollbar-track { background: transparent; }

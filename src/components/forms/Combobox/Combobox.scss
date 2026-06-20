@@ -35,7 +35,7 @@
 
 /* search row now provided by the shared <Search variant="plain" size="sm"> */
 
-.srx-combobox__list { max-height: 14rem; overflow-y: auto; display: flex; flex-direction: column; gap: 0.0625rem; }
+.srx-combobox__list { max-height: 14rem; overflow-y: auto; display: flex; flex-direction: column; gap: 0.0625rem; scrollbar-gutter: stable; padding-block-end: var(--space-1); }
 
 .srx-combobox__opt { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); padding: 0.5rem var(--space-3); border-radius: calc(var(--radius-overlay) - var(--space-2)); font-family: var(--font-display); font-size: var(--fs-body-s); color: var(--text); text-align: left; cursor: pointer; }
 

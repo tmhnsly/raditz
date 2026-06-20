@@ -69,7 +69,7 @@ export function TimePicker({
         aria-label="Choose time"
       >
         <div className="srx-timemenu__cols">
-          <div className="srx-timemenu__col srx-scrollbar" role="group" aria-label="Hour">
+          <div className="srx-timemenu__col" role="group" aria-label="Hour">
             {hours.map((hh) => {
               const active = !!t && (hour12 ? hh === h12 : hh === h);
               return (
@@ -79,7 +79,7 @@ export function TimePicker({
               );
             })}
           </div>
-          <div className="srx-timemenu__col srx-scrollbar" role="group" aria-label="Minute">
+          <div className="srx-timemenu__col" role="group" aria-label="Minute">
             {minutes.map((mm) => (
               <button key={mm} type="button" aria-pressed={!!t && mm === m} className={cx('srx-timemenu__opt', !!t && mm === m && 'is-selected')} onClick={() => commit(h, mm)}>
                 {String(mm).padStart(2, '0')}

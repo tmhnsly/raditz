@@ -10,3 +10,11 @@
 }
 
 .srx-overlay__panel[data-ready="true"] { visibility: visible; }
+
+/* The entrance scale emanates from the anchored edge (the resolved side), so a
+   panel that flipped above its trigger grows from its bottom — not its centre,
+   which read as a "jiggle". data-side beats a consumer's own transform-origin. */
+.srx-overlay__panel[data-side="bottom"] { transform-origin: top center; }
+.srx-overlay__panel[data-side="top"] { transform-origin: bottom center; }
+.srx-overlay__panel[data-side="right"] { transform-origin: center left; }
+.srx-overlay__panel[data-side="left"] { transform-origin: center right; }

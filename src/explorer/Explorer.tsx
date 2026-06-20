@@ -77,7 +77,7 @@ export default function Explorer() {
           </div>
           <div className="expbar__title">{currentTitle}</div>
           <div className="expbar__actions">
-            <Popover trigger={<Tooltip align="end" label="Theme & accent"><IconButton variant="soft" icon="sparkles" aria-label="Theme & accent" /></Tooltip>}>
+            <Popover trigger={<Tooltip align="end" label="Theme & accent"><IconButton variant="soft" icon="paintbrush" aria-label="Theme & accent" /></Tooltip>}>
               <ThemePicker />
             </Popover>
             <Tooltip align="end" label={isDark ? 'Light mode' : 'Dark mode'}>

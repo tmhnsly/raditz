@@ -12,7 +12,11 @@
 
 .srx-timemenu__cols { display: flex; gap: var(--space-1); }
 
-.srx-timemenu__col { display: flex; flex-direction: column; gap: 2px; max-height: 13rem; overflow-y: auto; }
+/* Compact value columns scroll, but the scrollbar is hidden — on Firefox the thin
+   bars crowded the three narrow columns ("in the way"). A little end inset lets
+   the last value clear the panel edge. */
+.srx-timemenu__col { display: flex; flex-direction: column; gap: 2px; max-height: 13rem; overflow-y: auto; scrollbar-width: none; padding-block-end: var(--space-1); }
+.srx-timemenu__col::-webkit-scrollbar { width: 0; height: 0; }
 
 .srx-timemenu__opt { padding: 0.375rem 0.75rem; border-radius: var(--radius-sm); font-size: var(--fs-body-s); font-variant-numeric: tabular-nums; color: var(--text); text-align: center; transition: var(--transition-control); }
 

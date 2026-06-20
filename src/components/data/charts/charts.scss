@@ -1,7 +1,7 @@
 // Uses SuperRadix tokens (var(--…)); SVG fills/strokes read CSS vars so charts
 // re-theme with the accent + neutral scales like every other component.
 /* ═══════════════════════ Charts (visx) ═══════════════════════ */
-.srx-chart { position: relative; width: 100%; }
+.srx-chart { position: relative; width: 100%; min-width: 0; }
 
 .srx-chart__svg { display: block; overflow: visible; }
 
@@ -34,11 +34,15 @@
 
 /* Tooltip card (HTML overlay) */
 .srx-chart__tip {
-  position: absolute; z-index: 2; pointer-events: none; left: var(--srx-tip-x, 0); top: var(--srx-tip-y, 0); transform: translate(-50%, calc(-100% - 0.625rem));
+  position: absolute; z-index: 10; pointer-events: none; left: var(--srx-tip-x, 0); top: var(--srx-tip-y, 0); transform: translate(-50%, calc(-100% - 0.625rem));
   background: var(--panel); border: 1px solid var(--surface-edge); border-radius: var(--radius-md);
   box-shadow: var(--shadow-5); padding: var(--space-2) var(--space-3); min-width: 8rem; max-width: 16rem;
   font-size: var(--fs-body-s); color: var(--text);
 }
+
+/* Flip below the point when there's no room above (point near the chart top), so
+   a tall tooltip isn't clipped by the chart/card edge. */
+.srx-chart__tip[data-side="below"] { transform: translate(-50%, 0.625rem); }
 .srx-chart__tip-row { display: flex; align-items: center; gap: var(--space-3); }
 .srx-chart__tip-thumb { width: 2.5rem; height: 2.5rem; border-radius: var(--radius-sm); object-fit: cover; flex: none; }
 .srx-chart__tip-eyebrow { font-family: var(--font-mono); font-size: var(--fs-mono-xs); color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; }
