@@ -230,11 +230,31 @@ const header = [
   '',
 ];
 
+const UTILITIES = [
+  ['.h-display', 'Largest display heading (hero titles).'],
+  ['.h-section', 'Section heading.'],
+  ['.lede', 'Lead paragraph under a heading.'],
+  ['.eyebrow / .eyebrow2', 'Small label above a heading.'],
+  ['.muted', 'De-emphasized text colour.'],
+  ['.row / .col', 'Flex row / column with token gaps.'],
+  ['.container', 'Max-width centered content wrapper.'],
+];
+const utilitiesBlock = [
+  '## utilities (CSS classes)',
+  '',
+  'For BESPOKE layout only — prefer components/sections first. These public classes',
+  'come from `raditz/styles.css` (already imported); use them in a section\'s `children`',
+  'or your own markup:',
+  '',
+  ...UTILITIES.map(([cls, desc]) => `- \`${cls}\` — ${desc}`),
+  '',
+];
+
 const sections = [];
 for (const cat of [...byCategory.keys()].sort()) {
   sections.push(`## ${cat}`, '', byCategory.get(cat).join('\n\n'), '');
 }
 
 fs.mkdirSync('catalog', { recursive: true });
-fs.writeFileSync('catalog/llms.txt', header.concat(sections).join('\n'));
+fs.writeFileSync('catalog/llms.txt', header.concat(utilitiesBlock).concat(sections).join('\n'));
 console.log(`wrote catalog/llms.txt (${componentCount} components in ${byCategory.size} categories)`);
