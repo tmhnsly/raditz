@@ -3,6 +3,23 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "files": [
+    "dist",
+    "catalog"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./styles.css": "./dist/raditz.css"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
@@ -14,7 +31,8 @@
     "gen:barrel": "node scripts/gen-barrel.mjs",
     "build:lib": "vite build --config vite.lib.ts",
     "build:css": "vite build --config vite.css.ts",
-    "build:pkg": "pnpm build:lib && pnpm build:css"
+    "build:pkg": "pnpm build:lib && pnpm build:css",
+    "prepare": "pnpm build:pkg"
   },
   "dependencies": {
     "@fontsource-variable/space-grotesk": "^5.2.10",
@@ -28,11 +46,15 @@
     "@visx/responsive": "^4.0.0",
     "@visx/scale": "^4.0.0",
     "@visx/shape": "^4.0.0",
-    "date-fns": "^4.4.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "date-fns": "^4.4.0"
+  },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18"
   },
   "devDependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "@storybook/addon-essentials": "^8.6.14",
     "@storybook/react": "^8.6.18",
     "@storybook/react-vite": "^8.6.14",
