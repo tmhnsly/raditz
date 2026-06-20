@@ -28,13 +28,13 @@ export function Grid({
   const Tag = as;
   return (
     <Tag
-      className={cx('srx-grid', className)}
+      className={cx('rdz-grid', className)}
       data-fill={columns ? undefined : ''}
       style={
         {
-          '--srx-grid-gap': `var(--space-${gap})`,
-          '--srx-grid-cols': columns,
-          '--srx-grid-min': minItem,
+          '--rdz-grid-gap': `var(--space-${gap})`,
+          '--rdz-grid-cols': columns,
+          '--rdz-grid-min': minItem,
         } as CSSProperties
       }
       {...rest}

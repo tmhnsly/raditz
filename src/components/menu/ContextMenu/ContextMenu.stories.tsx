@@ -30,7 +30,7 @@ export const Default: Story = {
           placeItems: 'center',
           width: '20rem',
           height: '10rem',
-          border: '1px dashed var(--srx-border, #ccc)',
+          border: '1px dashed var(--rdz-border, #ccc)',
           borderRadius: '0.5rem',
           userSelect: 'none',
         }}

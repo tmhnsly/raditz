@@ -1,6 +1,6 @@
 // Auto-split from components.css — this component's styles, co-located.
-// Uses SuperRadix tokens (var(--…)); re-skins/re-themes with the system.
-.srx-pill {
+// Uses Raditz tokens (var(--…)); re-skins/re-themes with the system.
+.rdz-pill {
   display: inline-flex; align-items: center; gap: var(--space-2);
   padding: var(--pad-pill); border-radius: var(--radius-full);
   font-family: var(--font-display); font-size: var(--fs-body-s);
@@ -10,10 +10,10 @@
   transition: var(--transition-control);
 }
 
-.srx-pill:hover { background: var(--surface-strong); color: var(--text); }
+.rdz-pill:hover { background: var(--surface-strong); color: var(--text); }
 
-.srx-pill:active { transform: var(--press-down); }
+.rdz-pill:active { transform: var(--press-down); }
 
-.srx-pill--active { background: var(--accent); color: var(--on-accent); }
+.rdz-pill--active { background: var(--accent); color: var(--on-accent); }
 
-.srx-pill--active:hover { background: var(--accent-hover); color: var(--on-accent); }
+.rdz-pill--active:hover { background: var(--accent-hover); color: var(--on-accent); }

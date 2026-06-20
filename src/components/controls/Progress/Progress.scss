@@ -1,15 +1,15 @@
 // Auto-split from components.css — this component's styles, co-located.
-// Uses SuperRadix tokens (var(--…)); re-skins/re-themes with the system.
+// Uses Raditz tokens (var(--…)); re-skins/re-themes with the system.
 /* ═══════════════════════ Progress ═══════════════════════ */
-.srx-progress { position: relative; height: 0.5rem; width: 100%; border-radius: var(--radius-full); background: var(--surface-strong); overflow: hidden; }
+.rdz-progress { position: relative; height: 0.5rem; width: 100%; border-radius: var(--radius-full); background: var(--surface-strong); overflow: hidden; }
 
-.srx-progress--sm { height: 0.3125rem; }
+.rdz-progress--sm { height: 0.3125rem; }
 
-.srx-progress--lg { height: 0.75rem; }
+.rdz-progress--lg { height: 0.75rem; }
 
-.srx-progress__indicator { height: 100%; width: var(--srx-progress-pct, 100%); border-radius: var(--radius-full); background: var(--accent); transition: width var(--duration-slow) var(--ease-standard); }
+.rdz-progress__indicator { height: 100%; width: var(--rdz-progress-pct, 100%); border-radius: var(--radius-full); background: var(--accent); transition: width var(--duration-slow) var(--ease-standard); }
 
 /* Continuous sweep: LINEAR timing only. An ease-in-out curve decelerates at the
    off-screen wrap and re-accelerates on re-entry, which reads as a stutter on an
    infinite loop. Duration follows the global motion scale. */
-.srx-progress--indeterminate .srx-progress__indicator { width: 40%; animation: srxProgressSlide calc(1100ms * var(--motion-scale)) linear infinite; }
+.rdz-progress--indeterminate .rdz-progress__indicator { width: 40%; animation: rdzProgressSlide calc(1100ms * var(--motion-scale)) linear infinite; }

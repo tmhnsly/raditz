@@ -47,9 +47,9 @@ export function PasswordToggleField({
   const [val, setVal] = useControllableState<string>({ value, defaultValue, onChange });
   const [visible, setVisible] = useState(defaultVisible);
   return (
-    <div className={cx('srx-password', className)}>
+    <div className={cx('rdz-password', className)}>
       <input
-        className={cx('srx-input', 'srx-password__input', invalid && 'srx-input--invalid')}
+        className={cx('rdz-input', 'rdz-password__input', invalid && 'rdz-input--invalid')}
         type={visible ? 'text' : 'password'}
         value={val}
         placeholder={placeholder}
@@ -60,7 +60,7 @@ export function PasswordToggleField({
       />
       <button
         type="button"
-        className="srx-password__toggle"
+        className="rdz-password__toggle"
         aria-label={visible ? 'Hide password' : 'Show password'}
         aria-pressed={visible}
         disabled={disabled}

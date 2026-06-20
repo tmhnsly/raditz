@@ -45,17 +45,17 @@ export function TimePicker({
   const label = t ? formatTime(h, m, hour12) : '';
 
   return (
-    <span className={cx('srx-timepicker', className)} {...rest}>
+    <span className={cx('rdz-timepicker', className)} {...rest}>
       <button
         type="button"
         ref={anchorRef}
-        className={cx('srx-input', 'srx-timepicker__trigger', !label && 'is-placeholder')}
+        className={cx('rdz-input', 'rdz-timepicker__trigger', !label && 'is-placeholder')}
         disabled={disabled}
         aria-haspopup="dialog"
         aria-expanded={open}
         onClick={toggle}
       >
-        <svg className="srx-timepicker__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9" /><polyline points="12 7 12 12 15 14" /></svg>
+        <svg className="rdz-timepicker__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9" /><polyline points="12 7 12 12 15 14" /></svg>
         <span>{label || placeholder}</span>
       </button>
       <Overlay
@@ -64,32 +64,32 @@ export function TimePicker({
         position={{ kind: 'anchored', anchor: anchorRef, side: 'bottom', align: 'start' }}
         ignore={anchorRef}
         focus="none"
-        className="srx-timemenu"
+        className="rdz-timemenu"
         role="dialog"
         aria-label="Choose time"
       >
-        <div className="srx-timemenu__cols">
-          <div className="srx-timemenu__col" role="group" aria-label="Hour">
+        <div className="rdz-timemenu__cols">
+          <div className="rdz-timemenu__col" role="group" aria-label="Hour">
             {hours.map((hh) => {
               const active = !!t && (hour12 ? hh === h12 : hh === h);
               return (
-                <button key={hh} type="button" aria-pressed={active} className={cx('srx-timemenu__opt', active && 'is-selected')} onClick={() => commit(hour12 ? to24(hh, period) : hh, m)}>
+                <button key={hh} type="button" aria-pressed={active} className={cx('rdz-timemenu__opt', active && 'is-selected')} onClick={() => commit(hour12 ? to24(hh, period) : hh, m)}>
                   {hour12 ? hh : String(hh).padStart(2, '0')}
                 </button>
               );
             })}
           </div>
-          <div className="srx-timemenu__col" role="group" aria-label="Minute">
+          <div className="rdz-timemenu__col" role="group" aria-label="Minute">
             {minutes.map((mm) => (
-              <button key={mm} type="button" aria-pressed={!!t && mm === m} className={cx('srx-timemenu__opt', !!t && mm === m && 'is-selected')} onClick={() => commit(h, mm)}>
+              <button key={mm} type="button" aria-pressed={!!t && mm === m} className={cx('rdz-timemenu__opt', !!t && mm === m && 'is-selected')} onClick={() => commit(h, mm)}>
                 {String(mm).padStart(2, '0')}
               </button>
             ))}
           </div>
           {hour12 ? (
-            <div className="srx-timemenu__col" role="group" aria-label="AM or PM">
+            <div className="rdz-timemenu__col" role="group" aria-label="AM or PM">
               {(['AM', 'PM'] as const).map((p) => (
-                <button key={p} type="button" aria-pressed={!!t && p === period} className={cx('srx-timemenu__opt', !!t && p === period && 'is-selected')} onClick={() => commit(to24(h12, p), m)}>
+                <button key={p} type="button" aria-pressed={!!t && p === period} className={cx('rdz-timemenu__opt', !!t && p === period && 'is-selected')} onClick={() => commit(to24(h12, p), m)}>
                   {p}
                 </button>
               ))}

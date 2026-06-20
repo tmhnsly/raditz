@@ -29,7 +29,7 @@ export function Container({
   const Tag = as;
   return (
     <Tag
-      className={cx('srx-container', className)}
+      className={cx('rdz-container', className)}
       data-size={size}
       data-bleed={bleed ? '' : undefined}
       {...rest}

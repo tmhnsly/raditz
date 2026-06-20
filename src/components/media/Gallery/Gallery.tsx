@@ -34,17 +34,17 @@ export function Gallery({
   const [idx, setIdx] = useState(0);
   const masonry = aspect === 'masonry';
   return (
-    <div className={cx('srx-gallery-wrap', className)} {...rest}>
+    <div className={cx('rdz-gallery-wrap', className)} {...rest}>
       <div
-        className={cx('srx-gallery', masonry && 'srx-gallery--masonry')}
-        style={{ '--srx-gallery-cols': columns, '--srx-gallery-gap': gap } as React.CSSProperties}
+        className={cx('rdz-gallery', masonry && 'rdz-gallery--masonry')}
+        style={{ '--rdz-gallery-cols': columns, '--rdz-gallery-gap': gap } as React.CSSProperties}
       >
         {images.map((im, i) => (
           <button
             key={i}
             type="button"
-            className="srx-gallery__cell"
-            style={masonry ? undefined : ({ '--srx-gallery-aspect': aspect } as React.CSSProperties)}
+            className="rdz-gallery__cell"
+            style={masonry ? undefined : ({ '--rdz-gallery-aspect': aspect } as React.CSSProperties)}
             aria-label={im.alt || `Open image ${i + 1}`}
             onClick={() => {
               setIdx(i);

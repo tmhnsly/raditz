@@ -1,4 +1,4 @@
-// Shared utilities & hooks for SuperRadix components. Import from here so common
+// Shared utilities & hooks for Raditz components. Import from here so common
 // logic (class names, keyboard handling, controllable state, overlays) is reused
 // across components rather than re-implemented per component.
 export * from './cx';

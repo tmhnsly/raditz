@@ -1,21 +1,21 @@
 /* ──────────────────────────────────────────────────────────────────────────
    Section helpers — shared layout/utility classes the section components use.
    Lifted from the original sections catalog <style> block. Everything reads
-   from SuperRadix tokens, so sections re-skin and re-theme with the system.
+   from Raditz tokens, so sections re-skin and re-theme with the system.
    ────────────────────────────────────────────────────────────────────────── */
 
 /* a frame to preview a section inside (used by stories + the catalog) */
-.frame { background: var(--bg); border: 1px solid var(--surface-edge); border-radius: var(--radius-card); overflow: hidden; box-shadow: var(--shadow-2); max-width: var(--srx-frame-maxw); }
+.frame { background: var(--bg); border: 1px solid var(--surface-edge); border-radius: var(--radius-card); overflow: hidden; box-shadow: var(--shadow-2); max-width: var(--rdz-frame-maxw); }
 
 /* A real page composed from sections: flatten the preview frame so sections
    stack seamlessly edge-to-edge instead of as separate cards. */
-.srx-page { background: var(--bg); }
-.srx-page .frame { border: 0; border-radius: 0; box-shadow: none; }
+.rdz-page { background: var(--bg); }
+.rdz-page .frame { border: 0; border-radius: 0; box-shadow: none; }
 /* In a composed page the navbar pins to the top; its panel bg covers content
    scrolling underneath. (In the isolated showcase it's just a framed preview.) */
-.srx-page .nav-section { position: sticky; top: 0; z-index: var(--z-nav); }
-.srx-page .variant { margin: 0; }
-.srx-page .variant__tag { display: none; }
+.rdz-page .nav-section { position: sticky; top: 0; z-index: var(--z-nav); }
+.rdz-page .variant { margin: 0; }
+.rdz-page .variant__tag { display: none; }
 
 /* section internals — shared helpers */
 /* container-type on the padding wrapper makes the responsive grids respond to the
@@ -73,8 +73,8 @@
 }
 
 /* Section-specific cards also turn glass inside a gradient section (the component
-   handles the generic .srx-card; these are section-layer classes). */
-.srx-secbg--gradient :is(.sx-price__card, .sx-price__card-pop, .sx-tst__card, .sx-blog__card, .sx-news__card, .tcar__card, .sx-stat__cell) {
+   handles the generic .rdz-card; these are section-layer classes). */
+.rdz-secbg--gradient :is(.sx-price__card, .sx-price__card-pop, .sx-tst__card, .sx-blog__card, .sx-news__card, .tcar__card, .sx-stat__cell) {
   background: var(--glass);
   -webkit-backdrop-filter: blur(var(--glass-blur));
   backdrop-filter: blur(var(--glass-blur));

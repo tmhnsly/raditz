@@ -1,40 +1,40 @@
 // Auto-split from components.css — this component's styles, co-located.
-// Uses SuperRadix tokens (var(--…)); re-skins/re-themes with the system.
+// Uses Raditz tokens (var(--…)); re-skins/re-themes with the system.
 /* ═══════════════════════ DataTable ═══════════════════════ */
-.srx-table-wrap { width: 100%; overflow-x: auto; border: 1px solid var(--surface-edge); border-radius: var(--radius-card); background: var(--panel); }
+.rdz-table-wrap { width: 100%; overflow-x: auto; border: 1px solid var(--surface-edge); border-radius: var(--radius-card); background: var(--panel); }
 
-.srx-table { width: 100%; border-collapse: collapse; font-size: var(--fs-body-s); }
+.rdz-table { width: 100%; border-collapse: collapse; font-size: var(--fs-body-s); }
 
-.srx-table thead th { position: sticky; top: 0; z-index: 1; background: var(--panel-subtle); text-align: var(--srx-col-align, left); width: var(--srx-col-w); font-weight: var(--fw-semibold); color: var(--text-soft); padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--surface-edge); white-space: nowrap; }
+.rdz-table thead th { position: sticky; top: 0; z-index: 1; background: var(--panel-subtle); text-align: var(--rdz-col-align, left); width: var(--rdz-col-w); font-weight: var(--fw-semibold); color: var(--text-soft); padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--surface-edge); white-space: nowrap; }
 
-.srx-table__sortable { cursor: pointer; user-select: none; }
+.rdz-table__sortable { cursor: pointer; user-select: none; }
 
-.srx-table__sortable:hover { color: var(--text); }
+.rdz-table__sortable:hover { color: var(--text); }
 
-.srx-table__th { display: inline-flex; align-items: center; gap: 0.375rem; }
+.rdz-table__th { display: inline-flex; align-items: center; gap: 0.375rem; }
 
-.srx-table__sort { display: inline-flex; opacity: 0; transition: opacity var(--duration-fast) var(--ease-standard); }
+.rdz-table__sort { display: inline-flex; opacity: 0; transition: opacity var(--duration-fast) var(--ease-standard); }
 
-.srx-table__sort svg { width: 0.875rem; height: 0.875rem; }
+.rdz-table__sort svg { width: 0.875rem; height: 0.875rem; }
 
-.srx-table__sortable:hover .srx-table__sort, .srx-table__sort.is-active { opacity: 1; color: var(--accent-ink); }
+.rdz-table__sortable:hover .rdz-table__sort, .rdz-table__sort.is-active { opacity: 1; color: var(--accent-ink); }
 
-.srx-table tbody td { text-align: var(--srx-col-align, left); padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--rule-soft); color: var(--text); }
+.rdz-table tbody td { text-align: var(--rdz-col-align, left); padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--rule-soft); color: var(--text); }
 
-.srx-table tbody tr:last-child td { border-bottom: none; }
+.rdz-table tbody tr:last-child td { border-bottom: none; }
 
-.srx-table tbody tr:hover { background: var(--surface-soft); }
+.rdz-table tbody tr:hover { background: var(--surface-soft); }
 
-.srx-table tbody tr[data-selected] { background: var(--accent-surface); }
+.rdz-table tbody tr[data-selected] { background: var(--accent-surface); }
 
-.srx-table--dense thead th, .srx-table--dense tbody td { padding: 0.375rem var(--space-3); }
+.rdz-table--dense thead th, .rdz-table--dense tbody td { padding: 0.375rem var(--space-3); }
 
-.srx-table__check { width: 2.75rem; text-align: center; }
+.rdz-table__check { width: 2.75rem; text-align: center; }
 
-.srx-table__check .srx-check { vertical-align: middle; }
+.rdz-table__check .rdz-check { vertical-align: middle; }
 
-.srx-table__pager { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); padding: var(--space-3) var(--space-4); border-top: 1px solid var(--surface-edge); }
+.rdz-table__pager { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); padding: var(--space-3) var(--space-4); border-top: 1px solid var(--surface-edge); }
 
-.srx-table__pageinfo { font-size: var(--fs-caption); color: var(--text-muted); font-family: var(--font-mono); }
+.rdz-table__pageinfo { font-size: var(--fs-caption); color: var(--text-muted); font-family: var(--font-mono); }
 
-.srx-table__pagebtns { display: flex; gap: var(--space-2); }
+.rdz-table__pagebtns { display: flex; gap: var(--space-2); }

@@ -1,29 +1,29 @@
 // Auto-split from components.css — this component's styles, co-located.
-// Uses SuperRadix tokens (var(--…)); re-skins/re-themes with the system.
+// Uses Raditz tokens (var(--…)); re-skins/re-themes with the system.
 /* ═══════════════════════ Badge / Pill / Tag ═══════════════════════ */
-.srx-badge {
+.rdz-badge {
   display: inline-flex; align-items: center; gap: 0.3125rem;
   padding: var(--pad-chip); border-radius: var(--radius-chip);
   font-family: var(--font-display); font-size: var(--fs-label);
   font-weight: var(--fw-semibold); letter-spacing: -0.005em; line-height: 1.3; white-space: nowrap;
 }
 
-.srx-badge__dot { width: 0.375rem; height: 0.375rem; border-radius: var(--radius-full); background: currentColor; }
+.rdz-badge__dot { width: 0.375rem; height: 0.375rem; border-radius: var(--radius-full); background: currentColor; }
 
-.srx-badge[data-color="accent"]  { --badge-accent: var(--accent);  --badge-on: var(--on-accent);  --badge-surface: var(--accent-surface);  --badge-ink: var(--accent-ink);  --badge-border: var(--accent-border); }
+.rdz-badge[data-color="accent"]  { --badge-accent: var(--accent);  --badge-on: var(--on-accent);  --badge-surface: var(--accent-surface);  --badge-ink: var(--accent-ink);  --badge-border: var(--accent-border); }
 
-.srx-badge[data-color="neutral"] { --badge-accent: var(--slate-9); --badge-on: var(--white-a12);  --badge-surface: var(--surface);          --badge-ink: var(--text-soft);   --badge-border: var(--rule); }
+.rdz-badge[data-color="neutral"] { --badge-accent: var(--slate-9); --badge-on: var(--white-a12);  --badge-surface: var(--surface);          --badge-ink: var(--text-soft);   --badge-border: var(--rule); }
 
-.srx-badge[data-color="success"] { --badge-accent: var(--success); --badge-on: var(--on-success); --badge-surface: var(--success-surface); --badge-ink: var(--success-ink); --badge-border: var(--grass-7); }
+.rdz-badge[data-color="success"] { --badge-accent: var(--success); --badge-on: var(--on-success); --badge-surface: var(--success-surface); --badge-ink: var(--success-ink); --badge-border: var(--grass-7); }
 
-.srx-badge[data-color="warning"] { --badge-accent: var(--warning); --badge-on: var(--on-warning); --badge-surface: var(--warning-surface); --badge-ink: var(--warning-ink); --badge-border: var(--amber-7); }
+.rdz-badge[data-color="warning"] { --badge-accent: var(--warning); --badge-on: var(--on-warning); --badge-surface: var(--warning-surface); --badge-ink: var(--warning-ink); --badge-border: var(--amber-7); }
 
-.srx-badge[data-color="danger"]  { --badge-accent: var(--danger);  --badge-on: var(--on-danger);  --badge-surface: var(--danger-surface);  --badge-ink: var(--danger-ink);  --badge-border: var(--red-7); }
+.rdz-badge[data-color="danger"]  { --badge-accent: var(--danger);  --badge-on: var(--on-danger);  --badge-surface: var(--danger-surface);  --badge-ink: var(--danger-ink);  --badge-border: var(--red-7); }
 
-.srx-badge[data-color="info"]    { --badge-accent: var(--info);    --badge-on: var(--on-info);    --badge-surface: var(--info-surface);    --badge-ink: var(--info-ink);    --badge-border: var(--blue-7); }
+.rdz-badge[data-color="info"]    { --badge-accent: var(--info);    --badge-on: var(--on-info);    --badge-surface: var(--info-surface);    --badge-ink: var(--info-ink);    --badge-border: var(--blue-7); }
 
-.srx-badge--solid   { background: var(--badge-accent, var(--accent)); color: var(--badge-on, var(--on-accent)); }
+.rdz-badge--solid   { background: var(--badge-accent, var(--accent)); color: var(--badge-on, var(--on-accent)); }
 
-.srx-badge--soft    { background: var(--badge-surface, var(--accent-surface)); color: var(--badge-ink, var(--accent-ink)); }
+.rdz-badge--soft    { background: var(--badge-surface, var(--accent-surface)); color: var(--badge-ink, var(--accent-ink)); }
 
-.srx-badge--outline { background: transparent; color: var(--badge-ink, var(--accent-ink)); box-shadow: inset 0 0 0 1px var(--badge-border, var(--accent-border)); }
+.rdz-badge--outline { background: transparent; color: var(--badge-ink, var(--accent-ink)); box-shadow: inset 0 0 0 1px var(--badge-border, var(--accent-border)); }

@@ -1,5 +1,5 @@
 /* ── Catalog page chrome (rail + main column). Sections themselves use tokens
-      + srx-* classes; this only styles the browsing shell. ── */
+      + rdz-* classes; this only styles the browsing shell. ── */
 /* Always reserve the scrollbar gutter so toggling tall content (accordions,
    expanding panels) never shifts the layout as the window scrollbar appears. */
 html { scrollbar-gutter: stable; }
@@ -74,8 +74,8 @@ body { font-family: var(--font-display); background-color: var(--bg-subtle); col
 /* A composed page preview scrolls in the window beside the explorer chrome, so a
    page's window-sticky navbar (z 50) would render OVER the sticky expbar (z 30)
    and cover the Theme/Dark controls. Keep that navbar in-flow inside the
-   showcase; it still sticks on a real .srx-page page (no .main / expbar there). */
-.main .srx-page .nav-section { position: static; }
+   showcase; it still sticks on a real .rdz-page page (no .main / expbar there). */
+.main .rdz-page .nav-section { position: static; }
 .expbar__left { display: none; align-items: center; gap: var(--space-2); }
 .expbar__actions { display: flex; gap: var(--space-2); margin-left: auto; }
 /* Current-section title on the left of the bar (desktop); hidden on mobile where

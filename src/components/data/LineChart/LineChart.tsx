@@ -78,10 +78,10 @@ export function LineChart({
       defs={
         <>
           <linearGradient id={`${uid}-line`} x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" className="srx-grad-line-0" /><stop offset="55%" className="srx-grad-line-1" /><stop offset="100%" className="srx-grad-line-2" />
+            <stop offset="0%" className="rdz-grad-line-0" /><stop offset="55%" className="rdz-grad-line-1" /><stop offset="100%" className="rdz-grad-line-2" />
           </linearGradient>
           <linearGradient id={`${uid}-area`} x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" className="srx-grad-area-0" /><stop offset="100%" className="srx-grad-area-1" />
+            <stop offset="0%" className="rdz-grad-area-0" /><stop offset="100%" className="rdz-grad-area-1" />
           </linearGradient>
         </>
       }
@@ -93,13 +93,13 @@ export function LineChart({
         const py = margin.top + (y(data[active].y) ?? 0);
         const node = renderTooltip ? renderTooltip(data[active], active) : (
           <>
-            {data[active].label ? <div className="srx-chart__tip-eyebrow">{data[active].label}</div> : null}
-            <div className="srx-chart__tip-value">{formatY(data[active].y)}</div>
+            {data[active].label ? <div className="rdz-chart__tip-eyebrow">{data[active].label}</div> : null}
+            <div className="rdz-chart__tip-value">{formatY(data[active].y)}</div>
           </>
         );
         const below = py < 92; // not enough room above → flip the tip below the point
         return (
-          <div className="srx-chart__tip" data-side={below ? 'below' : 'above'} style={{ ['--srx-tip-x' as string]: `${px}px`, ['--srx-tip-y' as string]: `${py}px` }}>
+          <div className="rdz-chart__tip" data-side={below ? 'below' : 'above'} style={{ ['--rdz-tip-x' as string]: `${px}px`, ['--rdz-tip-y' as string]: `${py}px` }}>
             {node}
           </div>
         );
@@ -116,48 +116,48 @@ export function LineChart({
         };
         return (
           <>
-            <GridRows scale={y} width={innerWidth} numTicks={4} className="srx-chart__grid" />
-            <Group className="srx-chart__axis">
+            <GridRows scale={y} width={innerWidth} numTicks={4} className="rdz-chart__grid" />
+            <Group className="rdz-chart__axis">
               {y.ticks(4).map((t) => (
                 <text key={t} x={-8} y={y(t)} textAnchor="end" dominantBaseline="middle">{formatY(t)}</text>
               ))}
             </Group>
 
             {area ? (
-              <AreaClosed data={data} x={(_d, i) => x(i) ?? 0} y={(d) => y(d.y) ?? 0} yScale={y} curve={curveMonotoneX} className="srx-chart__area" style={{ fill: `url(#${uid}-area)` }} />
+              <AreaClosed data={data} x={(_d, i) => x(i) ?? 0} y={(d) => y(d.y) ?? 0} yScale={y} curve={curveMonotoneX} className="rdz-chart__area" style={{ fill: `url(#${uid}-area)` }} />
             ) : null}
             <LinePath
               data={data}
               x={(_d, i) => x(i) ?? 0}
               y={(d) => y(d.y) ?? 0}
               curve={curveMonotoneX}
-              className={gradient ? 'srx-chart__line' : 'srx-chart__line srx-chart__line--solid'}
+              className={gradient ? 'rdz-chart__line' : 'rdz-chart__line rdz-chart__line--solid'}
               style={gradient ? { stroke: `url(#${uid}-line)` } : undefined}
             />
 
             {references.map((r) => (
               <Group key={`ref-${r.index}`} left={x(r.index) ?? 0}>
-                <Line from={{ x: 0, y: 0 }} to={{ x: 0, y: innerHeight }} className="srx-chart__ref" />
-                {r.label ? <text className="srx-chart__ref-label" x={6} y={12}>{r.label}</text> : null}
+                <Line from={{ x: 0, y: 0 }} to={{ x: 0, y: innerHeight }} className="rdz-chart__ref" />
+                {r.label ? <text className="rdz-chart__ref-label" x={6} y={12}>{r.label}</text> : null}
               </Group>
             ))}
 
             {markers.map((mk) => (
               <Group key={`mk-${mk.index}`} left={x(mk.index) ?? 0} top={y(data[mk.index]?.y ?? 0) ?? 0}>
-                <Circle r={4} className="srx-chart__marker" />
-                {mk.label ? <text className="srx-chart__marker-label" y={-12}>{mk.label}</text> : null}
+                <Circle r={4} className="rdz-chart__marker" />
+                {mk.label ? <text className="rdz-chart__marker-label" y={-12}>{mk.label}</text> : null}
               </Group>
             ))}
 
             {active != null && active >= 0 && active < n ? (
               <Group left={x(active) ?? 0}>
-                <Line from={{ x: 0, y: 0 }} to={{ x: 0, y: innerHeight }} className="srx-chart__crosshair" />
-                <Circle cy={y(data[active].y) ?? 0} r={5} className="srx-chart__active-dot" />
+                <Line from={{ x: 0, y: 0 }} to={{ x: 0, y: innerHeight }} className="rdz-chart__crosshair" />
+                <Circle cy={y(data[active].y) ?? 0} r={5} className="rdz-chart__active-dot" />
               </Group>
             ) : null}
 
             <rect
-              className="srx-chart__hit"
+              className="rdz-chart__hit"
               width={innerWidth}
               height={innerHeight}
               onMouseMove={onMove}

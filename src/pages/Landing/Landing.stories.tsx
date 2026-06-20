@@ -9,7 +9,7 @@ const meta: Meta<typeof Landing> = {
     docs: {
       description: {
         component:
-          'A complete marketing landing page composed entirely from SuperRadix sections (Navbar, Hero, Social proof, Features, Stats, Testimonials, Pricing, FAQ, CTA, Footer). Toggle the Theme toolbar to re-theme the whole page.',
+          'A complete marketing landing page composed entirely from Raditz sections (Navbar, Hero, Social proof, Features, Stats, Testimonials, Pricing, FAQ, CTA, Footer). Toggle the Theme toolbar to re-theme the whole page.',
       },
     },
   },

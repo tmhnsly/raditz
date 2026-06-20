@@ -1,15 +1,15 @@
 // Auto-split from components.css — this component's styles, co-located.
-// Uses SuperRadix tokens (var(--…)); re-skins/re-themes with the system.
-.srx-gallery { display: grid; grid-template-columns: repeat(var(--srx-gallery-cols, 3), 1fr); gap: var(--srx-gallery-gap, var(--space-3)); }
+// Uses Raditz tokens (var(--…)); re-skins/re-themes with the system.
+.rdz-gallery { display: grid; grid-template-columns: repeat(var(--rdz-gallery-cols, 3), 1fr); gap: var(--rdz-gallery-gap, var(--space-3)); }
 
-.srx-gallery--masonry { display: block; column-count: var(--srx-gallery-cols, 3); column-gap: var(--srx-gallery-gap, var(--space-3)); }
+.rdz-gallery--masonry { display: block; column-count: var(--rdz-gallery-cols, 3); column-gap: var(--rdz-gallery-gap, var(--space-3)); }
 
-.srx-gallery--masonry .srx-gallery__cell { width: 100%; margin-bottom: var(--srx-gallery-gap, var(--space-3)); break-inside: avoid; }
+.rdz-gallery--masonry .rdz-gallery__cell { width: 100%; margin-bottom: var(--rdz-gallery-gap, var(--space-3)); break-inside: avoid; }
 
-.srx-gallery__cell { position: relative; overflow: hidden; aspect-ratio: var(--srx-gallery-aspect); border-radius: var(--radius-card); background: var(--surface); cursor: zoom-in; }
+.rdz-gallery__cell { position: relative; overflow: hidden; aspect-ratio: var(--rdz-gallery-aspect); border-radius: var(--radius-card); background: var(--surface); cursor: zoom-in; }
 
-.srx-gallery__cell img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform var(--duration-medium) var(--ease-standard); }
+.rdz-gallery__cell img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform var(--duration-medium) var(--ease-standard); }
 
-.srx-gallery__cell:hover img { transform: scale(1.05); }
+.rdz-gallery__cell:hover img { transform: scale(1.05); }
 
-.srx-gallery__cell:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.rdz-gallery__cell:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }

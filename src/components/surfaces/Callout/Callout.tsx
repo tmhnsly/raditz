@@ -19,10 +19,10 @@ export interface CalloutProps extends Omit<HTMLAttributes<HTMLDivElement>, 'titl
  */
 export function Callout({ color = 'info', icon, title, className, children, ...rest }: CalloutProps): ReactElement {
   return (
-    <div className={cx('srx-callout', className)} data-color={color} role="note" {...rest}>
-      {icon && <span className="srx-callout__icon">{icon}</span>}
-      <div className="srx-callout__body">
-        {title && <div className="srx-callout__title">{title}</div>}
+    <div className={cx('rdz-callout', className)} data-color={color} role="note" {...rest}>
+      {icon && <span className="rdz-callout__icon">{icon}</span>}
+      <div className="rdz-callout__body">
+        {title && <div className="rdz-callout__title">{title}</div>}
         {children}
       </div>
     </div>

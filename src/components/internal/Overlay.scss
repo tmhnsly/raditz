@@ -1,20 +1,20 @@
 // Overlay positioning for anchored/point topologies. The component receives the
 // computed coordinates as CSS custom properties (data, not inline styling) and
 // CSS turns them into position — keeping all presentation in the stylesheet.
-.srx-overlay__panel {
+.rdz-overlay__panel {
   position: fixed;
-  top: var(--srx-overlay-top, 0);
-  left: var(--srx-overlay-left, 0);
-  width: var(--srx-overlay-width, auto);
+  top: var(--rdz-overlay-top, 0);
+  left: var(--rdz-overlay-left, 0);
+  width: var(--rdz-overlay-width, auto);
   visibility: hidden; // gated until measured, so it never flashes at the origin
 }
 
-.srx-overlay__panel[data-ready="true"] { visibility: visible; }
+.rdz-overlay__panel[data-ready="true"] { visibility: visible; }
 
 /* The entrance scale emanates from the anchored edge (the resolved side), so a
    panel that flipped above its trigger grows from its bottom — not its centre,
    which read as a "jiggle". data-side beats a consumer's own transform-origin. */
-.srx-overlay__panel[data-side="bottom"] { transform-origin: top center; }
-.srx-overlay__panel[data-side="top"] { transform-origin: bottom center; }
-.srx-overlay__panel[data-side="right"] { transform-origin: center left; }
-.srx-overlay__panel[data-side="left"] { transform-origin: center right; }
+.rdz-overlay__panel[data-side="bottom"] { transform-origin: top center; }
+.rdz-overlay__panel[data-side="top"] { transform-origin: bottom center; }
+.rdz-overlay__panel[data-side="right"] { transform-origin: center left; }
+.rdz-overlay__panel[data-side="left"] { transform-origin: center right; }

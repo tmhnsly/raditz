@@ -50,26 +50,26 @@ export function FileDropzone({
   const remove = (i: number): void => setFiles(files.filter((_, x) => x !== i));
 
   return (
-    <div className={cx('srx-dropzone-wrap', className)} {...rest}>
+    <div className={cx('rdz-dropzone-wrap', className)} {...rest}>
       <button
         type="button"
-        className={cx('srx-dropzone', over && 'is-over')}
+        className={cx('rdz-dropzone', over && 'is-over')}
         disabled={disabled}
         onClick={() => inputRef.current && inputRef.current.click()}
         onDragOver={(e: DragEvent<HTMLButtonElement>) => { e.preventDefault(); setOver(true); }}
         onDragLeave={() => setOver(false)}
         onDrop={(e: DragEvent<HTMLButtonElement>) => { e.preventDefault(); setOver(false); if (!disabled) add(e.dataTransfer.files); }}
       >
-        <svg className="srx-dropzone__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="17 8 12 3 7 8" /><line x1="12" y1="3" x2="12" y2="15" /></svg>
-        <span className="srx-dropzone__title"><b>Click to upload</b> or drag &amp; drop</span>
-        {hint ? <span className="srx-dropzone__hint">{hint}</span> : null}
+        <svg className="rdz-dropzone__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="17 8 12 3 7 8" /><line x1="12" y1="3" x2="12" y2="15" /></svg>
+        <span className="rdz-dropzone__title"><b>Click to upload</b> or drag &amp; drop</span>
+        {hint ? <span className="rdz-dropzone__hint">{hint}</span> : null}
       </button>
       {/* The file input lives outside the button (interactive controls must not
           nest) and is driven via inputRef.click(); the button names the action. */}
       <input
         ref={inputRef}
         type="file"
-        className="srx-dropzone__input"
+        className="rdz-dropzone__input"
         aria-label="Upload file"
         tabIndex={-1}
         accept={accept}
@@ -78,13 +78,13 @@ export function FileDropzone({
         onChange={(e: ChangeEvent<HTMLInputElement>) => { add(e.target.files); e.target.value = ''; }}
       />
       {files.length ? (
-        <ul className="srx-dropzone__list">
+        <ul className="rdz-dropzone__list">
           {files.map((f, i) => (
-            <li className="srx-dropzone__file" key={i}>
+            <li className="rdz-dropzone__file" key={i}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z" /><polyline points="14 2 14 8 20 8" /></svg>
-              <span className="srx-dropzone__name">{f.name}</span>
-              <span className="srx-dropzone__size">{formatBytes(f.size)}</span>
-              <button type="button" className="srx-dropzone__remove" aria-label={`Remove ${f.name}`} onClick={() => remove(i)}>
+              <span className="rdz-dropzone__name">{f.name}</span>
+              <span className="rdz-dropzone__size">{formatBytes(f.size)}</span>
+              <button type="button" className="rdz-dropzone__remove" aria-label={`Remove ${f.name}`} onClick={() => remove(i)}>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="6" y1="6" x2="18" y2="18" /><line x1="18" y1="6" x2="6" y2="18" /></svg>
               </button>
             </li>

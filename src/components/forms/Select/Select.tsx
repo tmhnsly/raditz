@@ -16,11 +16,11 @@ export interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
  */
 export function Select({ options, invalid = false, className, children, ...rest }: SelectProps): ReactElement {
   return (
-    <span className={cx('srx-select', className)}>
+    <span className={cx('rdz-select', className)}>
       <select aria-invalid={invalid || undefined} {...rest}>
         {options ? options.map((o) => <option key={o.value} value={o.value}>{o.label}</option>) : children}
       </select>
-      <span className="srx-select__chevron" aria-hidden="true">
+      <span className="rdz-select__chevron" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
           <polyline points="6 9 12 15 18 9" />
         </svg>

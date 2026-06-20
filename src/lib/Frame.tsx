@@ -17,7 +17,7 @@ export function Frame({
   maxWidth?: string;
 }) {
   return (
-    <div className={`frame ${className}`} style={{ '--srx-frame-maxw': maxWidth, ...style } as React.CSSProperties}>
+    <div className={`frame ${className}`} style={{ '--rdz-frame-maxw': maxWidth, ...style } as React.CSSProperties}>
       {children}
     </div>
   );

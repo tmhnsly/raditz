@@ -13,7 +13,7 @@ export interface VisuallyHiddenProps extends HTMLAttributes<HTMLElement> {
 export function VisuallyHidden({ as = 'span', className, children, ...rest }: VisuallyHiddenProps): ReactElement {
   const Tag = as;
   return (
-    <Tag className={cx('srx-visually-hidden', className)} {...rest}>
+    <Tag className={cx('rdz-visually-hidden', className)} {...rest}>
       {children}
     </Tag>
   );

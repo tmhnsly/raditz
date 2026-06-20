@@ -1,18 +1,18 @@
 // Auto-split from components.css — this component's styles, co-located.
-// Uses SuperRadix tokens (var(--…)); re-skins/re-themes with the system.
+// Uses Raditz tokens (var(--…)); re-skins/re-themes with the system.
 /* ═══════════════════════ RadioGroup ═══════════════════════ */
-.srx-radio-group { display: flex; gap: var(--space-4); }
+.rdz-radio-group { display: flex; gap: var(--space-4); }
 
-.srx-radio-group--vertical { flex-direction: column; }
+.rdz-radio-group--vertical { flex-direction: column; }
 
-.srx-radio-group--horizontal { flex-direction: row; flex-wrap: wrap; gap: var(--space-5); }
+.rdz-radio-group--horizontal { flex-direction: row; flex-wrap: wrap; gap: var(--space-5); }
 
-.srx-radio-group__item { display: flex; gap: var(--space-3); align-items: flex-start; cursor: pointer; }
+.rdz-radio-group__item { display: flex; gap: var(--space-3); align-items: flex-start; cursor: pointer; }
 
-.srx-radio-group__item[data-disabled] { opacity: var(--disabled-opacity); cursor: not-allowed; }
+.rdz-radio-group__item[data-disabled] { opacity: var(--disabled-opacity); cursor: not-allowed; }
 
-.srx-radio-group__text { display: flex; flex-direction: column; gap: 0.0625rem; }
+.rdz-radio-group__text { display: flex; flex-direction: column; gap: 0.0625rem; }
 
-.srx-radio-group__title { font-size: var(--fs-body-s); font-weight: var(--fw-medium); color: var(--text); }
+.rdz-radio-group__title { font-size: var(--fs-body-s); font-weight: var(--fw-medium); color: var(--text); }
 
-.srx-radio-group__desc { font-size: var(--fs-caption); color: var(--text-muted); line-height: var(--lh-body); }
+.rdz-radio-group__desc { font-size: var(--fs-caption); color: var(--text-muted); line-height: var(--lh-body); }

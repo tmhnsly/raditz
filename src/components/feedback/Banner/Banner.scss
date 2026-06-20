@@ -1,34 +1,34 @@
 // Auto-split from components.css — this component's styles, co-located.
-// Uses SuperRadix tokens (var(--…)); re-skins/re-themes with the system.
+// Uses Raditz tokens (var(--…)); re-skins/re-themes with the system.
 /* ═══════════════════════ Banner ═══════════════════════ */
-.srx-banner { display: flex; align-items: flex-start; gap: var(--space-3); padding: var(--space-4); border-radius: var(--radius-card); border: var(--border-width) solid var(--surface-edge); background: var(--panel); }
+.rdz-banner { display: flex; align-items: flex-start; gap: var(--space-3); padding: var(--space-4); border-radius: var(--radius-card); border: var(--border-width) solid var(--surface-edge); background: var(--panel); }
 
-.srx-banner__icon { flex: none; margin-top: 0.0625rem; }
+.rdz-banner__icon { flex: none; margin-top: 0.0625rem; }
 
-.srx-banner__body { flex: 1; min-width: 0; font-size: var(--fs-body-s); line-height: var(--lh-body); }
+.rdz-banner__body { flex: 1; min-width: 0; font-size: var(--fs-body-s); line-height: var(--lh-body); }
 
-.srx-banner__title { font-weight: var(--fw-semibold); color: var(--text); }
+.rdz-banner__title { font-weight: var(--fw-semibold); color: var(--text); }
 
-.srx-banner__text { color: var(--text-soft); }
+.rdz-banner__text { color: var(--text-soft); }
 
-.srx-banner__action { flex: none; align-self: center; }
+.rdz-banner__action { flex: none; align-self: center; }
 
-.srx-banner__close { flex: none; width: 1.75rem; height: 1.75rem; display: inline-grid; place-items: center; border-radius: var(--radius-sm); color: var(--text-muted); transition: var(--transition-control); }
+.rdz-banner__close { flex: none; width: 1.75rem; height: 1.75rem; display: inline-grid; place-items: center; border-radius: var(--radius-sm); color: var(--text-muted); transition: var(--transition-control); }
 
-.srx-banner__close:hover { background: var(--surface); color: var(--text); }
+.rdz-banner__close:hover { background: var(--surface); color: var(--text); }
 
-.srx-banner--info { background: var(--info-surface); border-color: color-mix(in srgb, var(--info) 30%, transparent); }
+.rdz-banner--info { background: var(--info-surface); border-color: color-mix(in srgb, var(--info) 30%, transparent); }
 
-.srx-banner--info .srx-banner__icon { color: var(--info-ink); }
+.rdz-banner--info .rdz-banner__icon { color: var(--info-ink); }
 
-.srx-banner--success { background: var(--success-surface); border-color: color-mix(in srgb, var(--success) 30%, transparent); }
+.rdz-banner--success { background: var(--success-surface); border-color: color-mix(in srgb, var(--success) 30%, transparent); }
 
-.srx-banner--success .srx-banner__icon { color: var(--success-ink); }
+.rdz-banner--success .rdz-banner__icon { color: var(--success-ink); }
 
-.srx-banner--warning { background: var(--warning-surface); border-color: color-mix(in srgb, var(--warning) 30%, transparent); }
+.rdz-banner--warning { background: var(--warning-surface); border-color: color-mix(in srgb, var(--warning) 30%, transparent); }
 
-.srx-banner--warning .srx-banner__icon { color: var(--warning-ink); }
+.rdz-banner--warning .rdz-banner__icon { color: var(--warning-ink); }
 
-.srx-banner--danger { background: var(--danger-surface); border-color: color-mix(in srgb, var(--danger) 30%, transparent); }
+.rdz-banner--danger { background: var(--danger-surface); border-color: color-mix(in srgb, var(--danger) 30%, transparent); }
 
-.srx-banner--danger .srx-banner__icon { color: var(--danger-ink); }
+.rdz-banner--danger .rdz-banner__icon { color: var(--danger-ink); }

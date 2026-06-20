@@ -14,8 +14,8 @@ export interface EyebrowProps extends React.HTMLAttributes<HTMLElement> {
 export function Eyebrow({ withDot = false, as = 'span', className, children, ...rest }: EyebrowProps): React.ReactElement {
   const Tag = as;
   return (
-    <Tag className={cx('srx-eyebrow', className)} {...rest}>
-      {withDot && <span className="srx-eyebrow__dot" aria-hidden="true" />}
+    <Tag className={cx('rdz-eyebrow', className)} {...rest}>
+      {withDot && <span className="rdz-eyebrow__dot" aria-hidden="true" />}
       <span>{children}</span>
     </Tag>
   );

@@ -73,7 +73,7 @@ export default function Explorer() {
             >
               <Burger />
             </button>
-            <div className="rail__brand expbar__brand"><span className="mark">S</span>SuperRadix</div>
+            <div className="rail__brand expbar__brand"><span className="mark">S</span>Raditz</div>
           </div>
           <div className="expbar__title">{currentTitle}</div>
           <div className="expbar__actions">

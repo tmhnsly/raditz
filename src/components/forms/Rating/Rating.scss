@@ -1,38 +1,38 @@
 // Auto-split from components.css — this component's styles, co-located.
-// Uses SuperRadix tokens (var(--…)); re-skins/re-themes with the system.
+// Uses Raditz tokens (var(--…)); re-skins/re-themes with the system.
 /* ═══════════════════════ Rating ═══════════════════════ */
-.srx-rating { display: inline-flex; gap: 0.125rem; }
+.rdz-rating { display: inline-flex; gap: 0.125rem; }
 
-.srx-rating__star { position: relative; display: inline-block; color: var(--rule-strong); line-height: 0; }
+.rdz-rating__star { position: relative; display: inline-block; color: var(--rule-strong); line-height: 0; }
 
-.srx-rating__bg { display: block; }
+.rdz-rating__bg { display: block; }
 
 /* max-width:none beats the global `svg { max-width:100% }` reset — the foreground
    star must keep its full fixed size so the fill container CLIPS it (rather than
    the reset shrinking it down to the fill width). */
-.srx-rating__bg svg, .srx-rating__fg svg { display: block; max-width: none; }
+.rdz-rating__bg svg, .rdz-rating__fg svg { display: block; max-width: none; }
 
-/* The fill: the foreground star is clipped to a width of --srx-rating-fill.
+/* The fill: the foreground star is clipped to a width of --rdz-rating-fill.
    Only `left`/`top`/`bottom` are set (never `right`) so width is unambiguous,
    and the inner SVG keeps its fixed size so it CLIPS rather than scales. */
-.srx-rating__fg { position: absolute; top: 0; left: 0; bottom: 0; width: var(--srx-rating-fill, 0%); overflow: hidden; color: var(--warning); pointer-events: none; }
+.rdz-rating__fg { position: absolute; top: 0; left: 0; bottom: 0; width: var(--rdz-rating-fill, 0%); overflow: hidden; color: var(--warning); pointer-events: none; }
 
-.srx-rating__bg, .srx-rating__fg { pointer-events: none; }
+.rdz-rating__bg, .rdz-rating__fg { pointer-events: none; }
 
-.srx-rating__hit { position: absolute; top: 0; bottom: 0; left: 0; width: 100%; padding: 0; border: 0; background: none; cursor: pointer; }
+.rdz-rating__hit { position: absolute; top: 0; bottom: 0; left: 0; width: 100%; padding: 0; border: 0; background: none; cursor: pointer; }
 
-.srx-rating__hit--l { width: 50%; }
+.rdz-rating__hit--l { width: 50%; }
 
-.srx-rating__hit--r { left: 50%; width: 50%; }
+.rdz-rating__hit--r { left: 50%; width: 50%; }
 
-.srx-rating--sm svg { width: 1rem; height: 1rem; }
+.rdz-rating--sm svg { width: 1rem; height: 1rem; }
 
-.srx-rating--md svg { width: 1.375rem; height: 1.375rem; }
+.rdz-rating--md svg { width: 1.375rem; height: 1.375rem; }
 
-.srx-rating--lg svg { width: 1.75rem; height: 1.75rem; }
+.rdz-rating--lg svg { width: 1.75rem; height: 1.75rem; }
 
-.srx-rating:not(.is-readonly):not(.is-disabled) .srx-rating__star:hover { transform: scale(1.12); transition: transform var(--duration-fast) var(--ease-standard); }
+.rdz-rating:not(.is-readonly):not(.is-disabled) .rdz-rating__star:hover { transform: scale(1.12); transition: transform var(--duration-fast) var(--ease-standard); }
 
-.srx-rating.is-disabled { opacity: var(--disabled-opacity); cursor: not-allowed; }
+.rdz-rating.is-disabled { opacity: var(--disabled-opacity); cursor: not-allowed; }
 
-.srx-rating.is-disabled .srx-rating__hit { pointer-events: none; }
+.rdz-rating.is-disabled .rdz-rating__hit { pointer-events: none; }

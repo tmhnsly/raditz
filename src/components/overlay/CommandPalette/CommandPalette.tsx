@@ -70,42 +70,42 @@ export function CommandPalette({ open, onOpenChange, groups = [], placeholder = 
       open={!!open}
       onDismiss={close}
       position={{ kind: 'centered' }}
-      containerClassName="srx-overlay--cmd"
+      containerClassName="rdz-overlay--cmd"
       focus="trap"
       role="dialog"
       aria-label="Command palette"
-      className={cx('srx-cmdk', className)}
+      className={cx('rdz-cmdk', className)}
       {...rest}
     >
       <Search
         variant="plain"
         value={query}
         placeholder={placeholder}
-        hint={<kbd className="srx-kbd">esc</kbd>}
+        hint={<kbd className="rdz-kbd">esc</kbd>}
         onChange={(e) => { setQuery(e.target.value); setActive(0); }}
         onKeyDown={onKey}
       />
-      <div className="srx-cmdk__list srx-scrollbar">
+      <div className="rdz-cmdk__list rdz-scrollbar">
         {filtered.length ? filtered.map((it, i) => {
           const showHeading = it.heading && it.heading !== lastHeading;
           lastHeading = it.heading;
           return (
             <Fragment key={it.id || i}>
-              {showHeading ? <div className="srx-cmdk__heading">{it.heading}</div> : null}
+              {showHeading ? <div className="rdz-cmdk__heading">{it.heading}</div> : null}
               <button
                 type="button"
-                className="srx-cmdk__item"
+                className="rdz-cmdk__item"
                 data-active={i === active ? 'true' : undefined}
                 onMouseEnter={() => setActive(i)}
                 onClick={() => run(it)}
               >
-                {it.icon ? <Icon name={it.icon} size="1.05rem" className="srx-cmdk__icon" /> : null}
-                <span className="srx-cmdk__label">{it.label}</span>
-                {it.shortcut ? <kbd className="srx-kbd">{it.shortcut}</kbd> : null}
+                {it.icon ? <Icon name={it.icon} size="1.05rem" className="rdz-cmdk__icon" /> : null}
+                <span className="rdz-cmdk__label">{it.label}</span>
+                {it.shortcut ? <kbd className="rdz-kbd">{it.shortcut}</kbd> : null}
               </button>
             </Fragment>
           );
-        }) : <div className="srx-cmdk__empty">No results for “{query}”</div>}
+        }) : <div className="rdz-cmdk__empty">No results for “{query}”</div>}
       </div>
     </Overlay>
   );

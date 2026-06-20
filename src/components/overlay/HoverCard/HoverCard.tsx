@@ -47,8 +47,8 @@ export function HoverCard({
   const show = (): void => { if (timer.current) clearTimeout(timer.current); timer.current = setTimeout(() => setOpen(true), openDelay); };
   const hide = (): void => { if (timer.current) clearTimeout(timer.current); timer.current = setTimeout(() => setOpen(false), closeDelay); };
   return (
-    <span className="srx-hovercard__root" onMouseEnter={show} onMouseLeave={hide} onFocus={show} onBlur={hide}>
-      <span ref={anchorRef} className="srx-hovercard__anchor">{trigger}</span>
+    <span className="rdz-hovercard__root" onMouseEnter={show} onMouseLeave={hide} onFocus={show} onBlur={hide}>
+      <span ref={anchorRef} className="rdz-hovercard__anchor">{trigger}</span>
       <Overlay
         open={open}
         onDismiss={close}
@@ -56,7 +56,7 @@ export function HoverCard({
         focus="none"
         dismissOnEscape={false}
         dismissOnOutside={false}
-        className={cx('srx-hovercard', className)}
+        className={cx('rdz-hovercard', className)}
         onMouseEnter={show}
         onMouseLeave={hide}
         {...rest}

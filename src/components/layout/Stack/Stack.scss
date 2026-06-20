@@ -1,10 +1,10 @@
-// Co-located styles for Stack. Uses SuperRadix tokens (var(--…)).
-.srx-stack {
+// Co-located styles for Stack. Uses Raditz tokens (var(--…)).
+.rdz-stack {
   display: flex;
-  flex-direction: var(--srx-stack-dir, column);
-  gap: var(--srx-stack-gap, var(--space-4));
-  align-items: var(--srx-stack-align);
-  justify-content: var(--srx-stack-justify);
+  flex-direction: var(--rdz-stack-dir, column);
+  gap: var(--rdz-stack-gap, var(--space-4));
+  align-items: var(--rdz-stack-align);
+  justify-content: var(--rdz-stack-justify);
 }
 
-.srx-stack[data-wrap] { flex-wrap: wrap; }
+.rdz-stack[data-wrap] { flex-wrap: wrap; }

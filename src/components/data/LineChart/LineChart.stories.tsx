@@ -55,14 +55,14 @@ export const Engagement: Story = {
         renderTooltip={(_p, i) => {
           const e = episodes[i];
           return (
-            <div className="srx-chart__tip-row">
-              <img className="srx-chart__tip-thumb" src={e.thumb} alt="" />
+            <div className="rdz-chart__tip-row">
+              <img className="rdz-chart__tip-thumb" src={e.thumb} alt="" />
               <div>
-                <div className="srx-chart__tip-eyebrow">{e.label}</div>
-                <div className="srx-chart__tip-title">{e.title}</div>
-                <div className="srx-chart__tip-meta">
-                  <span className="srx-chart__tip-star">★ {e.rating}</span>
-                  <span className="srx-chart__tip-tag">{e.status}</span>
+                <div className="rdz-chart__tip-eyebrow">{e.label}</div>
+                <div className="rdz-chart__tip-title">{e.title}</div>
+                <div className="rdz-chart__tip-meta">
+                  <span className="rdz-chart__tip-star">★ {e.rating}</span>
+                  <span className="rdz-chart__tip-tag">{e.status}</span>
                 </div>
               </div>
             </div>

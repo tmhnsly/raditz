@@ -14,11 +14,11 @@ export interface AccessibleIconProps extends HTMLAttributes<HTMLSpanElement> {
  */
 export function AccessibleIcon({ label, className, children, ...rest }: AccessibleIconProps): ReactElement {
   return (
-    <span className={cx('srx-accessible-icon', className)} {...rest}>
-      <span aria-hidden="true" className="srx-accessible-icon__glyph">
+    <span className={cx('rdz-accessible-icon', className)} {...rest}>
+      <span aria-hidden="true" className="rdz-accessible-icon__glyph">
         {children}
       </span>
-      <span className="srx-visually-hidden">{label}</span>
+      <span className="rdz-visually-hidden">{label}</span>
     </span>
   );
 }

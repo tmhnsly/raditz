@@ -12,7 +12,7 @@ export function ComparisonA({ background = 'surface-2', ...props }: SectionVaria
             <tr><th>Dark mode &amp; themes</th><td className="cmp__no">—</td><td className="cmp__pop"><span className="cmp__yes">✓</span></td><td><span className="cmp__yes">✓</span></td></tr>
             <tr><th>SSO &amp; SAML</th><td className="cmp__no">—</td><td className="cmp__pop cmp__no">—</td><td><span className="cmp__yes">✓</span></td></tr>
             <tr><th>Support</th><td>Community</td><td className="cmp__pop">Priority</td><td>Dedicated</td></tr>
-            <tr><th></th><td><button className="srx-btn srx-btn--outline srx-btn--sm">Start</button></td><td className="cmp__pop"><button className="srx-btn srx-btn--primary srx-btn--sm">Choose Team</button></td><td><button className="srx-btn srx-btn--outline srx-btn--sm">Contact</button></td></tr>
+            <tr><th></th><td><button className="rdz-btn rdz-btn--outline rdz-btn--sm">Start</button></td><td className="cmp__pop"><button className="rdz-btn rdz-btn--primary rdz-btn--sm">Choose Team</button></td><td><button className="rdz-btn rdz-btn--outline rdz-btn--sm">Contact</button></td></tr>
           </tbody>
         </table>
       </div>

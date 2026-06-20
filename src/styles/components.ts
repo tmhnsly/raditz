@@ -1,5 +1,5 @@
 // Aggregates every component's co-located .scss in original cascade order.
-// Imported once globally (app + Storybook) so all srx-* component styles are present.
+// Imported once globally (app + Storybook) so all rdz-* component styles are present.
 import '../components/patterns/PageHeader/PageHeader.scss';
 import '../components/typography/Code/Code.scss';
 import '../components/overlay/CommandPalette/CommandPalette.scss';

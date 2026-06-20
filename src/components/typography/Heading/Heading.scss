@@ -1,16 +1,16 @@
 // Auto-split from components.css — this component's styles, co-located.
-// Uses SuperRadix tokens (var(--…)); re-skins/re-themes with the system.
+// Uses Raditz tokens (var(--…)); re-skins/re-themes with the system.
 /* ═══════════════════════ Heading ═══════════════════════ */
-.srx-heading { font-family: var(--font-display); font-weight: var(--fw-semibold); color: var(--text); margin: 0; text-wrap: balance; }
+.rdz-heading { font-family: var(--font-display); font-weight: var(--fw-semibold); color: var(--text); margin: 0; text-wrap: balance; }
 
-.srx-heading[data-size="display-2xl"] { font-size: var(--fs-display-2xl); letter-spacing: var(--ls-display); line-height: var(--lh-display); font-weight: var(--fw-semibold); }
+.rdz-heading[data-size="display-2xl"] { font-size: var(--fs-display-2xl); letter-spacing: var(--ls-display); line-height: var(--lh-display); font-weight: var(--fw-semibold); }
 
-.srx-heading[data-size="display"] { font-size: var(--fs-display); letter-spacing: var(--ls-display); line-height: var(--lh-display); font-weight: var(--fw-semibold); }
+.rdz-heading[data-size="display"] { font-size: var(--fs-display); letter-spacing: var(--ls-display); line-height: var(--lh-display); font-weight: var(--fw-semibold); }
 
-.srx-heading[data-size="1"] { font-size: var(--fs-h1); letter-spacing: var(--ls-h1); line-height: var(--lh-heading); }
+.rdz-heading[data-size="1"] { font-size: var(--fs-h1); letter-spacing: var(--ls-h1); line-height: var(--lh-heading); }
 
-.srx-heading[data-size="2"] { font-size: var(--fs-h2); letter-spacing: var(--ls-h2); line-height: var(--lh-heading); }
+.rdz-heading[data-size="2"] { font-size: var(--fs-h2); letter-spacing: var(--ls-h2); line-height: var(--lh-heading); }
 
-.srx-heading[data-size="3"] { font-size: var(--fs-h3); letter-spacing: var(--ls-h3); line-height: var(--lh-heading); }
+.rdz-heading[data-size="3"] { font-size: var(--fs-h3); letter-spacing: var(--ls-h3); line-height: var(--lh-heading); }
 
-.srx-heading[data-size="4"] { font-size: var(--fs-h4); letter-spacing: var(--ls-h3); line-height: var(--lh-heading); }
+.rdz-heading[data-size="4"] { font-size: var(--fs-h4); letter-spacing: var(--ls-h3); line-height: var(--lh-heading); }

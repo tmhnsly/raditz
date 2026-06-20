@@ -34,20 +34,20 @@ export function Collapsible({
     onChange: onOpenChange,
   });
   return (
-    <div className={cx('srx-collapsible', className)} data-state={isOpen ? 'open' : 'closed'} {...rest}>
+    <div className={cx('rdz-collapsible', className)} data-state={isOpen ? 'open' : 'closed'} {...rest}>
       <button
         type="button"
-        className="srx-collapsible__trigger"
+        className="rdz-collapsible__trigger"
         aria-expanded={isOpen}
         disabled={disabled}
         onClick={() => setOpen(!isOpen)}
       >
         <span>{trigger}</span>
-        <svg className="srx-collapsible__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <svg className="rdz-collapsible__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <polyline points="6 9 12 15 18 9" />
         </svg>
       </button>
-      <div className="srx-collapsible__panel" hidden={!isOpen}>{children}</div>
+      <div className="rdz-collapsible__panel" hidden={!isOpen}>{children}</div>
     </div>
   );
 }

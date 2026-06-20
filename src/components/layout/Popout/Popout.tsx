@@ -43,15 +43,15 @@ export function Popout({
   const Tag = as;
   return (
     <Tag
-      className={cx('srx-popout', className)}
+      className={cx('rdz-popout', className)}
       data-bordered={bordered ? '' : undefined}
-      style={{ '--srx-popout-bg': bg, ...style } as CSSProperties}
+      style={{ '--rdz-popout-bg': bg, ...style } as CSSProperties}
       {...rest}
     >
       <div
-        className="srx-popout__content"
+        className="rdz-popout__content"
         data-size={size}
-        style={{ '--srx-popout-pad': `var(--space-${pad})`, ...contentStyle } as CSSProperties}
+        style={{ '--rdz-popout-pad': `var(--space-${pad})`, ...contentStyle } as CSSProperties}
       >
         {children}
       </div>

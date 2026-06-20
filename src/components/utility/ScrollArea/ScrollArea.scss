@@ -1,16 +1,16 @@
 // Auto-split from components.css — this component's styles, co-located.
-// Uses SuperRadix tokens (var(--…)); re-skins/re-themes with the system.
+// Uses Raditz tokens (var(--…)); re-skins/re-themes with the system.
 /* ═══════════════════════ ScrollArea ═══════════════════════ */
-.srx-scroll { overflow: auto; scrollbar-width: thin; scrollbar-color: var(--rule-strong) transparent; max-height: var(--srx-scroll-maxh); }
+.rdz-scroll { overflow: auto; scrollbar-width: thin; scrollbar-color: var(--rule-strong) transparent; max-height: var(--rdz-scroll-maxh); }
 
-.srx-scroll--vertical { overflow-x: hidden; }
+.rdz-scroll--vertical { overflow-x: hidden; }
 
-.srx-scroll--horizontal { overflow-y: hidden; }
+.rdz-scroll--horizontal { overflow-y: hidden; }
 
-.srx-scroll::-webkit-scrollbar { width: 0.625rem; height: 0.625rem; }
+.rdz-scroll::-webkit-scrollbar { width: 0.625rem; height: 0.625rem; }
 
-.srx-scroll::-webkit-scrollbar-thumb { background: var(--surface-strong); border-radius: var(--radius-full); border: 0.1875rem solid transparent; background-clip: content-box; }
+.rdz-scroll::-webkit-scrollbar-thumb { background: var(--surface-strong); border-radius: var(--radius-full); border: 0.1875rem solid transparent; background-clip: content-box; }
 
-.srx-scroll::-webkit-scrollbar-thumb:hover { background: var(--rule-strong); background-clip: content-box; }
+.rdz-scroll::-webkit-scrollbar-thumb:hover { background: var(--rule-strong); background-clip: content-box; }
 
-.srx-scroll::-webkit-scrollbar-track { background: transparent; }
+.rdz-scroll::-webkit-scrollbar-track { background: transparent; }

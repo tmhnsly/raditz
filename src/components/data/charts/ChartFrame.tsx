@@ -45,7 +45,7 @@ const DEFAULT_MARGIN: ChartMargin = { top: 12, right: 16, bottom: 28, left: 38 }
 export function ChartFrame({ height = 240, margin, ariaLabel, className, defs, children, overlay }: ChartFrameProps) {
   const m: ChartMargin = { ...DEFAULT_MARGIN, ...margin };
   return (
-    <div className={cx('srx-chart', className)} style={{ height } as CSSProperties}>
+    <div className={cx('rdz-chart', className)} style={{ height } as CSSProperties}>
       <ParentSize>
         {({ width, height: h }) => {
           if (width < 10 || h < 10) return null;
@@ -58,7 +58,7 @@ export function ChartFrame({ height = 240, margin, ariaLabel, className, defs, c
           };
           return (
             <>
-              <svg width={width} height={h} role="img" aria-label={ariaLabel} className="srx-chart__svg">
+              <svg width={width} height={h} role="img" aria-label={ariaLabel} className="rdz-chart__svg">
                 {defs}
                 <Group left={m.left} top={m.top}>
                   {children(dims)}

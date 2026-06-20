@@ -44,18 +44,18 @@ export function Dialog({
       focus="trap"
       role="dialog"
       aria-label={typeof title === 'string' ? title : undefined}
-      className={cx('srx-dialog', `srx-dialog--${size}`, className)}
+      className={cx('rdz-dialog', `rdz-dialog--${size}`, className)}
       {...rest}
     >
       {title || description ? (
-        <div className="srx-dialog__header">
-          {title ? <h2 className="srx-dialog__title">{title}</h2> : null}
-          {description ? <p className="srx-dialog__desc">{description}</p> : null}
+        <div className="rdz-dialog__header">
+          {title ? <h2 className="rdz-dialog__title">{title}</h2> : null}
+          {description ? <p className="rdz-dialog__desc">{description}</p> : null}
         </div>
       ) : null}
-      {children ? <div className="srx-dialog__body">{children}</div> : null}
-      {footer ? <div className="srx-dialog__footer">{footer}</div> : null}
-      <OverlayClose className="srx-dialog__close" onClick={close} />
+      {children ? <div className="rdz-dialog__body">{children}</div> : null}
+      {footer ? <div className="rdz-dialog__footer">{footer}</div> : null}
+      <OverlayClose className="rdz-dialog__close" onClick={close} />
     </Overlay>
   );
 }

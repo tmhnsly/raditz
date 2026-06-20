@@ -24,7 +24,7 @@ export function Heading({ level = 2, size, as, className, style, children, ...re
   const Tag: React.ElementType = as || (typeof level === 'number' ? `h${level}` : 'h2');
   const key: HeadingSizeKey = size || level;
   return (
-    <Tag className={cx('srx-heading', className)} data-size={key} style={style} {...rest}>
+    <Tag className={cx('rdz-heading', className)} data-size={key} style={style} {...rest}>
       {children}
     </Tag>
   );

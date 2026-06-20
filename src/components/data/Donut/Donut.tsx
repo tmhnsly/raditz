@@ -65,7 +65,7 @@ export function Donut({
     parts = [{ dash: frac * C, gap: C - frac * C, off: 0, color, key: 0 }];
   }
   return (
-    <div className={cx('srx-donut', className)} style={{ '--srx-donut-size': size, ...style } as React.CSSProperties} role="img" aria-label="Donut chart" {...rest}>
+    <div className={cx('rdz-donut', className)} style={{ '--rdz-donut-size': size, ...style } as React.CSSProperties} role="img" aria-label="Donut chart" {...rest}>
       <svg viewBox="0 0 100 100">
         <circle cx="50" cy="50" r={r} fill="none" stroke={trackColor} strokeWidth={thickness} />
         {parts.map((p) => (
@@ -84,7 +84,7 @@ export function Donut({
           />
         ))}
       </svg>
-      {label != null ? <div className="srx-donut__label">{label}</div> : null}
+      {label != null ? <div className="rdz-donut__label">{label}</div> : null}
     </div>
   );
 }

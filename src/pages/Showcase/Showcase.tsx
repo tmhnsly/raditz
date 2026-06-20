@@ -16,36 +16,36 @@ const BAND_IMG = 'https://picsum.photos/id/1015/1920/1080';
 export function Showcase() {
   const [parallax, setParallax] = useState(true);
   return (
-    <div className="srx-page srx-showcase">
-      <div className="srx-showcase__toggle">
-        <label className="srx-showcase__toggle-row">
+    <div className="rdz-page rdz-showcase">
+      <div className="rdz-showcase__toggle">
+        <label className="rdz-showcase__toggle-row">
           <span>Parallax</span>
           <Switch checked={parallax} onChange={(e) => setParallax(e.target.checked)} aria-label="Toggle parallax backgrounds" />
         </label>
       </div>
 
       {/* Full-bleed photo hero */}
-      <SectionShell image={HERO_IMG} scrim parallax={parallax} wrap="col srx-showcase__hero">
+      <SectionShell image={HERO_IMG} scrim parallax={parallax} wrap="col rdz-showcase__hero">
         <span className="eyebrow2">Showcase</span>
         <h1 className="h-display">Backdrops that move with you</h1>
-        <p className="lede srx-showcase__lede">A photo hero bleed, layered gradient bands and scroll-linked parallax — all token-driven, all theme-aware. Flip the switch to compare static and dynamic.</p>
-        <div className="row srx-showcase__cta">
-          <button className="srx-btn srx-btn--primary">Get started</button>
-          <button className="srx-btn srx-btn--outline">View components</button>
+        <p className="lede rdz-showcase__lede">A photo hero bleed, layered gradient bands and scroll-linked parallax — all token-driven, all theme-aware. Flip the switch to compare static and dynamic.</p>
+        <div className="row rdz-showcase__cta">
+          <button className="rdz-btn rdz-btn--primary">Get started</button>
+          <button className="rdz-btn rdz-btn--outline">View components</button>
         </div>
       </SectionShell>
 
       {/* Gradient band — feature trio */}
-      <SectionShell background="gradient-aurora" parallax={parallax} wrap="col srx-showcase__band">
+      <SectionShell background="gradient-aurora" parallax={parallax} wrap="col rdz-showcase__band">
         <span className="eyebrow2">Composable</span>
         <h2 className="h-section">One token system, every surface</h2>
-        <div className="srx-auto-grid srx-showcase__grid">
+        <div className="rdz-auto-grid rdz-showcase__grid">
           {[
             ['Re-themeable', 'Repoint the accent and the whole page follows — gradients included.'],
             ['Responsive', 'Container queries, not breakpoints, so sections adapt at any width.'],
             ['Accessible', 'Scrims scope content to on-dark tokens so text stays legible over media.'],
           ].map(([t, d]) => (
-            <div className="srx-card col srx-showcase__card" key={t}>
+            <div className="rdz-card col rdz-showcase__card" key={t}>
               <strong>{t}</strong>
               <p className="muted">{d}</p>
             </div>
@@ -54,21 +54,21 @@ export function Showcase() {
       </SectionShell>
 
       {/* Neutral content band */}
-      <SectionShell background="surface-2" wrap="col srx-showcase__band">
+      <SectionShell background="surface-2" wrap="col rdz-showcase__band">
         <h2 className="h-section">Static where it counts</h2>
         <p className="lede">Not every surface needs to move. Neutral bands stay still to give the eye a rest between the dynamic ones — the rhythm is the point.</p>
       </SectionShell>
 
       {/* Mid-page photo band */}
-      <SectionShell image={BAND_IMG} scrim parallax={parallax} wrap="col srx-showcase__quote">
+      <SectionShell image={BAND_IMG} scrim parallax={parallax} wrap="col rdz-showcase__quote">
         <h2 className="h-display">“The backdrop should feel like depth, never decoration.”</h2>
       </SectionShell>
 
       {/* Gradient CTA */}
-      <SectionShell background="gradient-mesh" parallax={parallax} scrim wrap="col srx-showcase__band">
+      <SectionShell background="gradient-mesh" parallax={parallax} scrim wrap="col rdz-showcase__band">
         <h2 className="h-section">Build the whole page from sections</h2>
-        <p className="lede srx-showcase__lede">Every band here is a SectionShell with a background choice. Compose, re-theme, ship.</p>
-        <div className="row srx-showcase__cta"><button className="srx-btn srx-btn--primary">Start building</button></div>
+        <p className="lede rdz-showcase__lede">Every band here is a SectionShell with a background choice. Compose, re-theme, ship.</p>
+        <div className="row rdz-showcase__cta"><button className="rdz-btn rdz-btn--primary">Start building</button></div>
       </SectionShell>
 
       <FooterA />

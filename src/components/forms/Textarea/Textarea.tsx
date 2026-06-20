@@ -13,7 +13,7 @@ export function Textarea({ invalid = false, rows = 4, className, ...rest }: Text
   return (
     <textarea
       rows={rows}
-      className={cx('srx-input', 'srx-textarea', invalid && 'srx-input--invalid', className)}
+      className={cx('rdz-input', 'rdz-textarea', invalid && 'rdz-input--invalid', className)}
       aria-invalid={invalid || undefined}
       {...rest}
     />

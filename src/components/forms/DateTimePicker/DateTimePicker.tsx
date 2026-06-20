@@ -36,7 +36,7 @@ export function DateTimePicker({
   const datePart = val.includes('T') ? val.split('T')[0] : val;
   const timePart = val.includes('T') ? val.split('T')[1] ?? '' : '';
   return (
-    <span className={cx('srx-datetimepicker', className)} {...rest}>
+    <span className={cx('rdz-datetimepicker', className)} {...rest}>
       <DatePicker value={datePart} onChange={(d) => setVal(combine(d, timePart))} disabled={disabled} />
       <TimePicker value={timePart} onChange={(t) => setVal(combine(datePart, t))} hour12={hour12} disabled={disabled} />
     </span>

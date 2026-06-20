@@ -43,7 +43,7 @@ export function Tooltip({ label, side = 'top', align = 'center', delay = 200, cl
   return (
     <span
       ref={anchorRef}
-      className={cx('srx-tooltip', className)}
+      className={cx('rdz-tooltip', className)}
       aria-describedby={open ? tipId : undefined}
       {...rest}
       onPointerEnter={show}
@@ -58,7 +58,7 @@ export function Tooltip({ label, side = 'top', align = 'center', delay = 200, cl
         position={{ kind: 'anchored', anchor: anchorRef, side, align, gap: 8 }}
         scrim={false}
         dismissOnOutside={false}
-        className="srx-tooltip__bubble"
+        className="rdz-tooltip__bubble"
         id={tipId}
         role="tooltip"
       >

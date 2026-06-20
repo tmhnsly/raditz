@@ -13,9 +13,9 @@ export interface RadioProps extends React.InputHTMLAttributes<HTMLInputElement> 
  */
 export function Radio({ className, style, ...rest }: RadioProps): React.ReactElement {
   return (
-    <span className={cx('srx-radio-ctl', className)} style={style}>
+    <span className={cx('rdz-radio-ctl', className)} style={style}>
       <input type="radio" {...rest} />
-      <span className="srx-radio-ctl__box" aria-hidden="true" />
+      <span className="rdz-radio-ctl__box" aria-hidden="true" />
     </span>
   );
 }

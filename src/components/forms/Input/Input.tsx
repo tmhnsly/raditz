@@ -16,7 +16,7 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 export function Input({ invalid = false, className, ...rest }: InputProps): ReactElement {
   return (
     <input
-      className={cx('srx-input', invalid && 'srx-input--invalid', className)}
+      className={cx('rdz-input', invalid && 'rdz-input--invalid', className)}
       aria-invalid={invalid || undefined}
       {...rest}
     />

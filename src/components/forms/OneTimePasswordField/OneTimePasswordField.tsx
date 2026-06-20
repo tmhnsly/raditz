@@ -66,12 +66,12 @@ export function OneTimePasswordField({
   };
 
   return (
-    <div className={cx('srx-otp', className)} onPaste={onPaste} role="group" {...rest}>
+    <div className={cx('rdz-otp', className)} onPaste={onPaste} role="group" {...rest}>
       {chars.map((c, i) => (
         <input
           key={i}
           ref={(el) => { refs.current[i] = el; }}
-          className="srx-otp__box"
+          className="rdz-otp__box"
           type={type === 'password' ? 'password' : 'text'}
           inputMode="numeric"
           autoComplete={i === 0 ? 'one-time-code' : 'off'}

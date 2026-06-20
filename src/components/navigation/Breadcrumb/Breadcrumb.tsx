@@ -17,16 +17,16 @@ export interface BreadcrumbProps extends HTMLAttributes<HTMLElement> {
  */
 export function Breadcrumb({ items = [], className, ...rest }: BreadcrumbProps): ReactElement {
   return (
-    <nav className={cx('srx-breadcrumb', className)} aria-label="Breadcrumb" {...rest}>
+    <nav className={cx('rdz-breadcrumb', className)} aria-label="Breadcrumb" {...rest}>
       <ol>
         {items.map((it, i) => {
           const last = i === items.length - 1;
           return (
-            <li className="srx-breadcrumb__item" key={i}>
+            <li className="rdz-breadcrumb__item" key={i}>
               {it.href && !last
-                ? <a href={it.href} className="srx-breadcrumb__link">{it.label}</a>
-                : <span className="srx-breadcrumb__current" aria-current={last ? 'page' : undefined}>{it.label}</span>}
-              {!last ? <Icon name="chevron-right" size="0.95em" className="srx-breadcrumb__sep" /> : null}
+                ? <a href={it.href} className="rdz-breadcrumb__link">{it.label}</a>
+                : <span className="rdz-breadcrumb__current" aria-current={last ? 'page' : undefined}>{it.label}</span>}
+              {!last ? <Icon name="chevron-right" size="0.95em" className="rdz-breadcrumb__sep" /> : null}
             </li>
           );
         })}

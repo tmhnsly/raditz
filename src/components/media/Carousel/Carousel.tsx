@@ -162,29 +162,29 @@ export function Carousel({
   }, [autoplay, interval, n, scrollToIndex]);
 
   const viewportStyle = {
-    '--srx-carousel-gap': gap,
-    ...(perView != null ? { '--srx-per-view': perView } : {}),
+    '--rdz-carousel-gap': gap,
+    ...(perView != null ? { '--rdz-per-view': perView } : {}),
   } as React.CSSProperties;
 
   return (
-    <div className={cx('srx-carousel', perView == null && 'srx-carousel--auto', bleed && 'srx-carousel--bleed', className)} {...rest}>
-      <div className="srx-carousel__viewport" ref={trackRef} style={viewportStyle}>
+    <div className={cx('rdz-carousel', perView == null && 'rdz-carousel--auto', bleed && 'rdz-carousel--bleed', className)} {...rest}>
+      <div className="rdz-carousel__viewport" ref={trackRef} style={viewportStyle}>
         {items.map((c, i) => (
-          <div className="srx-carousel__slide" key={i}>
+          <div className="rdz-carousel__slide" key={i}>
             {c}
           </div>
         ))}
       </div>
       {n > 1 ? (
-        <div className="srx-carousel__bar">
+        <div className="rdz-carousel__bar">
           {dots ? (
-            <div className="srx-carousel__indicator" role="tablist" aria-label="Slides">
+            <div className="rdz-carousel__indicator" role="tablist" aria-label="Slides">
               {items.map((_, i) => (
                 <button
                   key={i}
                   type="button"
                   role="tab"
-                  className={cx('srx-carousel__seg', i === active && 'is-active')}
+                  className={cx('rdz-carousel__seg', i === active && 'is-active')}
                   aria-label={`Go to slide ${i + 1}`}
                   aria-selected={i === active}
                   onClick={() => go(i)}
@@ -193,12 +193,12 @@ export function Carousel({
             </div>
           ) : <span />}
           {arrows ? (
-            <div className="srx-carousel__nav">
-              <button type="button" className="srx-ovbtn" aria-label="Previous" disabled={!loop && active === 0} onClick={() => go(active - 1)}>
+            <div className="rdz-carousel__nav">
+              <button type="button" className="rdz-ovbtn" aria-label="Previous" disabled={!loop && active === 0} onClick={() => go(active - 1)}>
                 {CHEV}
               </button>
-              <span className="srx-carousel__count" aria-hidden="true"><b>{active + 1}</b> / {n}</span>
-              <button type="button" className="srx-ovbtn srx-carousel__next" aria-label="Next" disabled={!loop && active === n - 1} onClick={() => go(active + 1)}>
+              <span className="rdz-carousel__count" aria-hidden="true"><b>{active + 1}</b> / {n}</span>
+              <button type="button" className="rdz-ovbtn rdz-carousel__next" aria-label="Next" disabled={!loop && active === n - 1} onClick={() => go(active + 1)}>
                 {CHEV}
               </button>
             </div>

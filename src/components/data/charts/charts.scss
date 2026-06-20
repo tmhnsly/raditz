@@ -1,40 +1,40 @@
-// Uses SuperRadix tokens (var(--…)); SVG fills/strokes read CSS vars so charts
+// Uses Raditz tokens (var(--…)); SVG fills/strokes read CSS vars so charts
 // re-theme with the accent + neutral scales like every other component.
 /* ═══════════════════════ Charts (visx) ═══════════════════════ */
-.srx-chart { position: relative; width: 100%; min-width: 0; }
+.rdz-chart { position: relative; width: 100%; min-width: 0; }
 
-.srx-chart__svg { display: block; overflow: visible; }
+.rdz-chart__svg { display: block; overflow: visible; }
 
 /* Axis + grid — quiet neutral lines, mono tick labels. */
-.srx-chart__axis text { fill: var(--text-muted); font-family: var(--font-mono); font-size: var(--fs-mono-xs); }
-.srx-chart__axis line, .srx-chart__axis path { stroke: var(--rule); }
-.srx-chart__grid line { stroke: var(--rule-soft); stroke-opacity: 0.7; }
+.rdz-chart__axis text { fill: var(--text-muted); font-family: var(--font-mono); font-size: var(--fs-mono-xs); }
+.rdz-chart__axis line, .rdz-chart__axis path { stroke: var(--rule); }
+.rdz-chart__grid line { stroke: var(--rule-soft); stroke-opacity: 0.7; }
 
 /* Line + area */
-.srx-chart__line { fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
-.srx-chart__line--solid { stroke: var(--accent); }
-.srx-chart__area { opacity: 0.9; }
+.rdz-chart__line { fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+.rdz-chart__line--solid { stroke: var(--accent); }
+.rdz-chart__area { opacity: 0.9; }
 
 /* Data points + the labelled annotation markers (e.g. PEAK) */
-.srx-chart__dot { fill: var(--accent); stroke: var(--panel); stroke-width: 2; }
-.srx-chart__marker { fill: var(--accent); stroke: var(--panel); stroke-width: 2; }
-.srx-chart__marker-label { fill: var(--text-soft); font-family: var(--font-mono); font-size: var(--fs-mono-xs); text-transform: uppercase; letter-spacing: 0.08em; text-anchor: middle; }
+.rdz-chart__dot { fill: var(--accent); stroke: var(--panel); stroke-width: 2; }
+.rdz-chart__marker { fill: var(--accent); stroke: var(--panel); stroke-width: 2; }
+.rdz-chart__marker-label { fill: var(--text-soft); font-family: var(--font-mono); font-size: var(--fs-mono-xs); text-transform: uppercase; letter-spacing: 0.08em; text-anchor: middle; }
 
 /* Vertical reference / annotation line (e.g. STOP) */
-.srx-chart__ref { stroke: var(--danger); stroke-width: 1.5; stroke-dasharray: 4 4; }
-.srx-chart__ref-label { fill: var(--danger-ink); font-family: var(--font-mono); font-size: var(--fs-mono-xs); text-transform: uppercase; letter-spacing: 0.08em; }
+.rdz-chart__ref { stroke: var(--danger); stroke-width: 1.5; stroke-dasharray: 4 4; }
+.rdz-chart__ref-label { fill: var(--danger-ink); font-family: var(--font-mono); font-size: var(--fs-mono-xs); text-transform: uppercase; letter-spacing: 0.08em; }
 
 /* Hover crosshair + active dot */
-.srx-chart__crosshair { stroke: var(--rule-strong); stroke-width: 1; stroke-dasharray: 3 3; pointer-events: none; }
-.srx-chart__active-dot { fill: var(--accent); stroke: var(--panel); stroke-width: 2.5; pointer-events: none; }
-.srx-chart__hit { fill: transparent; }
+.rdz-chart__crosshair { stroke: var(--rule-strong); stroke-width: 1; stroke-dasharray: 3 3; pointer-events: none; }
+.rdz-chart__active-dot { fill: var(--accent); stroke: var(--panel); stroke-width: 2.5; pointer-events: none; }
+.rdz-chart__hit { fill: transparent; }
 
 /* Scatter */
-.srx-chart__bubble { fill: var(--accent); fill-opacity: 0.55; stroke: var(--accent); stroke-opacity: 0.9; }
+.rdz-chart__bubble { fill: var(--accent); fill-opacity: 0.55; stroke: var(--accent); stroke-opacity: 0.9; }
 
 /* Tooltip card (HTML overlay) */
-.srx-chart__tip {
-  position: absolute; z-index: 10; pointer-events: none; left: var(--srx-tip-x, 0); top: var(--srx-tip-y, 0); transform: translate(-50%, calc(-100% - 0.625rem));
+.rdz-chart__tip {
+  position: absolute; z-index: 10; pointer-events: none; left: var(--rdz-tip-x, 0); top: var(--rdz-tip-y, 0); transform: translate(-50%, calc(-100% - 0.625rem));
   background: var(--panel); border: 1px solid var(--surface-edge); border-radius: var(--radius-md);
   box-shadow: var(--shadow-5); padding: var(--space-2) var(--space-3); min-width: 8rem; max-width: 16rem;
   font-size: var(--fs-body-s); color: var(--text);
@@ -42,20 +42,20 @@
 
 /* Flip below the point when there's no room above (point near the chart top), so
    a tall tooltip isn't clipped by the chart/card edge. */
-.srx-chart__tip[data-side="below"] { transform: translate(-50%, 0.625rem); }
-.srx-chart__tip-row { display: flex; align-items: center; gap: var(--space-3); }
-.srx-chart__tip-thumb { width: 2.5rem; height: 2.5rem; border-radius: var(--radius-sm); object-fit: cover; flex: none; }
-.srx-chart__tip-eyebrow { font-family: var(--font-mono); font-size: var(--fs-mono-xs); color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; }
-.srx-chart__tip-title { font-weight: var(--fw-semibold); }
-.srx-chart__tip-meta { display: flex; align-items: center; gap: var(--space-2); margin-top: 0.125rem; color: var(--text-soft); }
-.srx-chart__tip-star { color: var(--warning); }
-.srx-chart__tip-tag { color: var(--accent-ink); }
-.srx-chart__tip-value { font-family: var(--font-mono); font-weight: var(--fw-semibold); }
+.rdz-chart__tip[data-side="below"] { transform: translate(-50%, 0.625rem); }
+.rdz-chart__tip-row { display: flex; align-items: center; gap: var(--space-3); }
+.rdz-chart__tip-thumb { width: 2.5rem; height: 2.5rem; border-radius: var(--radius-sm); object-fit: cover; flex: none; }
+.rdz-chart__tip-eyebrow { font-family: var(--font-mono); font-size: var(--fs-mono-xs); color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; }
+.rdz-chart__tip-title { font-weight: var(--fw-semibold); }
+.rdz-chart__tip-meta { display: flex; align-items: center; gap: var(--space-2); margin-top: 0.125rem; color: var(--text-soft); }
+.rdz-chart__tip-star { color: var(--warning); }
+.rdz-chart__tip-tag { color: var(--accent-ink); }
+.rdz-chart__tip-value { font-family: var(--font-mono); font-weight: var(--fw-semibold); }
 
 /* Gradient stop colours live here (not as SVG attributes) so they read tokens and
    re-theme. Line: value-mapped accent→warning→danger; area: accent fade. */
-.srx-grad-line-0 { stop-color: var(--accent); }
-.srx-grad-line-1 { stop-color: var(--warning); }
-.srx-grad-line-2 { stop-color: var(--danger); }
-.srx-grad-area-0 { stop-color: var(--accent); stop-opacity: 0.28; }
-.srx-grad-area-1 { stop-color: var(--accent); stop-opacity: 0; }
+.rdz-grad-line-0 { stop-color: var(--accent); }
+.rdz-grad-line-1 { stop-color: var(--warning); }
+.rdz-grad-line-2 { stop-color: var(--danger); }
+.rdz-grad-area-0 { stop-color: var(--accent); stop-opacity: 0.28; }
+.rdz-grad-area-1 { stop-color: var(--accent); stop-opacity: 0; }

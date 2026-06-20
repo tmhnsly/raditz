@@ -9,5 +9,5 @@ export interface KbdProps extends React.HTMLAttributes<HTMLElement> {
  * A keyboard key cap (⌘, Esc, ↵). Render one per key.
  */
 export function Kbd({ className, children, ...rest }: KbdProps): React.ReactElement {
-  return <kbd className={cx('srx-kbd', className)} {...rest}>{children}</kbd>;
+  return <kbd className={cx('rdz-kbd', className)} {...rest}>{children}</kbd>;
 }

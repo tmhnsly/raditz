@@ -33,7 +33,7 @@ export function Button({
   children,
   ...rest
 }: ButtonProps): ReactElement {
-  const cls = cx('srx-btn', `srx-btn--${variant}`, size !== 'md' && `srx-btn--${size}`, className);
+  const cls = cx('rdz-btn', `rdz-btn--${variant}`, size !== 'md' && `rdz-btn--${size}`, className);
   const lead = typeof icon === 'string' ? <Icon name={icon as IconName} size="1.15em" /> : icon;
   const trail = typeof iconTrailing === 'string' ? <Icon name={iconTrailing as IconName} size="1.15em" /> : iconTrailing;
   const inner = (

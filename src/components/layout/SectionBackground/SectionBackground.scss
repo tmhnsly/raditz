@@ -1,35 +1,35 @@
 // Optional decorative section backdrop. Content sits above an absolute layer so
 // translucent/glass panels read against it. All token-driven → re-themes.
 /* ═══════════════════════ SectionBackground ═══════════════════════ */
-.srx-secbg { position: relative; isolation: isolate; }
+.rdz-secbg { position: relative; isolation: isolate; }
 
-.srx-secbg__content { position: relative; z-index: 1; }
+.rdz-secbg__content { position: relative; z-index: 1; }
 
-.srx-secbg__layer { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+.rdz-secbg__layer { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
 
-.srx-secbg__layer img, .srx-secbg__layer video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.rdz-secbg__layer img, .rdz-secbg__layer video { width: 100%; height: 100%; object-fit: cover; display: block; }
 
 /* neutral surface levels — alternate sections to differentiate them */
-.srx-secbg--surface { background: var(--bg); }
-.srx-secbg--surface-2 { background: var(--bg-subtle); }
+.rdz-secbg--surface { background: var(--bg); }
+.rdz-secbg--surface-2 { background: var(--bg-subtle); }
 
 /* templated gradients (token-driven) */
-.srx-secbg--gradient-accent .srx-secbg__layer {
+.rdz-secbg--gradient-accent .rdz-secbg__layer {
   background: linear-gradient(135deg, var(--accent-surface), color-mix(in srgb, var(--accent-surface) 30%, var(--bg)));
 }
 /* Fade each blob to a colour-matched transparent (not the `transparent` keyword,
    which interpolates through transparent-black and leaves a muddy ring/hard edge),
    then run the ramp out to ~85% so it dissolves into --bg with no seam. */
-.srx-secbg--gradient-aurora .srx-secbg__layer {
+.rdz-secbg--gradient-aurora .rdz-secbg__layer {
   background:
     radial-gradient(65% 85% at 15% 10%, var(--accent-surface), color-mix(in srgb, var(--accent-surface) 35%, transparent) 45%, transparent 85%),
     radial-gradient(55% 75% at 85% 20%, var(--accent-2-surface), color-mix(in srgb, var(--accent-2-surface) 35%, transparent) 45%, transparent 85%),
     var(--bg);
 }
-.srx-secbg--gradient-dusk .srx-secbg__layer {
+.rdz-secbg--gradient-dusk .rdz-secbg__layer {
   background: linear-gradient(120deg, var(--accent-surface), var(--accent-2-surface));
 }
-.srx-secbg--gradient-mesh .srx-secbg__layer {
+.rdz-secbg--gradient-mesh .rdz-secbg__layer {
   background:
     radial-gradient(40% 60% at 20% 30%, var(--accent-surface), transparent 60%),
     radial-gradient(45% 55% at 80% 25%, var(--accent-2-surface), transparent 60%),
@@ -39,7 +39,7 @@
 
 /* Auto-glass: cards/panels inside a gradient section turn translucent + blurred
    so the gradient reads through — this is what gives the glass tokens a purpose. */
-.srx-secbg--gradient .srx-card {
+.rdz-secbg--gradient .rdz-card {
   background: var(--glass);
   -webkit-backdrop-filter: blur(var(--glass-blur));
   backdrop-filter: blur(var(--glass-blur));
@@ -48,16 +48,16 @@
 
 /* scrim — darken the backdrop (esp. image/video) so overlaid text stays legible
    over ANY media; bottom-heavier since photos are often brightest there. The
-   component scopes its own content to .srx-on-dark when scrimmed (see the .tsx),
+   component scopes its own content to .rdz-on-dark when scrimmed (see the .tsx),
    so text/buttons use on-media tokens. Uses Radix black-alpha tokens, not hex. */
-.srx-secbg--scrim .srx-secbg__layer::after {
+.rdz-secbg--scrim .rdz-secbg__layer::after {
   content: ''; position: absolute; inset: 0;
   background: linear-gradient(180deg, var(--black-a8) 0%, var(--black-a9) 100%);
 }
 
 /* parallax — the layer is oversized and translated from a scroll-driven var */
-.srx-secbg--parallax .srx-secbg__layer { top: -12%; height: 124%; transform: translate3d(0, var(--srx-parallax-y, 0), 0); will-change: transform; }
+.rdz-secbg--parallax .rdz-secbg__layer { top: -12%; height: 124%; transform: translate3d(0, var(--rdz-parallax-y, 0), 0); will-change: transform; }
 
 @media (prefers-reduced-motion: reduce) {
-  .srx-secbg--parallax .srx-secbg__layer { transform: none; }
+  .rdz-secbg--parallax .rdz-secbg__layer { transform: none; }
 }

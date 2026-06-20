@@ -70,22 +70,22 @@ export const Toast: ToastComponent = function Toast({
   const dismiss = (id: number): void => setItems((prev) => prev.filter((i) => i.id !== id));
 
   return (
-    <div className={`srx-toast-viewport srx-toast-viewport--${position}`} {...rest}>
+    <div className={`rdz-toast-viewport rdz-toast-viewport--${position}`} {...rest}>
       {items.map((it) => (
         <div
           key={it.id}
-          className={cx('srx-toast', it.variant && it.variant !== 'default' && `srx-toast--${it.variant}`)}
+          className={cx('rdz-toast', it.variant && it.variant !== 'default' && `rdz-toast--${it.variant}`)}
           role="status"
           aria-live="polite"
         >
-          <div className="srx-toast__body">
-            {it.title ? <div className="srx-toast__title">{it.title}</div> : null}
-            {it.description ? <div className="srx-toast__desc">{it.description}</div> : null}
+          <div className="rdz-toast__body">
+            {it.title ? <div className="rdz-toast__title">{it.title}</div> : null}
+            {it.description ? <div className="rdz-toast__desc">{it.description}</div> : null}
           </div>
           {it.action ? (
             <button
               type="button"
-              className="srx-toast__action"
+              className="rdz-toast__action"
               onClick={() => {
                 if (it.action?.onClick) it.action.onClick();
                 dismiss(it.id);
@@ -94,7 +94,7 @@ export const Toast: ToastComponent = function Toast({
               {it.action.label}
             </button>
           ) : null}
-          <OverlayClose size="sm" className="srx-toast__close" label="Dismiss" onClick={() => dismiss(it.id)} />
+          <OverlayClose size="sm" className="rdz-toast__close" label="Dismiss" onClick={() => dismiss(it.id)} />
         </div>
       ))}
     </div>

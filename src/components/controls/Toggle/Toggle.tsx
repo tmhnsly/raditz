@@ -36,7 +36,7 @@ export function Toggle({
     defaultValue: defaultPressed,
     onChange: onPressedChange,
   });
-  const cls = cx('srx-toggle', `srx-toggle--${variant}`, size !== 'md' && `srx-toggle--${size}`, className);
+  const cls = cx('rdz-toggle', `rdz-toggle--${variant}`, size !== 'md' && `rdz-toggle--${size}`, className);
   return (
     <button
       type="button"

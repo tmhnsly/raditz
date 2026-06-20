@@ -52,20 +52,20 @@ export function TagInput({
   const remaining = suggestions.filter((s) => !tags.includes(s));
 
   return (
-    <div className={cx('srx-taginput-wrap', className)} {...rest}>
-      <div className={cx('srx-taginput', disabled && 'is-disabled')}>
+    <div className={cx('rdz-taginput-wrap', className)} {...rest}>
+      <div className={cx('rdz-taginput', disabled && 'is-disabled')}>
         {tags.map((t, i) => (
-          <span className="srx-tag" key={t}>
+          <span className="rdz-tag" key={t}>
             {t}
             {!disabled ? (
-              <button type="button" className="srx-tag__x" aria-label={`Remove ${t}`} onClick={() => removeAt(i)}>
+              <button type="button" className="rdz-tag__x" aria-label={`Remove ${t}`} onClick={() => removeAt(i)}>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round"><line x1="6" y1="6" x2="18" y2="18" /><line x1="18" y1="6" x2="6" y2="18" /></svg>
               </button>
             ) : null}
           </span>
         ))}
         <input
-          className="srx-taginput__field"
+          className="rdz-taginput__field"
           aria-label={ariaLabelledby ? undefined : ariaLabel}
           aria-labelledby={ariaLabelledby}
           value={draft}
@@ -77,8 +77,8 @@ export function TagInput({
         />
       </div>
       {remaining.length && !disabled ? (
-        <div className="srx-taginput__suggest">
-          {remaining.map((s) => <button type="button" key={s} className="srx-pill" onClick={() => add(s)}>+ {s}</button>)}
+        <div className="rdz-taginput__suggest">
+          {remaining.map((s) => <button type="button" key={s} className="rdz-pill" onClick={() => add(s)}>+ {s}</button>)}
         </div>
       ) : null}
     </div>

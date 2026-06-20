@@ -16,7 +16,7 @@ export function Separator({ orientation = 'horizontal', className, ...rest }: Se
     <div
       role="separator"
       aria-orientation={orientation}
-      className={cx('srx-separator', v ? 'srx-separator--v' : 'srx-separator--h', className)}
+      className={cx('rdz-separator', v ? 'rdz-separator--v' : 'rdz-separator--h', className)}
       {...rest}
     />
   );

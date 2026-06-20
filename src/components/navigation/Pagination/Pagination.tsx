@@ -24,12 +24,12 @@ export function Pagination({ total = 1, page, defaultPage = 1, onChange, sibling
   const go = (n: number): void => setP(Math.max(1, Math.min(total, n)));
   const pages = buildPages(p, total, siblings);
   return (
-    <nav className={cx('srx-pagination', className)} aria-label="Pagination" {...rest}>
-      <button type="button" className="srx-pagination__btn" aria-label="Previous page" disabled={p <= 1} onClick={() => go(p - 1)}><Icon name="chevron-left" size="1.1em" /></button>
+    <nav className={cx('rdz-pagination', className)} aria-label="Pagination" {...rest}>
+      <button type="button" className="rdz-pagination__btn" aria-label="Previous page" disabled={p <= 1} onClick={() => go(p - 1)}><Icon name="chevron-left" size="1.1em" /></button>
       {pages.map((n, i) => n === '…'
-        ? <span className="srx-pagination__gap" key={`g${i}`}>…</span>
-        : <button type="button" key={n} className="srx-pagination__btn" data-active={n === p ? 'true' : undefined} aria-current={n === p ? 'page' : undefined} onClick={() => go(n)}>{n}</button>)}
-      <button type="button" className="srx-pagination__btn" aria-label="Next page" disabled={p >= total} onClick={() => go(p + 1)}><Icon name="chevron-right" size="1.1em" /></button>
+        ? <span className="rdz-pagination__gap" key={`g${i}`}>…</span>
+        : <button type="button" key={n} className="rdz-pagination__btn" data-active={n === p ? 'true' : undefined} aria-current={n === p ? 'page' : undefined} onClick={() => go(n)}>{n}</button>)}
+      <button type="button" className="rdz-pagination__btn" aria-label="Next page" disabled={p >= total} onClick={() => go(p + 1)}><Icon name="chevron-right" size="1.1em" /></button>
     </nav>
   );
 }

@@ -43,7 +43,7 @@ export function RadioGroup({
   const [val, setVal] = useControllableState<string | undefined>({ value, defaultValue, onChange: onValueChange as ((value: string | undefined) => void) | undefined });
   const auto = useStableId('radiogroup');
   const groupName = name || auto;
-  const cls = cx('srx-radio-group', `srx-radio-group--${orientation}`, className);
+  const cls = cx('rdz-radio-group', `rdz-radio-group--${orientation}`, className);
   return (
     <div className={cls} role="radiogroup" {...rest}>
       {items.map((it) => {
@@ -51,8 +51,8 @@ export function RadioGroup({
         const checked = val === it.value;
         const isDisabled = disabled || it.disabled;
         return (
-          <label className="srx-radio-group__item" key={it.value} htmlFor={id} data-disabled={isDisabled || undefined}>
-            <span className="srx-radio-ctl">
+          <label className="rdz-radio-group__item" key={it.value} htmlFor={id} data-disabled={isDisabled || undefined}>
+            <span className="rdz-radio-ctl">
               <input
                 type="radio"
                 id={id}
@@ -62,11 +62,11 @@ export function RadioGroup({
                 disabled={isDisabled}
                 onChange={() => setVal(it.value)}
               />
-              <span className="srx-radio-ctl__box" />
+              <span className="rdz-radio-ctl__box" />
             </span>
-            <span className="srx-radio-group__text">
-              <span className="srx-radio-group__title">{it.label}</span>
-              {it.description ? <span className="srx-radio-group__desc">{it.description}</span> : null}
+            <span className="rdz-radio-group__text">
+              <span className="rdz-radio-group__title">{it.label}</span>
+              {it.description ? <span className="rdz-radio-group__desc">{it.description}</span> : null}
             </span>
           </label>
         );

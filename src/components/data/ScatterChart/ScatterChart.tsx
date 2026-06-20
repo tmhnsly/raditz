@@ -61,12 +61,12 @@ export function ScatterChart({
         const below = py < 92; // not enough room above → flip the tip below the point
         return (
           <div
-            className="srx-chart__tip"
+            className="rdz-chart__tip"
             data-side={below ? 'below' : 'above'}
-            style={{ ['--srx-tip-x' as string]: `${margin.left + (x(d.x) ?? 0)}px`, ['--srx-tip-y' as string]: `${py}px` }}
+            style={{ ['--rdz-tip-x' as string]: `${margin.left + (x(d.x) ?? 0)}px`, ['--rdz-tip-y' as string]: `${py}px` }}
           >
-            {d.label ? <div className="srx-chart__tip-title">{d.label}</div> : null}
-            <div className="srx-chart__tip-meta"><span className="srx-chart__tip-value">{formatX(d.x)}, {formatY(d.y)}</span></div>
+            {d.label ? <div className="rdz-chart__tip-title">{d.label}</div> : null}
+            <div className="rdz-chart__tip-meta"><span className="rdz-chart__tip-value">{formatX(d.x)}, {formatY(d.y)}</span></div>
           </div>
         );
       }}
@@ -76,9 +76,9 @@ export function ScatterChart({
         const y = yFor(innerHeight);
         return (
           <>
-            <GridRows scale={y} width={innerWidth} numTicks={4} className="srx-chart__grid" />
-            <GridColumns scale={x} height={innerHeight} numTicks={5} className="srx-chart__grid" />
-            <Group className="srx-chart__axis">
+            <GridRows scale={y} width={innerWidth} numTicks={4} className="rdz-chart__grid" />
+            <GridColumns scale={x} height={innerHeight} numTicks={5} className="rdz-chart__grid" />
+            <Group className="rdz-chart__axis">
               {y.ticks(4).map((t) => (
                 <text key={`y${t}`} x={-8} y={y(t)} textAnchor="end" dominantBaseline="middle">{formatY(t)}</text>
               ))}
@@ -92,7 +92,7 @@ export function ScatterChart({
                 cx={x(d.x) ?? 0}
                 cy={y(d.y) ?? 0}
                 r={d.size != null ? rScale(d.size) : 5}
-                className="srx-chart__bubble"
+                className="rdz-chart__bubble"
                 onMouseEnter={() => setActive(i)}
                 onMouseLeave={() => setActive(null)}
               />

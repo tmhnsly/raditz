@@ -1,7 +1,7 @@
-// Co-located styles for Section. Uses SuperRadix tokens (var(--…)).
-.srx-section {
+// Co-located styles for Section. Uses Raditz tokens (var(--…)).
+.rdz-section {
   display: flex;
   flex-direction: column;
-  gap: var(--srx-section-gap, var(--space-5));
-  padding-block: var(--srx-section-pad, var(--space-11));
+  gap: var(--rdz-section-gap, var(--space-5));
+  padding-block: var(--rdz-section-pad, var(--space-11));
 }

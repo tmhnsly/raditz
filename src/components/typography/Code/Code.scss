@@ -1,13 +1,13 @@
 // Auto-split from components.css — this component's styles, co-located.
-// Uses SuperRadix tokens (var(--…)); re-skins/re-themes with the system.
-.srx-code {
+// Uses Raditz tokens (var(--…)); re-skins/re-themes with the system.
+.rdz-code {
   font-family: var(--font-mono); font-size: 0.9em;
   padding: var(--pad-inline-code); border-radius: var(--radius-sm);
   background: var(--code-inline-bg); color: var(--code-inline-text);
   letter-spacing: var(--ls-mono); white-space: nowrap;
 }
 
-.srx-code-block {
+.rdz-code-block {
   background: var(--code-bg); color: var(--code-text);
   font-family: var(--font-mono); font-size: var(--fs-mono); line-height: var(--lh-mono);
   padding: var(--pad-code-block); border-radius: var(--radius-card);

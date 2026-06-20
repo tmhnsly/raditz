@@ -9,7 +9,7 @@ const meta: Meta<typeof PricingPage> = {
     docs: {
       description: {
         component:
-          'A full pricing page composed from SuperRadix sections: glass navbar, monthly/annual pricing toggle, feature comparison table, FAQ, CTA band and footer.',
+          'A full pricing page composed from Raditz sections: glass navbar, monthly/annual pricing toggle, feature comparison table, FAQ, CTA band and footer.',
       },
     },
   },

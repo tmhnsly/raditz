@@ -1,9 +1,9 @@
 // Auto-split from components.css — this component's styles, co-located.
-// Uses SuperRadix tokens (var(--…)); re-skins/re-themes with the system.
-.srx-donut { position: relative; display: inline-grid; place-items: center; width: var(--srx-donut-size); height: var(--srx-donut-size); }
+// Uses Raditz tokens (var(--…)); re-skins/re-themes with the system.
+.rdz-donut { position: relative; display: inline-grid; place-items: center; width: var(--rdz-donut-size); height: var(--rdz-donut-size); }
 
-.srx-donut svg { width: 100%; height: 100%; transform: rotate(0deg); }
+.rdz-donut svg { width: 100%; height: 100%; transform: rotate(0deg); }
 
-.srx-donut circle { transition: stroke-dasharray var(--duration-slow) var(--ease-standard); }
+.rdz-donut circle { transition: stroke-dasharray var(--duration-slow) var(--ease-standard); }
 
-.srx-donut__label { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; font-size: var(--fs-body-s); color: var(--text); }
+.rdz-donut__label { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; font-size: var(--fs-body-s); color: var(--text); }

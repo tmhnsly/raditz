@@ -1,5 +1,5 @@
 // Lightweight fuzzy matcher — subsequence match with scoring. Used wherever
-// SuperRadix offers search (Combobox, CommandPalette, the explorer tree) so
+// Raditz offers search (Combobox, CommandPalette, the explorer tree) so
 // filtering behaves consistently. No dependencies.
 
 const BOUNDARY = /[\s\-_/.]/;

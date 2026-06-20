@@ -34,14 +34,14 @@ export function Stack({
   const Tag = as;
   return (
     <Tag
-      className={cx('srx-stack', className)}
+      className={cx('rdz-stack', className)}
       data-wrap={wrap ? '' : undefined}
       style={
         {
-          '--srx-stack-dir': direction,
-          '--srx-stack-gap': `var(--space-${gap})`,
-          '--srx-stack-align': align,
-          '--srx-stack-justify': justify,
+          '--rdz-stack-dir': direction,
+          '--rdz-stack-gap': `var(--space-${gap})`,
+          '--rdz-stack-align': align,
+          '--rdz-stack-justify': justify,
         } as CSSProperties
       }
       {...rest}

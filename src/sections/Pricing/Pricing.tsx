@@ -10,7 +10,7 @@ export function PricingA({ background = 'surface-2', ...props }: SectionVariantP
         <p className="muted">Start free. Upgrade when your team grows.</p>
       </div>
       <div className="sx-price__grid">
-        <div className="srx-card col sx-price__card">
+        <div className="rdz-card col sx-price__card">
           <div className="col sx-price__plan">
             <strong>Starter</strong>
             <span className="muted sx-fs-body-s">For solo builders</span>
@@ -19,15 +19,15 @@ export function PricingA({ background = 'surface-2', ...props }: SectionVariantP
             <span className="sx-price__num">$0</span>
             <span className="muted">/mo</span>
           </div>
-          <button className="srx-btn srx-btn--outline sx-price__btn">Get started</button>
+          <button className="rdz-btn rdz-btn--outline sx-price__btn">Get started</button>
           <ul className="col sx-price__list">
             <li>1 project</li>
             <li>Community support</li>
             <li>Core components</li>
           </ul>
         </div>
-        <div className="srx-card col sx-price__card-pop">
-          <span className="srx-badge srx-badge--solid sx-price__badge">
+        <div className="rdz-card col sx-price__card-pop">
+          <span className="rdz-badge rdz-badge--solid sx-price__badge">
             Popular
           </span>
           <div className="col sx-price__plan">
@@ -38,7 +38,7 @@ export function PricingA({ background = 'surface-2', ...props }: SectionVariantP
             <span className="sx-price__num">$24</span>
             <span className="muted">/seat/mo</span>
           </div>
-          <button className="srx-btn srx-btn--primary sx-price__btn">Start trial</button>
+          <button className="rdz-btn rdz-btn--primary sx-price__btn">Start trial</button>
           <ul className="col sx-price__list">
             <li>Unlimited projects</li>
             <li>Priority support</li>
@@ -46,7 +46,7 @@ export function PricingA({ background = 'surface-2', ...props }: SectionVariantP
             <li>Dark mode + themes</li>
           </ul>
         </div>
-        <div className="srx-card col sx-price__card">
+        <div className="rdz-card col sx-price__card">
           <div className="col sx-price__plan">
             <strong>Enterprise</strong>
             <span className="muted sx-fs-body-s">For organizations</span>
@@ -54,7 +54,7 @@ export function PricingA({ background = 'surface-2', ...props }: SectionVariantP
           <div>
             <span className="sx-price__num">Custom</span>
           </div>
-          <button className="srx-btn srx-btn--outline sx-price__btn">Contact sales</button>
+          <button className="rdz-btn rdz-btn--outline sx-price__btn">Contact sales</button>
           <ul className="col sx-price__list">
             <li>SSO &amp; SAML</li>
             <li>Dedicated support</li>
@@ -79,21 +79,21 @@ export function PricingB({ background = 'gradient-accent', ...props }: SectionVa
         />
       </div>
       <div className="sx-price2 sx-gap-4">
-        <div className="srx-card col sx-price__card">
+        <div className="rdz-card col sx-price__card">
           <strong>Pro</strong>
           <div>
             <span className="sx-price__num">{period === 'mo' ? '$24' : '$19'}</span>
             <span className="muted">/mo</span>
           </div>
-          <button className="srx-btn srx-btn--primary sx-price__btn">Choose Pro</button>
+          <button className="rdz-btn rdz-btn--primary sx-price__btn">Choose Pro</button>
         </div>
-        <div className="srx-card col sx-price__card">
+        <div className="rdz-card col sx-price__card">
           <strong>Business</strong>
           <div>
             <span className="sx-price__num">{period === 'mo' ? '$60' : '$48'}</span>
             <span className="muted">/mo</span>
           </div>
-          <button className="srx-btn srx-btn--outline sx-price__btn">Choose Business</button>
+          <button className="rdz-btn rdz-btn--outline sx-price__btn">Choose Business</button>
         </div>
       </div>
     </SectionShell>

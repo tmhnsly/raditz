@@ -61,9 +61,9 @@ describe('DataTable behaviour (wired to the Table-model)', () => {
   it('paginates and reports a clamped 1-based range', () => {
     const { container, getByText } = render(<DataTable columns={columns} rows={rows} pageSize={2} />);
     expect(nameOrder(container)).toHaveLength(2);
-    expect(container.querySelector('.srx-table__pageinfo')?.textContent).toBe('1–2 of 3');
+    expect(container.querySelector('.rdz-table__pageinfo')?.textContent).toBe('1–2 of 3');
     fireEvent.click(getByText('Next'));
     expect(nameOrder(container)).toHaveLength(1);
-    expect(container.querySelector('.srx-table__pageinfo')?.textContent).toBe('3–3 of 3');
+    expect(container.querySelector('.rdz-table__pageinfo')?.textContent).toBe('3–3 of 3');
   });
 });

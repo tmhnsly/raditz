@@ -1,7 +1,7 @@
 /* ──────────────────────────────────────────────────────────────────────────
    Radix Colors — raw scales (steps 1–12, solid + alpha, light + dark)
    ----------------------------------------------------------------------------
-   SuperRadix is built ON TOP of Radix Colors. These @imports pull the scales we
+   Raditz is built ON TOP of Radix Colors. These @imports pull the scales we
    alias in colors.css. The dark files self-scope to `.dark, .dark-theme`, so a
    single `class="dark"` high up flips every scale.
 
@@ -18,7 +18,7 @@
 @import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/slate-alpha.css");
 @import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/slate-dark-alpha.css");
 
-/* accent — Cyan (SuperRadix default brand) */
+/* accent — Cyan (Raditz default brand) */
 @import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/cyan.css");
 @import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/cyan-dark.css");
 @import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/cyan-alpha.css");

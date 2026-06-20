@@ -1,7 +1,7 @@
-# SuperRadix
+# Raditz
 
 A personal React + Vite + TypeScript UI library with Storybook, built on the
-**SuperRadix** design system (Radix Colors + semantic tokens). Real, editable
+**Raditz** design system (Radix Colors + semantic tokens). Real, editable
 components, sections, and full example pages — all re-skin and re-theme from one
 accent token.
 
@@ -28,7 +28,7 @@ Every component and section lives in its own folder with all its parts co-locate
 
 ```
 src/components/controls/Button/
-  Button.jsx          # implementation (renders srx-* classes)
+  Button.jsx          # implementation (renders rdz-* classes)
   Button.d.ts         # TypeScript types (props, IntelliSense)
   Button.scss         # co-located styles (split from the design system)
   Button.stories.tsx  # Storybook story + autodocs
@@ -58,7 +58,7 @@ pnpm build-storybook
   order by `src/styles/components.ts`, imported once by the app and Storybook (Sass).
 - **Components** are strict TypeScript (`.tsx` with inline-exported prop interfaces — full
   IntelliSense), dependency-free pure React (no `@radix-ui/react-*` — they ship their own
-  primitives in `src/components/internal/`), and render `srx-*` classes.
+  primitives in `src/components/internal/`), and render `rdz-*` classes.
 - **Shared hooks/utils** live in `src/components/internal` and are reused across components
   instead of re-implemented: `cx` (class names), `onKeys`/`rovingIndex`/`KEYS`
   (keyboard), `useControllableState`, `useTrigger` (overlay open-state), `useStableId`,
@@ -71,7 +71,7 @@ pnpm build-storybook
   Storybook's **Theme** toolbar toggle both do this.
 - **Sections** export one component per variant (`HeroA`, `HeroB`, …) plus an aggregate.
   Interactive ones use React state (Navbar dropdown, FAQ accordion, Pricing toggle).
-- **Pages** wrap section variants in `.srx-page`, which flattens the preview frame so they
+- **Pages** wrap section variants in `.rdz-page`, which flattens the preview frame so they
   stack into a seamless page.
 
 ## Layout map

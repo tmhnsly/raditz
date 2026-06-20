@@ -97,13 +97,13 @@ export function DataTable<Row = DefaultRow>({
   const toggleRow = (id: RowKey): void => setSel(toggleSelected(sel, id));
 
   return (
-    <div className={cx('srx-table-wrap', 'srx-scrollbar', className)} {...rest}>
-      <table className={cx('srx-table', dense && 'srx-table--dense')}>
+    <div className={cx('rdz-table-wrap', 'rdz-scrollbar', className)} {...rest}>
+      <table className={cx('rdz-table', dense && 'rdz-table--dense')}>
         <thead>
           <tr>
             {selectable ? (
-              <th className="srx-table__check">
-                <label className="srx-check">
+              <th className="rdz-table__check">
+                <label className="rdz-check">
                   <input
                     type="checkbox"
                     checked={selState === 'all'}
@@ -112,7 +112,7 @@ export function DataTable<Row = DefaultRow>({
                     }}
                     onChange={toggleAll}
                   />
-                  <span className="srx-check__box">
+                  <span className="rdz-check__box">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                       <polyline points="20 6 9 17 4 12" />
                     </svg>
@@ -123,15 +123,15 @@ export function DataTable<Row = DefaultRow>({
             {columns.map((c) => (
               <th
                 key={c.key}
-                style={{ '--srx-col-align': c.align || 'left', '--srx-col-w': c.width } as React.CSSProperties}
-                className={c.sortable ? 'srx-table__sortable' : undefined}
+                style={{ '--rdz-col-align': c.align || 'left', '--rdz-col-w': c.width } as React.CSSProperties}
+                className={c.sortable ? 'rdz-table__sortable' : undefined}
                 aria-sort={sort && sort.key === c.key ? (sort.dir === 'asc' ? 'ascending' : 'descending') : undefined}
                 onClick={() => toggleSort(c)}
               >
-                <span className="srx-table__th">
+                <span className="rdz-table__th">
                   {c.header}
                   {c.sortable ? (
-                    <span className={cx('srx-table__sort', sort && sort.key === c.key && 'is-active')}>
+                    <span className={cx('rdz-table__sort', sort && sort.key === c.key && 'is-active')}>
                       {ARROW(sort && sort.key === c.key ? sort.dir : 'desc')}
                     </span>
                   ) : null}
@@ -147,10 +147,10 @@ export function DataTable<Row = DefaultRow>({
             return (
               <tr key={id} data-selected={isSel || undefined}>
                 {selectable ? (
-                  <td className="srx-table__check">
-                    <label className="srx-check">
+                  <td className="rdz-table__check">
+                    <label className="rdz-check">
                       <input type="checkbox" checked={isSel} onChange={() => toggleRow(id)} />
-                      <span className="srx-check__box">
+                      <span className="rdz-check__box">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                           <polyline points="20 6 9 17 4 12" />
                         </svg>
@@ -159,7 +159,7 @@ export function DataTable<Row = DefaultRow>({
                   </td>
                 ) : null}
                 {columns.map((c) => (
-                  <td key={c.key} style={{ '--srx-col-align': c.align || 'left' } as React.CSSProperties}>
+                  <td key={c.key} style={{ '--rdz-col-align': c.align || 'left' } as React.CSSProperties}>
                     {c.render ? c.render(getField(r, c.key), r) : (getField(r, c.key) as React.ReactNode)}
                   </td>
                 ))}
@@ -169,15 +169,15 @@ export function DataTable<Row = DefaultRow>({
         </tbody>
       </table>
       {pageSize > 0 && pages > 1 ? (
-        <div className="srx-table__pager">
-          <span className="srx-table__pageinfo">
+        <div className="rdz-table__pager">
+          <span className="rdz-table__pageinfo">
             {range.from}–{range.to} of {range.total}
           </span>
-          <div className="srx-table__pagebtns">
-            <button type="button" className="srx-btn srx-btn--soft srx-btn--sm" disabled={safePage === 0} onClick={() => setPage((p) => clamp(p - 1, 0, pages - 1))}>
+          <div className="rdz-table__pagebtns">
+            <button type="button" className="rdz-btn rdz-btn--soft rdz-btn--sm" disabled={safePage === 0} onClick={() => setPage((p) => clamp(p - 1, 0, pages - 1))}>
               Prev
             </button>
-            <button type="button" className="srx-btn srx-btn--soft srx-btn--sm" disabled={safePage >= pages - 1} onClick={() => setPage((p) => clamp(p + 1, 0, pages - 1))}>
+            <button type="button" className="rdz-btn rdz-btn--soft rdz-btn--sm" disabled={safePage >= pages - 1} onClick={() => setPage((p) => clamp(p + 1, 0, pages - 1))}>
               Next
             </button>
           </div>

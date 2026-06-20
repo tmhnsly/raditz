@@ -46,7 +46,7 @@ export interface OverlayProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 /**
- * Overlay — the one module behind every SuperRadix overlay. Owns dismissal
+ * Overlay — the one module behind every Raditz overlay. Owns dismissal
  * (Escape / outside-click / scrim), scroll-lock, focus (trap/auto/none), the
  * scrim, and positioning for all four {@link OverlayPosition} topologies.
  *
@@ -100,7 +100,7 @@ export function Overlay({
 
   if (!open) return null;
 
-  // Anchored/point panels are positioned by --srx-overlay-* custom properties that
+  // Anchored/point panels are positioned by --rdz-overlay-* custom properties that
   // useOverlayPosition writes IMPERATIVELY (so a scroll re-position doesn't wait on
   // a React render). The hook is the SOLE writer of those props — Overlay must not
   // also set them from `pos`, or a re-render would reassert the last-committed
@@ -112,7 +112,7 @@ export function Overlay({
   const panel = (
     <div
       ref={panelRef}
-      className={cx(anchored && 'srx-overlay__panel', className)}
+      className={cx(anchored && 'rdz-overlay__panel', className)}
       aria-modal={focus === 'trap' ? true : undefined}
       data-side={pos.side}
       data-ready={anchored ? (pos.ready ? 'true' : 'false') : undefined}
@@ -127,12 +127,12 @@ export function Overlay({
     ? panel
     : (
       <div
-        className={cx('srx-overlay', position.kind === 'side' && 'srx-overlay--drawer', containerClassName)}
+        className={cx('rdz-overlay', position.kind === 'side' && 'rdz-overlay--drawer', containerClassName)}
         data-side={position.kind === 'side' ? position.side : undefined}
         data-state="open"
       >
         {wantScrim ? (
-          <div className="srx-overlay__scrim" onClick={dismissOnOutside ? onDismiss : undefined} />
+          <div className="rdz-overlay__scrim" onClick={dismissOnOutside ? onDismiss : undefined} />
         ) : null}
         {panel}
       </div>

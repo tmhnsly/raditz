@@ -156,9 +156,9 @@ export function useOverlayPosition(
       // Write coords directly to the panel so a scroll re-position doesn't wait
       // on React; only re-render when the side or readiness actually changes.
       if (c) {
-        if (next.top != null) c.style.setProperty('--srx-overlay-top', `${next.top}px`);
-        if (next.left != null) c.style.setProperty('--srx-overlay-left', `${next.left}px`);
-        if (next.width != null) c.style.setProperty('--srx-overlay-width', `${next.width}px`);
+        if (next.top != null) c.style.setProperty('--rdz-overlay-top', `${next.top}px`);
+        if (next.left != null) c.style.setProperty('--rdz-overlay-left', `${next.left}px`);
+        if (next.width != null) c.style.setProperty('--rdz-overlay-width', `${next.width}px`);
       }
       if (!prev || prev.side !== next.side || prev.ready !== next.ready) setState(next);
       lastRef.current = next;

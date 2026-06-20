@@ -1,11 +1,11 @@
 /* ════════════════════════════════════════════════════════════════════════════
-   SuperRadix Design System — global entry point
+   Raditz Design System — global entry point
    ----------------------------------------------------------------------------
    Consuming projects link THIS one file. It is an @import manifest only — never
    add rules here. Order matters: Radix scales → fonts → tokens → reset →
    components. Dark mode: class="dark" on <html>/:root flips the whole app (the
    useColorScheme hook follows the OS by default + toggles it). For a sub-region
-   over dark media, scope it with .srx-on-dark — .dark itself is root-only because
+   over dark media, scope it with .rdz-on-dark — .dark itself is root-only because
    the semantic tokens resolve against the root scales.
 
    Production note: the Radix scales come from the jsDelivr CDN (prototyping).

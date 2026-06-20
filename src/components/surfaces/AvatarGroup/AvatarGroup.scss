@@ -1,42 +1,42 @@
-// Uses SuperRadix tokens (var(--…)); re-skins/re-themes with the system.
+// Uses Raditz tokens (var(--…)); re-skins/re-themes with the system.
 /* ═══════════════════════ AvatarGroup ═══════════════════════ */
-.srx-avatar-group { display: inline-flex; }
+.rdz-avatar-group { display: inline-flex; }
 
 /* Each avatar lives in a positioned "slot" carrying the overlap + z-index, so the
    stacking works whether the chip is wrapped in a HoverCard or not. Ascending
    z-index = right-on-top cascade; the "+N" slot gets the highest z (always on top). */
-.srx-avatar-group__slot { position: relative; z-index: var(--srx-avatar-z, 0); display: inline-flex; }
+.rdz-avatar-group__slot { position: relative; z-index: var(--rdz-avatar-z, 0); display: inline-flex; }
 
-.srx-avatar-group__slot + .srx-avatar-group__slot { margin-left: -0.625rem; }
+.rdz-avatar-group__slot + .rdz-avatar-group__slot { margin-left: -0.625rem; }
 
-.srx-avatar-group__item { border: 2px solid var(--bg); width: var(--srx-avatar-group-dim); height: var(--srx-avatar-group-dim); }
+.rdz-avatar-group__item { border: 2px solid var(--bg); width: var(--rdz-avatar-group-dim); height: var(--rdz-avatar-group-dim); }
 
-.srx-avatar-group__item[data-image] { background-image: var(--srx-avatar-group-img); background-size: cover; background-position: center; color: transparent; }
+.rdz-avatar-group__item[data-image] { background-image: var(--rdz-avatar-group-img); background-size: cover; background-position: center; color: transparent; }
 
-a.srx-avatar-group__item { cursor: pointer; transition: transform var(--duration-fast) var(--ease-standard); }
+a.rdz-avatar-group__item { cursor: pointer; transition: transform var(--duration-fast) var(--ease-standard); }
 
 @media (hover: hover) {
-  a.srx-avatar-group__item:hover { transform: translateY(-2px); }
+  a.rdz-avatar-group__item:hover { transform: translateY(-2px); }
 }
 
-.srx-avatar-group__more { padding: 0; background: var(--surface-strong); color: var(--text-soft); font-size: var(--fs-label); font-weight: var(--fw-semibold); display: inline-grid; place-items: center; border-radius: var(--radius-full); cursor: pointer; }
+.rdz-avatar-group__more { padding: 0; background: var(--surface-strong); color: var(--text-soft); font-size: var(--fs-label); font-weight: var(--fw-semibold); display: inline-grid; place-items: center; border-radius: var(--radius-full); cursor: pointer; }
 
 @media (hover: hover) {
-  .srx-avatar-group__more:hover { background: var(--rule-strong); color: var(--text); }
+  .rdz-avatar-group__more:hover { background: var(--rule-strong); color: var(--text); }
 }
 
 /* Profile row — shared by the per-avatar hover card and the "+N" overflow list. */
-.srx-avatar-group__profile { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-2) var(--space-3); border-radius: var(--radius-md); color: var(--text); text-decoration: none; min-width: 11rem; }
+.rdz-avatar-group__profile { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-2) var(--space-3); border-radius: var(--radius-md); color: var(--text); text-decoration: none; min-width: 11rem; }
 
-a.srx-avatar-group__profile:hover { background: var(--surface); }
+a.rdz-avatar-group__profile:hover { background: var(--surface); }
 
-.srx-avatar-group__profile-text { display: flex; flex-direction: column; min-width: 0; }
+.rdz-avatar-group__profile-text { display: flex; flex-direction: column; min-width: 0; }
 
-.srx-avatar-group__profile-name { font-weight: var(--fw-semibold); font-size: var(--fs-body-s); color: var(--text); }
+.rdz-avatar-group__profile-name { font-weight: var(--fw-semibold); font-size: var(--fs-body-s); color: var(--text); }
 
-.srx-avatar-group__profile-role { font-size: var(--fs-caption); color: var(--text-muted); }
+.rdz-avatar-group__profile-role { font-size: var(--fs-caption); color: var(--text-muted); }
 
 /* Reserve the scrollbar gutter so the bar never overlays the last profile row,
    and inset the end so the final item clears the popover edge (was reading as
    "padding blocking the view" when scrolled to the bottom). */
-.srx-avatar-group__list { display: flex; flex-direction: column; gap: 0.125rem; max-height: 16rem; overflow-y: auto; min-width: 13rem; scrollbar-gutter: stable; padding-block-end: var(--space-1); }
+.rdz-avatar-group__list { display: flex; flex-direction: column; gap: 0.125rem; max-height: 16rem; overflow-y: auto; min-width: 13rem; scrollbar-gutter: stable; padding-block-end: var(--space-1); }

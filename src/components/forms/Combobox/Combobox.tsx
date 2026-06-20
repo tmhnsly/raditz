@@ -54,18 +54,18 @@ export function Combobox({
   });
 
   return (
-    <div className={cx('srx-combobox', className)} {...rest}>
+    <div className={cx('rdz-combobox', className)} {...rest}>
       <button
         ref={anchorRef}
         type="button"
-        className="srx-input srx-combobox__trigger"
+        className="rdz-input rdz-combobox__trigger"
         disabled={disabled}
         aria-haspopup="listbox"
         aria-expanded={open}
         onClick={() => { setOpen((o) => !o); setActive(0); }}
       >
-        <span className={selected ? undefined : 'srx-combobox__ph'}>{selected ? selected.label : placeholder}</span>
-        <Icon name="chevron-down" size="1em" className="srx-combobox__chev" />
+        <span className={selected ? undefined : 'rdz-combobox__ph'}>{selected ? selected.label : placeholder}</span>
+        <Icon name="chevron-down" size="1em" className="rdz-combobox__chev" />
       </button>
       <Overlay
         open={open}
@@ -74,7 +74,7 @@ export function Combobox({
         ignore={anchorRef}
         focus="auto"
         initialFocus={searchRef}
-        className="srx-combobox__pop"
+        className="rdz-combobox__pop"
       >
         <Search
           ref={searchRef}
@@ -90,7 +90,7 @@ export function Combobox({
           onChange={(e: ChangeEvent<HTMLInputElement>) => { setQuery(e.target.value); setActive(0); }}
           onKeyDown={onKey}
         />
-        <div className="srx-combobox__list srx-scrollbar" id={listId} role="listbox">
+        <div className="rdz-combobox__list rdz-scrollbar" id={listId} role="listbox">
           {filtered.length ? filtered.map((o, i) => (
             <button
               key={o.value}
@@ -98,7 +98,7 @@ export function Combobox({
               type="button"
               role="option"
               aria-selected={o.value === val}
-              className="srx-combobox__opt"
+              className="rdz-combobox__opt"
               data-active={i === active ? 'true' : undefined}
               onMouseEnter={() => setActive(i)}
               onClick={() => choose(o)}
@@ -106,7 +106,7 @@ export function Combobox({
               <span>{o.label}</span>
               {o.value === val ? <Icon name="check" size="1em" /> : null}
             </button>
-          )) : <div className="srx-combobox__empty">{emptyText}</div>}
+          )) : <div className="rdz-combobox__empty">{emptyText}</div>}
         </div>
       </Overlay>
     </div>

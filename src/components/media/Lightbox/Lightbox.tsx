@@ -74,7 +74,7 @@ interface Gesture {
  * Pan/zoom/swipe are driven imperatively (the transform is written straight to
  * the image, not through React state) so a drag stays at the display's frame
  * rate instead of thrashing a render per pointer move. The chrome always renders
- * on a dark scrim (identical in light + dark themes) via `.srx-on-dark`.
+ * on a dark scrim (identical in light + dark themes) via `.rdz-on-dark`.
  */
 export function Lightbox({
   images = [],
@@ -113,9 +113,9 @@ export function Lightbox({
     const img = imgRef.current;
     if (!img) return;
     img.classList.toggle('is-live', !animate);
-    img.style.setProperty('--srx-lb-x', `${x}px`);
-    img.style.setProperty('--srx-lb-y', `${y}px`);
-    img.style.setProperty('--srx-lb-scale', String(s));
+    img.style.setProperty('--rdz-lb-x', `${x}px`);
+    img.style.setProperty('--rdz-lb-y', `${y}px`);
+    img.style.setProperty('--rdz-lb-scale', String(s));
   }, []);
 
   const setScrim = (o: number | null): void => {
@@ -292,19 +292,19 @@ export function Lightbox({
       onDismiss={close}
       position={{ kind: 'centered' }}
       scrim={false}
-      containerClassName="srx-overlay--lightbox"
+      containerClassName="rdz-overlay--lightbox"
       focus="trap"
       role="dialog"
       aria-label="Image viewer"
-      className={cx('srx-lightbox', 'srx-on-dark', className)}
+      className={cx('rdz-lightbox', 'rdz-on-dark', className)}
       onKeyDown={onKeyDown}
       {...rest}
     >
-      <div ref={scrimRef} className="srx-lightbox__scrim" onClick={close} />
-      <OverlayClose large className="srx-lightbox__close" onClick={close} />
+      <div ref={scrimRef} className="rdz-lightbox__scrim" onClick={close} />
+      <OverlayClose large className="rdz-lightbox__close" onClick={close} />
       <figure
         ref={stageRef}
-        className="srx-lightbox__stage"
+        className="rdz-lightbox__stage"
         onClick={onStageClick}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
@@ -315,7 +315,7 @@ export function Lightbox({
         <img
           key={idx}
           ref={imgRef}
-          className={cx('srx-lightbox__img', scale > 1 && 'is-zoom', dirRef.current === -1 ? 'srx-lightbox__img--in-left' : 'srx-lightbox__img--in-right')}
+          className={cx('rdz-lightbox__img', scale > 1 && 'is-zoom', dirRef.current === -1 ? 'rdz-lightbox__img--in-left' : 'rdz-lightbox__img--in-right')}
           src={cur.src}
           alt={cur.alt || ''}
           onClick={onImgClick}
@@ -323,12 +323,12 @@ export function Lightbox({
         />
       </figure>
       {filmstrip && count > 1 ? (
-        <div className="srx-lightbox__film">
+        <div className="rdz-lightbox__film">
           {images.map((im, i) => (
             <button
               key={i}
               type="button"
-              className={cx('srx-lightbox__thumb', i === idx && 'is-active')}
+              className={cx('rdz-lightbox__thumb', i === idx && 'is-active')}
               aria-label={`View image ${i + 1}`}
               aria-current={i === idx ? 'true' : undefined}
               onClick={() => jumpTo(i)}
@@ -338,35 +338,35 @@ export function Lightbox({
           ))}
         </div>
       ) : null}
-      <div className="srx-lightbox__footer">
-        <div className="srx-lightbox__meta">
-          {cur.caption ? <span className="srx-lightbox__caption">{cur.caption}</span> : null}
+      <div className="rdz-lightbox__footer">
+        <div className="rdz-lightbox__meta">
+          {cur.caption ? <span className="rdz-lightbox__caption">{cur.caption}</span> : null}
           {cur.tags && cur.tags.length ? (
-            <div className="srx-lightbox__tags">
+            <div className="rdz-lightbox__tags">
               {cur.tags.map((t) => (
-                <span key={t} className="srx-lightbox__tag">
+                <span key={t} className="rdz-lightbox__tag">
                   {t}
                 </span>
               ))}
             </div>
           ) : null}
         </div>
-        <div className="srx-lightbox__controls">
-          <button type="button" className="srx-ovbtn srx-ovbtn--lg" aria-label="Zoom out" onClick={() => zoomTo(scaleRef.current - 0.5)} disabled={scale <= 1}>
+        <div className="rdz-lightbox__controls">
+          <button type="button" className="rdz-ovbtn rdz-ovbtn--lg" aria-label="Zoom out" onClick={() => zoomTo(scaleRef.current - 0.5)} disabled={scale <= 1}>
             {ZOOM_OUT}
           </button>
-          <button type="button" className="srx-ovbtn srx-ovbtn--lg" aria-label="Zoom in" onClick={() => zoomTo(scaleRef.current + 0.5)} disabled={scale >= MAX_SCALE}>
+          <button type="button" className="rdz-ovbtn rdz-ovbtn--lg" aria-label="Zoom in" onClick={() => zoomTo(scaleRef.current + 0.5)} disabled={scale >= MAX_SCALE}>
             {ZOOM_IN}
           </button>
           {count > 1 ? (
             <>
-              <button type="button" className="srx-ovbtn srx-ovbtn--lg" aria-label="Previous image" onClick={() => go(-1)}>
+              <button type="button" className="rdz-ovbtn rdz-ovbtn--lg" aria-label="Previous image" onClick={() => go(-1)}>
                 {CHEV}
               </button>
-              <span className="srx-lightbox__counter">
+              <span className="rdz-lightbox__counter">
                 {idx + 1} / {count}
               </span>
-              <button type="button" className="srx-ovbtn srx-ovbtn--lg srx-lightbox__nav--next" aria-label="Next image" onClick={() => go(1)}>
+              <button type="button" className="rdz-ovbtn rdz-ovbtn--lg rdz-lightbox__nav--next" aria-label="Next image" onClick={() => go(1)}>
                 {CHEV}
               </button>
             </>

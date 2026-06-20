@@ -89,7 +89,7 @@ export function Form({ fields = [], submitLabel = 'Submit', onSubmit, footer, cl
   };
 
   return (
-    <form className={cx('srx-form', className)} noValidate onSubmit={handleSubmit} {...rest}>
+    <form className={cx('rdz-form', className)} noValidate onSubmit={handleSubmit} {...rest}>
       {fields.map((f) => {
         const err = errors[f.name];
         const shared = {
@@ -105,16 +105,16 @@ export function Form({ fields = [], submitLabel = 'Submit', onSubmit, footer, cl
         return (
           <Field key={f.name} label={f.label} hint={f.hint} error={err || undefined} required={f.required}>
             {f.type === 'textarea' ? (
-              <textarea ref={(el) => { refs.current[f.name] = el; }} className={cx('srx-input', 'srx-textarea', err && 'srx-input--invalid')} {...shared} />
+              <textarea ref={(el) => { refs.current[f.name] = el; }} className={cx('rdz-input', 'rdz-textarea', err && 'rdz-input--invalid')} {...shared} />
             ) : (
-              <input ref={(el) => { refs.current[f.name] = el; }} className={cx('srx-input', err && 'srx-input--invalid')} type={f.type || 'text'} pattern={f.pattern} {...shared} />
+              <input ref={(el) => { refs.current[f.name] = el; }} className={cx('rdz-input', err && 'rdz-input--invalid')} type={f.type || 'text'} pattern={f.pattern} {...shared} />
             )}
           </Field>
         );
       })}
-      <div className="srx-form__actions">
+      <div className="rdz-form__actions">
         {footer}
-        <button type="submit" className="srx-btn srx-btn--primary">{submitLabel}</button>
+        <button type="submit" className="rdz-btn rdz-btn--primary">{submitLabel}</button>
       </div>
     </form>
   );

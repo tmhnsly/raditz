@@ -17,8 +17,8 @@ export interface EmptyStateProps extends Omit<React.HTMLAttributes<HTMLDivElemen
 
 const TONE: Record<NonNullable<EmptyStateProps['tone']>, string> = {
   default: '',
-  accent: 'srx-emptystate--accent',
-  danger: 'srx-emptystate--danger',
+  accent: 'rdz-emptystate--accent',
+  danger: 'rdz-emptystate--danger',
 };
 
 /**
@@ -38,13 +38,13 @@ export function EmptyState({
   ...rest
 }: EmptyStateProps): React.ReactElement {
   return (
-    <div className={cx('srx-emptystate', TONE[tone], className)} role="status" {...rest}>
-      <div className="srx-emptystate__icon">
+    <div className={cx('rdz-emptystate', TONE[tone], className)} role="status" {...rest}>
+      <div className="rdz-emptystate__icon">
         {loading ? <Spinner size="1.6rem" /> : icon ? <Icon name={icon} size="1.6rem" /> : null}
       </div>
-      {title ? <div className="srx-emptystate__title">{title}</div> : null}
-      {description ? <p className="srx-emptystate__desc">{description}</p> : null}
-      {action ? <div className="srx-emptystate__action">{action}</div> : null}
+      {title ? <div className="rdz-emptystate__title">{title}</div> : null}
+      {description ? <p className="rdz-emptystate__desc">{description}</p> : null}
+      {action ? <div className="rdz-emptystate__action">{action}</div> : null}
     </div>
   );
 }

@@ -1,21 +1,21 @@
 // Auto-split from components.css — this component's styles, co-located.
-// Uses SuperRadix tokens (var(--…)); re-skins/re-themes with the system.
-.srx-avatar {
+// Uses Raditz tokens (var(--…)); re-skins/re-themes with the system.
+.rdz-avatar {
   display: inline-flex; align-items: center; justify-content: center; overflow: hidden;
   border-radius: var(--radius-full); background: var(--accent-surface); color: var(--accent-ink);
   font-family: var(--font-display); font-weight: var(--fw-semibold); flex: none; user-select: none;
-  width: var(--srx-avatar-size); height: var(--srx-avatar-size); font-size: var(--srx-avatar-fs);
+  width: var(--rdz-avatar-size); height: var(--rdz-avatar-size); font-size: var(--rdz-avatar-fs);
 }
 
-.srx-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.rdz-avatar img { width: 100%; height: 100%; object-fit: cover; }
 
-.srx-avatar--orb { background: radial-gradient(circle at 30% 28%, var(--on-media), var(--accent) 62%, color-mix(in srgb, var(--accent) 45%, black) 100%); }
+.rdz-avatar--orb { background: radial-gradient(circle at 30% 28%, var(--on-media), var(--accent) 62%, color-mix(in srgb, var(--accent) 45%, black) 100%); }
 
-.srx-avatar__initials { line-height: 1; }
+.rdz-avatar__initials { line-height: 1; }
 
 /* Monogram set INTO the orb: readable white, with a soft drop shadow + faint top
    highlight so it reads as part of the sphere surface rather than flat on top. */
-.srx-avatar--orb .srx-avatar__initials {
+.rdz-avatar--orb .rdz-avatar__initials {
   color: var(--on-media); font-weight: var(--fw-bold); letter-spacing: 0.01em;
   text-shadow: 0 1px 3px color-mix(in srgb, black 50%, transparent), 0 -0.5px 0 color-mix(in srgb, white 30%, transparent);
 }

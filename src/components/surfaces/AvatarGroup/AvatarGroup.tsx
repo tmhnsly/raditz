@@ -32,8 +32,8 @@ const hasProfile = (it: AvatarGroupItem): boolean => Boolean(it.name || it.role 
  *  `focusable` makes the (non-link) span keyboard-focusable so the hover card is
  *  reachable without a mouse. */
 function Chip({ it, focusable = false }: { it: AvatarGroupItem; focusable?: boolean }): ReactElement {
-  const cls = 'srx-avatar srx-avatar-group__item';
-  const style = (it.src ? { '--srx-avatar-group-img': `url(${it.src})` } : {}) as CSSProperties;
+  const cls = 'rdz-avatar rdz-avatar-group__item';
+  const style = (it.src ? { '--rdz-avatar-group-img': `url(${it.src})` } : {}) as CSSProperties;
   const content = it.src ? null : it.initials || '';
   const label = it.name || it.alt || it.initials || 'Avatar';
   return it.href ? (
@@ -48,16 +48,16 @@ function ProfileRow({ it }: { it: AvatarGroupItem }): ReactElement {
   const inner = (
     <>
       <Avatar size="sm" src={it.src} initials={it.initials} alt={it.alt} />
-      <span className="srx-avatar-group__profile-text">
-        {it.name ? <span className="srx-avatar-group__profile-name">{it.name}</span> : null}
-        {it.role ? <span className="srx-avatar-group__profile-role">{it.role}</span> : null}
+      <span className="rdz-avatar-group__profile-text">
+        {it.name ? <span className="rdz-avatar-group__profile-name">{it.name}</span> : null}
+        {it.role ? <span className="rdz-avatar-group__profile-role">{it.role}</span> : null}
       </span>
     </>
   );
   return it.href ? (
-    <a className="srx-avatar-group__profile" href={it.href}>{inner}</a>
+    <a className="rdz-avatar-group__profile" href={it.href}>{inner}</a>
   ) : (
-    <span className="srx-avatar-group__profile">{inner}</span>
+    <span className="rdz-avatar-group__profile">{inner}</span>
   );
 }
 
@@ -73,25 +73,25 @@ export function AvatarGroup({ items = [], max = 4, size = 'md', className, ...re
   const shown = items.slice(0, max);
   const extra = items.length - shown.length;
   return (
-    <div className={cx('srx-avatar-group', className)} style={{ '--srx-avatar-group-dim': dim } as CSSProperties} {...rest}>
+    <div className={cx('rdz-avatar-group', className)} style={{ '--rdz-avatar-group-dim': dim } as CSSProperties} {...rest}>
       {shown.map((it, i) => (
-        <span className="srx-avatar-group__slot" key={i} style={{ '--srx-avatar-z': i + 1 } as CSSProperties}>
+        <span className="rdz-avatar-group__slot" key={i} style={{ '--rdz-avatar-z': i + 1 } as CSSProperties}>
           {hasProfile(it) ? <HoverCard side="top" trigger={<Chip it={it} focusable />}><ProfileRow it={it} /></HoverCard> : <Chip it={it} />}
         </span>
       ))}
       {extra > 0 ? (
         // Highest z-index so the "+N" chip always sits on top of the stack.
-        <span className="srx-avatar-group__slot" style={{ '--srx-avatar-z': shown.length + 1 } as CSSProperties}>
+        <span className="rdz-avatar-group__slot" style={{ '--rdz-avatar-z': shown.length + 1 } as CSSProperties}>
           <Popover
             side="bottom"
             align="end"
             trigger={
-              <button type="button" className="srx-avatar srx-avatar-group__item srx-avatar-group__more" aria-label={`Show all ${items.length} people`}>
+              <button type="button" className="rdz-avatar rdz-avatar-group__item rdz-avatar-group__more" aria-label={`Show all ${items.length} people`}>
                 +{extra}
               </button>
             }
           >
-            <div className="srx-avatar-group__list srx-scrollbar">
+            <div className="rdz-avatar-group__list rdz-scrollbar">
               {items.map((it, i) => <ProfileRow key={i} it={it} />)}
             </div>
           </Popover>

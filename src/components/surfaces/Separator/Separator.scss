@@ -1,7 +1,7 @@
 // Auto-split from components.css — this component's styles, co-located.
-// Uses SuperRadix tokens (var(--…)); re-skins/re-themes with the system.
-.srx-separator { border: none; background: var(--rule-soft); }
+// Uses Raditz tokens (var(--…)); re-skins/re-themes with the system.
+.rdz-separator { border: none; background: var(--rule-soft); }
 
-.srx-separator--h { height: var(--border-width); width: 100%; }
+.rdz-separator--h { height: var(--border-width); width: 100%; }
 
-.srx-separator--v { width: var(--border-width); align-self: stretch; min-height: 1em; }
+.rdz-separator--v { width: var(--border-width); align-self: stretch; min-height: 1em; }

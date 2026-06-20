@@ -34,17 +34,17 @@ export function Marquee({
   const items = React.Children.toArray(children);
   return (
     <div
-      className={cx('srx-marquee', pauseOnHover && 'srx-marquee--pause', fade && 'srx-marquee--fade', className)}
+      className={cx('rdz-marquee', pauseOnHover && 'rdz-marquee--pause', fade && 'rdz-marquee--fade', className)}
       style={{
-        '--srx-marquee-duration': `${duration}s`,
-        '--srx-marquee-gap': gap,
-        '--srx-marquee-dir': direction === 'right' ? 'reverse' : 'normal',
+        '--rdz-marquee-duration': `${duration}s`,
+        '--rdz-marquee-gap': gap,
+        '--rdz-marquee-dir': direction === 'right' ? 'reverse' : 'normal',
       } as React.CSSProperties}
       {...rest}
     >
-      <div className="srx-marquee__track">
-        <div className="srx-marquee__group">{items}</div>
-        <div className="srx-marquee__group" aria-hidden="true">{items}</div>
+      <div className="rdz-marquee__track">
+        <div className="rdz-marquee__group">{items}</div>
+        <div className="rdz-marquee__group" aria-hidden="true">{items}</div>
       </div>
     </div>
   );

@@ -17,7 +17,7 @@ export interface IconProps extends Omit<SVGProps<SVGSVGElement>, 'name'> {
 }
 
 /**
- * Icon — renders a named icon from the SuperRadix registry. Inherits color via
+ * Icon — renders a named icon from the Raditz registry. Inherits color via
  * `currentColor` and sizes to `1em` by default, so it scales with surrounding
  * text and tints with the parent's color.
  *
@@ -30,7 +30,7 @@ export function Icon({ name, size = '1em', strokeWidth = 2, title, className, ..
   return createElement(
     'svg',
     {
-      className: cx('srx-icon', className),
+      className: cx('rdz-icon', className),
       width: size,
       height: size,
       viewBox: '0 0 24 24',

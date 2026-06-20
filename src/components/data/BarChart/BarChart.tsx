@@ -34,8 +34,8 @@ export function BarChart({
   const max = Math.max(minMax(data.map((d) => d.value)).max, 1);
   return (
     <div
-      className={cx('srx-barchart', horizontal && 'srx-barchart--h')}
-      style={horizontal ? style : ({ '--srx-barchart-h': height, ...style } as React.CSSProperties)}
+      className={cx('rdz-barchart', horizontal && 'rdz-barchart--h')}
+      style={horizontal ? style : ({ '--rdz-barchart-h': height, ...style } as React.CSSProperties)}
       role="img"
       aria-label="Bar chart"
       {...rest}
@@ -44,13 +44,13 @@ export function BarChart({
         const pct = toPercent(d.value, max);
         const fill = d.color || 'var(--accent)';
         return (
-          <div className="srx-barchart__cell" key={i}>
-            <div className="srx-barchart__track">
-              <div className="srx-barchart__bar" style={{ '--srx-bar-size': `${pct}%`, '--srx-bar-fill': fill } as React.CSSProperties}>
-                {showValues ? <span className="srx-barchart__val">{d.value}</span> : null}
+          <div className="rdz-barchart__cell" key={i}>
+            <div className="rdz-barchart__track">
+              <div className="rdz-barchart__bar" style={{ '--rdz-bar-size': `${pct}%`, '--rdz-bar-fill': fill } as React.CSSProperties}>
+                {showValues ? <span className="rdz-barchart__val">{d.value}</span> : null}
               </div>
             </div>
-            <span className="srx-barchart__label">{d.label}</span>
+            <span className="rdz-barchart__label">{d.label}</span>
           </div>
         );
       })}

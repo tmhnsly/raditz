@@ -1,6 +1,6 @@
 import { useState, useCallback, useRef, useId } from 'react';
 
-// Shared internals for SuperRadix primitives. Kept dependency-free (React only)
+// Shared internals for Raditz primitives. Kept dependency-free (React only)
 // so the whole library still ships as a single CDN-friendly bundle.
 
 export interface ControllableStateOptions<T> {
@@ -31,7 +31,7 @@ export function useControllableState<T>({ value, defaultValue, onChange }: Contr
 }
 
 /** Stable unique id (SSR-safe via React.useId when present). */
-export function useStableId(prefix = 'srx'): string {
+export function useStableId(prefix = 'rdz'): string {
   const reactId = typeof useId === 'function' ? useId() : null;
   const fallback = useRef(`${prefix}-${Math.random().toString(36).slice(2, 9)}`);
   return reactId ? `${prefix}-${reactId.replace(/:/g, '')}` : fallback.current;

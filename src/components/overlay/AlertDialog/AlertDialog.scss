@@ -1,44 +1,44 @@
 // Auto-split from components.css — this component's styles, co-located.
-// Uses SuperRadix tokens (var(--…)); re-skins/re-themes with the system.
+// Uses Raditz tokens (var(--…)); re-skins/re-themes with the system.
 /* ═══════════════════════ Overlay · Dialog · AlertDialog ═══════════════════════ */
-.srx-overlay { position: fixed; inset: 0; z-index: var(--z-modal); display: grid; place-items: center; padding: var(--space-5); }
+.rdz-overlay { position: fixed; inset: 0; z-index: var(--z-modal); display: grid; place-items: center; padding: var(--space-5); }
 
-.srx-overlay__scrim { position: absolute; inset: 0; background: var(--overlay-scrim); -webkit-backdrop-filter: blur(0.125rem); backdrop-filter: blur(0.125rem); animation: srxFade var(--duration-base) var(--ease-standard); }
+.rdz-overlay__scrim { position: absolute; inset: 0; background: var(--overlay-scrim); -webkit-backdrop-filter: blur(0.125rem); backdrop-filter: blur(0.125rem); animation: rdzFade var(--duration-base) var(--ease-standard); }
 
-.srx-dialog {
+.rdz-dialog {
   position: relative; z-index: var(--z-overlay-local); width: 100%; max-width: 28.75rem; max-height: calc(100vh - 2 * var(--space-7));
   overflow: auto; background: var(--panel); border: var(--border-width) solid var(--surface-edge);
   border-radius: var(--radius-panel); box-shadow: var(--shadow-6); padding: var(--space-6);
-  animation: srxPop var(--duration-base) var(--ease-standard);
+  animation: rdzPop var(--duration-base) var(--ease-standard);
 }
 
-.srx-dialog--sm { max-width: 25rem; }
+.rdz-dialog--sm { max-width: 25rem; }
 
-.srx-dialog--lg { max-width: 40rem; }
+.rdz-dialog--lg { max-width: 40rem; }
 
-.srx-dialog__header { margin-bottom: var(--space-4); padding-right: var(--space-7); }
+.rdz-dialog__header { margin-bottom: var(--space-4); padding-right: var(--space-7); }
 
-.srx-dialog__title { font-size: var(--fs-h3); letter-spacing: var(--ls-h3); line-height: var(--lh-heading); font-weight: var(--fw-semibold); }
+.rdz-dialog__title { font-size: var(--fs-h3); letter-spacing: var(--ls-h3); line-height: var(--lh-heading); font-weight: var(--fw-semibold); }
 
-.srx-dialog__desc { color: var(--text-soft); font-size: var(--fs-body-s); margin-top: var(--space-2); line-height: var(--lh-body); }
+.rdz-dialog__desc { color: var(--text-soft); font-size: var(--fs-body-s); margin-top: var(--space-2); line-height: var(--lh-body); }
 
-.srx-dialog__body { font-size: var(--fs-body-s); color: var(--text-soft); line-height: var(--lh-body); }
+.rdz-dialog__body { font-size: var(--fs-body-s); color: var(--text-soft); line-height: var(--lh-body); }
 
-.srx-dialog__body > * + * { margin-top: var(--space-3); }
+.rdz-dialog__body > * + * { margin-top: var(--space-3); }
 
-.srx-dialog__footer { display: flex; justify-content: flex-end; gap: var(--space-3); margin-top: var(--space-6); }
+.rdz-dialog__footer { display: flex; justify-content: flex-end; gap: var(--space-3); margin-top: var(--space-6); }
 
-/* Position only — the disc visual is the shared .srx-oclose. */
-.srx-dialog__close { position: absolute; top: var(--space-4); right: var(--space-4); }
+/* Position only — the disc visual is the shared .rdz-oclose. */
+.rdz-dialog__close { position: absolute; top: var(--space-4); right: var(--space-4); }
 
-.srx-alert__danger { background: var(--danger); box-shadow: none; }
+.rdz-alert__danger { background: var(--danger); box-shadow: none; }
 
-.srx-alert__danger:hover { background: color-mix(in srgb, var(--danger) 88%, black); }
+.rdz-alert__danger:hover { background: color-mix(in srgb, var(--danger) 88%, black); }
 
 
 /* ═══════════════════════ Drawer ═══════════════════════ */
-.srx-overlay--drawer { display: block; padding: 0; }
+.rdz-overlay--drawer { display: block; padding: 0; }
 
 
 /* ═══════════════════════ CommandPalette (⌘K) ═══════════════════════ */
-.srx-overlay--cmd { align-items: flex-start; padding-top: 12vh; }
+.rdz-overlay--cmd { align-items: flex-start; padding-top: 12vh; }

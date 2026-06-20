@@ -27,10 +27,10 @@ export function Card({
 }: CardProps): ReactElement {
   const Tag = as;
   const cls = cx(
-    'srx-card',
-    variant === 'glass' && 'srx-card--glass',
-    variant === 'flat' && 'srx-card--flat',
-    interactive && 'srx-card--interactive',
+    'rdz-card',
+    variant === 'glass' && 'rdz-card--glass',
+    variant === 'flat' && 'rdz-card--flat',
+    interactive && 'rdz-card--interactive',
     className,
   );
   return (

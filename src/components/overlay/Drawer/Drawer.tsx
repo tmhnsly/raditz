@@ -38,7 +38,7 @@ export function Drawer({
   const close = (): void => { if (onOpenChange) onOpenChange(false); };
   // Dynamic size flows through a CSS custom property (data, not inline styling);
   // the side class decides whether it drives width or height.
-  const style = { '--srx-drawer-size': size } as CSSProperties;
+  const style = { '--rdz-drawer-size': size } as CSSProperties;
   return (
     <Overlay
       open={!!open}
@@ -47,21 +47,21 @@ export function Drawer({
       focus="trap"
       role="dialog"
       aria-label={typeof title === 'string' ? title : undefined}
-      className={cx('srx-drawer', `srx-drawer--${side}`, className)}
+      className={cx('rdz-drawer', `rdz-drawer--${side}`, className)}
       style={style}
       {...rest}
     >
       {title || description ? (
-        <div className="srx-drawer__header">
+        <div className="rdz-drawer__header">
           <div>
-            {title ? <h2 className="srx-drawer__title">{title}</h2> : null}
-            {description ? <p className="srx-drawer__desc">{description}</p> : null}
+            {title ? <h2 className="rdz-drawer__title">{title}</h2> : null}
+            {description ? <p className="rdz-drawer__desc">{description}</p> : null}
           </div>
-          <OverlayClose className="srx-drawer__close" onClick={close} />
+          <OverlayClose className="rdz-drawer__close" onClick={close} />
         </div>
       ) : null}
-      <div className="srx-drawer__body srx-scrollbar">{children}</div>
-      {footer ? <div className="srx-drawer__footer">{footer}</div> : null}
+      <div className="rdz-drawer__body rdz-scrollbar">{children}</div>
+      {footer ? <div className="rdz-drawer__footer">{footer}</div> : null}
     </Overlay>
   );
 }

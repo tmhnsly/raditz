@@ -24,29 +24,29 @@ export interface StepperProps extends HTMLAttributes<HTMLOListElement> {
  */
 export function Stepper({ steps = [], current = 0, orientation = 'horizontal', onStepClick, className, ...rest }: StepperProps): ReactElement {
   return (
-    <ol className={cx('srx-stepper', `srx-stepper--${orientation}`, className)} {...rest}>
+    <ol className={cx('rdz-stepper', `rdz-stepper--${orientation}`, className)} {...rest}>
       {steps.map((s, i) => {
         const state = i < current ? 'complete' : i === current ? 'current' : 'upcoming';
         const clickable = !!onStepClick && i <= current;
         return (
-          <li className="srx-stepper__step" key={i} data-state={state} aria-current={state === 'current' ? 'step' : undefined}>
+          <li className="rdz-stepper__step" key={i} data-state={state} aria-current={state === 'current' ? 'step' : undefined}>
             <button
               type="button"
-              className="srx-stepper__node"
+              className="rdz-stepper__node"
               disabled={!clickable}
               onClick={() => clickable && onStepClick(i)}
             >
-              <span className="srx-stepper__dot">
+              <span className="rdz-stepper__dot">
                 {state === 'complete'
                   ? <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
-                  : <span className="srx-stepper__num">{i + 1}</span>}
+                  : <span className="rdz-stepper__num">{i + 1}</span>}
               </span>
-              <span className="srx-stepper__text">
-                <span className="srx-stepper__label">{s.label}</span>
-                {s.description ? <span className="srx-stepper__desc">{s.description}</span> : null}
+              <span className="rdz-stepper__text">
+                <span className="rdz-stepper__label">{s.label}</span>
+                {s.description ? <span className="rdz-stepper__desc">{s.description}</span> : null}
               </span>
             </button>
-            {i < steps.length - 1 ? <span className="srx-stepper__line" aria-hidden="true" /> : null}
+            {i < steps.length - 1 ? <span className="rdz-stepper__line" aria-hidden="true" /> : null}
           </li>
         );
       })}

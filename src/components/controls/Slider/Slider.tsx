@@ -84,20 +84,20 @@ export function Slider({
   return (
     <span
       ref={trackRef}
-      className={cx('srx-slider', disabled && 'srx-slider--disabled', className)}
+      className={cx('rdz-slider', disabled && 'rdz-slider--disabled', className)}
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
       {...rest}
     >
-      <span className="srx-slider__track">
-        <span className="srx-slider__range" style={{ '--srx-slider-pct': `${pct}%` } as React.CSSProperties} />
+      <span className="rdz-slider__track">
+        <span className="rdz-slider__range" style={{ '--rdz-slider-pct': `${pct}%` } as React.CSSProperties} />
         {tickPts.map((t, i) => (
-          <span key={i} className="srx-slider__tick" style={{ '--srx-slider-tick': `${t}%` } as React.CSSProperties} />
+          <span key={i} className="rdz-slider__tick" style={{ '--rdz-slider-tick': `${t}%` } as React.CSSProperties} />
         ))}
       </span>
       <span
-        className="srx-slider__thumb"
-        style={{ '--srx-slider-pct': `${pct}%` } as React.CSSProperties}
+        className="rdz-slider__thumb"
+        style={{ '--rdz-slider-pct': `${pct}%` } as React.CSSProperties}
         role="slider"
         tabIndex={disabled ? -1 : 0}
         aria-label={ariaLabelledby ? undefined : ariaLabel}
