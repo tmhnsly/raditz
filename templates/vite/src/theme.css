@@ -20,7 +20,9 @@
        --on-accent: var(--white-a12); /* text drawn on the accent fill (use --black-a12 for light brands) */
      }
      .dark {
-       --accent-1:#0e1430; --accent-2:#141b3d; ... --accent-12:#dbe2ff;
+       --accent-1:#11131f; --accent-2:#141726; --accent-3:#182449; --accent-4:#1d2e62;
+       --accent-5:#253974; --accent-6:#304384; --accent-7:#3a4f97; --accent-8:#435db1;
+       --accent-9:#3e63dd; --accent-10:#5472e4; --accent-11:#9eb1ff; --accent-12:#d6e1ff;
      }
 
    You can override ANY token here too: --radius-factor, --font-display, spacing, etc.
