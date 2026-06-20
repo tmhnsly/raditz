@@ -12,7 +12,7 @@ import { FooterB } from '../../sections/Footer';
  */
 export function PricingPage() {
   return (
-    <div className="srx-page">
+    <div className="rdz-page">
       <NavbarB />
       <PricingB />
       <ComparisonA />

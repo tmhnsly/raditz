@@ -30,7 +30,7 @@ export function Icon({ name, size = '1em', strokeWidth = 2, title, className, ..
   return createElement(
     'svg',
     {
-      className: cx('srx-icon', className),
+      className: cx('rdz-icon', className),
       width: size,
       height: size,
       viewBox: '0 0 24 24',

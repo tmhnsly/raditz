@@ -51,8 +51,8 @@ export function NavbarA() {
               <a href="#">Docs</a>
             </nav>
             <div className="nav-bar__cta">
-              <button className="srx-btn srx-btn--ghost nav-hide-sm">Sign in</button>
-              <button className="srx-btn srx-btn--primary">Get started</button>
+              <button className="rdz-btn rdz-btn--ghost nav-hide-sm">Sign in</button>
+              <button className="rdz-btn rdz-btn--primary">Get started</button>
               <button
                 ref={burgerRef}
                 className="nav-bar__burger"
@@ -70,8 +70,8 @@ export function NavbarA() {
             <a href="#" onClick={() => setOpen(false)}>Pricing</a>
             <a href="#" onClick={() => setOpen(false)}>Docs</a>
             <div className="nav-sheet__cta">
-              <button className="srx-btn srx-btn--ghost">Sign in</button>
-              <button className="srx-btn srx-btn--primary">Get started</button>
+              <button className="rdz-btn rdz-btn--ghost">Sign in</button>
+              <button className="rdz-btn rdz-btn--primary">Get started</button>
             </div>
           </NavSheet>
         </div>
@@ -100,7 +100,7 @@ export function NavbarB() {
               <a href="#">Pricing</a>
             </nav>
             <div className="nav-bar__cta">
-              <button className="srx-btn srx-btn--primary srx-btn--sm">Start free</button>
+              <button className="rdz-btn rdz-btn--primary rdz-btn--sm">Start free</button>
               <button
                 ref={burgerRef}
                 className="nav-bar__burger"
@@ -117,7 +117,7 @@ export function NavbarB() {
             <a href="#" onClick={() => setOpen(false)}>Customers</a>
             <a href="#" onClick={() => setOpen(false)}>Pricing</a>
             <div className="nav-sheet__cta">
-              <button className="srx-btn srx-btn--primary">Start free</button>
+              <button className="rdz-btn rdz-btn--primary">Start free</button>
             </div>
           </NavSheet>
         </div>
@@ -146,8 +146,8 @@ export function NavbarC() {
               <a href="#">Docs</a>
             </nav>
             <div className="nav-bar__cta">
-              <button className="srx-btn srx-btn--ghost nav-hide-sm">Sign in</button>
-              <button className="srx-btn srx-btn--primary">Get started</button>
+              <button className="rdz-btn rdz-btn--ghost nav-hide-sm">Sign in</button>
+              <button className="rdz-btn rdz-btn--primary">Get started</button>
               <button
                 ref={burgerRef}
                 className="nav-bar__burger"
@@ -165,8 +165,8 @@ export function NavbarC() {
             <a href="#" onClick={() => setOpen(false)}>Pricing</a>
             <a href="#" onClick={() => setOpen(false)}>Docs</a>
             <div className="nav-sheet__cta">
-              <button className="srx-btn srx-btn--ghost">Sign in</button>
-              <button className="srx-btn srx-btn--primary">Get started</button>
+              <button className="rdz-btn rdz-btn--ghost">Sign in</button>
+              <button className="rdz-btn rdz-btn--primary">Get started</button>
             </div>
           </NavSheet>
         </div>

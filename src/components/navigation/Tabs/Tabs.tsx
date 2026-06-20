@@ -34,14 +34,14 @@ export function Tabs({ tabs = [], value, defaultValue, onValueChange, variant = 
   const active = value !== undefined ? value : internal;
   const select = (v: string): void => { if (value === undefined) setInternal(v); onValueChange && onValueChange(v); };
   return (
-    <div role="tablist" className={cx('srx-tabs', variant === 'underline' && 'srx-tabs--underline', className)}>
+    <div role="tablist" className={cx('rdz-tabs', variant === 'underline' && 'rdz-tabs--underline', className)}>
       {tabs.map((t) => (
         <button
           key={t.value}
           role="tab"
           type="button"
           aria-selected={active === t.value}
-          className={cx('srx-tabs__tab', active === t.value && 'srx-tabs__tab--active')}
+          className={cx('rdz-tabs__tab', active === t.value && 'rdz-tabs__tab--active')}
           onClick={() => select(t.value)}
         >
           {t.label}

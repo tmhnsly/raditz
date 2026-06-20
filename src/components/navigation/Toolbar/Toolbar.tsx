@@ -13,7 +13,7 @@ export interface ToolbarProps extends HTMLAttributes<HTMLElement> {
  */
 export function Toolbar({ as: Tag = 'div', className, children, ...rest }: ToolbarProps): ReactElement {
   return (
-    <Tag className={cx('srx-toolbar', className)} role="toolbar" {...rest}>
+    <Tag className={cx('rdz-toolbar', className)} role="toolbar" {...rest}>
       {children}
     </Tag>
   );

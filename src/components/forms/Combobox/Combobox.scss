@@ -1,7 +1,7 @@
 // Auto-split from components.css — this component's styles, co-located.
 // Uses SuperRadix tokens (var(--…)); re-skins/re-themes with the system.
 /* ═══════════════════════ Inputs / fields ═══════════════════════ */
-.srx-input {
+.rdz-input {
   width: 100%; padding: var(--pad-field); height: var(--control-h);
   background: var(--panel); color: var(--text);
   border: var(--border-width) solid var(--rule);
@@ -11,40 +11,40 @@
 
 /* iOS Safari zooms the page when a focused input is < 16px — hold the field at
    16px on touch devices (desktop keeps the compact 14px scale). */
-@media (pointer: coarse) { .srx-input { font-size: 1rem; } }
+@media (pointer: coarse) { .rdz-input { font-size: 1rem; } }
 
-.srx-input::placeholder { color: var(--text-faint); }
+.rdz-input::placeholder { color: var(--text-faint); }
 
-.srx-input:hover { border-color: var(--rule-strong); }
+.rdz-input:hover { border-color: var(--rule-strong); }
 
-.srx-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+.rdz-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
 
-.srx-input:disabled { opacity: var(--disabled-opacity); cursor: not-allowed; }
+.rdz-input:disabled { opacity: var(--disabled-opacity); cursor: not-allowed; }
 
-.srx-input--invalid { border-color: var(--danger); }
+.rdz-input--invalid { border-color: var(--danger); }
 
-.srx-input--invalid:focus { box-shadow: 0 0 0 3px color-mix(in srgb, var(--danger) 25%, transparent); }
+.rdz-input--invalid:focus { box-shadow: 0 0 0 3px color-mix(in srgb, var(--danger) 25%, transparent); }
 
 
 /* ═══════════════════════ Combobox ═══════════════════════ */
-.srx-combobox { position: relative; display: inline-flex; width: 100%; }
+.rdz-combobox { position: relative; display: inline-flex; width: 100%; }
 
-.srx-combobox__trigger { display: inline-flex; align-items: center; justify-content: space-between; gap: var(--space-2); cursor: pointer; text-align: left; }
+.rdz-combobox__trigger { display: inline-flex; align-items: center; justify-content: space-between; gap: var(--space-2); cursor: pointer; text-align: left; }
 
-.srx-combobox__ph { color: var(--text-faint); }
+.rdz-combobox__ph { color: var(--text-faint); }
 
-.srx-combobox__chev { color: var(--text-muted); flex: none; }
+.rdz-combobox__chev { color: var(--text-muted); flex: none; }
 
-.srx-combobox__pop { z-index: var(--z-popover); background: var(--panel); border: 1px solid var(--surface-edge); border-radius: var(--radius-overlay); box-shadow: var(--shadow-5); padding: var(--space-2); animation: srxPopover var(--duration-fast) var(--ease-standard); }
+.rdz-combobox__pop { z-index: var(--z-popover); background: var(--panel); border: 1px solid var(--surface-edge); border-radius: var(--radius-overlay); box-shadow: var(--shadow-5); padding: var(--space-2); animation: rdzPopover var(--duration-fast) var(--ease-standard); }
 
 /* search row now provided by the shared <Search variant="plain" size="sm"> */
 
-.srx-combobox__list { max-height: 14rem; overflow-y: auto; display: flex; flex-direction: column; gap: 0.0625rem; scrollbar-gutter: stable; padding-block-end: var(--space-1); }
+.rdz-combobox__list { max-height: 14rem; overflow-y: auto; display: flex; flex-direction: column; gap: 0.0625rem; scrollbar-gutter: stable; padding-block-end: var(--space-1); }
 
-.srx-combobox__opt { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); padding: 0.5rem var(--space-3); border-radius: calc(var(--radius-overlay) - var(--space-2)); font-family: var(--font-display); font-size: var(--fs-body-s); color: var(--text); text-align: left; cursor: pointer; }
+.rdz-combobox__opt { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); padding: 0.5rem var(--space-3); border-radius: calc(var(--radius-overlay) - var(--space-2)); font-family: var(--font-display); font-size: var(--fs-body-s); color: var(--text); text-align: left; cursor: pointer; }
 
-.srx-combobox__opt[data-active] { background: var(--surface); }
+.rdz-combobox__opt[data-active] { background: var(--surface); }
 
-.srx-combobox__opt[aria-selected="true"] { color: var(--accent-ink); }
+.rdz-combobox__opt[aria-selected="true"] { color: var(--accent-ink); }
 
-.srx-combobox__empty { padding: var(--space-4); text-align: center; color: var(--text-muted); font-size: var(--fs-body-s); }
+.rdz-combobox__empty { padding: var(--space-4); text-align: center; color: var(--text-muted); font-size: var(--fs-body-s); }

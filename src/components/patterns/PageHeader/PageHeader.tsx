@@ -26,20 +26,20 @@ export function PageHeader({
   ...rest
 }: PageHeaderProps): React.ReactElement {
   return (
-    <header className={cx('srx-pageheader', className)} {...rest}>
-      {breadcrumb ? <div className="srx-pageheader__crumb">{breadcrumb}</div> : null}
-      <div className="srx-pageheader__row">
-        <div className="srx-pageheader__head">
+    <header className={cx('rdz-pageheader', className)} {...rest}>
+      {breadcrumb ? <div className="rdz-pageheader__crumb">{breadcrumb}</div> : null}
+      <div className="rdz-pageheader__row">
+        <div className="rdz-pageheader__head">
           {eyebrow ? (
-            <span className="srx-eyebrow">
-              <span className="srx-eyebrow__dot" />
+            <span className="rdz-eyebrow">
+              <span className="rdz-eyebrow__dot" />
               {eyebrow}
             </span>
           ) : null}
-          {title ? <h1 className="srx-pageheader__title">{title}</h1> : null}
-          {description ? <p className="srx-pageheader__desc">{description}</p> : null}
+          {title ? <h1 className="rdz-pageheader__title">{title}</h1> : null}
+          {description ? <p className="rdz-pageheader__desc">{description}</p> : null}
         </div>
-        {actions ? <div className="srx-pageheader__actions">{actions}</div> : null}
+        {actions ? <div className="rdz-pageheader__actions">{actions}</div> : null}
       </div>
     </header>
   );

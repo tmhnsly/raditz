@@ -63,7 +63,7 @@ export function ContextMenu({ items = [], children, className, longPressMs = 480
 
   return (
     <div
-      className="srx-contextmenu"
+      className="rdz-contextmenu"
       onContextMenu={onContextMenu}
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}

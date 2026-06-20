@@ -37,8 +37,8 @@ export function Popover({
 }: PopoverProps): ReactElement {
   const { open, toggle, close, anchorRef } = useTrigger<HTMLSpanElement>({ open: openProp, defaultOpen, onOpenChange });
   return (
-    <span className="srx-popover__root">
-      <span ref={anchorRef} className="srx-popover__anchor" onClick={toggle}>{trigger}</span>
+    <span className="rdz-popover__root">
+      <span ref={anchorRef} className="rdz-popover__anchor" onClick={toggle}>{trigger}</span>
       <Overlay
         open={open}
         onDismiss={close}
@@ -46,7 +46,7 @@ export function Popover({
         ignore={anchorRef}
         focus="none"
         role="dialog"
-        className={cx('srx-popover', className)}
+        className={cx('rdz-popover', className)}
         {...rest}
       >
         {children}

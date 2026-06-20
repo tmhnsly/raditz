@@ -1,13 +1,13 @@
 // Co-located styles for Container. Uses SuperRadix tokens (var(--…)).
-.srx-container {
+.rdz-container {
   width: 100%;
   max-width: var(--container-max);
   margin-inline: auto;
   padding-inline: var(--container-gutter);
 }
 
-.srx-container[data-size='narrow'] { max-width: 900px; }
-.srx-container[data-size='wide'] { max-width: 1560px; }
-.srx-container[data-size='prose'] { max-width: var(--measure-prose); }
+.rdz-container[data-size='narrow'] { max-width: 900px; }
+.rdz-container[data-size='wide'] { max-width: 1560px; }
+.rdz-container[data-size='prose'] { max-width: var(--measure-prose); }
 
-.srx-container[data-bleed] { padding-inline: 0; }
+.rdz-container[data-bleed] { padding-inline: 0; }

@@ -13,7 +13,7 @@ export interface AspectRatioProps extends HTMLAttributes<HTMLDivElement> {
  */
 export function AspectRatio({ ratio = 16 / 9, className, style, children, ...rest }: AspectRatioProps): ReactElement {
   return (
-    <div className={cx('srx-aspect', className)} style={{ '--srx-aspect': String(ratio), ...style } as CSSProperties} {...rest}>
+    <div className={cx('rdz-aspect', className)} style={{ '--rdz-aspect': String(ratio), ...style } as CSSProperties} {...rest}>
       {children}
     </div>
   );

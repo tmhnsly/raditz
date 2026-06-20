@@ -5,7 +5,7 @@ export type ColorScheme = 'light' | 'dark';
 /** What the user chose: an explicit scheme, or 'system' = follow the OS. */
 export type ColorPreference = 'system' | ColorScheme;
 
-const KEY = 'srx-color-scheme';
+const KEY = 'rdz-color-scheme';
 const QUERY = '(prefers-color-scheme: dark)';
 
 function systemScheme(): ColorScheme {

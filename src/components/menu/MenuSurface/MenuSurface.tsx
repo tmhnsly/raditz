@@ -73,8 +73,8 @@ export function MenuItems({ roving }: MenuItemsProps): ReactElement {
   return (
     <>
       {plan.map((p) => {
-        if (p.kind === 'sep') return <div key={p.idx} className="srx-menu__sep" role="separator" />;
-        if (p.kind === 'heading') return <div key={p.idx} className="srx-menu__label">{p.it.label}</div>;
+        if (p.kind === 'sep') return <div key={p.idx} className="rdz-menu__sep" role="separator" />;
+        if (p.kind === 'heading') return <div key={p.idx} className="rdz-menu__label">{p.it.label}</div>;
         const { it, rove } = p;
         return (
           <button
@@ -83,13 +83,13 @@ export function MenuItems({ roving }: MenuItemsProps): ReactElement {
             role="menuitem"
             disabled={it.disabled}
             ref={(el) => { if (rove >= 0) itemRefs.current[rove] = el; }}
-            className={cx('srx-menu__item', it.danger && 'srx-menu__item--danger')}
+            className={cx('rdz-menu__item', it.danger && 'rdz-menu__item--danger')}
             onMouseEnter={() => { if (rove >= 0) setActive(rove); }}
             onClick={() => choose(it)}
           >
-            {it.icon ? <span className="srx-menu__icon">{it.icon}</span> : null}
-            <span className="srx-menu__text">{it.label}</span>
-            {it.shortcut ? <span className="srx-menu__shortcut">{it.shortcut}</span> : null}
+            {it.icon ? <span className="rdz-menu__icon">{it.icon}</span> : null}
+            <span className="rdz-menu__text">{it.label}</span>
+            {it.shortcut ? <span className="rdz-menu__shortcut">{it.shortcut}</span> : null}
           </button>
         );
       })}
@@ -141,7 +141,7 @@ export function MenuSurface({
       ignore={ignore}
       focus="none"
       role="menu"
-      className={cx('srx-menu', className)}
+      className={cx('rdz-menu', className)}
       onKeyDown={roving.onKeyDown}
       {...rest}
     >

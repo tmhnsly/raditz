@@ -21,7 +21,7 @@ export const Reverse: Story = {
   render: () => (
     <Marquee direction="right" duration={18}>
       {LOGOS.map((l) => (
-        <span key={l} className="srx-badge srx-badge--soft">{l}</span>
+        <span key={l} className="rdz-badge rdz-badge--soft">{l}</span>
       ))}
     </Marquee>
   ),

@@ -1,24 +1,24 @@
 // Uses SuperRadix tokens (var(--…)); re-skins/re-themes with the system.
 /* ═══════════════════════ Showcase page (parallax demo) ═══════════════════════ */
-.srx-showcase { position: relative; }
+.rdz-showcase { position: relative; }
 
 /* Floating static/parallax toggle — fixed so it stays reachable while scrolling. */
-.srx-showcase__toggle {
+.rdz-showcase__toggle {
   position: fixed; z-index: var(--z-sticky); right: var(--space-5); bottom: var(--space-5);
   background: var(--glass); -webkit-backdrop-filter: blur(var(--glass-blur)); backdrop-filter: blur(var(--glass-blur));
   border: 1px solid var(--glass-sheen); border-radius: var(--radius-full); box-shadow: var(--shadow-4);
   padding: 0.5rem 0.875rem;
 }
-.srx-showcase__toggle-row { display: inline-flex; align-items: center; gap: var(--space-3); font-size: var(--fs-body-s); font-weight: var(--fw-medium); color: var(--text); cursor: pointer; }
+.rdz-showcase__toggle-row { display: inline-flex; align-items: center; gap: var(--space-3); font-size: var(--fs-body-s); font-weight: var(--fw-medium); color: var(--text); cursor: pointer; }
 
 /* Generous vertical rhythm so there's room to actually scroll + feel the parallax. */
-.srx-showcase__hero { gap: var(--space-4); align-items: flex-start; min-height: 78vh; justify-content: center; padding-block: var(--space-9); max-width: 46rem; }
-.srx-showcase__lede { max-width: 40rem; }
-.srx-showcase__cta { gap: var(--space-3); margin-top: var(--space-3); }
+.rdz-showcase__hero { gap: var(--space-4); align-items: flex-start; min-height: 78vh; justify-content: center; padding-block: var(--space-9); max-width: 46rem; }
+.rdz-showcase__lede { max-width: 40rem; }
+.rdz-showcase__cta { gap: var(--space-3); margin-top: var(--space-3); }
 
-.srx-showcase__band { gap: var(--space-4); align-items: flex-start; min-height: 64vh; justify-content: center; padding-block: var(--space-9); }
-.srx-showcase__grid { --col-min: 14rem; width: 100%; margin-top: var(--space-4); }
-.srx-showcase__card { gap: var(--space-2); padding: var(--space-5); }
+.rdz-showcase__band { gap: var(--space-4); align-items: flex-start; min-height: 64vh; justify-content: center; padding-block: var(--space-9); }
+.rdz-showcase__grid { --col-min: 14rem; width: 100%; margin-top: var(--space-4); }
+.rdz-showcase__card { gap: var(--space-2); padding: var(--space-5); }
 
-.srx-showcase__quote { min-height: 70vh; justify-content: center; align-items: center; text-align: center; padding-block: var(--space-11); }
-.srx-showcase__quote .h-display { max-width: 22ch; }
+.rdz-showcase__quote { min-height: 70vh; justify-content: center; align-items: center; text-align: center; padding-block: var(--space-11); }
+.rdz-showcase__quote .h-display { max-width: 22ch; }

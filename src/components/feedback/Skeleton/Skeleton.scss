@@ -1,14 +1,14 @@
 // Auto-split from components.css — this component's styles, co-located.
 // Uses SuperRadix tokens (var(--…)); re-skins/re-themes with the system.
 /* ═══════════════════════ Skeleton ═══════════════════════ */
-.srx-skeleton { display: block; width: var(--srx-skeleton-w); height: var(--srx-skeleton-h); background: linear-gradient(90deg, var(--surface) 25%, var(--surface-strong) 37%, var(--surface) 63%); background-size: 400% 100%; animation: srxShimmer 1.4s ease infinite; border-radius: var(--srx-skeleton-radius, var(--radius-sm)); }
+.rdz-skeleton { display: block; width: var(--rdz-skeleton-w); height: var(--rdz-skeleton-h); background: linear-gradient(90deg, var(--surface) 25%, var(--surface-strong) 37%, var(--surface) 63%); background-size: 400% 100%; animation: rdzShimmer 1.4s ease infinite; border-radius: var(--rdz-skeleton-radius, var(--radius-sm)); }
 
-.srx-skeleton--text { height: 0.75em; margin: 0.25em 0; border-radius: var(--radius-full); }
+.rdz-skeleton--text { height: 0.75em; margin: 0.25em 0; border-radius: var(--radius-full); }
 
-.srx-skeleton--last { width: 70%; }
+.rdz-skeleton--last { width: 70%; }
 
-.srx-skeleton--circle { border-radius: var(--radius-full); }
+.rdz-skeleton--circle { border-radius: var(--radius-full); }
 
-.srx-skeleton--rect { border-radius: var(--radius-md); }
+.rdz-skeleton--rect { border-radius: var(--radius-md); }
 
-.srx-skeleton-lines { display: block; }
+.rdz-skeleton-lines { display: block; }

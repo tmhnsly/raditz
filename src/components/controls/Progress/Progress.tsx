@@ -21,9 +21,9 @@ export function Progress({ value = null, max = 100, size = 'md', indeterminate =
   const isInd = indeterminate || value == null;
   const pct = isInd ? null : toPercent(value as number, max);
   const cls = cx(
-    'srx-progress',
-    size !== 'md' && `srx-progress--${size}`,
-    isInd && 'srx-progress--indeterminate',
+    'rdz-progress',
+    size !== 'md' && `rdz-progress--${size}`,
+    isInd && 'rdz-progress--indeterminate',
     className,
   );
   return (
@@ -36,7 +36,7 @@ export function Progress({ value = null, max = 100, size = 'md', indeterminate =
       aria-valuenow={isInd ? undefined : value ?? undefined}
       {...rest}
     >
-      <div className="srx-progress__indicator" style={isInd ? undefined : ({ '--srx-progress-pct': `${pct}%` } as React.CSSProperties)} />
+      <div className="rdz-progress__indicator" style={isInd ? undefined : ({ '--rdz-progress-pct': `${pct}%` } as React.CSSProperties)} />
     </div>
   );
 }

@@ -19,7 +19,7 @@ export const Durations: Story = {
     return (
       <div style={{ maxWidth: 760 }}>
         <button
-          className="srx-btn srx-btn--soft"
+          className="rdz-btn rdz-btn--soft"
           onClick={() => setOn((v) => !v)}
           style={{ marginBottom: '1.5rem' }}
         >

@@ -17,10 +17,10 @@ export interface LabelProps extends LabelHTMLAttributes<HTMLLabelElement> {
  */
 export function Label({ htmlFor, required = false, disabled = false, className, children, ...rest }: LabelProps): ReactElement {
   return (
-    <label htmlFor={htmlFor} className={cx('srx-label', disabled && 'srx-label--disabled', className)} {...rest}>
+    <label htmlFor={htmlFor} className={cx('rdz-label', disabled && 'rdz-label--disabled', className)} {...rest}>
       {children}
       {required ? (
-        <span className="srx-label__req" aria-hidden="true">
+        <span className="rdz-label__req" aria-hidden="true">
           *
         </span>
       ) : null}

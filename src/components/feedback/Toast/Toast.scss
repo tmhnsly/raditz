@@ -1,37 +1,37 @@
 // Auto-split from components.css — this component's styles, co-located.
 // Uses SuperRadix tokens (var(--…)); re-skins/re-themes with the system.
 /* ═══════════════════════ Toast ═══════════════════════ */
-.srx-toast-viewport { position: fixed; z-index: var(--z-toast); display: flex; flex-direction: column; gap: var(--space-3); padding: var(--space-5); max-width: min(92vw, 23.75rem); pointer-events: none; }
+.rdz-toast-viewport { position: fixed; z-index: var(--z-toast); display: flex; flex-direction: column; gap: var(--space-3); padding: var(--space-5); max-width: min(92vw, 23.75rem); pointer-events: none; }
 
-.srx-toast-viewport--bottom-right { bottom: 0; right: 0; }
+.rdz-toast-viewport--bottom-right { bottom: 0; right: 0; }
 
-.srx-toast-viewport--bottom-left { bottom: 0; left: 0; }
+.rdz-toast-viewport--bottom-left { bottom: 0; left: 0; }
 
-.srx-toast-viewport--top-right { top: 0; right: 0; }
+.rdz-toast-viewport--top-right { top: 0; right: 0; }
 
-.srx-toast-viewport--top-left { top: 0; left: 0; }
+.rdz-toast-viewport--top-left { top: 0; left: 0; }
 
-.srx-toast-viewport--bottom-center { bottom: 0; left: 50%; transform: translateX(-50%); align-items: center; }
+.rdz-toast-viewport--bottom-center { bottom: 0; left: 50%; transform: translateX(-50%); align-items: center; }
 
-.srx-toast-viewport--top-center { top: 0; left: 50%; transform: translateX(-50%); align-items: center; }
+.rdz-toast-viewport--top-center { top: 0; left: 50%; transform: translateX(-50%); align-items: center; }
 
-.srx-toast { pointer-events: auto; display: flex; align-items: flex-start; gap: var(--space-3); width: 100%; background: var(--panel); border: var(--border-width) solid var(--surface-edge); border-left: var(--border-width-3) solid var(--accent); border-radius: var(--radius-overlay); box-shadow: var(--shadow-5); padding: var(--space-4); animation: srxToastIn var(--duration-base) var(--ease-standard); }
+.rdz-toast { pointer-events: auto; display: flex; align-items: flex-start; gap: var(--space-3); width: 100%; background: var(--panel); border: var(--border-width) solid var(--surface-edge); border-left: var(--border-width-3) solid var(--accent); border-radius: var(--radius-overlay); box-shadow: var(--shadow-5); padding: var(--space-4); animation: rdzToastIn var(--duration-base) var(--ease-standard); }
 
-.srx-toast--success { border-left-color: var(--success); }
+.rdz-toast--success { border-left-color: var(--success); }
 
-.srx-toast--warning { border-left-color: var(--warning); }
+.rdz-toast--warning { border-left-color: var(--warning); }
 
-.srx-toast--danger { border-left-color: var(--danger); }
+.rdz-toast--danger { border-left-color: var(--danger); }
 
-.srx-toast__body { flex: 1; min-width: 0; }
+.rdz-toast__body { flex: 1; min-width: 0; }
 
-.srx-toast__title { font-weight: var(--fw-semibold); font-size: var(--fs-body-s); color: var(--text); }
+.rdz-toast__title { font-weight: var(--fw-semibold); font-size: var(--fs-body-s); color: var(--text); }
 
-.srx-toast__desc { font-size: var(--fs-caption); color: var(--text-soft); margin-top: 0.125rem; line-height: var(--lh-body); }
+.rdz-toast__desc { font-size: var(--fs-caption); color: var(--text-soft); margin-top: 0.125rem; line-height: var(--lh-body); }
 
-.srx-toast__action { flex: none; align-self: center; font-family: var(--font-display); font-size: var(--fs-label); font-weight: var(--fw-semibold); color: var(--accent-ink); padding: 0.25rem 0.5rem; border-radius: var(--radius-sm); }
+.rdz-toast__action { flex: none; align-self: center; font-family: var(--font-display); font-size: var(--fs-label); font-weight: var(--fw-semibold); color: var(--accent-ink); padding: 0.25rem 0.5rem; border-radius: var(--radius-sm); }
 
-.srx-toast__action:hover { background: var(--accent-surface); }
+.rdz-toast__action:hover { background: var(--accent-surface); }
 
 /* Close = the shared OverlayClose disc (currentColor tint); keep it top-aligned. */
-.srx-toast__close { align-self: flex-start; }
+.rdz-toast__close { align-self: flex-start; }

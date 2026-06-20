@@ -1,9 +1,9 @@
 // Auto-split from components.css — this component's styles, co-located.
 // Uses SuperRadix tokens (var(--…)); re-skins/re-themes with the system.
-.srx-textarea { height: auto; min-height: 6rem; resize: vertical; line-height: var(--lh-body); }
+.rdz-textarea { height: auto; min-height: 6rem; resize: vertical; line-height: var(--lh-body); }
 
 
 /* Form */
-.srx-form { display: flex; flex-direction: column; gap: var(--space-5); }
+.rdz-form { display: flex; flex-direction: column; gap: var(--space-5); }
 
-.srx-form__actions { display: flex; align-items: center; justify-content: flex-end; gap: var(--space-3); margin-top: var(--space-2); }
+.rdz-form__actions { display: flex; align-items: center; justify-content: flex-end; gap: var(--space-3); margin-top: var(--space-2); }

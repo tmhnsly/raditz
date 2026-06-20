@@ -1,29 +1,29 @@
 // Auto-split from components.css — this component's styles, co-located.
 // Uses SuperRadix tokens (var(--…)); re-skins/re-themes with the system.
 /* ═══════════════════════ Tabs ═══════════════════════ */
-.srx-tabs { display: inline-flex; gap: var(--space-1); padding: var(--space-1); background: var(--surface-soft); border-radius: var(--radius-control); }
+.rdz-tabs { display: inline-flex; gap: var(--space-1); padding: var(--space-1); background: var(--surface-soft); border-radius: var(--radius-control); }
 
-.srx-tabs__tab {
+.rdz-tabs__tab {
   padding: var(--space-2) var(--space-4); border-radius: calc(var(--radius-control) - var(--space-1)); /* Rule 1: inner = control radius − space-1 track pad */
   font-family: var(--font-display); font-size: var(--fs-body-s); font-weight: var(--fw-medium);
   color: var(--text-soft); cursor: pointer; transition: var(--transition-control); white-space: nowrap;
 }
 
-.srx-tabs__tab:hover { color: var(--text); }
+.rdz-tabs__tab:hover { color: var(--text); }
 
-.srx-tabs__tab--active { background: var(--panel); color: var(--text); box-shadow: var(--shadow-2); }
+.rdz-tabs__tab--active { background: var(--panel); color: var(--text); box-shadow: var(--shadow-2); }
 
 
 /* underline variant */
-.srx-tabs--underline { background: none; padding: 0; gap: var(--space-5); border-bottom: var(--border-width) solid var(--rule-soft); }
+.rdz-tabs--underline { background: none; padding: 0; gap: var(--space-5); border-bottom: var(--border-width) solid var(--rule-soft); }
 
-.srx-tabs--underline .srx-tabs__tab { border-radius: 0; padding: 0.625rem 0.125rem; background: none; box-shadow: none; border-bottom: var(--border-width-2) solid transparent; margin-bottom: -0.0625rem; }
+.rdz-tabs--underline .rdz-tabs__tab { border-radius: 0; padding: 0.625rem 0.125rem; background: none; box-shadow: none; border-bottom: var(--border-width-2) solid transparent; margin-bottom: -0.0625rem; }
 
-.srx-tabs--underline .srx-tabs__tab--active { color: var(--accent-ink); border-bottom-color: var(--accent); background: none; box-shadow: none; }
+.rdz-tabs--underline .rdz-tabs__tab--active { color: var(--accent-ink); border-bottom-color: var(--accent); background: none; box-shadow: none; }
 
 
 /* Let a horizontal control track scroll instead of overflowing the viewport
    on narrow screens (tabs, toolbars, segmented groups). */
-.srx-tabs--scroll, .srx-scroll-x { max-width: 100%; overflow-x: auto; scrollbar-width: none; }
+.rdz-tabs--scroll, .rdz-scroll-x { max-width: 100%; overflow-x: auto; scrollbar-width: none; }
 
-.srx-tabs--scroll::-webkit-scrollbar, .srx-scroll-x::-webkit-scrollbar { display: none; }
+.rdz-tabs--scroll::-webkit-scrollbar, .rdz-scroll-x::-webkit-scrollbar { display: none; }

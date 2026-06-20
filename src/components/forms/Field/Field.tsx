@@ -69,7 +69,7 @@ export function Field({
   children,
   ...rest
 }: FieldProps): ReactElement {
-  const autoId = useStableId('srx-field');
+  const autoId = useStableId('rdz-field');
   const id = htmlFor ?? autoId;
   const msgId = `${id}-msg`;
   const invalid = !!error;
@@ -90,18 +90,18 @@ export function Field({
 
   return (
     <FieldContext.Provider value={{ id, describedBy, invalid, required, disabled }}>
-      <div className={cx('srx-field', className)} data-disabled={disabled || undefined} {...rest}>
+      <div className={cx('rdz-field', className)} data-disabled={disabled || undefined} {...rest}>
         {label && (
-          <label className="srx-field__label" htmlFor={id}>
+          <label className="rdz-field__label" htmlFor={id}>
             {label}
-            {required && <span className="srx-field__req" aria-hidden="true">*</span>}
+            {required && <span className="rdz-field__req" aria-hidden="true">*</span>}
           </label>
         )}
         {control}
         {error ? (
-          <span className="srx-field__error" id={msgId}>{error}</span>
+          <span className="rdz-field__error" id={msgId}>{error}</span>
         ) : hint ? (
-          <span className="srx-field__hint" id={msgId}>{hint}</span>
+          <span className="rdz-field__hint" id={msgId}>{hint}</span>
         ) : null}
       </div>
     </FieldContext.Provider>

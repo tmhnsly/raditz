@@ -39,12 +39,12 @@ export function Skeleton({
 
   if (variant === 'text' && lines > 1) {
     return (
-      <span className={cx('srx-skeleton-lines', className)} aria-hidden="true" {...rest}>
+      <span className={cx('rdz-skeleton-lines', className)} aria-hidden="true" {...rest}>
         {Array.from({ length: lines }, (_, i) => (
           <span
             key={i}
-            className={cx('srx-skeleton', 'srx-skeleton--text', i === lines - 1 && 'srx-skeleton--last')}
-            style={i === lines - 1 ? undefined : ({ '--srx-skeleton-w': width || '100%' } as React.CSSProperties)}
+            className={cx('rdz-skeleton', 'rdz-skeleton--text', i === lines - 1 && 'rdz-skeleton--last')}
+            style={i === lines - 1 ? undefined : ({ '--rdz-skeleton-w': width || '100%' } as React.CSSProperties)}
           />
         ))}
       </span>
@@ -52,10 +52,10 @@ export function Skeleton({
   }
 
   const s = {
-    '--srx-skeleton-w': width,
-    '--srx-skeleton-h': height,
-    '--srx-skeleton-radius': radius,
+    '--rdz-skeleton-w': width,
+    '--rdz-skeleton-h': height,
+    '--rdz-skeleton-radius': radius,
     ...style,
   } as React.CSSProperties;
-  return <span className={cx('srx-skeleton', `srx-skeleton--${variant}`, className)} style={s} aria-hidden="true" {...rest} />;
+  return <span className={cx('rdz-skeleton', `rdz-skeleton--${variant}`, className)} style={s} aria-hidden="true" {...rest} />;
 }

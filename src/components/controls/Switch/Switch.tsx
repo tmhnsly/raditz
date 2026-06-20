@@ -13,10 +13,10 @@ export interface SwitchProps extends React.InputHTMLAttributes<HTMLInputElement>
  */
 export function Switch({ className, style, ...rest }: SwitchProps): React.ReactElement {
   return (
-    <span className={cx('srx-switch', className)} style={style}>
+    <span className={cx('rdz-switch', className)} style={style}>
       <input type="checkbox" role="switch" {...rest} />
-      <span className="srx-switch__track" aria-hidden="true">
-        <span className="srx-switch__thumb" />
+      <span className="rdz-switch__track" aria-hidden="true">
+        <span className="rdz-switch__thumb" />
       </span>
     </span>
   );

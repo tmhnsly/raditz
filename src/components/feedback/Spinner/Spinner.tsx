@@ -25,17 +25,17 @@ export function Spinner({
 }: SpinnerProps): React.ReactElement {
   return (
     <span
-      className={cx('srx-spinner', className)}
+      className={cx('rdz-spinner', className)}
       role="status"
       aria-live="polite"
-      style={size != null ? ({ '--srx-spinner-size': typeof size === 'number' ? `${size}px` : size, ...style } as React.CSSProperties) : style}
+      style={size != null ? ({ '--rdz-spinner-size': typeof size === 'number' ? `${size}px` : size, ...style } as React.CSSProperties) : style}
       {...rest}
     >
       <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
         <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth={strokeWidth} opacity="0.2" />
         <path d="M21 12a9 9 0 0 0-9-9" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" />
       </svg>
-      <span className="srx-visually-hidden">{label}</span>
+      <span className="rdz-visually-hidden">{label}</span>
     </span>
   );
 }

@@ -80,7 +80,7 @@ export function NavBar({
     return () => ro.disconnect();
   }, [measure]);
 
-  const cls = cx('srx-navbar', `srx-navbar--${variant}`, `srx-navbar--${orientation}`, className);
+  const cls = cx('rdz-navbar', `rdz-navbar--${variant}`, `rdz-navbar--${orientation}`, className);
   const indStyle: CSSProperties = ind.ready
     ? { transform: ind.transform, width: ind.width, height: ind.height, left: ind.left, top: ind.top, opacity: 1 }
     : { opacity: 0 };
@@ -93,7 +93,7 @@ export function NavBar({
 
   return (
     <nav className={cls} ref={listRef} role="tablist" aria-orientation={orientation} onKeyDown={onKeyDown} {...rest}>
-      <span className="srx-navbar__indicator" style={indStyle} aria-hidden="true" />
+      <span className="rdz-navbar__indicator" style={indStyle} aria-hidden="true" />
       {items.map((it) => {
         const isActive = it.key === val;
         const Tag = it.href ? 'a' : 'button';
@@ -101,7 +101,7 @@ export function NavBar({
           <Tag
             key={it.key}
             ref={(el: HTMLElement | null) => { itemRefs.current[it.key] = el; }}
-            className="srx-navbar__item"
+            className="rdz-navbar__item"
             href={it.href}
             type={it.href ? undefined : 'button'}
             role="tab"

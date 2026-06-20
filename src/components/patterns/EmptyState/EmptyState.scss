@@ -1,15 +1,15 @@
 // Auto-split from components.css — this component's styles, co-located.
 // Uses SuperRadix tokens (var(--…)); re-skins/re-themes with the system.
-.srx-emptystate { display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--space-3); padding: var(--space-8) var(--space-5); }
+.rdz-emptystate { display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--space-3); padding: var(--space-8) var(--space-5); }
 
-.srx-emptystate__icon { width: 3.5rem; height: 3.5rem; display: grid; place-items: center; border-radius: var(--radius-lg); background: var(--surface-strong); color: var(--text-soft); }
+.rdz-emptystate__icon { width: 3.5rem; height: 3.5rem; display: grid; place-items: center; border-radius: var(--radius-lg); background: var(--surface-strong); color: var(--text-soft); }
 
-.srx-emptystate--accent .srx-emptystate__icon { background: var(--accent-surface); color: var(--accent-ink); }
+.rdz-emptystate--accent .rdz-emptystate__icon { background: var(--accent-surface); color: var(--accent-ink); }
 
-.srx-emptystate--danger .srx-emptystate__icon { background: var(--danger-surface); color: var(--danger-ink); }
+.rdz-emptystate--danger .rdz-emptystate__icon { background: var(--danger-surface); color: var(--danger-ink); }
 
-.srx-emptystate__title { font-size: var(--fs-body-l); font-weight: var(--fw-semibold); color: var(--text); }
+.rdz-emptystate__title { font-size: var(--fs-body-l); font-weight: var(--fw-semibold); color: var(--text); }
 
-.srx-emptystate__desc { color: var(--text-soft); font-size: var(--fs-body-s); line-height: var(--lh-body); max-width: 40ch; }
+.rdz-emptystate__desc { color: var(--text-soft); font-size: var(--fs-body-s); line-height: var(--lh-body); max-width: 40ch; }
 
-.srx-emptystate__action { margin-top: var(--space-2); display: flex; gap: var(--space-3); }
+.rdz-emptystate__action { margin-top: var(--space-2); display: flex; gap: var(--space-3); }

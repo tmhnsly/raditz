@@ -1,27 +1,27 @@
 // Uses SuperRadix tokens (var(--…)); re-skins/re-themes with the system.
 /* ═══════════════════════ TimePicker ═══════════════════════ */
-.srx-timepicker { display: inline-flex; position: relative; }
+.rdz-timepicker { display: inline-flex; position: relative; }
 
-.srx-timepicker__trigger { display: inline-flex; align-items: center; gap: var(--space-2); cursor: pointer; text-align: left; min-width: 9rem; }
+.rdz-timepicker__trigger { display: inline-flex; align-items: center; gap: var(--space-2); cursor: pointer; text-align: left; min-width: 9rem; }
 
-.srx-timepicker__trigger.is-placeholder { color: var(--text-faint); }
+.rdz-timepicker__trigger.is-placeholder { color: var(--text-faint); }
 
-.srx-timepicker__icon { width: 1.0625rem; height: 1.0625rem; color: var(--text-muted); flex: none; }
+.rdz-timepicker__icon { width: 1.0625rem; height: 1.0625rem; color: var(--text-muted); flex: none; }
 
-.srx-timemenu { z-index: var(--z-popover); background: var(--panel); border: 1px solid var(--surface-edge); border-radius: var(--radius-overlay); box-shadow: var(--shadow-5); padding: var(--space-2); animation: srxPopover var(--duration-fast) var(--ease-standard); }
+.rdz-timemenu { z-index: var(--z-popover); background: var(--panel); border: 1px solid var(--surface-edge); border-radius: var(--radius-overlay); box-shadow: var(--shadow-5); padding: var(--space-2); animation: rdzPopover var(--duration-fast) var(--ease-standard); }
 
-.srx-timemenu__cols { display: flex; gap: var(--space-1); }
+.rdz-timemenu__cols { display: flex; gap: var(--space-1); }
 
 /* Compact value columns scroll, but the scrollbar is hidden — on Firefox the thin
    bars crowded the three narrow columns ("in the way"). A little end inset lets
    the last value clear the panel edge. */
-.srx-timemenu__col { display: flex; flex-direction: column; gap: 2px; max-height: 13rem; overflow-y: auto; scrollbar-width: none; padding-block-end: var(--space-1); }
-.srx-timemenu__col::-webkit-scrollbar { width: 0; height: 0; }
+.rdz-timemenu__col { display: flex; flex-direction: column; gap: 2px; max-height: 13rem; overflow-y: auto; scrollbar-width: none; padding-block-end: var(--space-1); }
+.rdz-timemenu__col::-webkit-scrollbar { width: 0; height: 0; }
 
-.srx-timemenu__opt { padding: 0.375rem 0.75rem; border-radius: var(--radius-sm); font-size: var(--fs-body-s); font-variant-numeric: tabular-nums; color: var(--text); text-align: center; transition: var(--transition-control); }
+.rdz-timemenu__opt { padding: 0.375rem 0.75rem; border-radius: var(--radius-sm); font-size: var(--fs-body-s); font-variant-numeric: tabular-nums; color: var(--text); text-align: center; transition: var(--transition-control); }
 
-.srx-timemenu__opt:hover { background: var(--surface); }
+.rdz-timemenu__opt:hover { background: var(--surface); }
 
-.srx-timemenu__opt.is-selected { background: var(--accent); color: var(--on-accent); }
+.rdz-timemenu__opt.is-selected { background: var(--accent); color: var(--on-accent); }
 
-.srx-timemenu__opt.is-selected:hover { background: var(--accent-hover); }
+.rdz-timemenu__opt.is-selected:hover { background: var(--accent-hover); }

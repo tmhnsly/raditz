@@ -28,8 +28,8 @@ export const Default: Story = {
     <Card style={{ maxWidth: 380, padding: 'var(--space-6)' }}>
       <div style={{ display: 'grid', gap: 'var(--space-4)' }}>
         <div style={{ display: 'grid', gap: 'var(--space-1)' }}>
-          <span className="srx-eyebrow">
-            <span className="srx-eyebrow__dot" />
+          <span className="rdz-eyebrow">
+            <span className="rdz-eyebrow__dot" />
             Get started
           </span>
           <h3 style={{ fontSize: 'var(--fs-h3)', letterSpacing: 'var(--ls-h3)' }}>Create your account</h3>

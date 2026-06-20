@@ -199,7 +199,7 @@ export function Tree({
       const isSelected = selected === node.id;
       const isActive = activeId === node.id;
       return (
-        <div className="srx-tree__node" key={node.id} role="none">
+        <div className="rdz-tree__node" key={node.id} role="none">
           <div
             ref={(el) => { if (el) rowRefs.current.set(node.id, el); else rowRefs.current.delete(node.id); }}
             role="treeitem"
@@ -209,31 +209,31 @@ export function Tree({
             aria-disabled={node.disabled || undefined}
             tabIndex={isActive ? 0 : -1}
             className={cx(
-              'srx-tree__item',
-              hasChildren && 'srx-tree__item--branch',
-              isSelected && 'srx-tree__item--selected',
-              node.disabled && 'srx-tree__item--disabled',
+              'rdz-tree__item',
+              hasChildren && 'rdz-tree__item--branch',
+              isSelected && 'rdz-tree__item--selected',
+              node.disabled && 'rdz-tree__item--disabled',
             )}
             style={{ '--tree-level': level } as CSSProperties}
             onClick={() => activate({ node, level, hasChildren, expanded: isExpanded })}
             onFocus={() => setActiveId(node.id)}
           >
             <span
-              className="srx-tree__twist"
+              className="rdz-tree__twist"
               aria-hidden
               onClick={hasChildren ? (e) => { e.stopPropagation(); toggle(node.id); } : undefined}
             >
               {hasChildren && (
-                <svg viewBox="0 0 16 16" width="1em" height="1em" className={cx('srx-tree__chevron', isExpanded && 'is-open')}>
+                <svg viewBox="0 0 16 16" width="1em" height="1em" className={cx('rdz-tree__chevron', isExpanded && 'is-open')}>
                   <path d="M6 4l4 4-4 4" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               )}
             </span>
-            <span className="srx-tree__label">{node.label}</span>
-            {node.meta != null && <span className="srx-tree__meta">{node.meta}</span>}
+            <span className="rdz-tree__label">{node.label}</span>
+            {node.meta != null && <span className="rdz-tree__meta">{node.meta}</span>}
           </div>
           {hasChildren && isExpanded && (
-            <div role="group" className="srx-tree__group">
+            <div role="group" className="rdz-tree__group">
               {renderNodes(node.children!, level + 1)}
             </div>
           )}
@@ -242,7 +242,7 @@ export function Tree({
     });
 
   return (
-    <div role="tree" className={cx('srx-tree', className)} onKeyDown={onKeyDown} {...rest}>
+    <div role="tree" className={cx('rdz-tree', className)} onKeyDown={onKeyDown} {...rest}>
       {renderNodes(items, 1)}
     </div>
   );

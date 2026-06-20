@@ -35,10 +35,10 @@ export function Sparkline({
   const { line, area: fill } = sparklinePath(data, { w: W, h: H, pad: strokeWidth });
   return (
     <svg
-      className={cx('srx-sparkline', className)}
+      className={cx('rdz-sparkline', className)}
       viewBox={`0 0 ${W} ${H}`}
       preserveAspectRatio="none"
-      style={{ '--srx-sparkline-w': width, '--srx-sparkline-h': height, '--srx-sparkline-color': color, ...style } as React.CSSProperties}
+      style={{ '--rdz-sparkline-w': width, '--rdz-sparkline-h': height, '--rdz-sparkline-color': color, ...style } as React.CSSProperties}
       aria-hidden="true"
       {...rest}
     >

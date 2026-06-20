@@ -67,7 +67,7 @@ export function SectionBackground({
       raf = requestAnimationFrame(() => {
         const rect = root.getBoundingClientRect();
         const offset = (rect.top / window.innerHeight) * -32; // px, gentle
-        layer.style.setProperty('--srx-parallax-y', `${offset.toFixed(1)}px`);
+        layer.style.setProperty('--rdz-parallax-y', `${offset.toFixed(1)}px`);
       });
     };
     onScroll();
@@ -79,11 +79,11 @@ export function SectionBackground({
   return (
     <div
       ref={rootRef}
-      className={cx('srx-secbg', background !== 'none' && `srx-secbg--${background}`, GRADIENTS.has(background) && 'srx-secbg--gradient', isParallax && 'srx-secbg--parallax', scrim && 'srx-secbg--scrim', className)}
+      className={cx('rdz-secbg', background !== 'none' && `rdz-secbg--${background}`, GRADIENTS.has(background) && 'rdz-secbg--gradient', isParallax && 'rdz-secbg--parallax', scrim && 'rdz-secbg--scrim', className)}
       {...rest}
     >
       {hasLayer ? (
-        <div className="srx-secbg__layer" ref={layerRef} aria-hidden="true">
+        <div className="rdz-secbg__layer" ref={layerRef} aria-hidden="true">
           {video ? (
             <video src={video} autoPlay muted loop playsInline />
           ) : image ? (
@@ -93,7 +93,7 @@ export function SectionBackground({
       ) : null}
       {/* A scrim darkens the backdrop, so the surface OWNS its on-dark context —
           content gets legible on-media tokens without the caller adding a class. */}
-      <div className={cx('srx-secbg__content', scrim && 'srx-on-dark')}>{children}</div>
+      <div className={cx('rdz-secbg__content', scrim && 'rdz-on-dark')}>{children}</div>
     </div>
   );
 }

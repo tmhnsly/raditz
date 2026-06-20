@@ -1,11 +1,11 @@
 // Auto-split from components.css — this component's styles, co-located.
 // Uses SuperRadix tokens (var(--…)); re-skins/re-themes with the system.
 /* ═══════════════════════ Accordion ═══════════════════════ */
-.srx-accordion { display: flex; flex-direction: column; background: var(--panel); border: var(--border-width) solid var(--surface-edge); border-radius: var(--radius-card); overflow: hidden; }
+.rdz-accordion { display: flex; flex-direction: column; background: var(--panel); border: var(--border-width) solid var(--surface-edge); border-radius: var(--radius-card); overflow: hidden; }
 
-.srx-accordion__item + .srx-accordion__item { border-top: var(--border-width) solid var(--rule-soft); }
+.rdz-accordion__item + .rdz-accordion__item { border-top: var(--border-width) solid var(--rule-soft); }
 
-.srx-accordion__trigger {
+.rdz-accordion__trigger {
   display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); width: 100%;
   padding: var(--space-4) var(--space-5); font-family: var(--font-display); font-weight: var(--fw-semibold);
   font-size: var(--fs-body); color: var(--text); transition: var(--transition-control);
@@ -13,28 +13,28 @@
 
 /* Guard hover so it doesn't stick after a tap on touch devices (iOS). */
 @media (hover: hover) {
-  .srx-accordion__trigger:hover { background: var(--surface); }
+  .rdz-accordion__trigger:hover { background: var(--surface); }
 }
 
-.srx-accordion__trigger:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: -2px; }
+.rdz-accordion__trigger:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: -2px; }
 
-.srx-accordion__trigger:disabled { opacity: var(--disabled-opacity); cursor: not-allowed; }
+.rdz-accordion__trigger:disabled { opacity: var(--disabled-opacity); cursor: not-allowed; }
 
-.srx-accordion__chevron { width: 1.125rem; height: 1.125rem; color: var(--text-muted); flex: none; transition: transform var(--duration-base) var(--ease-standard); }
+.rdz-accordion__chevron { width: 1.125rem; height: 1.125rem; color: var(--text-muted); flex: none; transition: transform var(--duration-base) var(--ease-standard); }
 
-.srx-accordion__item[data-state="open"] .srx-accordion__chevron { transform: rotate(180deg); }
+.rdz-accordion__item[data-state="open"] .rdz-accordion__chevron { transform: rotate(180deg); }
 
 /* Animate open/close via grid-template-rows (0fr→1fr) rather than the `hidden`
    attribute, which snaps the layout and flickers the window scrollbar. */
-.srx-accordion__panel { display: grid; grid-template-rows: 0fr; visibility: hidden; transition: grid-template-rows var(--duration-base) var(--ease-standard), visibility var(--duration-base) var(--ease-standard); }
+.rdz-accordion__panel { display: grid; grid-template-rows: 0fr; visibility: hidden; transition: grid-template-rows var(--duration-base) var(--ease-standard), visibility var(--duration-base) var(--ease-standard); }
 
-.srx-accordion__item[data-state="open"] .srx-accordion__panel { grid-template-rows: 1fr; visibility: visible; }
+.rdz-accordion__item[data-state="open"] .rdz-accordion__panel { grid-template-rows: 1fr; visibility: visible; }
 
 /* visibility lives on the PANEL (not the content) so the whole role="region" —
    not just its text — leaves the a11y tree + tab order when collapsed. */
-.srx-accordion__content { min-height: 0; overflow: hidden; }
+.rdz-accordion__content { min-height: 0; overflow: hidden; }
 
 /* Padding lives on the INNER element, never on the collapsing grid item: a 0fr
    track can't shrink an item below its own padding, so padding here would leave
    a sliver poking out under a closed trigger. overflow:hidden clips this flush. */
-.srx-accordion__inner { padding: 0 var(--space-5) var(--space-5); color: var(--text-soft); font-size: var(--fs-body-s); line-height: var(--lh-body); }
+.rdz-accordion__inner { padding: 0 var(--space-5) var(--space-5); color: var(--text-soft); font-size: var(--fs-body-s); line-height: var(--lh-body); }

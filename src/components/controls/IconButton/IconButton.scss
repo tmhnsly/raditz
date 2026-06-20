@@ -1,7 +1,7 @@
 // Auto-split from components.css — this component's styles, co-located.
 // Uses SuperRadix tokens (var(--…)); re-skins/re-themes with the system.
 /* IconButton — square, icon-only */
-.srx-icon-btn {
+.rdz-icon-btn {
   display: inline-flex; align-items: center; justify-content: center;
   width: var(--control-icon); height: var(--control-icon);
   border-radius: var(--radius-control); cursor: pointer;
@@ -9,31 +9,31 @@
   transition: var(--transition-control);
 }
 
-.srx-icon-btn svg { width: 1.2em; height: 1.2em; }
+.rdz-icon-btn svg { width: 1.2em; height: 1.2em; }
 
-.srx-icon-btn--sm { width: var(--control-h-sm); height: var(--control-h-sm); }
+.rdz-icon-btn--sm { width: var(--control-h-sm); height: var(--control-h-sm); }
 
-.srx-icon-btn--solid { background: var(--accent); color: var(--on-accent); }
+.rdz-icon-btn--solid { background: var(--accent); color: var(--on-accent); }
 
-.srx-icon-btn--soft { background: var(--surface); }
+.rdz-icon-btn--soft { background: var(--surface); }
 
-.srx-icon-btn--soft:hover { background: var(--surface-strong); }
+.rdz-icon-btn--soft:hover { background: var(--surface-strong); }
 
-.srx-icon-btn--outline { border-color: var(--rule); }
+.rdz-icon-btn--outline { border-color: var(--rule); }
 
-.srx-icon-btn--outline:hover { background: var(--surface); }
+.rdz-icon-btn--outline:hover { background: var(--surface); }
 
-.srx-icon-btn--ghost:hover { background: var(--surface); }
+.rdz-icon-btn--ghost:hover { background: var(--surface); }
 
-.srx-icon-btn:active { transform: var(--press-down); }
+.rdz-icon-btn:active { transform: var(--press-down); }
 
-/* Frosted glass — shares the --glass* tokens with .srx-glass / Button's glass. */
-.srx-icon-btn--glass {
+/* Frosted glass — shares the --glass* tokens with .rdz-glass / Button's glass. */
+.rdz-icon-btn--glass {
   background: var(--glass); border-color: var(--glass-sheen);
   -webkit-backdrop-filter: blur(var(--glass-blur));
   backdrop-filter: blur(var(--glass-blur));
 }
 
-.srx-icon-btn--glass:hover { background: color-mix(in srgb, var(--bg) 90%, transparent); }
+.rdz-icon-btn--glass:hover { background: color-mix(in srgb, var(--bg) 90%, transparent); }
 
-.srx-icon-btn:disabled { opacity: var(--disabled-opacity); cursor: not-allowed; }
+.rdz-icon-btn:disabled { opacity: var(--disabled-opacity); cursor: not-allowed; }

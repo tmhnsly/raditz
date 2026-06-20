@@ -1,10 +1,10 @@
 // Auto-split from components.css — this component's styles, co-located.
 // Uses SuperRadix tokens (var(--…)); re-skins/re-themes with the system.
 /* ═══════════════════════ Toolbar ═══════════════════════ */
-.srx-toolbar { display: flex; max-width: 100%; overflow-x: auto; scrollbar-width: none; align-items: center; gap: var(--space-2); padding: var(--space-2); background: var(--panel); border: var(--border-width) solid var(--surface-edge); border-radius: var(--radius-control); box-shadow: var(--shadow-2); }
+.rdz-toolbar { display: flex; max-width: 100%; overflow-x: auto; scrollbar-width: none; align-items: center; gap: var(--space-2); padding: var(--space-2); background: var(--panel); border: var(--border-width) solid var(--surface-edge); border-radius: var(--radius-control); box-shadow: var(--shadow-2); }
 
-.srx-toolbar::-webkit-scrollbar { display: none; }
+.rdz-toolbar::-webkit-scrollbar { display: none; }
 
-.srx-toolbar > * { align-self: center; flex: none; }
+.rdz-toolbar > * { align-self: center; flex: none; }
 
-.srx-toolbar .srx-separator--v { align-self: center; min-height: 0; height: 1.375rem; margin-inline: var(--space-1); }
+.rdz-toolbar .rdz-separator--v { align-self: center; min-height: 0; height: 1.375rem; margin-inline: var(--space-1); }

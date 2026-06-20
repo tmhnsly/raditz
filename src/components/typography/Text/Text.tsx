@@ -26,7 +26,7 @@ export function Text({ as = 'p', size = 'base', tone = 'soft', weight, measure =
   const Tag: React.ElementType = as;
   return (
     <Tag
-      className={cx('srx-text', className)}
+      className={cx('rdz-text', className)}
       data-size={size}
       data-tone={tone}
       data-weight={weight}

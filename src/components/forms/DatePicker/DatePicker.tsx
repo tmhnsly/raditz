@@ -66,17 +66,17 @@ export function DatePicker({
   const label = selected ? format(selected, 'MMM d, yyyy') : '';
 
   return (
-    <span className={cx('srx-datepicker', className)} {...rest}>
+    <span className={cx('rdz-datepicker', className)} {...rest}>
       <button
         type="button"
         ref={anchorRef}
-        className={cx('srx-input', 'srx-datepicker__trigger', !label && 'is-placeholder')}
+        className={cx('rdz-input', 'rdz-datepicker__trigger', !label && 'is-placeholder')}
         disabled={disabled}
         aria-haspopup="dialog"
         aria-expanded={open}
         onClick={openCal}
       >
-        <svg className="srx-datepicker__cal" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" /><line x1="3" y1="9" x2="21" y2="9" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="16" y1="2" x2="16" y2="6" /></svg>
+        <svg className="rdz-datepicker__cal" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" /><line x1="3" y1="9" x2="21" y2="9" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="16" y1="2" x2="16" y2="6" /></svg>
         <span>{label || placeholder}</span>
       </button>
       <Overlay
@@ -85,25 +85,25 @@ export function DatePicker({
         position={{ kind: 'anchored', anchor: anchorRef, side: 'bottom', align: 'start' }}
         ignore={anchorRef}
         focus="none"
-        className="srx-calendar"
+        className="rdz-calendar"
         role="dialog"
         aria-label="Choose date"
       >
-        <div className="srx-calendar__head">
-          <button type="button" className="srx-calendar__nav" aria-label="Previous" onClick={() => step(-1)}><Chevron dir="prev" /></button>
-          <button type="button" className="srx-calendar__title" onClick={drillUp} disabled={mode === 'year'} aria-label={`Current view ${title} — change`}>{title}</button>
-          <button type="button" className="srx-calendar__nav" aria-label="Next" onClick={() => step(1)}><Chevron dir="next" /></button>
+        <div className="rdz-calendar__head">
+          <button type="button" className="rdz-calendar__nav" aria-label="Previous" onClick={() => step(-1)}><Chevron dir="prev" /></button>
+          <button type="button" className="rdz-calendar__title" onClick={drillUp} disabled={mode === 'year'} aria-label={`Current view ${title} — change`}>{title}</button>
+          <button type="button" className="rdz-calendar__nav" aria-label="Next" onClick={() => step(1)}><Chevron dir="next" /></button>
         </div>
 
         {mode === 'day' ? (
           <>
-            <div className="srx-calendar__dow">{DOW.map((d) => <span key={d}>{d}</span>)}</div>
-            <div className="srx-calendar__grid">
+            <div className="rdz-calendar__dow">{DOW.map((d) => <span key={d}>{d}</span>)}</div>
+            <div className="rdz-calendar__grid">
               {monthGrid(y, m).map((d, i) => d ? (
                 <button
                   key={i}
                   type="button"
-                  className={cx('srx-calendar__day', sameDay(d, selected) && 'is-selected', sameDay(d, new Date()) && 'is-today')}
+                  className={cx('rdz-calendar__day', sameDay(d, selected) && 'is-selected', sameDay(d, new Date()) && 'is-today')}
                   disabled={outOfRange(d, minD, maxD)}
                   aria-current={sameDay(d, new Date()) ? 'date' : undefined}
                   onClick={() => pick(d)}
@@ -112,23 +112,23 @@ export function DatePicker({
             </div>
           </>
         ) : mode === 'month' ? (
-          <div className="srx-calendar__cells">
+          <div className="rdz-calendar__cells">
             {MONTHS_SHORT.map((mn, i) => (
               <button
                 key={mn}
                 type="button"
-                className={cx('srx-calendar__cell', selected && getYear(selected) === y && getMonth(selected) === i && 'is-selected')}
+                className={cx('rdz-calendar__cell', selected && getYear(selected) === y && getMonth(selected) === i && 'is-selected')}
                 onClick={() => { setView(setMonth(view, i)); setMode('day'); }}
               >{mn}</button>
             ))}
           </div>
         ) : (
-          <div className="srx-calendar__cells">
+          <div className="rdz-calendar__cells">
             {Array.from({ length: 12 }, (_, i) => decadeStart - 1 + i).map((yr) => (
               <button
                 key={yr}
                 type="button"
-                className={cx('srx-calendar__cell', selected && getYear(selected) === yr && 'is-selected', (yr < decadeStart || yr > decadeStart + 9) && 'is-muted')}
+                className={cx('rdz-calendar__cell', selected && getYear(selected) === yr && 'is-selected', (yr < decadeStart || yr > decadeStart + 9) && 'is-muted')}
                 onClick={() => { setView(setYear(view, yr)); setMode('month'); }}
               >{yr}</button>
             ))}

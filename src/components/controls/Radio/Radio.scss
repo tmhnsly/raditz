@@ -1,15 +1,15 @@
 // Auto-split from components.css — this component's styles, co-located.
 // Uses SuperRadix tokens (var(--…)); re-skins/re-themes with the system.
-.srx-radio-ctl__box {
+.rdz-radio-ctl__box {
   width: 1.25rem; height: 1.25rem; border-radius: var(--radius-full); flex: none;
   border: var(--border-width-2) solid var(--rule-strong); background: var(--panel);
   display: inline-flex; align-items: center; justify-content: center; transition: var(--transition-control);
 }
 
-.srx-radio-ctl__box::after { content: ""; width: 0.625rem; height: 0.625rem; border-radius: var(--radius-full); background: var(--on-accent); transform: scale(0); transition: transform var(--duration-fast) var(--ease-standard); }
+.rdz-radio-ctl__box::after { content: ""; width: 0.625rem; height: 0.625rem; border-radius: var(--radius-full); background: var(--on-accent); transform: scale(0); transition: transform var(--duration-fast) var(--ease-standard); }
 
-.srx-radio-ctl input:checked + .srx-radio-ctl__box { background: var(--accent); border-color: var(--accent); }
+.rdz-radio-ctl input:checked + .rdz-radio-ctl__box { background: var(--accent); border-color: var(--accent); }
 
-.srx-radio-ctl input:checked + .srx-radio-ctl__box::after { transform: scale(1); }
+.rdz-radio-ctl input:checked + .rdz-radio-ctl__box::after { transform: scale(1); }
 
-.srx-radio-ctl input:focus-visible + .srx-radio-ctl__box { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.rdz-radio-ctl input:focus-visible + .rdz-radio-ctl__box { outline: 2px solid var(--focus-ring); outline-offset: 2px; }

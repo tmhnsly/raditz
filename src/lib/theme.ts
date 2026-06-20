@@ -106,7 +106,7 @@ export function applyTheme(accent: Accent, choice: GrayChoice, radius: RadiusCho
   root.setAttribute('data-motion', motion);
 }
 
-const KEY = 'srx-theme';
+const KEY = 'rdz-theme';
 
 interface ThemeState { accent: Accent; gray: GrayChoice; radius: RadiusChoice; motion: MotionChoice; }
 

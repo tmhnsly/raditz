@@ -20,7 +20,7 @@ function FloatingNav() {
         <strong className="sx-nav__brand">SuperRadix</strong>
       </div>
       <nav className="nav-bar__links"><a href="#">Product</a><a href="#">Pricing</a><a href="#">Docs</a></nav>
-      <div className="nav-bar__cta"><button className="srx-btn srx-btn--primary">Get started</button></div>
+      <div className="nav-bar__cta"><button className="rdz-btn rdz-btn--primary">Get started</button></div>
     </div>
   );
 }
@@ -32,8 +32,8 @@ export const Aurora: Story = {
       <h1 className="h-display">Ship a polished UI on day one</h1>
       <p className="lede" style={{ maxWidth: '42ch' }}>One accent token retones the entire product — accessible, themeable, dependency-free.</p>
       <div className="row sx-row-center">
-        <button className="srx-btn srx-btn--primary srx-btn--lg">Start building</button>
-        <button className="srx-btn srx-btn--glass srx-btn--lg">Live demo</button>
+        <button className="rdz-btn rdz-btn--primary rdz-btn--lg">Start building</button>
+        <button className="rdz-btn rdz-btn--glass rdz-btn--lg">Live demo</button>
       </div>
     </HeroBleed>
   ),
@@ -57,8 +57,8 @@ const mediaHero = (
     <h1 className="h-display">Bleed a photo or video behind the nav</h1>
     <p className="lede" style={{ maxWidth: '42ch' }}>The backdrop is scrimmed and the text goes light automatically, so the hero stays readable over busy media.</p>
     <div className="row sx-row-center">
-      <button className="srx-btn srx-btn--primary srx-btn--lg">Start building</button>
-      <button className="srx-btn srx-btn--glass srx-btn--lg">Live demo</button>
+      <button className="rdz-btn rdz-btn--primary rdz-btn--lg">Start building</button>
+      <button className="rdz-btn rdz-btn--glass rdz-btn--lg">Live demo</button>
     </div>
   </>
 );

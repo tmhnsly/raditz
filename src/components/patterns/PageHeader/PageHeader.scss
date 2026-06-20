@@ -3,7 +3,7 @@
 /* ──────────────────────────────────────────────────────────────────────────
    SuperRadix — component styles
    ----------------------------------------------------------------------------
-   Every reusable component renders a `srx-*` class defined here. Styling lives
+   Every reusable component renders a `rdz-*` class defined here. Styling lives
    in CSS (not inline) so hover/focus/active states work and the whole library
    re-themes from tokens. Components stay thin: they map props → class names and
    pass through `className` / `style` for overrides. Layout primitives style
@@ -11,25 +11,25 @@
    ────────────────────────────────────────────────────────────────────────── */
 
 /* ═══════════════════════ Typography ═══════════════════════ */
-.srx-eyebrow {
+.rdz-eyebrow {
   display: inline-flex; align-items: center; gap: var(--space-2);
   font-family: var(--font-mono); font-size: var(--fs-mono-s);
   letter-spacing: var(--ls-eyebrow); text-transform: uppercase;
   color: var(--text-muted); font-weight: var(--fw-regular);
 }
 
-.srx-eyebrow__dot { width: 0.4375rem; height: 0.4375rem; border-radius: var(--radius-full); background: var(--accent); flex: none; }
+.rdz-eyebrow__dot { width: 0.4375rem; height: 0.4375rem; border-radius: var(--radius-full); background: var(--accent); flex: none; }
 
 
 /* ═══════════════════════ Patterns · PageHeader · EmptyState ═══════════════════════ */
-.srx-pageheader { display: flex; flex-direction: column; gap: var(--space-3); margin-bottom: var(--space-6); }
+.rdz-pageheader { display: flex; flex-direction: column; gap: var(--space-3); margin-bottom: var(--space-6); }
 
-.srx-pageheader__row { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-4); flex-wrap: wrap; }
+.rdz-pageheader__row { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-4); flex-wrap: wrap; }
 
-.srx-pageheader__head { display: flex; flex-direction: column; gap: var(--space-2); min-width: 0; }
+.rdz-pageheader__head { display: flex; flex-direction: column; gap: var(--space-2); min-width: 0; }
 
-.srx-pageheader__title { font-size: var(--fs-h1); letter-spacing: var(--ls-h1); line-height: var(--lh-heading); }
+.rdz-pageheader__title { font-size: var(--fs-h1); letter-spacing: var(--ls-h1); line-height: var(--lh-heading); }
 
-.srx-pageheader__desc { color: var(--text-soft); font-size: var(--fs-body-l); max-width: 60ch; }
+.rdz-pageheader__desc { color: var(--text-soft); font-size: var(--fs-body-l); max-width: 60ch; }
 
-.srx-pageheader__actions { display: flex; align-items: center; gap: var(--space-3); flex-wrap: wrap; }
+.rdz-pageheader__actions { display: flex; align-items: center; gap: var(--space-3); flex-wrap: wrap; }

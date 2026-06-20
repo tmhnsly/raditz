@@ -1,66 +1,66 @@
 // Uses SuperRadix tokens (var(--…)). The Lightbox always renders on a dark scrim
-// (identical in light + dark themes); the panel wraps in .srx-on-dark so chrome
-// reads white-on-dark and the shared .srx-oclose / .srx-ovbtn discs follow suit.
+// (identical in light + dark themes); the panel wraps in .rdz-on-dark so chrome
+// reads white-on-dark and the shared .rdz-oclose / .rdz-ovbtn discs follow suit.
 /* ═══════════════════════ Media · Lightbox ═══════════════════════ */
-.srx-overlay--lightbox { padding: 0; }
-.srx-lightbox { position: absolute; inset: 0; display: flex; flex-direction: column; }
+.rdz-overlay--lightbox { padding: 0; }
+.rdz-lightbox { position: absolute; inset: 0; display: flex; flex-direction: column; }
 
 /* Always-dark, theme-independent scrim so the viewer looks the same in both modes. */
 /* Scrim blur is intentionally light (≈⅓ the panel blur) and, like every frosted
    surface, derives from --glass-blur so setting it to 0 disables blur project-wide. */
-.srx-lightbox__scrim { position: absolute; inset: 0; background: color-mix(in srgb, black 92%, transparent); -webkit-backdrop-filter: blur(calc(var(--glass-blur) / 3)); backdrop-filter: blur(calc(var(--glass-blur) / 3)); animation: srxFade var(--duration-base) var(--ease-standard); }
+.rdz-lightbox__scrim { position: absolute; inset: 0; background: color-mix(in srgb, black 92%, transparent); -webkit-backdrop-filter: blur(calc(var(--glass-blur) / 3)); backdrop-filter: blur(calc(var(--glass-blur) / 3)); animation: rdzFade var(--duration-base) var(--ease-standard); }
 
-/* Close: position only — the disc visual comes from the shared .srx-oclose. */
-.srx-lightbox__close { position: absolute; top: var(--space-4); right: var(--space-4); z-index: 3; }
+/* Close: position only — the disc visual comes from the shared .rdz-oclose. */
+.rdz-lightbox__close { position: absolute; top: var(--space-4); right: var(--space-4); z-index: 3; }
 
-.srx-lightbox__stage { position: absolute; inset: 0; z-index: 1; margin: 0; display: grid; place-items: center; padding: 4.5rem clamp(0.75rem, 3vw, 2rem) 5rem; touch-action: none; }
+.rdz-lightbox__stage { position: absolute; inset: 0; z-index: 1; margin: 0; display: grid; place-items: center; padding: 4.5rem clamp(0.75rem, 3vw, 2rem) 5rem; touch-action: none; }
 
-.srx-lightbox__img {
+.rdz-lightbox__img {
   max-width: calc(100vw - 2rem); max-height: calc(100dvh - 9.5rem); object-fit: contain;
   border-radius: var(--radius-md); box-shadow: var(--shadow-6); user-select: none; cursor: zoom-in;
-  transform: translate(var(--srx-lb-x, 0px), var(--srx-lb-y, 0px)) scale(var(--srx-lb-scale, 1));
+  transform: translate(var(--rdz-lb-x, 0px), var(--rdz-lb-y, 0px)) scale(var(--rdz-lb-scale, 1));
   transition: transform var(--duration-base) var(--ease-standard);
 }
 
 /* Each image change remounts the <img> (keyed by index), so a directional
    slide-in plays — the viewer reads like a carousel when paging. */
-.srx-lightbox__img--in-right { animation: srxLbIn var(--duration-base) var(--ease-standard); --srx-lb-from: 7%; }
-.srx-lightbox__img--in-left { animation: srxLbIn var(--duration-base) var(--ease-standard); --srx-lb-from: -7%; }
+.rdz-lightbox__img--in-right { animation: rdzLbIn var(--duration-base) var(--ease-standard); --rdz-lb-from: 7%; }
+.rdz-lightbox__img--in-left { animation: rdzLbIn var(--duration-base) var(--ease-standard); --rdz-lb-from: -7%; }
 
-.srx-lightbox__img.is-zoom { cursor: grab; }
+.rdz-lightbox__img.is-zoom { cursor: grab; }
 
 /* During a live drag/pinch the transform is written every frame — kill the
    transition so it tracks the finger, and show the grabbing cursor. */
-.srx-lightbox__img.is-live { transition: none; cursor: grabbing; }
+.rdz-lightbox__img.is-live { transition: none; cursor: grabbing; }
 
-@keyframes srxLbIn { from { opacity: 0; transform: translateX(var(--srx-lb-from, 7%)); } to { opacity: 1; } }
+@keyframes rdzLbIn { from { opacity: 0; transform: translateX(var(--rdz-lb-from, 7%)); } to { opacity: 1; } }
 
-.srx-lightbox__footer { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-4); padding: var(--space-4) var(--space-5); pointer-events: none; }
+.rdz-lightbox__footer { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-4); padding: var(--space-4) var(--space-5); pointer-events: none; }
 
-.srx-lightbox__meta, .srx-lightbox__controls { pointer-events: auto; }
+.rdz-lightbox__meta, .rdz-lightbox__controls { pointer-events: auto; }
 
-.srx-lightbox__meta { display: flex; flex-direction: column; gap: var(--space-2); min-width: 0; }
+.rdz-lightbox__meta { display: flex; flex-direction: column; gap: var(--space-2); min-width: 0; }
 
-.srx-lightbox__caption { font-size: var(--fs-body-s); color: var(--on-media); }
+.rdz-lightbox__caption { font-size: var(--fs-body-s); color: var(--on-media); }
 
-.srx-lightbox__tags { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.rdz-lightbox__tags { display: flex; flex-wrap: wrap; gap: var(--space-2); }
 
-.srx-lightbox__tag { font-family: var(--font-mono); font-size: var(--fs-mono-xs); text-transform: uppercase; letter-spacing: 0.08em; color: var(--on-media); background: var(--white-a4); -webkit-backdrop-filter: blur(var(--glass-blur)); backdrop-filter: blur(var(--glass-blur)); border-radius: var(--radius-full); padding: 0.3125rem 0.75rem; }
+.rdz-lightbox__tag { font-family: var(--font-mono); font-size: var(--fs-mono-xs); text-transform: uppercase; letter-spacing: 0.08em; color: var(--on-media); background: var(--white-a4); -webkit-backdrop-filter: blur(var(--glass-blur)); backdrop-filter: blur(var(--glass-blur)); border-radius: var(--radius-full); padding: 0.3125rem 0.75rem; }
 
-.srx-lightbox__controls { display: flex; align-items: center; gap: var(--space-2); margin-left: auto; }
+.rdz-lightbox__controls { display: flex; align-items: center; gap: var(--space-2); margin-left: auto; }
 
-.srx-lightbox__counter { font-family: var(--font-mono); font-size: var(--fs-mono-s); color: var(--on-media-soft); min-width: 3.25rem; text-align: center; }
+.rdz-lightbox__counter { font-family: var(--font-mono); font-size: var(--fs-mono-s); color: var(--on-media-soft); min-width: 3.25rem; text-align: center; }
 
-.srx-lightbox__nav--next svg { transform: rotate(180deg); }
+.rdz-lightbox__nav--next svg { transform: rotate(180deg); }
 
-.srx-lightbox__film { position: relative; z-index: 2; display: flex; gap: var(--space-2); padding: var(--space-4) var(--space-5); overflow-x: auto; justify-content: center; scrollbar-width: none; }
+.rdz-lightbox__film { position: relative; z-index: 2; display: flex; gap: var(--space-2); padding: var(--space-4) var(--space-5); overflow-x: auto; justify-content: center; scrollbar-width: none; }
 
-.srx-lightbox__film::-webkit-scrollbar { display: none; }
+.rdz-lightbox__film::-webkit-scrollbar { display: none; }
 
-.srx-lightbox__thumb { flex: none; width: 4rem; height: 3rem; border-radius: var(--radius-sm); overflow: hidden; opacity: 0.5; outline: 2px solid transparent; transition: var(--transition-control); }
+.rdz-lightbox__thumb { flex: none; width: 4rem; height: 3rem; border-radius: var(--radius-sm); overflow: hidden; opacity: 0.5; outline: 2px solid transparent; transition: var(--transition-control); }
 
-.srx-lightbox__thumb img { width: 100%; height: 100%; object-fit: cover; }
+.rdz-lightbox__thumb img { width: 100%; height: 100%; object-fit: cover; }
 
-.srx-lightbox__thumb:hover { opacity: 0.85; }
+.rdz-lightbox__thumb:hover { opacity: 0.85; }
 
-.srx-lightbox__thumb.is-active { opacity: 1; outline-color: var(--accent); }
+.rdz-lightbox__thumb.is-active { opacity: 1; outline-color: var(--accent); }

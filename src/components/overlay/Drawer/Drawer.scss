@@ -1,24 +1,24 @@
 // Auto-split from components.css — this component's styles, co-located.
 // Uses SuperRadix tokens (var(--…)); re-skins/re-themes with the system.
-.srx-drawer { position: fixed; z-index: var(--z-overlay-local); background: var(--panel); box-shadow: var(--shadow-6); display: flex; flex-direction: column; }
+.rdz-drawer { position: fixed; z-index: var(--z-overlay-local); background: var(--panel); box-shadow: var(--shadow-6); display: flex; flex-direction: column; }
 
-.srx-drawer--right { top: 0; right: 0; height: 100%; width: var(--srx-drawer-size); max-width: 92vw; border-left: 1px solid var(--surface-edge); border-radius: var(--radius-panel) 0 0 var(--radius-panel); animation: srxDrawerR var(--duration-base) var(--ease-standard); }
+.rdz-drawer--right { top: 0; right: 0; height: 100%; width: var(--rdz-drawer-size); max-width: 92vw; border-left: 1px solid var(--surface-edge); border-radius: var(--radius-panel) 0 0 var(--radius-panel); animation: rdzDrawerR var(--duration-base) var(--ease-standard); }
 
-.srx-drawer--left { top: 0; left: 0; height: 100%; width: var(--srx-drawer-size); max-width: 92vw; border-right: 1px solid var(--surface-edge); border-radius: 0 var(--radius-panel) var(--radius-panel) 0; animation: srxDrawerL var(--duration-base) var(--ease-standard); }
+.rdz-drawer--left { top: 0; left: 0; height: 100%; width: var(--rdz-drawer-size); max-width: 92vw; border-right: 1px solid var(--surface-edge); border-radius: 0 var(--radius-panel) var(--radius-panel) 0; animation: rdzDrawerL var(--duration-base) var(--ease-standard); }
 
-.srx-drawer--top { top: 0; left: 0; width: 100%; height: var(--srx-drawer-size); max-height: 92vh; border-bottom: 1px solid var(--surface-edge); border-radius: 0 0 var(--radius-panel) var(--radius-panel); animation: srxDrawerT var(--duration-base) var(--ease-standard); }
+.rdz-drawer--top { top: 0; left: 0; width: 100%; height: var(--rdz-drawer-size); max-height: 92vh; border-bottom: 1px solid var(--surface-edge); border-radius: 0 0 var(--radius-panel) var(--radius-panel); animation: rdzDrawerT var(--duration-base) var(--ease-standard); }
 
-.srx-drawer--bottom { bottom: 0; left: 0; width: 100%; height: var(--srx-drawer-size); max-height: 92vh; border-top: 1px solid var(--surface-edge); border-radius: var(--radius-panel) var(--radius-panel) 0 0; animation: srxDrawerB var(--duration-base) var(--ease-standard); }
+.rdz-drawer--bottom { bottom: 0; left: 0; width: 100%; height: var(--rdz-drawer-size); max-height: 92vh; border-top: 1px solid var(--surface-edge); border-radius: var(--radius-panel) var(--radius-panel) 0 0; animation: rdzDrawerB var(--duration-base) var(--ease-standard); }
 
-.srx-drawer__header { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-3); padding: var(--space-5); border-bottom: 1px solid var(--rule-soft); }
+.rdz-drawer__header { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-3); padding: var(--space-5); border-bottom: 1px solid var(--rule-soft); }
 
-.srx-drawer__title { font-size: var(--fs-h4); font-weight: var(--fw-semibold); }
+.rdz-drawer__title { font-size: var(--fs-h4); font-weight: var(--fw-semibold); }
 
-.srx-drawer__desc { color: var(--text-soft); font-size: var(--fs-body-s); margin-top: 0.25rem; }
+.rdz-drawer__desc { color: var(--text-soft); font-size: var(--fs-body-s); margin-top: 0.25rem; }
 
-/* Layout only — the disc visual is the shared .srx-oclose. */
-.srx-drawer__close { flex: none; }
+/* Layout only — the disc visual is the shared .rdz-oclose. */
+.rdz-drawer__close { flex: none; }
 
-.srx-drawer__body { flex: 1; overflow-y: auto; padding: var(--space-5); }
+.rdz-drawer__body { flex: 1; overflow-y: auto; padding: var(--space-5); }
 
-.srx-drawer__footer { padding: var(--space-4) var(--space-5); border-top: 1px solid var(--rule-soft); display: flex; justify-content: flex-end; gap: var(--space-3); }
+.rdz-drawer__footer { padding: var(--space-4) var(--space-5); border-top: 1px solid var(--rule-soft); display: flex; justify-content: flex-end; gap: var(--space-3); }

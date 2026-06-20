@@ -40,8 +40,8 @@ export function AlertDialog({
 }: AlertDialogProps): ReactElement | null {
   const cancel = (): void => { if (onOpenChange) onOpenChange(false); };
   const actionClass = tone === 'danger'
-    ? 'srx-btn srx-btn--primary srx-alert__danger'
-    : 'srx-btn srx-btn--primary';
+    ? 'rdz-btn rdz-btn--primary rdz-alert__danger'
+    : 'rdz-btn rdz-btn--primary';
   return (
     <Overlay
       open={!!open}
@@ -51,15 +51,15 @@ export function AlertDialog({
       dismissOnOutside={false}
       role="alertdialog"
       aria-label={typeof title === 'string' ? title : undefined}
-      className={cx('srx-dialog', 'srx-dialog--sm', className)}
+      className={cx('rdz-dialog', 'rdz-dialog--sm', className)}
       {...rest}
     >
-      <div className="srx-dialog__header">
-        {title ? <h2 className="srx-dialog__title">{title}</h2> : null}
-        {description ? <p className="srx-dialog__desc">{description}</p> : null}
+      <div className="rdz-dialog__header">
+        {title ? <h2 className="rdz-dialog__title">{title}</h2> : null}
+        {description ? <p className="rdz-dialog__desc">{description}</p> : null}
       </div>
-      <div className="srx-dialog__footer">
-        <button type="button" className="srx-btn srx-btn--ghost" onClick={cancel}>{cancelText}</button>
+      <div className="rdz-dialog__footer">
+        <button type="button" className="rdz-btn rdz-btn--ghost" onClick={cancel}>{cancelText}</button>
         <button type="button" className={actionClass} onClick={() => { if (onAction) onAction(); cancel(); }}>{actionText}</button>
       </div>
     </Overlay>

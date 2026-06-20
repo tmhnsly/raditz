@@ -8,7 +8,7 @@ export function FeaturesA({ background = 'none', ...props }: SectionVariantProps
         <h3 className="h-section">Everything wired together</h3>
       </div>
       <div className="sx-g3 sx-gap-5">
-        <div className="srx-card col sx-gap-3">
+        <div className="rdz-card col sx-gap-3">
           <span className="feat-ico">
             <svg className="ico" viewBox="0 0 24 24">
               <circle cx="12" cy="12" r="9" />
@@ -20,7 +20,7 @@ export function FeaturesA({ background = 'none', ...props }: SectionVariantProps
             Radix scales aliased to semantic tokens, light &amp; dark.
           </span>
         </div>
-        <div className="srx-card col sx-gap-3">
+        <div className="rdz-card col sx-gap-3">
           <span className="feat-ico">
             <svg className="ico" viewBox="0 0 24 24">
               <rect x="3" y="3" width="7" height="7" rx="1.5" />
@@ -34,7 +34,7 @@ export function FeaturesA({ background = 'none', ...props }: SectionVariantProps
             The full Radix primitive surface, styled and accessible.
           </span>
         </div>
-        <div className="srx-card col sx-gap-3">
+        <div className="rdz-card col sx-gap-3">
           <span className="feat-ico">
             <svg className="ico" viewBox="0 0 24 24">
               <path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z" />
@@ -53,7 +53,7 @@ export function FeaturesA({ background = 'none', ...props }: SectionVariantProps
 export function FeaturesB({ background = 'gradient-mesh', ...props }: SectionVariantProps = {}) {
   return (
     <SectionShell wrap="sx-bento sx-feat__bento" background={background} {...props}>
-      <div className="srx-card col sx-feat__bento-lead">
+      <div className="rdz-card col sx-feat__bento-lead">
         <span className="feat-ico">
           <svg className="ico" viewBox="0 0 24 24">
             <circle cx="12" cy="12" r="9" />
@@ -65,15 +65,15 @@ export function FeaturesB({ background = 'gradient-mesh', ...props }: SectionVar
           Colors, type, spacing, radius, motion — all variables.
         </span>
       </div>
-      <div className="srx-card col sx-feat__bento-cell">
+      <div className="rdz-card col sx-feat__bento-cell">
         <strong>Dark mode</strong>
         <span className="muted sx-fs-caption">class="dark"</span>
       </div>
-      <div className="srx-card col sx-feat__bento-cell">
+      <div className="rdz-card col sx-feat__bento-cell">
         <strong>A11y</strong>
         <span className="muted sx-fs-caption">Keyboard + ARIA</span>
       </div>
-      <div className="srx-card col sx-feat__bento-wide">
+      <div className="rdz-card col sx-feat__bento-wide">
         <strong>Eight radius rules</strong>
         <span className="muted sx-fs-body-s">
           Concentric corners, size-proportional, formal↔friendly.

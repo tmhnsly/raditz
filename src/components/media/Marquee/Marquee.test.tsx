@@ -11,16 +11,16 @@ describe('Marquee', () => {
       </Marquee>,
     );
     // two groups: the real one + an aria-hidden duplicate
-    expect(container.querySelectorAll('.srx-marquee__group')).toHaveLength(2);
-    expect(container.querySelector('.srx-marquee__group[aria-hidden="true"]')).not.toBeNull();
+    expect(container.querySelectorAll('.rdz-marquee__group')).toHaveLength(2);
+    expect(container.querySelector('.rdz-marquee__group[aria-hidden="true"]')).not.toBeNull();
     // each item therefore appears twice
     expect(getAllByText('Northwind')).toHaveLength(2);
   });
 
   it('exposes duration/gap/direction as custom properties', () => {
     const { container } = render(<Marquee duration={10} direction="right">x</Marquee>);
-    const el = container.querySelector('.srx-marquee') as HTMLElement;
-    expect(el.style.getPropertyValue('--srx-marquee-duration')).toBe('10s');
-    expect(el.style.getPropertyValue('--srx-marquee-dir')).toBe('reverse');
+    const el = container.querySelector('.rdz-marquee') as HTMLElement;
+    expect(el.style.getPropertyValue('--rdz-marquee-duration')).toBe('10s');
+    expect(el.style.getPropertyValue('--rdz-marquee-dir')).toBe('reverse');
   });
 });

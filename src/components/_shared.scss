@@ -1,35 +1,35 @@
 // Auto-split from components.css — this component's styles, co-located.
 // Uses SuperRadix tokens (var(--…)); re-skins/re-themes with the system.
  /* Rule 6: clip media to the card corner */
-.srx-clip { overflow: hidden; border-radius: inherit; }
+.rdz-clip { overflow: hidden; border-radius: inherit; }
 
 /* Themed scrollbar for any scrollable surface. Firefox ignores ::-webkit-scrollbar
    and needs scrollbar-width/color, so set both. Pair with an existing overflow rule. */
-.srx-scrollbar { scrollbar-width: thin; scrollbar-color: var(--rule-strong) transparent; }
-.srx-scrollbar::-webkit-scrollbar { width: 0.625rem; height: 0.625rem; }
-.srx-scrollbar::-webkit-scrollbar-thumb { background: var(--surface-strong); border-radius: var(--radius-full); border: 0.1875rem solid transparent; background-clip: content-box; }
-.srx-scrollbar::-webkit-scrollbar-thumb:hover { background: var(--rule-strong); background-clip: content-box; }
-.srx-scrollbar::-webkit-scrollbar-track { background: transparent; }
+.rdz-scrollbar { scrollbar-width: thin; scrollbar-color: var(--rule-strong) transparent; }
+.rdz-scrollbar::-webkit-scrollbar { width: 0.625rem; height: 0.625rem; }
+.rdz-scrollbar::-webkit-scrollbar-thumb { background: var(--surface-strong); border-radius: var(--radius-full); border: 0.1875rem solid transparent; background-clip: content-box; }
+.rdz-scrollbar::-webkit-scrollbar-thumb:hover { background: var(--rule-strong); background-clip: content-box; }
+.rdz-scrollbar::-webkit-scrollbar-track { background: transparent; }
 
 /* Canonical glass surface — a frosted translucent panel. ONE recipe, driven by
    the --glass* tokens (colors.css), so the Button/IconButton glass variants,
    cards, the navbar and overlay chrome all frost identically and re-theme
    together. Needs something behind it for the blur to read. */
-.srx-glass {
+.rdz-glass {
   background: var(--glass);
   -webkit-backdrop-filter: blur(var(--glass-blur));
   backdrop-filter: blur(var(--glass-blur));
   border: var(--border-width) solid var(--glass-sheen);
 }
-.srx-glass--soft { background: var(--glass-soft); }
+.rdz-glass--soft { background: var(--glass-soft); }
 
-/* Shared overlay icon button — the close affordance (srx-oclose) and media nav
-   carets (srx-ovbtn). The disc tint derives from currentColor, so one style reads
+/* Shared overlay icon button — the close affordance (rdz-oclose) and media nav
+   carets (rdz-ovbtn). The disc tint derives from currentColor, so one style reads
    on a light panel (Dialog/Drawer) and on a dark scrim (Lightbox) alike: set the
-   text color or wrap in .srx-on-dark and the button follows. */
-.srx-oclose, .srx-ovbtn {
+   text color or wrap in .rdz-on-dark and the button follows. */
+.rdz-oclose, .rdz-ovbtn {
   display: inline-grid; place-items: center; flex: none;
-  width: var(--srx-oclose-size, 2rem); height: var(--srx-oclose-size, 2rem);
+  width: var(--rdz-oclose-size, 2rem); height: var(--rdz-oclose-size, 2rem);
   border: 0; padding: 0; border-radius: var(--radius-full);
   color: var(--text-soft); background: color-mix(in srgb, currentColor 16%, transparent);
   /* Frosted glass so the disc stays legible over photos (Lightbox) and any panel —
@@ -37,94 +37,94 @@
   -webkit-backdrop-filter: blur(var(--glass-blur)); backdrop-filter: blur(var(--glass-blur));
   cursor: pointer; transition: var(--transition-control);
 }
-.srx-oclose:hover, .srx-ovbtn:hover { background: color-mix(in srgb, currentColor 30%, transparent); color: var(--text); transform: scale(1.06); }
-.srx-oclose:active, .srx-ovbtn:active { transform: scale(0.95); }
-.srx-oclose:focus-visible, .srx-ovbtn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
-.srx-oclose:disabled, .srx-ovbtn:disabled { opacity: var(--disabled-opacity); cursor: not-allowed; transform: none; }
-.srx-oclose svg, .srx-ovbtn svg { width: 1.1rem; height: 1.1rem; }
-.srx-oclose--lg, .srx-ovbtn--lg { --srx-oclose-size: 2.75rem; }
-.srx-oclose--lg svg, .srx-ovbtn--lg svg { width: 1.25rem; height: 1.25rem; }
-.srx-oclose--sm, .srx-ovbtn--sm { --srx-oclose-size: 1.625rem; }
-.srx-oclose--sm svg, .srx-ovbtn--sm svg { width: 0.9rem; height: 0.9rem; }
+.rdz-oclose:hover, .rdz-ovbtn:hover { background: color-mix(in srgb, currentColor 30%, transparent); color: var(--text); transform: scale(1.06); }
+.rdz-oclose:active, .rdz-ovbtn:active { transform: scale(0.95); }
+.rdz-oclose:focus-visible, .rdz-ovbtn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.rdz-oclose:disabled, .rdz-ovbtn:disabled { opacity: var(--disabled-opacity); cursor: not-allowed; transform: none; }
+.rdz-oclose svg, .rdz-ovbtn svg { width: 1.1rem; height: 1.1rem; }
+.rdz-oclose--lg, .rdz-ovbtn--lg { --rdz-oclose-size: 2.75rem; }
+.rdz-oclose--lg svg, .rdz-ovbtn--lg svg { width: 1.25rem; height: 1.25rem; }
+.rdz-oclose--sm, .rdz-ovbtn--sm { --rdz-oclose-size: 1.625rem; }
+.rdz-oclose--sm svg, .rdz-ovbtn--sm svg { width: 0.9rem; height: 0.9rem; }
 
-@keyframes srxProgressSlide { 0% { transform: translateX(-110%); } 100% { transform: translateX(360%); } }
+@keyframes rdzProgressSlide { 0% { transform: translateX(-110%); } 100% { transform: translateX(360%); } }
 
-@keyframes srxFade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes rdzFade { from { opacity: 0; } to { opacity: 1; } }
 
-@keyframes srxPop { from { opacity: 0; transform: translateY(var(--motion-rise)) scale(var(--motion-pop)); } to { opacity: 1; transform: none; } }
+@keyframes rdzPop { from { opacity: 0; transform: translateY(var(--motion-rise)) scale(var(--motion-pop)); } to { opacity: 1; transform: none; } }
 
-@keyframes srxPopover { from { opacity: 0; transform: translateY(calc(-0.5 * var(--motion-rise))) scale(var(--motion-pop)); } to { opacity: 1; transform: none; } }
+@keyframes rdzPopover { from { opacity: 0; transform: translateY(calc(-0.5 * var(--motion-rise))) scale(var(--motion-pop)); } to { opacity: 1; transform: none; } }
 
-@keyframes srxToastIn { from { opacity: 0; transform: translateY(var(--motion-rise)); } to { opacity: 1; transform: none; } }
+@keyframes rdzToastIn { from { opacity: 0; transform: translateY(var(--motion-rise)); } to { opacity: 1; transform: none; } }
 
 
 /* ═══════════════════════ Responsive utilities ═══════════════════════
    Reusable layout helpers so consumers get clean reflow without writing
    their own media queries. Column counts derive from available width, not
    breakpoints, so they adapt at every size. */
-.srx-auto-grid {
+.rdz-auto-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(min(var(--col-min, 16rem), 100%), 1fr));
   gap: var(--gap, var(--space-5));
 }
 
-.srx-auto-grid--tight { grid-template-columns: repeat(auto-fill, minmax(min(11rem, 100%), 1fr)); }
+.rdz-auto-grid--tight { grid-template-columns: repeat(auto-fill, minmax(min(11rem, 100%), 1fr)); }
 
-.srx-auto-grid--wide  { grid-template-columns: repeat(auto-fill, minmax(min(22rem, 100%), 1fr)); }
+.rdz-auto-grid--wide  { grid-template-columns: repeat(auto-fill, minmax(min(22rem, 100%), 1fr)); }
 
 
 /* Sidebar + content: side-by-side when there's room, stacks when the content
    column would drop below --content-min. Uses flex-wrap, no breakpoints. */
-.srx-shell { display: flex; flex-wrap: wrap; gap: var(--gap, var(--space-7)); }
+.rdz-shell { display: flex; flex-wrap: wrap; gap: var(--gap, var(--space-7)); }
 
-.srx-shell > .srx-shell__aside { flex: 1 1 13rem; max-width: 16rem; min-width: 12rem; }
+.rdz-shell > .rdz-shell__aside { flex: 1 1 13rem; max-width: 16rem; min-width: 12rem; }
 
-.srx-shell > .srx-shell__main { flex: 999 1 var(--content-min, 22rem); min-width: 0; }
+.rdz-shell > .rdz-shell__main { flex: 999 1 var(--content-min, 22rem); min-width: 0; }
 
 
 /* Hide/show by viewport — paired with the breakpoint tokens. */
-@media (max-width: 768px)  { .srx-hide-mobile { display: none !important; } }
+@media (max-width: 768px)  { .rdz-hide-mobile { display: none !important; } }
 
-@media (min-width: 769px)  { .srx-only-mobile { display: none !important; } }
+@media (min-width: 769px)  { .rdz-only-mobile { display: none !important; } }
 
-@media (max-width: 768px) { .srx-gallery { grid-template-columns: repeat(2, 1fr) !important; } .srx-gallery--masonry { column-count: 2 !important; } }
+@media (max-width: 768px) { .rdz-gallery { grid-template-columns: repeat(2, 1fr) !important; } .rdz-gallery--masonry { column-count: 2 !important; } }
 
-@media (max-width: 460px) { .srx-gallery { grid-template-columns: 1fr !important; } .srx-gallery--masonry { column-count: 1 !important; } }
+@media (max-width: 460px) { .rdz-gallery { grid-template-columns: 1fr !important; } .rdz-gallery--masonry { column-count: 1 !important; } }
 
 
-@keyframes srxDrawerR { from { transform: translateX(100%); } to { transform: none; } }
+@keyframes rdzDrawerR { from { transform: translateX(100%); } to { transform: none; } }
 
-@keyframes srxDrawerL { from { transform: translateX(-100%); } to { transform: none; } }
+@keyframes rdzDrawerL { from { transform: translateX(-100%); } to { transform: none; } }
 
-@keyframes srxDrawerT { from { transform: translateY(-100%); } to { transform: none; } }
+@keyframes rdzDrawerT { from { transform: translateY(-100%); } to { transform: none; } }
 
-@keyframes srxDrawerB { from { transform: translateY(100%); } to { transform: none; } }
+@keyframes rdzDrawerB { from { transform: translateY(100%); } to { transform: none; } }
 
-@keyframes srxShimmer { from { background-position: 100% 0; } to { background-position: 0 0; } }
+@keyframes rdzShimmer { from { background-position: 100% 0; } to { background-position: 0 0; } }
 
-@keyframes srxSpin { to { transform: rotate(360deg); } }
+@keyframes rdzSpin { to { transform: rotate(360deg); } }
 
-/* notification dot/count — wrap a trigger in .srx-indicator and add .srx-indicator__dot */
-.srx-indicator { position: relative; display: inline-flex; }
+/* notification dot/count — wrap a trigger in .rdz-indicator and add .rdz-indicator__dot */
+.rdz-indicator { position: relative; display: inline-flex; }
 
-.srx-indicator__dot { position: absolute; top: -0.125rem; right: -0.125rem; min-width: 1.05rem; height: 1.05rem; padding: 0 0.3125rem; display: inline-grid; place-items: center; border-radius: var(--radius-full); background: var(--danger); color: var(--white-a12); font-family: var(--font-mono); font-size: 0.625rem; font-weight: 700; line-height: 1; border: 2px solid var(--bg); }
+.rdz-indicator__dot { position: absolute; top: -0.125rem; right: -0.125rem; min-width: 1.05rem; height: 1.05rem; padding: 0 0.3125rem; display: inline-grid; place-items: center; border-radius: var(--radius-full); background: var(--danger); color: var(--white-a12); font-family: var(--font-mono); font-size: 0.625rem; font-weight: 700; line-height: 1; border: 2px solid var(--bg); }
 
-.srx-indicator__dot--bare { min-width: 0; width: 0.625rem; height: 0.625rem; padding: 0; top: 0; right: 0; }
+.rdz-indicator__dot--bare { min-width: 0; width: 0.625rem; height: 0.625rem; padding: 0; top: 0; right: 0; }
 
 
 @media (prefers-reduced-motion: reduce) {
-  .srx-btn, .srx-card, .srx-input, .srx-switch__thumb, .srx-check__box svg, .srx-tooltip__bubble,
-  .srx-slider__thumb, .srx-accordion__chevron, .srx-accordion__panel, .srx-accordion__content, .srx-collapsible__chevron, .srx-progress__indicator, .srx-lightbox__img { transition-duration: 0.01ms !important; }
-  .srx-progress--indeterminate .srx-progress__indicator { animation-duration: 0.01ms !important; }
-  .srx-overlay__scrim, .srx-dialog { animation-duration: 0.01ms !important; }
-  .srx-popover, .srx-hovercard, .srx-menu { animation-duration: 0.01ms !important; }
-  .srx-navmenu__panel, .srx-toast { animation-duration: 0.01ms !important; }
-  .srx-lightbox__scrim, .srx-lightbox__img { animation-duration: 0.01ms !important; }
-  .srx-gallery__cell:hover img { transform: none; }
-  .srx-carousel__viewport { scroll-behavior: auto; }
-  .srx-drawer--right, .srx-drawer--left, .srx-drawer--top, .srx-drawer--bottom, .srx-calendar { animation-duration: 0.01ms !important; }
-  .srx-skeleton { animation-duration: 0.01ms !important; }
-  .srx-spinner svg { animation-duration: 1.2s !important; }
-  .srx-rating:not(.is-readonly) .srx-rating__star:hover { transform: none; }
-  .srx-card--interactive:hover { transform: none; }
+  .rdz-btn, .rdz-card, .rdz-input, .rdz-switch__thumb, .rdz-check__box svg, .rdz-tooltip__bubble,
+  .rdz-slider__thumb, .rdz-accordion__chevron, .rdz-accordion__panel, .rdz-accordion__content, .rdz-collapsible__chevron, .rdz-progress__indicator, .rdz-lightbox__img { transition-duration: 0.01ms !important; }
+  .rdz-progress--indeterminate .rdz-progress__indicator { animation-duration: 0.01ms !important; }
+  .rdz-overlay__scrim, .rdz-dialog { animation-duration: 0.01ms !important; }
+  .rdz-popover, .rdz-hovercard, .rdz-menu { animation-duration: 0.01ms !important; }
+  .rdz-navmenu__panel, .rdz-toast { animation-duration: 0.01ms !important; }
+  .rdz-lightbox__scrim, .rdz-lightbox__img { animation-duration: 0.01ms !important; }
+  .rdz-gallery__cell:hover img { transform: none; }
+  .rdz-carousel__viewport { scroll-behavior: auto; }
+  .rdz-drawer--right, .rdz-drawer--left, .rdz-drawer--top, .rdz-drawer--bottom, .rdz-calendar { animation-duration: 0.01ms !important; }
+  .rdz-skeleton { animation-duration: 0.01ms !important; }
+  .rdz-spinner svg { animation-duration: 1.2s !important; }
+  .rdz-rating:not(.is-readonly) .rdz-rating__star:hover { transform: none; }
+  .rdz-card--interactive:hover { transform: none; }
 }

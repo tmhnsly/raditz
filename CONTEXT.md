@@ -176,7 +176,7 @@ Light vs dark resolution — the `useColorScheme` hook (`src/lib`, framework pri
 for any project). Starts from the OS (`prefers-color-scheme`) and **live-follows**
 it; a toggle sets an explicit override that wins over the OS; toggling back to the
 OS's current value clears the override (so we follow the system again). Only an
-explicit override is persisted (`srx-color-scheme`), so a fresh project honours the
+explicit override is persisted (`rdz-color-scheme`), so a fresh project honours the
 OS until the user opts in. Drives `class="dark"` on the root.
 _Avoid_: `useDarkMode` (removed — a boolean can't express "follow system").
 
@@ -187,10 +187,10 @@ How a region declares its colour context. Two named contexts:
   on a *subtree* flips raw scales but NOT the resolved semantic tokens
   (`--text → --neutral-12 → --slate-12` is substituted at `:root`), so text doesn't
   change. (This trap caused a real bug; do not claim `.dark` works on a subtree.)
-- **`.srx-on-dark`** — the subtree-safe context for content over dark media/scrim:
+- **`.rdz-on-dark`** — the subtree-safe context for content over dark media/scrim:
   re-points the *semantic* tokens (`--text`, rules, `--accent-surface`, …) to the
   `--on-media` (white-alpha) family in **one level**, so it works anywhere.
-_Avoid_: applying `.dark` to a region (use `.srx-on-dark`); hardcoding white text.
+_Avoid_: applying `.dark` to a region (use `.rdz-on-dark`); hardcoding white text.
 
 **Layer** (deepened 2026-06-19):
 The stacking order — one ladder of `--z-*` rungs in `public/tokens/layout.css` is
@@ -199,7 +199,7 @@ drawer/scrim, nav) references a rung; never a raw z-index. Rungs:
 `base < content < overlay-local < raised < sticky < nav < scrim < drawer < popover
 < modal < toast`. Components may still use 0/1/2 for *local* stacking inside their
 own isolation context — that's not part of the global ladder. All modal **Adapter
-faces** share one `.srx-overlay` container at `--z-modal`, and their panels (Drawer,
+faces** share one `.rdz-overlay` container at `--z-modal`, and their panels (Drawer,
 Dialog, CommandPalette) stack *locally* above the shared scrim via the **named**
 `--z-overlay-local` rung — not a bare `1` (the magic numbers read like leaks). The
 `--z-scrim` / `--z-drawer` rungs are reserved for a future app-level off-canvas drawer;

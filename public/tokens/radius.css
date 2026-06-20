@@ -13,7 +13,7 @@
      3. Author with the semantic XS–XL scale, never hardcoded px.
      4. Match sibling elements — one radius per group.
      5. Differentiate button hierarchy by SHAPE, not just color.
-     6. Clip/overflow to make images follow a container's corner (.srx-clip).
+     6. Clip/overflow to make images follow a container's corner (.rdz-clip).
      7. Closer to the user = rounder — floating surfaces use --radius-overlay.
      8. Small radius = formal, large radius = friendly.
    ────────────────────────────────────────────────────────────────────────── */

@@ -1,10 +1,10 @@
 // Co-located styles for Grid. Uses SuperRadix tokens (var(--…)).
-.srx-grid {
+.rdz-grid {
   display: grid;
-  gap: var(--srx-grid-gap, var(--space-5));
-  grid-template-columns: repeat(var(--srx-grid-cols, 1), minmax(0, 1fr));
+  gap: var(--rdz-grid-gap, var(--space-5));
+  grid-template-columns: repeat(var(--rdz-grid-cols, 1), minmax(0, 1fr));
 }
 
-.srx-grid[data-fill] {
-  grid-template-columns: repeat(auto-fill, minmax(min(var(--srx-grid-min, 240px), 100%), 1fr));
+.rdz-grid[data-fill] {
+  grid-template-columns: repeat(auto-fill, minmax(min(var(--rdz-grid-min, 240px), 100%), 1fr));
 }

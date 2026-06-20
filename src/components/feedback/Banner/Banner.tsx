@@ -42,18 +42,18 @@ export function Banner({
 }: BannerProps): React.ReactElement {
   return (
     <div
-      className={cx('srx-banner', `srx-banner--${tone}`, className)}
+      className={cx('rdz-banner', `rdz-banner--${tone}`, className)}
       role={tone === 'danger' ? 'alert' : 'status'}
       {...rest}
     >
-      <Icon name={(icon || TONE_ICON[tone]) as IconName} size="1.15rem" className="srx-banner__icon" />
-      <div className="srx-banner__body">
-        {title ? <div className="srx-banner__title">{title}</div> : null}
-        {children ? <div className="srx-banner__text">{children}</div> : null}
+      <Icon name={(icon || TONE_ICON[tone]) as IconName} size="1.15rem" className="rdz-banner__icon" />
+      <div className="rdz-banner__body">
+        {title ? <div className="rdz-banner__title">{title}</div> : null}
+        {children ? <div className="rdz-banner__text">{children}</div> : null}
       </div>
-      {action ? <div className="srx-banner__action">{action}</div> : null}
+      {action ? <div className="rdz-banner__action">{action}</div> : null}
       {onClose ? (
-        <button type="button" className="srx-banner__close" aria-label="Dismiss" onClick={onClose}>
+        <button type="button" className="rdz-banner__close" aria-label="Dismiss" onClick={onClose}>
           <Icon name="x" size="1rem" />
         </button>
       ) : null}

@@ -16,7 +16,7 @@ import { FooterA } from '../../sections/Footer';
  */
 export function Landing() {
   return (
-    <div className="srx-page">
+    <div className="rdz-page">
       <NavbarA />
       <HeroB />
       <SocialProofA />

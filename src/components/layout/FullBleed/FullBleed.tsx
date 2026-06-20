@@ -14,7 +14,7 @@ export interface FullBleedProps extends HTMLAttributes<HTMLElement> {
 export function FullBleed({ as = 'div', className, children, ...rest }: FullBleedProps): ReactElement {
   const Tag = as;
   return (
-    <Tag className={cx('srx-full-bleed', className)} {...rest}>
+    <Tag className={cx('rdz-full-bleed', className)} {...rest}>
       {children}
     </Tag>
   );

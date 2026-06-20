@@ -16,7 +16,7 @@ export function Pill({ active = false, className, children, ...rest }: PillProps
     <button
       type="button"
       aria-pressed={active}
-      className={cx('srx-pill', active && 'srx-pill--active', className)}
+      className={cx('rdz-pill', active && 'rdz-pill--active', className)}
       {...rest}
     >
       {children}

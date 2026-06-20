@@ -3,7 +3,7 @@ import { SectionShell, type SectionVariantProps } from '../../lib/SectionShell';
 export function HeroA({ background = 'none', ...props }: SectionVariantProps = {}) {
   return (
     <SectionShell wrap="col sx-center sx-gap-5" background={background} {...props}>
-      <span className="srx-badge srx-badge--soft">New · v2 components</span>
+      <span className="rdz-badge rdz-badge--soft">New · v2 components</span>
       <h2 className="h-display sx-hero__title">
         The design foundation that re-skins in one line
       </h2>
@@ -11,10 +11,10 @@ export function HeroA({ background = 'none', ...props }: SectionVariantProps = {
         Radix Colors and a token system wired into 53 components. Change one accent and the whole product follows.
       </p>
       <div className="row sx-row-center">
-        <button className="srx-btn srx-btn--primary srx-btn--lg sx-hero__pill">
+        <button className="rdz-btn rdz-btn--primary rdz-btn--lg sx-hero__pill">
           Get started
         </button>
-        <button className="srx-btn srx-btn--outline srx-btn--lg">Read the docs</button>
+        <button className="rdz-btn rdz-btn--outline rdz-btn--lg">Read the docs</button>
       </div>
     </SectionShell>
   );
@@ -30,8 +30,8 @@ export function HeroB({ background = 'surface-2', ...props }: SectionVariantProp
           Accessible components, semantic tokens, dark mode and motion — all consistent, all themeable.
         </p>
         <div className="row">
-          <button className="srx-btn srx-btn--primary srx-btn--lg">Start building</button>
-          <button className="srx-btn srx-btn--glass srx-btn--lg">Live demo →</button>
+          <button className="rdz-btn rdz-btn--primary rdz-btn--lg">Start building</button>
+          <button className="rdz-btn rdz-btn--glass rdz-btn--lg">Live demo →</button>
         </div>
       </div>
       <div className="ph sx-hero__media">product shot</div>
@@ -49,7 +49,7 @@ export function HeroC({ background = 'gradient-aurora', parallax = true, ...prop
         Cyan, iris, jade — flip a variable and every surface, state and shadow recolors in place.
       </p>
       <div className="row sx-row-center">
-        <button className="srx-btn srx-btn--lg sx-hero__band-btn">
+        <button className="rdz-btn rdz-btn--lg sx-hero__band-btn">
           Try the switcher
         </button>
       </div>

@@ -41,8 +41,8 @@ export function DropdownMenu({
 }: DropdownMenuProps): ReactElement {
   const { open, toggle, close, anchorRef } = useTrigger<HTMLSpanElement>({ open: openProp, defaultOpen, onOpenChange });
   return (
-    <span className="srx-dropdown-menu__root">
-      <span ref={anchorRef} className="srx-dropdown-menu__anchor" onClick={toggle}>{trigger}</span>
+    <span className="rdz-dropdown-menu__root">
+      <span ref={anchorRef} className="rdz-dropdown-menu__anchor" onClick={toggle}>{trigger}</span>
       <MenuSurface
         open={open}
         onDismiss={close}

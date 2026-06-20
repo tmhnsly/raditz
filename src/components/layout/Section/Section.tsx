@@ -25,11 +25,11 @@ export function Section({
   const Tag = as;
   return (
     <Tag
-      className={cx('srx-section', className)}
+      className={cx('rdz-section', className)}
       style={
         {
-          '--srx-section-gap': `var(--space-${gap})`,
-          '--srx-section-pad': `var(--space-${pad})`,
+          '--rdz-section-gap': `var(--space-${gap})`,
+          '--rdz-section-pad': `var(--space-${pad})`,
         } as CSSProperties
       }
       {...rest}

@@ -54,7 +54,7 @@ export function ToggleGroup({
       setVal(val === v ? '' : v);
     }
   };
-  const cls = cx('srx-toggle-group', size !== 'md' && `srx-toggle-group--${size}`, className);
+  const cls = cx('rdz-toggle-group', size !== 'md' && `rdz-toggle-group--${size}`, className);
   const itemRefs = React.useRef<(HTMLButtonElement | null)[]>([]);
   // Single-select acts as a radiogroup: arrow keys rove focus + selection.
   const singleIdx = type === 'single' ? items.findIndex((it) => it.value === val) : -1;
@@ -76,7 +76,7 @@ export function ToggleGroup({
             type="button"
             key={it.value}
             ref={(el) => { itemRefs.current[i] = el; }}
-            className="srx-toggle-group__item"
+            className="rdz-toggle-group__item"
             data-state={on ? 'on' : 'off'}
             role={type === 'single' ? 'radio' : undefined}
             aria-checked={type === 'single' ? on : undefined}

@@ -15,7 +15,7 @@ export function ThemePicker() {
     <div className="theme-picker">
       <div className="theme-picker__row">
         <strong className="theme-picker__title">Accent</strong>
-        <button type="button" className="srx-btn srx-btn--ghost srx-btn--sm" onClick={reset}>Reset</button>
+        <button type="button" className="rdz-btn rdz-btn--ghost rdz-btn--sm" onClick={reset}>Reset</button>
       </div>
       <div className="theme-picker__swatches">
         {ACCENTS.map((a) => (

@@ -13,7 +13,7 @@ export function AnnouncementB({ background = 'none', ...props }: SectionVariantP
   return (
     <SectionShell pad="sm" wrap="sx-ann__banner" background={background} {...props}>
       <span className="muted sx-ann__banner-text">We use cookies to improve your experience. By using SuperRadix you agree to our <a href="#" className="sx-ann__banner-link">cookie policy</a>.</span>
-      <div className="row"><button className="srx-btn srx-btn--ghost srx-btn--sm">Decline</button><button className="srx-btn srx-btn--primary srx-btn--sm">Accept all</button></div>
+      <div className="row"><button className="rdz-btn rdz-btn--ghost rdz-btn--sm">Decline</button><button className="rdz-btn rdz-btn--primary rdz-btn--sm">Accept all</button></div>
     </SectionShell>
   );
 }

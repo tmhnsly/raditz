@@ -102,8 +102,8 @@ export function StoryView({
     <>
       <div className="pagehead">
         <div>
-          <span className="srx-eyebrow">
-            <span className="srx-eyebrow__dot" />
+          <span className="rdz-eyebrow">
+            <span className="rdz-eyebrow__dot" />
             SuperRadix · Showcase
           </span>
           <h1>
@@ -115,8 +115,8 @@ export function StoryView({
           </p>
         </div>
         <div className="row">
-          <span className="srx-badge srx-badge--soft">{entries.length} entries</span>
-          <span className="srx-badge srx-badge--solid">{VARIANT_TOTAL} variants</span>
+          <span className="rdz-badge rdz-badge--soft">{entries.length} entries</span>
+          <span className="rdz-badge rdz-badge--solid">{VARIANT_TOTAL} variants</span>
         </div>
       </div>
 

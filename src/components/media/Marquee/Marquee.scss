@@ -1,19 +1,19 @@
 // Uses SuperRadix tokens (var(--…)); re-skins/re-themes with the system.
-.srx-marquee { overflow: hidden; container-type: inline-size; }
+.rdz-marquee { overflow: hidden; container-type: inline-size; }
 
-.srx-marquee--fade {
+.rdz-marquee--fade {
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
   mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
 }
 
-.srx-marquee__track {
+.rdz-marquee__track {
   display: flex;
   width: max-content;
-  animation: srx-marquee var(--srx-marquee-duration, 26s) linear infinite;
-  animation-direction: var(--srx-marquee-dir, normal);
+  animation: rdz-marquee var(--rdz-marquee-duration, 26s) linear infinite;
+  animation-direction: var(--rdz-marquee-dir, normal);
 }
 
-.srx-marquee--pause:hover .srx-marquee__track { animation-play-state: paused; }
+.rdz-marquee--pause:hover .rdz-marquee__track { animation-play-state: paused; }
 
 /* Each group is floored at the container width (100cqw) so two copies always
    span ≥ 2× the viewport — otherwise, with few/short items, one copy is narrower
@@ -21,24 +21,24 @@
    space-around spreads a short row to fill; with the gap/2 edge padding the seam
    spacing equals the intra-item spacing, so the loop stays invisible. A row that
    already overflows ignores the floor and keeps its natural gap. */
-.srx-marquee__group {
+.rdz-marquee__group {
   display: flex;
   align-items: center;
   flex: none;
   min-width: 100cqw;
   justify-content: space-around;
-  gap: var(--srx-marquee-gap, var(--space-7));
-  padding-inline: calc(var(--srx-marquee-gap, var(--space-7)) / 2);
+  gap: var(--rdz-marquee-gap, var(--space-7));
+  padding-inline: calc(var(--rdz-marquee-gap, var(--space-7)) / 2);
 }
 
 /* two identical groups → shifting by half the track width loops seamlessly */
-@keyframes srx-marquee {
+@keyframes rdz-marquee {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .srx-marquee { -webkit-mask-image: none; mask-image: none; overflow-x: auto; }
-  .srx-marquee__track { animation: none; }
-  .srx-marquee__group[aria-hidden='true'] { display: none; }
+  .rdz-marquee { -webkit-mask-image: none; mask-image: none; overflow-x: auto; }
+  .rdz-marquee__track { animation: none; }
+  .rdz-marquee__group[aria-hidden='true'] { display: none; }
 }

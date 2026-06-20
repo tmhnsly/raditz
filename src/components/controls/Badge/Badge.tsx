@@ -19,8 +19,8 @@ export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
  */
 export function Badge({ variant = 'soft', color = 'accent', dot = false, className, children, ...rest }: BadgeProps): React.ReactElement {
   return (
-    <span className={cx('srx-badge', `srx-badge--${variant}`, className)} data-color={color} {...rest}>
-      {dot && <span className="srx-badge__dot" aria-hidden="true" />}
+    <span className={cx('rdz-badge', `rdz-badge--${variant}`, className)} data-color={color} {...rest}>
+      {dot && <span className="rdz-badge__dot" aria-hidden="true" />}
       {children}
     </span>
   );

@@ -1,20 +1,20 @@
 // Co-located styles for Popout. Uses SuperRadix tokens (var(--…)).
-.srx-popout {
+.rdz-popout {
   width: 100vw;
   margin-inline: calc(50% - 50vw);
-  background: var(--srx-popout-bg, var(--accent-surface));
+  background: var(--rdz-popout-bg, var(--accent-surface));
 }
 
-.srx-popout[data-bordered] { border-block: 1px solid var(--rule-soft); }
+.rdz-popout[data-bordered] { border-block: 1px solid var(--rule-soft); }
 
-.srx-popout__content {
+.rdz-popout__content {
   width: 100%;
   max-width: var(--container-max);
   margin-inline: auto;
   padding-inline: var(--container-gutter);
-  padding-block: var(--srx-popout-pad, var(--space-11));
+  padding-block: var(--rdz-popout-pad, var(--space-11));
 }
 
-.srx-popout__content[data-size='narrow'] { max-width: 900px; }
-.srx-popout__content[data-size='wide'] { max-width: 1560px; }
-.srx-popout__content[data-size='prose'] { max-width: var(--measure-prose); }
+.rdz-popout__content[data-size='narrow'] { max-width: 900px; }
+.rdz-popout__content[data-size='wide'] { max-width: 1560px; }
+.rdz-popout__content[data-size='prose'] { max-width: var(--measure-prose); }

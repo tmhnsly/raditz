@@ -1,6 +1,6 @@
 // Auto-split from components.css — this component's styles, co-located.
 // Uses SuperRadix tokens (var(--…)); re-skins/re-themes with the system.
 /* ═══════════════════════ AspectRatio ═══════════════════════ */
-.srx-aspect { position: relative; width: 100%; overflow: hidden; border-radius: var(--radius-card); aspect-ratio: var(--srx-aspect, 16 / 9); }
+.rdz-aspect { position: relative; width: 100%; overflow: hidden; border-radius: var(--radius-card); aspect-ratio: var(--rdz-aspect, 16 / 9); }
 
-.srx-aspect > * { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.rdz-aspect > * { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }

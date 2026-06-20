@@ -1,18 +1,18 @@
 // Auto-split from components.css — this component's styles, co-located.
 // Uses SuperRadix tokens (var(--…)); re-skins/re-themes with the system.
 /* ═══════════════════════ Pagination ═══════════════════════ */
-.srx-pagination { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: var(--space-1); max-width: 100%; }
+.rdz-pagination { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: var(--space-1); max-width: 100%; }
 
-.srx-pagination__btn { min-width: 2.25rem; height: 2.25rem; padding: 0 0.5rem; display: inline-grid; place-items: center; border-radius: var(--radius-control); font-family: var(--font-display); font-size: var(--fs-body-s); font-weight: var(--fw-medium); color: var(--text-soft); transition: var(--transition-control); }
+.rdz-pagination__btn { min-width: 2.25rem; height: 2.25rem; padding: 0 0.5rem; display: inline-grid; place-items: center; border-radius: var(--radius-control); font-family: var(--font-display); font-size: var(--fs-body-s); font-weight: var(--fw-medium); color: var(--text-soft); transition: var(--transition-control); }
 
-.srx-pagination__btn:hover:not(:disabled) { background: var(--surface); color: var(--text); }
+.rdz-pagination__btn:hover:not(:disabled) { background: var(--surface); color: var(--text); }
 
-.srx-pagination__btn[data-active] { background: var(--accent); color: var(--on-accent); }
+.rdz-pagination__btn[data-active] { background: var(--accent); color: var(--on-accent); }
 
-.srx-pagination__btn:disabled { opacity: var(--disabled-opacity); cursor: not-allowed; }
+.rdz-pagination__btn:disabled { opacity: var(--disabled-opacity); cursor: not-allowed; }
 
-.srx-pagination__btn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.rdz-pagination__btn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 
 /* Match the button width so every slot is equal — combined with the fixed slot
    count in buildPages, the control keeps a constant width across pages. */
-.srx-pagination__gap { min-width: 2.25rem; height: 2.25rem; display: inline-grid; place-items: center; color: var(--text-faint); }
+.rdz-pagination__gap { min-width: 2.25rem; height: 2.25rem; display: inline-grid; place-items: center; color: var(--text-faint); }

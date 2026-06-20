@@ -19,7 +19,7 @@ export interface MenubarProps extends HTMLAttributes<HTMLDivElement> {
 function MenubarPanel({ items, onClose }: { items: MenuItem[]; onClose: () => void }): ReactElement {
   const roving = useMenuRoving(items, true, onClose);
   return (
-    <div className="srx-menu srx-menu--anchored" role="menu" onKeyDown={roving.onKeyDown}>
+    <div className="rdz-menu rdz-menu--anchored" role="menu" onKeyDown={roving.onKeyDown}>
       <MenuItems roving={roving} />
     </div>
   );
@@ -37,12 +37,12 @@ export function Menubar({ menus = [], className, ...rest }: MenubarProps): React
   useDismiss(barRef, openIdx >= 0, () => setOpenIdx(-1), { ignoreRef: barRef });
 
   return (
-    <div className={cx('srx-menubar', className)} role="menubar" ref={barRef} {...rest}>
+    <div className={cx('rdz-menubar', className)} role="menubar" ref={barRef} {...rest}>
       {menus.map((m, i) => (
-        <div key={i} className="srx-menubar__group">
+        <div key={i} className="rdz-menubar__group">
           <button
             type="button"
-            className="srx-menubar__trigger"
+            className="rdz-menubar__trigger"
             role="menuitem"
             aria-haspopup="menu"
             aria-expanded={openIdx === i}

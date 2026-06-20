@@ -24,10 +24,10 @@ export const Search = forwardRef<HTMLInputElement, SearchProps>(function Search(
   ref,
 ) {
   return (
-    <div className={cx('srx-search', `srx-search--${variant}`, size === 'sm' && 'srx-search--sm', className)}>
-      <Icon name="search" size="1em" className="srx-search__icon" />
-      <input ref={ref} type="search" className="srx-search__input" placeholder={placeholder} aria-label={placeholder} {...rest} />
-      {hint ? <span className="srx-search__hint">{hint}</span> : null}
+    <div className={cx('rdz-search', `rdz-search--${variant}`, size === 'sm' && 'rdz-search--sm', className)}>
+      <Icon name="search" size="1em" className="rdz-search__icon" />
+      <input ref={ref} type="search" className="rdz-search__input" placeholder={placeholder} aria-label={placeholder} {...rest} />
+      {hint ? <span className="rdz-search__hint">{hint}</span> : null}
     </div>
   );
 });

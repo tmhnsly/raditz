@@ -31,14 +31,14 @@ export function Avatar({
   ...rest
 }: AvatarProps): ReactElement {
   const px = typeof size === 'number' ? size : SIZE[size];
-  const cls = cx('srx-avatar', variant === 'orb' && 'srx-avatar--orb', className);
+  const cls = cx('rdz-avatar', variant === 'orb' && 'rdz-avatar--orb', className);
   return (
     <span
       className={cls}
-      style={{ '--srx-avatar-size': `${px}px`, '--srx-avatar-fs': `${Math.round(px * 0.4)}px`, ...style } as CSSProperties}
+      style={{ '--rdz-avatar-size': `${px}px`, '--rdz-avatar-fs': `${Math.round(px * 0.4)}px`, ...style } as CSSProperties}
       {...rest}
     >
-      {src ? <img src={src} alt={alt} /> : initials ? <span className="srx-avatar__initials">{initials}</span> : null}
+      {src ? <img src={src} alt={alt} /> : initials ? <span className="rdz-avatar__initials">{initials}</span> : null}
     </span>
   );
 }

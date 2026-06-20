@@ -55,33 +55,33 @@ export function Accordion({
   };
   const baseId = useId();
   return (
-    <div className={cx('srx-accordion', className)} {...rest}>
+    <div className={cx('rdz-accordion', className)} {...rest}>
       {items.map((it, i) => {
         const o = isOpen(it.value);
         const triggerId = `${baseId}-t-${i}`;
         const panelId = `${baseId}-p-${i}`;
         return (
-          <div className="srx-accordion__item" key={it.value} data-state={o ? 'open' : 'closed'}>
+          <div className="rdz-accordion__item" key={it.value} data-state={o ? 'open' : 'closed'}>
             <button
               type="button"
               id={triggerId}
-              className="srx-accordion__trigger"
+              className="rdz-accordion__trigger"
               aria-expanded={o}
               aria-controls={panelId}
               disabled={it.disabled}
               onClick={() => toggle(it.value)}
             >
               <span>{it.title}</span>
-              <svg className="srx-accordion__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg className="rdz-accordion__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="6 9 12 15 18 9" />
               </svg>
             </button>
             {/* Always rendered (no `hidden` attr) so height can animate; closed
                 content is visibility:hidden in CSS to stay out of the a11y tree. */}
-            <div className="srx-accordion__panel" id={panelId} role="region" aria-labelledby={triggerId}>
+            <div className="rdz-accordion__panel" id={panelId} role="region" aria-labelledby={triggerId}>
               {/* content = the collapsing grid item (overflow:hidden, min-height:0);
                   padding lives on __inner so a closed 0fr track leaves no sliver. */}
-              <div className="srx-accordion__content"><div className="srx-accordion__inner">{it.content}</div></div>
+              <div className="rdz-accordion__content"><div className="rdz-accordion__inner">{it.content}</div></div>
             </div>
           </div>
         );
