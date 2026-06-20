@@ -45,7 +45,28 @@ export function Landing() {
           { value: '12k+', label: 'teams' },
         ]}
       />
-      <TestimonialsA />
+      <TestimonialsA
+        quotes={[
+          {
+            quote: '"We re-skinned our entire app for a rebrand in an afternoon. One token."',
+            avatar: <span className="rdz-avatar sx-avatar-sm">MO</span>,
+            name: 'Maya Okafor',
+            role: 'Design Lead, Aurora',
+          },
+          {
+            quote: '"The component coverage is unreal. We deleted our internal UI kit."',
+            avatar: <span className="rdz-avatar sx-avatar-sm">JT</span>,
+            name: 'Jon Tran',
+            role: 'Eng Manager, Vertex',
+          },
+          {
+            quote: '"Accessible by default saved us weeks of audit work."',
+            avatar: <span className="rdz-avatar sx-avatar-sm">SL</span>,
+            name: 'Sara Lin',
+            role: 'PM, Lumen',
+          },
+        ]}
+      />
       <PricingA
         heading="Simple, scalable pricing"
         sub="Start free. Upgrade when your team grows."
@@ -76,7 +97,22 @@ export function Landing() {
           },
         ]}
       />
-      <FaqA />
+      <FaqA
+        items={[
+          {
+            question: 'How do I install it?',
+            answer: 'Link one stylesheet in your <head>. styles.css is an import manifest that pulls in scales, tokens and components.',
+          },
+          {
+            question: 'Can I change the accent color?',
+            answer: 'Repoint the accent token block — every component, state and shadow follows automatically.',
+          },
+          {
+            question: 'Is dark mode included?',
+            answer: 'Yes — it follows the OS by default with a toggle to override. class="dark" on the root flips every token; content over dark media uses the on-dark surface context.',
+          },
+        ]}
+      />
       <CtaA
         title="Ready to build something consistent?"
         actions={[

@@ -34,7 +34,14 @@ export function PricingPage() {
         ]}
       />
       <ComparisonA />
-      <FaqB />
+      <FaqB
+        items={[
+          { question: "What's the license?", answer: 'MIT — use it in commercial products freely.' },
+          { question: 'Does it need a build step?', answer: 'No. It works from a CDN link, or self-host for production.' },
+          { question: 'Which frameworks?', answer: 'Components are React; tokens and classes are framework-agnostic.' },
+          { question: 'Can I extend it?', answer: 'Yes — add tokens and components; everything composes.' },
+        ]}
+      />
       <CtaB
         title="Start shipping today"
         sub="No credit card required."
