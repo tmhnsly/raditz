@@ -7,7 +7,7 @@ component that exists here, and never edit `node_modules/raditz`.
 - Import the stylesheet ONCE at the app root: `import 'raditz/styles.css'`.
 - Props below are the component-specific API; standard HTML attributes also pass through.
 
-124 exported components across 17 categories.
+129 exported components across 17 categories.
 
 ## utilities (CSS classes)
 
@@ -1013,6 +1013,21 @@ Usage:
 <Frame />
 ```
 
+### SectionActions
+Import: `import { SectionActions } from 'raditz'`
+
+Renders a row of CTAs from `actions` as {@link Button}s. Returns `null` when there are no actions, so callers can drop it in unconditionally. `size` sets the default for every button (each action may override via its own `size`). The shared CTA renderer for all content-driven sections.
+
+Props:
+  - actions?: SectionAction[] — The CTAs to render.
+  - className?: string (default: row sx-row-center) — Class on the wrapping row.
+  - size?: "sm" | "md" | "lg" — Default size applied to every button (per-action `size` wins).
+
+Usage:
+```tsx
+<SectionActions />
+```
+
 ### SectionBg
 Import: `import { SectionBg } from 'raditz'`
 
@@ -1540,108 +1555,171 @@ Usage:
 
 ## sections
 
-### AnnouncementB
-Import: `import { AnnouncementB } from 'raditz'`
+### AnnouncementA
+Import: `import { AnnouncementA } from 'raditz'`
+
+Announcement A — accent strip banner.
 
 Props:
-  - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
+  - action?: SectionAction — Optional CTA link/button.
+  - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh"
+  - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - dismissible?: boolean — Show a dismiss (×) affordance.
   - image?: string
   - parallax?: boolean
+  - text: ReactNode — Banner body text (required).
   - video?: string
 
 Examples (Storybook stories): A_AccentStrip, B_CookieBanner
 
 Usage:
 ```tsx
-<AnnouncementB />
+<AnnouncementA>…</AnnouncementA>
+```
+
+### AnnouncementB
+Import: `import { AnnouncementB } from 'raditz'`
+
+Announcement B — consent / cookie banner.
+
+Props:
+  - action?: SectionAction — Optional CTA link/button.
+  - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
+  - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - dismissible?: boolean — Show a dismiss (×) affordance.
+  - image?: string
+  - parallax?: boolean
+  - text: ReactNode — Banner body text (required).
+  - video?: string
+
+Examples (Storybook stories): A_AccentStrip, B_CookieBanner
+
+Usage:
+```tsx
+<AnnouncementB>…</AnnouncementB>
 ```
 
 ### BlogA
 Import: `import { BlogA } from 'raditz'`
 
+Blog A — card grid with cover image.
+
 Props:
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
+  - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - heading?: ReactNode — Section heading.
   - image?: string
   - parallax?: boolean
+  - posts: { title: ReactNode; href?: string | undefined; excerpt?: ReactNode; image?: ReactNode; date?: ReactNode; tag?: ReactNode; }[] — Blog posts to render (required).
   - video?: string
 
 Examples (Storybook stories): A_CardGrid, B_EditorialList
 
 Usage:
 ```tsx
-<BlogA />
+<BlogA>…</BlogA>
 ```
 
 ### BlogB
 Import: `import { BlogB } from 'raditz'`
 
+Blog B — editorial list rows.
+
 Props:
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: surface-2)
+  - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - heading?: ReactNode — Section heading.
   - image?: string
   - parallax?: boolean
+  - posts: { title: ReactNode; href?: string | undefined; excerpt?: ReactNode; image?: ReactNode; date?: ReactNode; tag?: ReactNode; }[] — Blog posts to render (required).
   - video?: string
 
 Examples (Storybook stories): A_CardGrid, B_EditorialList
 
 Usage:
 ```tsx
-<BlogB />
+<BlogB>…</BlogB>
 ```
 
 ### ComparisonA
 Import: `import { ComparisonA } from 'raditz'`
 
+Comparison A — plans × features table, highlighted column for the popular tier.
+
 Props:
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: surface-2)
+  - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - columns: { name: ReactNode; highlight?: boolean | undefined; }[] — Table columns (plans/tiers), in order (required).
+  - heading?: ReactNode — Section heading.
   - image?: string
   - parallax?: boolean
+  - rows: { feature: ReactNode; values: ReactNode[]; }[] — Feature rows (required). Each `values` entry aligns to the same-index column. `true` → check glyph; `false` → cross/em-dash; any ReactNode → rendered as-is.
   - video?: string
 
 Examples (Storybook stories): A_PlansFeatures
 
 Usage:
 ```tsx
-<ComparisonA />
+<ComparisonA>…</ComparisonA>
 ```
 
 ### CtaA
 Import: `import { CtaA } from 'raditz'`
 
+CTA A — centered column with dual CTA.
+
 Props:
+  - actions?: SectionAction[] — Call-to-action buttons.
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: gradient-dusk)
+  - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - emailCapture?: { placeholder?: string; action: SectionAction; } — Inline email-capture form (CtaB).
   - image?: string
   - parallax?: boolean
+  - sub?: ReactNode — Sub-text / tagline under the title.
+  - title: ReactNode — Headline (required).
   - video?: string
 
 Examples (Storybook stories): A_Centered, B_Split
 
 Usage:
 ```tsx
-<CtaA />
+<CtaA>…</CtaA>
 ```
 
 ### CtaB
 Import: `import { CtaB } from 'raditz'`
 
+CTA B — split layout with email capture.
+
 Props:
+  - actions?: SectionAction[] — Call-to-action buttons.
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
+  - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - emailCapture?: { placeholder?: string; action: SectionAction; } — Inline email-capture form (CtaB).
   - image?: string
   - parallax?: boolean
+  - sub?: ReactNode — Sub-text / tagline under the title.
+  - title: ReactNode — Headline (required).
   - video?: string
 
 Examples (Storybook stories): A_Centered, B_Split
 
 Usage:
 ```tsx
-<CtaB />
+<CtaB>…</CtaB>
 ```
 
 ### FaqA
 Import: `import { FaqA } from 'raditz'`
 
+Faq A — accordion-style disclosure.
+
 Props:
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: surface-2)
+  - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - heading?: ReactNode — Optional section heading rendered above the content.
   - image?: string
+  - items: { question: ReactNode; answer: ReactNode; }[] — FAQ items (required).
   - parallax?: boolean
   - video?: string
 
@@ -1649,15 +1727,20 @@ Examples (Storybook stories): A_Accordion, B_TwoColumn
 
 Usage:
 ```tsx
-<FaqA />
+<FaqA>…</FaqA>
 ```
 
 ### FaqB
 Import: `import { FaqB } from 'raditz'`
 
+Faq B — plain two-column grid of Q&A pairs.
+
 Props:
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
+  - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - heading?: ReactNode — Optional section heading rendered above the content.
   - image?: string
+  - items: { question: ReactNode; answer: ReactNode; }[] — FAQ items (required).
   - parallax?: boolean
   - video?: string
 
@@ -1665,15 +1748,21 @@ Examples (Storybook stories): A_Accordion, B_TwoColumn
 
 Usage:
 ```tsx
-<FaqB />
+<FaqB>…</FaqB>
 ```
 
 ### FeaturesA
 Import: `import { FeaturesA } from 'raditz'`
 
+Features A — 3-up icon card grid.
+
 Props:
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
+  - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - eyebrow?: ReactNode — Small label above the heading.
+  - heading?: ReactNode — Section heading.
   - image?: string
+  - items: FeaturesItem[] — Feature cards (required).
   - parallax?: boolean
   - video?: string
 
@@ -1681,15 +1770,21 @@ Examples (Storybook stories): A_IconCards, B_BentoGrid, C_AlternatingSpotlight
 
 Usage:
 ```tsx
-<FeaturesA />
+<FeaturesA>…</FeaturesA>
 ```
 
 ### FeaturesB
 Import: `import { FeaturesB } from 'raditz'`
 
+Features B — bento: first item as lead card, remaining as cells + wide.
+
 Props:
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: gradient-mesh)
+  - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - eyebrow?: ReactNode — Small label above the heading.
+  - heading?: ReactNode — Section heading.
   - image?: string
+  - items: FeaturesItem[] — Feature cards (required).
   - parallax?: boolean
   - video?: string
 
@@ -1697,15 +1792,21 @@ Examples (Storybook stories): A_IconCards, B_BentoGrid, C_AlternatingSpotlight
 
 Usage:
 ```tsx
-<FeaturesB />
+<FeaturesB>…</FeaturesB>
 ```
 
 ### FeaturesC
 Import: `import { FeaturesC } from 'raditz'`
 
+Features C — alternating media spotlights.
+
 Props:
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: surface-2)
+  - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - eyebrow?: ReactNode — Small label above the heading.
+  - heading?: ReactNode — Section heading.
   - image?: string
+  - items: FeaturesItem[] — Feature cards (required).
   - parallax?: boolean
   - video?: string
 
@@ -1713,14 +1814,20 @@ Examples (Storybook stories): A_IconCards, B_BentoGrid, C_AlternatingSpotlight
 
 Usage:
 ```tsx
-<FeaturesC />
+<FeaturesC>…</FeaturesC>
 ```
 
 ### FooterA
 Import: `import { FooterA } from 'raditz'`
 
+FooterA — brand block + link columns grid.
+
 Props:
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
+  - brand?: { name: ReactNode; logo?: ReactNode; blurb?: ReactNode; } — Brand block rendered by FooterA.
+  - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - columns?: { heading: ReactNode; links: { label: ReactNode; href?: string; }[]; }[] — Link columns rendered by FooterA.
+  - copyright?: ReactNode — Copyright text rendered by FooterB.
   - image?: string
   - parallax?: boolean
   - video?: string
@@ -1729,14 +1836,20 @@ Examples (Storybook stories): A_MultiColumn, B_MinimalBar
 
 Usage:
 ```tsx
-<FooterA />
+<FooterA>…</FooterA>
 ```
 
 ### FooterB
 Import: `import { FooterB } from 'raditz'`
 
+FooterB — compact copyright bar + link row.
+
 Props:
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
+  - brand?: { name: ReactNode; logo?: ReactNode; blurb?: ReactNode; } — Brand block rendered by FooterA.
+  - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - columns?: { heading: ReactNode; links: { label: ReactNode; href?: string; }[]; }[] — Link columns rendered by FooterA.
+  - copyright?: ReactNode — Copyright text rendered by FooterB.
   - image?: string
   - parallax?: boolean
   - video?: string
@@ -1745,63 +1858,91 @@ Examples (Storybook stories): A_MultiColumn, B_MinimalBar
 
 Usage:
 ```tsx
-<FooterB />
+<FooterB>…</FooterB>
 ```
 
 ### HeroA
 Import: `import { HeroA } from 'raditz'`
 
+Hero A — centered column, dual CTA.
+
 Props:
+  - actions?: SectionAction[] — Call-to-action buttons.
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
+  - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - eyebrow?: ReactNode — Small label/badge above the title.
   - image?: string
+  - lede?: ReactNode — Lead paragraph under the title.
+  - media?: ReactNode — Media slot (used by the split/full-bleed variants).
   - parallax?: boolean
+  - title: ReactNode — Headline (required).
   - video?: string
 
 Examples (Storybook stories): A_CenteredDualCTA, B_SplitCopyMedia, C_AccentFullBleed
 
 Usage:
 ```tsx
-<HeroA />
+<HeroA>…</HeroA>
 ```
 
 ### HeroB
 Import: `import { HeroB } from 'raditz'`
 
+Hero B — split: copy beside a media slot.
+
 Props:
+  - actions?: SectionAction[] — Call-to-action buttons.
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: surface-2)
+  - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - eyebrow?: ReactNode — Small label/badge above the title.
   - image?: string
+  - lede?: ReactNode — Lead paragraph under the title.
+  - media?: ReactNode — Media slot (used by the split/full-bleed variants).
   - parallax?: boolean
+  - title: ReactNode — Headline (required).
   - video?: string
 
 Examples (Storybook stories): A_CenteredDualCTA, B_SplitCopyMedia, C_AccentFullBleed
 
 Usage:
 ```tsx
-<HeroB />
+<HeroB>…</HeroB>
 ```
 
 ### HeroC
 Import: `import { HeroC } from 'raditz'`
 
+Hero C — accent full-bleed band.
+
 Props:
+  - actions?: SectionAction[] — Call-to-action buttons.
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: gradient-aurora)
+  - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - eyebrow?: ReactNode — Small label/badge above the title.
   - image?: string
+  - lede?: ReactNode — Lead paragraph under the title.
+  - media?: ReactNode — Media slot (used by the split/full-bleed variants).
   - parallax?: boolean (default: true)
+  - title: ReactNode — Headline (required).
   - video?: string
 
 Examples (Storybook stories): A_CenteredDualCTA, B_SplitCopyMedia, C_AccentFullBleed
 
 Usage:
 ```tsx
-<HeroC />
+<HeroC>…</HeroC>
 ```
 
 ### MarqueeA
 Import: `import { MarqueeA } from 'raditz'`
 
+Marquee A — auto-scrolling logo strip.
+
 Props:
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
+  - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
   - image?: string
+  - items: ReactNode[] — Scrolling items (logos, chips, etc.).
   - parallax?: boolean
   - video?: string
 
@@ -1809,7 +1950,67 @@ Examples (Storybook stories): A_LogoStrip
 
 Usage:
 ```tsx
-<MarqueeA />
+<MarqueeA>…</MarqueeA>
+```
+
+### NavbarA
+Import: `import { NavbarA } from 'raditz'`
+
+Props:
+  - actions?: SectionAction[] — Call-to-action buttons.
+  - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh"
+  - brand: NavbarBrand — Brand lockup (required).
+  - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - image?: string
+  - links?: NavbarLink[] — Primary nav links.
+  - parallax?: boolean
+  - video?: string
+
+Examples (Storybook stories): A_LogoLinksCTAs, B_GlassCentered, C_MobileDropdown, D_BottomTabBar
+
+Usage:
+```tsx
+<NavbarA>…</NavbarA>
+```
+
+### NavbarB
+Import: `import { NavbarB } from 'raditz'`
+
+Props:
+  - actions?: SectionAction[] — Call-to-action buttons.
+  - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh"
+  - brand: NavbarBrand — Brand lockup (required).
+  - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - image?: string
+  - links?: NavbarLink[] — Primary nav links.
+  - parallax?: boolean
+  - video?: string
+
+Examples (Storybook stories): A_LogoLinksCTAs, B_GlassCentered, C_MobileDropdown, D_BottomTabBar
+
+Usage:
+```tsx
+<NavbarB>…</NavbarB>
+```
+
+### NavbarC
+Import: `import { NavbarC } from 'raditz'`
+
+Props:
+  - actions?: SectionAction[] — Call-to-action buttons.
+  - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh"
+  - brand: NavbarBrand — Brand lockup (required).
+  - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - image?: string
+  - links?: NavbarLink[] — Primary nav links.
+  - parallax?: boolean
+  - video?: string
+
+Examples (Storybook stories): A_LogoLinksCTAs, B_GlassCentered, C_MobileDropdown, D_BottomTabBar
+
+Usage:
+```tsx
+<NavbarC>…</NavbarC>
 ```
 
 ### NavbarD
@@ -1817,7 +2018,10 @@ Import: `import { NavbarD } from 'raditz'`
 
 D — an iOS/Android-style bottom tab bar: pinned to the bottom, icon+label tabs with an accent active state. All Raditz tokens, so it re-themes.
 
-Props: none
+Props:
+  - activeId?: string — Controlled active tab id (pair with `onTabChange`).
+  - onTabChange?: ((id: string) => void) — Called with the new tab id when a tab is selected.
+  - tabs: NavbarTab[] — Tabs to render (required).
 
 Examples (Storybook stories): A_LogoLinksCTAs, B_GlassCentered, C_MobileDropdown, D_BottomTabBar
 
@@ -1829,73 +2033,103 @@ Usage:
 ### NewsletterA
 Import: `import { NewsletterA } from 'raditz'`
 
+Newsletter A — email signup card.
+
 Props:
+  - action: SectionAction — Submit button (required).
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: gradient-aurora)
+  - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
   - image?: string
   - parallax?: boolean
+  - placeholder?: string — Input placeholder text.
+  - sub?: ReactNode — Card sub-text.
+  - title?: ReactNode — Card heading.
   - video?: string
 
 Examples (Storybook stories): A_CardSignup
 
 Usage:
 ```tsx
-<NewsletterA />
+<NewsletterA>…</NewsletterA>
 ```
 
 ### NotFoundA
 Import: `import { NotFoundA } from 'raditz'`
 
+NotFound A — centered 404 page.
+
 Props:
+  - actions?: SectionAction[] — Recovery actions.
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
+  - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
   - image?: string
+  - message?: ReactNode — Body copy.
   - parallax?: boolean
+  - title?: ReactNode (default: 'Page not found') — Page heading.
   - video?: string
 
 Examples (Storybook stories): A_CenteredBigCode
 
 Usage:
 ```tsx
-<NotFoundA />
+<NotFoundA>…</NotFoundA>
 ```
 
 ### PricingA
 Import: `import { PricingA } from 'raditz'`
 
+PricingA — static 3-up tier cards with optional Popular badge.
+
 Props:
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: surface-2)
+  - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - heading?: ReactNode
   - image?: string
   - parallax?: boolean
+  - sub?: ReactNode
+  - tiers: PricingTier[] — Tiers to render as cards.
   - video?: string
 
 Examples (Storybook stories): A_ThreeTiers, B_MonthlyAnnualToggle
 
 Usage:
 ```tsx
-<PricingA />
+<PricingA>…</PricingA>
 ```
 
 ### PricingB
 Import: `import { PricingB } from 'raditz'`
 
+PricingB — interactive monthly/yearly toggle (requires a client boundary).
+
 Props:
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: gradient-accent)
+  - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - heading?: ReactNode
   - image?: string
   - parallax?: boolean
+  - sub?: ReactNode
+  - tiers: PricingTier[] — Tiers to render as cards.
   - video?: string
 
 Examples (Storybook stories): A_ThreeTiers, B_MonthlyAnnualToggle
 
 Usage:
 ```tsx
-<PricingB />
+<PricingB>…</PricingB>
 ```
 
 ### SocialProofA
 Import: `import { SocialProofA } from 'raditz'`
 
+SocialProof A — scrolling marquee of logos.
+
 Props:
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
+  - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
   - image?: string
+  - label?: ReactNode — Caption label (e.g. "Trusted by teams at").
+  - logos: { name: ReactNode; src?: string | undefined; node?: ReactNode; }[] — Logos/brand names to display (required).
   - parallax?: boolean
   - video?: string
 
@@ -1903,15 +2137,20 @@ Examples (Storybook stories): A_LogoRow, B_HeadingLogos
 
 Usage:
 ```tsx
-<SocialProofA />
+<SocialProofA>…</SocialProofA>
 ```
 
 ### SocialProofB
 Import: `import { SocialProofB } from 'raditz'`
 
+SocialProof B — label + static logo row.
+
 Props:
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
+  - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
   - image?: string
+  - label?: ReactNode — Caption label (e.g. "Trusted by teams at").
+  - logos: { name: ReactNode; src?: string | undefined; node?: ReactNode; }[] — Logos/brand names to display (required).
   - parallax?: boolean
   - video?: string
 
@@ -1919,47 +2158,62 @@ Examples (Storybook stories): A_LogoRow, B_HeadingLogos
 
 Usage:
 ```tsx
-<SocialProofB />
+<SocialProofB>…</SocialProofB>
 ```
 
 ### StatsA
 Import: `import { StatsA } from 'raditz'`
 
+Stats A — 4-across grid.
+
 Props:
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
+  - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - heading?: ReactNode — Optional section heading.
   - image?: string
   - parallax?: boolean
+  - stats: StatItem[] — Stat cells (required).
   - video?: string
 
 Examples (Storybook stories): A_FourAcross, B_AccentBand
 
 Usage:
 ```tsx
-<StatsA />
+<StatsA>…</StatsA>
 ```
 
 ### StatsB
 Import: `import { StatsB } from 'raditz'`
 
+Stats B — accent band, 3-cell grid.
+
 Props:
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
+  - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - heading?: ReactNode — Optional section heading.
   - image?: string
   - parallax?: boolean
+  - stats: StatItem[] — Stat cells (required).
   - video?: string
 
 Examples (Storybook stories): A_FourAcross, B_AccentBand
 
 Usage:
 ```tsx
-<StatsB />
+<StatsB>…</StatsB>
 ```
 
 ### TeamA
 Import: `import { TeamA } from 'raditz'`
 
+Team A — 4-up member grid.
+
 Props:
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
+  - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - heading?: ReactNode — Section heading.
   - image?: string
+  - members: { name: ReactNode; role?: ReactNode; avatar?: ReactNode; bio?: ReactNode; }[] — Team members to render (required).
   - parallax?: boolean
   - video?: string
 
@@ -1967,55 +2221,70 @@ Examples (Storybook stories): A_MemberGrid
 
 Usage:
 ```tsx
-<TeamA />
+<TeamA>…</TeamA>
 ```
 
 ### TestimonialCarouselA
 Import: `import { TestimonialCarouselA } from 'raditz'`
 
+TestimonialCarousel A — scroll-snap carousel of quote cards.
+
 Props:
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
+  - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - heading?: ReactNode — Optional section heading.
   - image?: string
   - parallax?: boolean
+  - quotes: Testimonial[] — Testimonial entries (required).
   - video?: string
 
 Examples (Storybook stories): A_ScrollSnap
 
 Usage:
 ```tsx
-<TestimonialCarouselA />
+<TestimonialCarouselA>…</TestimonialCarouselA>
 ```
 
 ### TestimonialsA
 Import: `import { TestimonialsA } from 'raditz'`
 
+Testimonials A — three-column quote cards.
+
 Props:
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: gradient-dusk)
+  - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - heading?: ReactNode — Optional section heading.
   - image?: string
   - parallax?: boolean
+  - quotes: Testimonial[] — Testimonial entries (required).
   - video?: string
 
 Examples (Storybook stories): A_QuoteCards, B_SingleQuote
 
 Usage:
 ```tsx
-<TestimonialsA />
+<TestimonialsA>…</TestimonialsA>
 ```
 
 ### TestimonialsB
 Import: `import { TestimonialsB } from 'raditz'`
 
+Testimonials B — single large pull-quote with centered attribution.
+
 Props:
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: gradient-dusk)
+  - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - heading?: ReactNode — Optional section heading.
   - image?: string
   - parallax?: boolean
+  - quotes: Testimonial[] — Testimonial entries (required).
   - video?: string
 
 Examples (Storybook stories): A_QuoteCards, B_SingleQuote
 
 Usage:
 ```tsx
-<TestimonialsB />
+<TestimonialsB>…</TestimonialsB>
 ```
 
 ## surfaces

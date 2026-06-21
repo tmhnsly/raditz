@@ -206,6 +206,42 @@ Dialog, CommandPalette) stack *locally* above the shared scrim via the **named**
 no such component exists today (the Overlay unification superseded them).
 _Avoid_: raw z-index numbers in app/section CSS (they collide — that caused a bug).
 
+## Sections are content-driven (completed feat/adaptable-sections)
+
+All 18 marketing sections (`Hero`, `Features`, `Pricing`, `Footer`, `Cta`, `Stats`,
+`Testimonials`, `TestimonialCarousel`, `SocialProof`, `Blog`, `Faq`, `Team`,
+`Announcement`, `Comparison`, `Newsletter`, `NotFound`, `Marquee`, `Navbar`) are
+content-driven: pass real copy via props, not via child JSX or placeholder literals.
+
+**Content model** (one interface per section type, shared by all its variants):
+- `SectionBaseProps` — `background`, `parallax`, `image`, `video`, `children`
+  (the optional override slot).
+- `SectionAction` — `{ label, href, variant?, size? }` (shared by every section
+  that emits buttons).
+- Per-section required essentials (e.g. `HeroProps.title`) + optional rest
+  (e.g. `eyebrow`, `lede`, `actions`, `media`); item-arrays use named types
+  (`FeaturesItem`, `PricingTier`, `StatItem`, `Testimonial`, …).
+- `children` is always an override slot: when provided, it replaces the
+  auto-rendered body, so bespoke layouts stay possible without forking a variant.
+
+Demo copy lives exclusively in stories (`.stories.tsx`); the components carry no
+placeholder strings. Specs + implementation plans: `docs/superpowers/specs/` +
+`docs/superpowers/plans/`.
+
+## Distribution system
+
+The library ships as:
+- **Built package** — `dist/` (ESM, tree-shaken) + `raditz/styles.css` (all tokens,
+  section CSS). Import from `'raditz'`; import the stylesheet once at the app root.
+- **Generated catalog** — `catalog/llms.txt` (human + LLM reference; regenerate with
+  `pnpm gen:catalog`); `pnpm gen:barrel` keeps `src/index.ts` current.
+- **Starter templates** — `templates/next/` and `templates/vite/`; scaffold a new
+  product via `/raditz-new` (global skill).
+- **Release tooling** — `pnpm release:preflight` gates drift; `/release` skill cuts a
+  tagged version; `/raditz-promote` publishes to a consumer.
+- **Product customisation** — brand via `theme.css` (override `--accent-*` tokens) or
+  `useTheme({ accent })`, and set `DEFAULT_SCHEME` in `app/theme-runtime.tsx`.
+
 ## Flagged ambiguities
 
 - "anchor" vs "trigger" — resolved: the **Trigger** is what the user interacts with to

@@ -2,8 +2,8 @@ import type { ReactNode } from 'react';
 import { SectionShell, type SectionBaseProps } from '../../lib/SectionShell';
 import { Carousel } from '../../components/media/Carousel';
 import type { Testimonial } from '../Testimonials/Testimonials';
-
-export type { Testimonial };
+// Testimonial is re-exported from Testimonials (reaches the barrel there); a
+// second `export type` here makes react-docgen emit a bogus <Testimonial /> entry.
 
 export interface TestimonialCarouselProps extends SectionBaseProps {
   /** Testimonial entries (required). */
