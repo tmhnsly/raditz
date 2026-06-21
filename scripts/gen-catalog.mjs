@@ -7,7 +7,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { withCustomConfig } from 'react-docgen-typescript';
-import { LIB } from './public-surface.mjs';
+import { LIB, sourceSurface } from './public-surface.mjs';
 
 // One parser/TS program, reused across files (faster than per-file default config).
 // Deviation from brief: using withCustomConfig('./tsconfig.json', ...) instead of
@@ -24,10 +24,6 @@ const parser = withCustomConfig('./tsconfig.json', {
   propFilter: (prop) =>
     !prop.parent || !prop.parent.fileName.includes('node_modules'),
 });
-
-function hasStory(dir) {
-  return fs.readdirSync(dir).some((f) => f.endsWith('.stories.tsx'));
-}
 
 function storyExampleNames(dir, base) {
   const file = path.join(dir, `${base}.stories.tsx`);
@@ -126,29 +122,24 @@ function renderUtilityEntry(basename, src) {
   return out.join('\n');
 }
 
-// Collect public files as { category, label, dir, file, base }.
-function collect() {
-  const items = [];
-  const compRoot = 'src/components';
-  for (const cat of fs.readdirSync(compRoot).sort()) {
-    const catDir = path.join(compRoot, cat);
-    if (cat === 'internal' || !fs.statSync(catDir).isDirectory()) continue;
-    for (const name of fs.readdirSync(catDir).sort()) {
-      const dir = path.join(catDir, name);
-      if (!fs.statSync(dir).isDirectory() || !hasStory(dir)) continue;
-      items.push({ category: cat, label: cat, dir, file: path.join(dir, `${name}.tsx`), base: name });
-    }
-  }
-  const secRoot = 'src/sections';
-  for (const name of fs.readdirSync(secRoot).sort()) {
-    const dir = path.join(secRoot, name);
-    if (!fs.statSync(dir).isDirectory() || !hasStory(dir)) continue;
-    items.push({ category: 'sections', label: 'sections', dir, file: path.join(dir, `${name}.tsx`), base: name });
-  }
-  return items;
-}
-
-const items = collect();
+// Collect public files using the shared source surface.
+const { components: surfaceComponents, sections: surfaceSections } = sourceSurface();
+const items = [
+  ...surfaceComponents.map((e) => ({
+    category: e.category,
+    label: e.category,
+    dir: e.dir,
+    file: e.componentFile,
+    base: e.name,
+  })),
+  ...surfaceSections.map((e) => ({
+    category: 'sections',
+    label: 'sections',
+    dir: e.dir,
+    file: e.componentFile,
+    base: e.name,
+  })),
+];
 const byCategory = new Map();
 let componentCount = 0;
 

@@ -9,6 +9,23 @@ export interface SocialProofProps extends SectionBaseProps {
   label?: ReactNode;
 }
 
+/** Private: renders one logo entry — node, img, or text — with the given class. */
+function LogoMark({
+  logo,
+  className,
+}: {
+  logo: { name: ReactNode; src?: string; node?: ReactNode };
+  className: string;
+}) {
+  if (logo.node) {
+    return <span className={className}>{logo.node}</span>;
+  }
+  if (logo.src) {
+    return <img src={logo.src} alt={typeof logo.name === 'string' ? logo.name : undefined} className={className} />;
+  }
+  return <strong className={className}>{logo.name}</strong>;
+}
+
 /** SocialProof A — scrolling marquee of logos. */
 export function SocialProofA({ logos, label, background = 'none', children, ...props }: SocialProofProps) {
   return (
@@ -18,13 +35,7 @@ export function SocialProofA({ logos, label, background = 'none', children, ...p
           {label && <div className="muted sx-fs-body-s">{label}</div>}
           <Marquee className="sx-sp__marquee" duration={30}>
             {logos.map((logo, i) => (
-              logo.node ? (
-                <span key={i} className="sx-sp__logo">{logo.node}</span>
-              ) : logo.src ? (
-                <img key={i} src={logo.src} alt={typeof logo.name === 'string' ? logo.name : undefined} className="sx-sp__logo" />
-              ) : (
-                <strong key={i} className="sx-sp__logo">{logo.name}</strong>
-              )
+              <LogoMark key={i} logo={logo} className="sx-sp__logo" />
             ))}
           </Marquee>
         </>
@@ -42,13 +53,7 @@ export function SocialProofB({ logos, label, background = 'none', children, ...p
           {label && <span className="muted sx-fs-body-s">{label}</span>}
           <div className="row sx-sp__row-b">
             {logos.map((logo, i) => (
-              logo.node ? (
-                <span key={i} className="sx-sp__logo-b">{logo.node}</span>
-              ) : logo.src ? (
-                <img key={i} src={logo.src} alt={typeof logo.name === 'string' ? logo.name : undefined} className="sx-sp__logo-b" />
-              ) : (
-                <strong key={i} className="sx-sp__logo-b">{logo.name}</strong>
-              )
+              <LogoMark key={i} logo={logo} className="sx-sp__logo-b" />
             ))}
           </div>
         </>

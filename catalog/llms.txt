@@ -7,7 +7,7 @@ component that exists here, and never edit `node_modules/raditz`.
 - Import the stylesheet ONCE at the app root: `import 'raditz/styles.css'`.
 - Props below are the component-specific API; standard HTML attributes also pass through.
 
-129 exported components across 17 categories.
+131 exported components across 17 categories.
 
 ## utilities (CSS classes)
 
@@ -1013,6 +1013,22 @@ Usage:
 <Frame />
 ```
 
+### SectionActionButton
+Import: `import { SectionActionButton } from 'raditz'`
+
+Renders one {@link SectionAction} as a {@link Button}, forwarding every field. `variant = action.variant ?? defaultVariant`; `size = action.size ?? size`. This is the single path from a `SectionAction` to a rendered `<Button>` — inline sites that used to construct `<Button>` by hand now delegate here so field-forwarding is tested in one place.
+
+Props:
+  - action: SectionAction
+  - className?: string
+  - defaultVariant?: "primary" | "secondary" | "soft" | "outline" | "ghost" | "glass"
+  - size?: "sm" | "md" | "lg"
+
+Usage:
+```tsx
+<SectionActionButton />
+```
+
 ### SectionActions
 Import: `import { SectionActions } from 'raditz'`
 
@@ -1038,6 +1054,21 @@ Props: none
 Usage:
 ```tsx
 <SectionBg />
+```
+
+### SectionHeader
+Import: `import { SectionHeader } from 'raditz'`
+
+Renders the eyebrow + heading block shared across all content sections. Returns `null` when both `eyebrow` and `heading` are absent so callers can drop it in unconditionally. `className` defaults to `'col sx-sec__head'` and carries each section's modifier (e.g. `"col sx-feat__head"`).
+
+Props:
+  - className?: string
+  - eyebrow?: ReactNode
+  - heading?: ReactNode
+
+Usage:
+```tsx
+<SectionHeader />
 ```
 
 ### SectionShell

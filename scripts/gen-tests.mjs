@@ -1,12 +1,12 @@
-// Generates a co-located smoke test next to every component story.
+// Generates co-located smoke tests next to every component and section story.
 // Each test renders every exported story via composeStories and asserts it mounts.
+// Only creates the file if it does not already exist — hand-written extensions are preserved.
 import fs from 'node:fs';
-import path from 'node:path';
+import { sourceSurface } from './public-surface.mjs';
 
-const root = 'src/components';
-const onlyArg = process.argv[2]; // optional "cat/Name" to generate a single one
+const onlyArg = process.argv[2]; // optional "cat/Name" or "Name" to generate a single one
 
-const tpl = (name) => `import { describe, it, expect } from 'vitest';
+const componentTpl = (name) => `import { describe, it, expect } from 'vitest';
 import { render } from '@testing-library/react';
 import { composeStories } from '@storybook/react';
 import * as stories from './${name}.stories';
@@ -24,18 +24,38 @@ describe('${name}', () => {
 });
 `;
 
-let count = 0;
-for (const cat of fs.readdirSync(root)) {
-  const catDir = path.join(root, cat);
-  if (cat === 'internal' || !fs.statSync(catDir).isDirectory()) continue;
-  for (const name of fs.readdirSync(catDir)) {
-    const dir = path.join(catDir, name);
-    if (!fs.statSync(dir).isDirectory()) continue;
-    if (onlyArg && onlyArg !== `${cat}/${name}`) continue;
-    const storyFile = path.join(dir, `${name}.stories.tsx`);
-    if (!fs.existsSync(storyFile)) continue;
-    fs.writeFileSync(path.join(dir, `${name}.test.tsx`), tpl(name));
-    count++;
+const sectionTpl = (name) => `import { describe, it, expect } from 'vitest';
+import { render } from '@testing-library/react';
+import { composeStories } from '@storybook/react';
+import * as stories from './${name}.stories';
+
+const composed = composeStories(stories);
+
+describe('${name} (section)', () => {
+  for (const [storyName, Story] of Object.entries(composed)) {
+    it(\`renders the \${storyName} story\`, () => {
+      const { container } = render(<Story />);
+      expect(container).toBeTruthy();
+    });
   }
+});
+`;
+
+const { components, sections } = sourceSurface();
+let count = 0;
+
+for (const e of components) {
+  if (onlyArg && onlyArg !== `${e.category}/${e.name}`) continue;
+  if (!onlyArg && fs.existsSync(e.testFile)) continue; // preserve hand-written extensions
+  fs.writeFileSync(e.testFile, componentTpl(e.name));
+  count++;
 }
+
+for (const e of sections) {
+  if (onlyArg && onlyArg !== e.name) continue;
+  if (!onlyArg && fs.existsSync(e.testFile)) continue; // preserve hand-written extensions
+  fs.writeFileSync(e.testFile, sectionTpl(e.name));
+  count++;
+}
+
 console.log(`wrote ${count} test file(s)`);

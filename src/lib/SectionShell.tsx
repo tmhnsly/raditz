@@ -87,6 +87,30 @@ export function SectionShell({
 }
 
 /**
+ * Renders the eyebrow + heading block shared across all content sections.
+ * Returns `null` when both `eyebrow` and `heading` are absent so callers can
+ * drop it in unconditionally. `className` defaults to `'col sx-sec__head'` and
+ * carries each section's modifier (e.g. `"col sx-feat__head"`).
+ */
+export function SectionHeader({
+  eyebrow,
+  heading,
+  className,
+}: {
+  eyebrow?: ReactNode;
+  heading?: ReactNode;
+  className?: string;
+}): ReactElement | null {
+  if (!eyebrow && !heading) return null;
+  return (
+    <div className={className ?? 'col sx-sec__head'}>
+      {eyebrow && <span className="eyebrow2">{eyebrow}</span>}
+      {heading && <h3 className="h-section">{heading}</h3>}
+    </div>
+  );
+}
+
+/**
  * A call-to-action a section renders as a {@link Button}. Prefer `href`
  * (Server-Component-safe) over `onClick` (which requires a client boundary).
  * Shared by every content-driven section's `actions` prop.
@@ -118,6 +142,38 @@ export type SectionBaseProps = SectionVariantProps & {
 };
 
 /**
+ * Renders one {@link SectionAction} as a {@link Button}, forwarding every
+ * field. `variant = action.variant ?? defaultVariant`; `size = action.size ?? size`.
+ * This is the single path from a `SectionAction` to a rendered `<Button>` —
+ * inline sites that used to construct `<Button>` by hand now delegate here so
+ * field-forwarding is tested in one place.
+ */
+export function SectionActionButton({
+  action,
+  size,
+  defaultVariant,
+  className,
+}: {
+  action: SectionAction;
+  size?: ButtonProps['size'];
+  defaultVariant?: ButtonProps['variant'];
+  className?: string;
+}): ReactElement {
+  return (
+    <Button
+      href={action.href}
+      onClick={action.onClick}
+      variant={action.variant ?? defaultVariant}
+      size={action.size ?? size}
+      icon={action.icon}
+      className={className}
+    >
+      {action.label}
+    </Button>
+  );
+}
+
+/**
  * Renders a row of CTAs from `actions` as {@link Button}s. Returns `null` when
  * there are no actions, so callers can drop it in unconditionally. `size` sets
  * the default for every button (each action may override via its own `size`).
@@ -139,16 +195,11 @@ export function SectionActions({
   return (
     <div className={className}>
       {actions.map((action, i) => (
-        <Button
+        <SectionActionButton
           key={action.href ?? action.label ?? i}
-          href={action.href}
-          onClick={action.onClick}
-          variant={action.variant}
-          size={action.size ?? size}
-          icon={action.icon}
-        >
-          {action.label}
-        </Button>
+          action={action}
+          size={size}
+        />
       ))}
     </div>
   );

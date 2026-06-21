@@ -3,8 +3,7 @@ import { useState, useRef } from 'react';
 import type { ReactNode } from 'react';
 import { Frame } from '../../lib/Frame';
 import { Overlay } from '../../components/internal';
-import { Button } from '../../components/controls/Button';
-import { SectionActions, type SectionBaseProps, type SectionAction } from '../../lib/SectionShell';
+import { SectionActions, SectionActionButton, type SectionBaseProps, type SectionAction } from '../../lib/SectionShell';
 
 /** A brand lockup: a name plus an optional logo node, optionally a link. */
 export interface NavbarBrand {
@@ -94,16 +93,7 @@ function BarActions({ actions, size }: { actions?: SectionAction[]; size?: 'sm' 
   return (
     <>
       {actions.map((action, i) => (
-        <Button
-          key={i}
-          href={action.href}
-          onClick={action.onClick}
-          variant={action.variant}
-          size={action.size ?? size}
-          icon={action.icon}
-        >
-          {action.label}
-        </Button>
+        <SectionActionButton key={i} action={action} size={size} />
       ))}
     </>
   );
@@ -125,18 +115,48 @@ function SheetLinks({ links, actions, onClose }: {
   );
 }
 
-export function NavbarA({ brand, links, actions, children }: NavbarProps) {
+/** Shared bar + burger + NavSheet wiring, parameterized by the per-variant
+ * classes and action size. NavbarA/B/C are thin presets over this. */
+function NavCore({
+  brand,
+  links,
+  actions,
+  children,
+  frameClassName,
+  frameMaxWidth,
+  padClassName,
+  barClassName,
+  brandRowClassName,
+  logoClassName,
+  glyphClassName,
+  actionSize,
+  footer,
+}: {
+  brand: NavbarBrand;
+  links?: NavbarLink[];
+  actions?: SectionAction[];
+  children?: ReactNode;
+  frameClassName: string;
+  frameMaxWidth?: string;
+  padClassName: string;
+  barClassName: string;
+  brandRowClassName: string;
+  logoClassName: string;
+  glyphClassName: string;
+  actionSize?: 'sm' | 'md' | 'lg';
+  footer?: ReactNode;
+}) {
   const [open, setOpen] = useState(false);
   const burgerRef = useRef<HTMLButtonElement>(null);
   return (
-    <Frame className="nav-section">
-      <div className="s-pad-sm">
+    <Frame maxWidth={frameMaxWidth} className={frameClassName}>
+      <div className={padClassName}>
         <div className="s-wrap navcq">
           {children ?? (
             <>
-              <div className="nav-bar">
-                <div className="row sx-nav__brand-row">
-                  <BrandLockup brand={brand} logoClassName="sx-nav__logo" glyphClassName="sx-nav__logo-glyph" />
+              <div className={barClassName}>
+                <div className={'row ' + brandRowClassName}>
+                  <BrandLockup brand={brand} logoClassName={logoClassName} glyphClassName={glyphClassName} />
                 </div>
                 {links && links.length > 0 && (
                   <nav className="nav-bar__links">
@@ -146,7 +166,7 @@ export function NavbarA({ brand, links, actions, children }: NavbarProps) {
                   </nav>
                 )}
                 <div className="nav-bar__cta">
-                  <BarActions actions={actions} />
+                  <BarActions actions={actions} size={actionSize} />
                   <button
                     ref={burgerRef}
                     className="nav-bar__burger"
@@ -165,98 +185,69 @@ export function NavbarA({ brand, links, actions, children }: NavbarProps) {
           )}
         </div>
       </div>
+      {footer}
     </Frame>
+  );
+}
+
+export function NavbarA({ brand, links, actions, children }: NavbarProps) {
+  return (
+    <NavCore
+      brand={brand}
+      links={links}
+      actions={actions}
+      frameClassName="nav-section"
+      padClassName="s-pad-sm"
+      barClassName="nav-bar"
+      brandRowClassName="sx-nav__brand-row"
+      logoClassName="sx-nav__logo"
+      glyphClassName="sx-nav__logo-glyph"
+    >
+      {children}
+    </NavCore>
   );
 }
 
 export function NavbarB({ brand, links, actions, children }: NavbarProps) {
-  const [open, setOpen] = useState(false);
-  const burgerRef = useRef<HTMLButtonElement>(null);
   return (
-    <Frame className="ph--neutral sx-nav__frame-b nav-section">
-      <div className="s-pad-sm">
-        <div className="s-wrap navcq">
-          {children ?? (
-            <>
-              <div className="nav-bar sx-nav__bar-glass">
-                <div className="row sx-nav__brand-row-sm">
-                  <BrandLockup brand={brand} logoClassName="sx-nav__logo-md" glyphClassName="sx-nav__logo-glyph-md" />
-                </div>
-                {links && links.length > 0 && (
-                  <nav className="nav-bar__links">
-                    {links.map((link, i) => (
-                      <a key={i} href={link.href}>{link.label}</a>
-                    ))}
-                  </nav>
-                )}
-                <div className="nav-bar__cta">
-                  <BarActions actions={actions} size="sm" />
-                  <button
-                    ref={burgerRef}
-                    className="nav-bar__burger"
-                    aria-label={open ? 'Close menu' : 'Open menu'}
-                    aria-expanded={open}
-                    onClick={() => setOpen((o) => !o)}
-                  >
-                    <BurgerIcon />
-                  </button>
-                </div>
-              </div>
-              <NavSheet open={open} onClose={() => setOpen(false)} anchor={burgerRef}>
-                <SheetLinks links={links} actions={actions} onClose={() => setOpen(false)} />
-              </NavSheet>
-            </>
-          )}
-        </div>
-      </div>
-    </Frame>
+    <NavCore
+      brand={brand}
+      links={links}
+      actions={actions}
+      frameClassName="ph--neutral sx-nav__frame-b nav-section"
+      padClassName="s-pad-sm"
+      barClassName="nav-bar sx-nav__bar-glass"
+      brandRowClassName="sx-nav__brand-row-sm"
+      logoClassName="sx-nav__logo-md"
+      glyphClassName="sx-nav__logo-glyph-md"
+      actionSize="sm"
+    >
+      {children}
+    </NavCore>
   );
 }
 
 export function NavbarC({ brand, links, actions, children }: NavbarProps) {
-  const [open, setOpen] = useState(false);
-  const burgerRef = useRef<HTMLButtonElement>(null);
   return (
-    <Frame maxWidth="22.5rem" className="nav-section">
-      <div className="sx-nav__pad">
-        <div className="s-wrap navcq">
-          {children ?? (
-            <>
-              <div className="nav-bar">
-                <div className="row sx-nav__brand-row-sm">
-                  <BrandLockup brand={brand} logoClassName="sx-nav__logo-md" glyphClassName="sx-nav__logo-glyph-md" />
-                </div>
-                {links && links.length > 0 && (
-                  <nav className="nav-bar__links">
-                    {links.map((link, i) => (
-                      <a key={i} href={link.href}>{link.label}</a>
-                    ))}
-                  </nav>
-                )}
-                <div className="nav-bar__cta">
-                  <BarActions actions={actions} />
-                  <button
-                    ref={burgerRef}
-                    className="nav-bar__burger"
-                    aria-label={open ? 'Close menu' : 'Open menu'}
-                    aria-expanded={open}
-                    onClick={() => setOpen((o) => !o)}
-                  >
-                    <BurgerIcon />
-                  </button>
-                </div>
-              </div>
-              <NavSheet open={open} onClose={() => setOpen(false)} anchor={burgerRef}>
-                <SheetLinks links={links} actions={actions} onClose={() => setOpen(false)} />
-              </NavSheet>
-            </>
-          )}
+    <NavCore
+      brand={brand}
+      links={links}
+      actions={actions}
+      frameClassName="nav-section"
+      frameMaxWidth="22.5rem"
+      padClassName="sx-nav__pad"
+      barClassName="nav-bar"
+      brandRowClassName="sx-nav__brand-row-sm"
+      logoClassName="sx-nav__logo-md"
+      glyphClassName="sx-nav__logo-glyph-md"
+      footer={
+        <div className="muted sx-nav__note">
+          Frame ≈ 360px — links collapse into the burger dropdown. Tap the menu icon to toggle.
         </div>
-      </div>
-      <div className="muted sx-nav__note">
-        Frame ≈ 360px — links collapse into the burger dropdown. Tap the menu icon to toggle.
-      </div>
-    </Frame>
+      }
+    >
+      {children}
+    </NavCore>
   );
 }
 

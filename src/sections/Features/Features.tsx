@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { SectionShell, type SectionBaseProps } from '../../lib/SectionShell';
+import { SectionShell, SectionHeader, type SectionBaseProps } from '../../lib/SectionShell';
 
 export interface FeaturesItem {
   title: ReactNode;
@@ -23,12 +23,7 @@ export function FeaturesA({ items, eyebrow, heading, background = 'none', childr
     <SectionShell wrap="col sx-gap-6" background={background} {...props}>
       {children ?? (
         <>
-          {(eyebrow || heading) && (
-            <div className="col sx-feat__head">
-              {eyebrow && <span className="eyebrow2">{eyebrow}</span>}
-              {heading && <h3 className="h-section">{heading}</h3>}
-            </div>
-          )}
+          <SectionHeader eyebrow={eyebrow} heading={heading} className="col sx-feat__head" />
           <div className="sx-g3 sx-gap-5">
             {items.map((item, i) => (
               <div key={i} className="rdz-card col sx-gap-3">
@@ -51,12 +46,7 @@ export function FeaturesB({ items, eyebrow, heading, background = 'gradient-mesh
     <SectionShell wrap="col sx-gap-6" background={background} {...props}>
       {children ?? (
         <>
-          {(eyebrow || heading) && (
-            <div className="col sx-feat__head">
-              {eyebrow && <span className="eyebrow2">{eyebrow}</span>}
-              {heading && <h3 className="h-section">{heading}</h3>}
-            </div>
-          )}
+          <SectionHeader eyebrow={eyebrow} heading={heading} className="col sx-feat__head" />
           <div className="sx-bento sx-feat__bento">
             {lead && (
               <div className="rdz-card col sx-feat__bento-lead">
@@ -89,12 +79,7 @@ export function FeaturesC({ items, eyebrow, heading, background = 'surface-2', c
     <SectionShell wrap="col sx-gap-6" background={background} {...props}>
       {children ?? (
         <>
-          {(eyebrow || heading) && (
-            <div className="col sx-feat__head">
-              {eyebrow && <span className="eyebrow2">{eyebrow}</span>}
-              {heading && <h3 className="h-section">{heading}</h3>}
-            </div>
-          )}
+          <SectionHeader eyebrow={eyebrow} heading={heading} className="col sx-feat__head" />
           <div className="col sx-gap-7">
             {items.map((item, i) => {
               const isEven = i % 2 === 0;
