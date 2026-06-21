@@ -38,6 +38,29 @@ export function sparklinePath(data: number[], opts: { w?: number; h?: number; pa
   return { line, area };
 }
 
+/**
+ * Expand [min(values), max(values)] by `range * factor` on each side so that
+ * plotted points never sit flush against chart edges. Matches the inline domain
+ * math used by LineChart (factor 0.12) and ScatterChart (factor 0.08).
+ *
+ * - Flat series (range === 0): falls back to ±1 regardless of factor.
+ * - Empty array: returns [0, 1] (safe sentinel — callers guard empty data before calling).
+ */
+export function paddedDomain(values: number[], factor: number): [number, number] {
+  if (values.length === 0) return [0, 1];
+  const lo = Math.min(...values);
+  const hi = Math.max(...values);
+  const p = (hi - lo) * factor || 1;
+  return [lo - p, hi + p];
+}
+
+/**
+ * Y-coordinate threshold (px from chart top) below which the tooltip flips to
+ * render below the data point instead of above it. Both LineChart and
+ * ScatterChart previously hardcoded `py < 92`; share the constant here.
+ */
+export const TOOLTIP_FLIP_PCT = 92;
+
 export interface DonutDash { dash: number; gap: number; offset: number; }
 
 /** Proportional stroke-dash segments around a ring of given circumference. */

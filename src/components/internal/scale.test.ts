@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { minMax, normalize, toPercent, sparklinePath, donutDashes } from './scale';
+import { minMax, normalize, toPercent, sparklinePath, donutDashes, paddedDomain, TOOLTIP_FLIP_PCT } from './scale';
 
 describe('minMax', () => {
   it('finds the extremes', () => { expect(minMax([3, 1, 2])).toEqual({ min: 1, max: 3 }); });
@@ -39,5 +39,37 @@ describe('donutDashes', () => {
       { dash: 50, gap: 50, offset: -0 },
       { dash: 50, gap: 50, offset: -50 },
     ]);
+  });
+});
+
+describe('paddedDomain', () => {
+  it('expands by range*factor on each side', () => {
+    // lo=0, hi=10, range=10, pad=10*0.1=1 → [-1, 11]
+    expect(paddedDomain([0, 10], 0.1)).toEqual([-1, 11]);
+  });
+  it('falls back to ±1 for a flat series (range 0)', () => {
+    // lo=5, hi=5, range=0, pad=0||1=1 → [4, 6]
+    expect(paddedDomain([5, 5], 0.12)).toEqual([4, 6]);
+  });
+  it('works with a single value (treated as flat)', () => {
+    // lo=3, hi=3, range=0, pad=0||1=1 → [2, 4]
+    expect(paddedDomain([3], 0.08)).toEqual([2, 4]);
+  });
+  it('returns [0, 1] for an empty array', () => {
+    expect(paddedDomain([], 0.12)).toEqual([0, 1]);
+  });
+  it('preserves LineChart factor 0.12 behaviour', () => {
+    // lo=0, hi=100, range=100, pad=100*0.12=12 → [-12, 112]
+    expect(paddedDomain([0, 100], 0.12)).toEqual([-12, 112]);
+  });
+  it('preserves ScatterChart factor 0.08 behaviour', () => {
+    // lo=0, hi=100, range=100, pad=100*0.08=8 → [-8, 108]
+    expect(paddedDomain([0, 100], 0.08)).toEqual([-8, 108]);
+  });
+});
+
+describe('TOOLTIP_FLIP_PCT', () => {
+  it('is 92 — matching the hardcoded py < 92 threshold in both charts', () => {
+    expect(TOOLTIP_FLIP_PCT).toBe(92);
   });
 });
