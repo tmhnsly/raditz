@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { SectionShell, type SectionBaseProps } from '../../lib/SectionShell';
+import { SectionShell, SectionHeader, type SectionBaseProps } from '../../lib/SectionShell';
 
 export interface StatItem {
   value: ReactNode;
@@ -19,11 +19,7 @@ export function StatsA({ stats, heading, background = 'none', children, ...props
     <SectionShell wrap="col sx-gap-5" background={background} {...props}>
       {children ?? (
         <>
-          {heading && (
-            <div className="col sx-stat__head">
-              <h3 className="h-section">{heading}</h3>
-            </div>
-          )}
+          <SectionHeader heading={heading} className="col sx-stat__head" />
           <div className="sx-g4 sx-gap-5">
             {stats.map((stat, i) => (
               <div key={i} className="col sx-stat__cell">
@@ -44,11 +40,7 @@ export function StatsB({ stats, heading, background = 'none', children, ...props
     <SectionShell padClassName="sx-stat__band" wrap="col sx-gap-5" background={background} {...props}>
       {children ?? (
         <>
-          {heading && (
-            <div className="col sx-stat__head">
-              <h3 className="h-section">{heading}</h3>
-            </div>
-          )}
+          <SectionHeader heading={heading} className="col sx-stat__head" />
           <div className="sx-g3 sx-gap-5 sx-stat__band-grid">
             {stats.map((stat, i) => (
               <div key={i} className="col sx-stat__cell">

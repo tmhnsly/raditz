@@ -87,6 +87,30 @@ export function SectionShell({
 }
 
 /**
+ * Renders the eyebrow + heading block shared across all content sections.
+ * Returns `null` when both `eyebrow` and `heading` are absent so callers can
+ * drop it in unconditionally. `className` defaults to `'col sx-sec__head'` and
+ * carries each section's modifier (e.g. `"col sx-feat__head"`).
+ */
+export function SectionHeader({
+  eyebrow,
+  heading,
+  className,
+}: {
+  eyebrow?: ReactNode;
+  heading?: ReactNode;
+  className?: string;
+}): ReactElement | null {
+  if (!eyebrow && !heading) return null;
+  return (
+    <div className={className ?? 'col sx-sec__head'}>
+      {eyebrow && <span className="eyebrow2">{eyebrow}</span>}
+      {heading && <h3 className="h-section">{heading}</h3>}
+    </div>
+  );
+}
+
+/**
  * A call-to-action a section renders as a {@link Button}. Prefer `href`
  * (Server-Component-safe) over `onClick` (which requires a client boundary).
  * Shared by every content-driven section's `actions` prop.

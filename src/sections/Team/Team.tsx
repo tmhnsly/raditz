@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { SectionShell, type SectionBaseProps } from '../../lib/SectionShell';
+import { SectionShell, SectionHeader, type SectionBaseProps } from '../../lib/SectionShell';
 
 export interface TeamProps extends SectionBaseProps {
   /** Team members to render (required). */
@@ -14,11 +14,7 @@ export function TeamA({ members, heading, background = 'none', children, ...prop
     <SectionShell wrap="col sx-gap-6" background={background} {...props}>
       {children ?? (
         <>
-          {heading && (
-            <div className="col sx-team__head">
-              <h3 className="h-section">{heading}</h3>
-            </div>
-          )}
+          <SectionHeader heading={heading} className="col sx-team__head" />
           <div className="sx-g4 sx-gap-5">
             {members.map((m, i) => (
               <div key={i} className="col sx-team__member">
