@@ -1,5 +1,5 @@
 'use client';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import type { RefCallback } from 'react';
 
 export interface InViewOptions {
@@ -28,6 +28,11 @@ export function useInView<T extends Element = HTMLElement>(
   const [inView, setInView] = useState(false);
   const cleanup = useRef<(() => void) | null>(null);
 
+  // The whole observer lifecycle lives in the ref callback — create on node attach,
+  // disconnect on detach (`ref(null)`, which React calls on real unmount). We do NOT
+  // disconnect from a `useEffect` cleanup: StrictMode runs that cleanup on its
+  // simulated unmount but does NOT re-invoke a stable callback ref, so the observer
+  // would be killed and never recreated — leaving the element hidden forever.
   const ref = useCallback<RefCallback<T>>(
     (node) => {
       cleanup.current?.();
@@ -52,8 +57,6 @@ export function useInView<T extends Element = HTMLElement>(
     },
     [rootMargin, threshold, once],
   );
-
-  useEffect(() => () => cleanup.current?.(), []);
 
   return { ref, inView };
 }

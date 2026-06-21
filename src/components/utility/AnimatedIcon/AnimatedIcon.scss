@@ -3,10 +3,12 @@
 // Component-local keyframes, like Marquee/Carousel.
 /* ═══════════════════════ Utility · AnimatedIcon ═══════════════════════ */
 
-/* Promote to its own compositor layer so the looping transform is GPU-composited
-   (the inline SVG is rasterized once, then just moved) — kills the per-frame
-   re-raster jank on the idle loops. */
-.rdz-anim { display: inline-grid; place-items: center; line-height: 0; will-change: transform; transform: translateZ(0); backface-visibility: hidden; }
+/* Promote to its own compositor layer (will-change) so the looping transform is
+   GPU-composited — the inline SVG is rasterized once, then just moved — instead of
+   re-rastering per frame. (No static translateZ here: it would be a base transform
+   the keyframes override, which fought the animation; the keyframes themselves use
+   translate3d so each frame stays on the GPU.) */
+.rdz-anim { display: inline-grid; place-items: center; line-height: 0; will-change: transform; }
 
 .rdz-anim--float  { animation: rdzFloat  calc(3s   * var(--rdz-anim-speed, 1) * var(--motion-scale, 1)) var(--ease-in-out) infinite; }
 /* the moon-orbit glyph reads as orbital motion when it rotates slowly */
@@ -26,7 +28,7 @@
 .rdz-anim.is-paused,
 .rdz-anim.is-paused * { animation-play-state: paused; }
 
-@keyframes rdzFloat  { 0%, 100% { transform: translateY(-8%); } 50% { transform: translateY(8%); } }
+@keyframes rdzFloat  { 0%, 100% { transform: translate3d(0, -8%, 0); } 50% { transform: translate3d(0, 8%, 0); } }
 @keyframes rdzPulse  { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.12); opacity: 0.85; } }
 @keyframes rdzWiggle { 0%, 100% { transform: rotate(-7deg); } 50% { transform: rotate(7deg); } }
 @keyframes rdzDraw   { to { stroke-dashoffset: 0; } }
