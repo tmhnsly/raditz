@@ -155,6 +155,14 @@ export function applyTheme(accent: Accent, choice: GrayChoice, radius: RadiusCho
   root.setAttribute('data-reveal', reveal);
 }
 
+/** Apply the persisted (or default) theme to <html> immediately — call once at app
+ * start (before render) so a saved accent / vibe / reveal / title shows on first
+ * paint, without waiting for the ThemePicker to mount. */
+export function applyStoredTheme(projectDefaults?: ThemeDefaults): void {
+  const s = load(projectDefaults);
+  applyTheme(s.accent, s.gray, s.radius, s.motion, s.titleAnim, s.reveal);
+}
+
 const KEY = 'rdz-theme';
 
 interface ThemeState { accent: Accent; gray: GrayChoice; radius: RadiusChoice; motion: MotionChoice; titleAnim: TitleAnimation; reveal: RevealChoice; }
