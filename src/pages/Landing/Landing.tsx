@@ -28,7 +28,15 @@ export function Landing() {
         ]}
         media={<div className="ph sx-hero__media">product shot</div>}
       />
-      <SocialProofA />
+      <SocialProofA
+        logos={[
+          { name: 'Northwind' },
+          { name: 'ACME' },
+          { name: 'LUMEN' },
+          { name: 'Vertex' },
+          { name: 'Hatch' },
+        ]}
+      />
       <FeaturesA
         eyebrow="Why Raditz"
         heading="Everything wired together"

@@ -33,7 +33,20 @@ export function PricingPage() {
           },
         ]}
       />
-      <ComparisonA />
+      <ComparisonA
+        columns={[
+          { name: 'Starter' },
+          { name: 'Team', highlight: true },
+          { name: 'Enterprise' },
+        ]}
+        rows={[
+          { feature: 'Projects', values: ['1', 'Unlimited', 'Unlimited'] },
+          { feature: 'Components', values: ['Core', 'All 64', 'All 64'] },
+          { feature: 'Dark mode & themes', values: [false, true, true] },
+          { feature: 'SSO & SAML', values: [false, false, true] },
+          { feature: 'Support', values: ['Community', 'Priority', 'Dedicated'] },
+        ]}
+      />
       <FaqB
         items={[
           { question: "What's the license?", answer: 'MIT — use it in commercial products freely.' },

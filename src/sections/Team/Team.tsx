@@ -1,15 +1,40 @@
-import { SectionShell, type SectionVariantProps } from '../../lib/SectionShell';
+import type { ReactNode } from 'react';
+import { SectionShell, type SectionBaseProps } from '../../lib/SectionShell';
 
-export function TeamA({ background = 'none', ...props }: SectionVariantProps = {}) {
+export interface TeamProps extends SectionBaseProps {
+  /** Team members to render (required). */
+  members: { name: ReactNode; role?: ReactNode; avatar?: ReactNode; bio?: ReactNode }[];
+  /** Section heading. */
+  heading?: ReactNode;
+}
+
+/** Team A — 4-up member grid. */
+export function TeamA({ members, heading, background = 'none', children, ...props }: TeamProps) {
   return (
     <SectionShell wrap="col sx-gap-6" background={background} {...props}>
-      <div className="col sx-team__head"><span className="eyebrow2">The people</span><h3 className="h-section">Meet the team</h3></div>
-      <div className="sx-g4 sx-gap-5">
-        <div className="col sx-team__member"><div className="ph sx-team__photo">MO</div><div className="col"><strong>Maya Okafor</strong><span className="muted sx-fs-body-s">Design Lead</span></div></div>
-        <div className="col sx-team__member"><div className="ph ph--neutral sx-team__photo">JT</div><div className="col"><strong>Jon Tran</strong><span className="muted sx-fs-body-s">Eng Manager</span></div></div>
-        <div className="col sx-team__member"><div className="ph sx-team__photo">SL</div><div className="col"><strong>Sara Lin</strong><span className="muted sx-fs-body-s">Product</span></div></div>
-        <div className="col sx-team__member"><div className="ph ph--neutral sx-team__photo">AR</div><div className="col"><strong>Ada Reyes</strong><span className="muted sx-fs-body-s">Engineering</span></div></div>
-      </div>
+      {children ?? (
+        <>
+          {heading && (
+            <div className="col sx-team__head">
+              <h3 className="h-section">{heading}</h3>
+            </div>
+          )}
+          <div className="sx-g4 sx-gap-5">
+            {members.map((m, i) => (
+              <div key={i} className="col sx-team__member">
+                {m.avatar ? (
+                  <div className="ph sx-team__photo">{m.avatar}</div>
+                ) : null}
+                <div className="col">
+                  <strong>{m.name}</strong>
+                  {m.role && <span className="muted sx-fs-body-s">{m.role}</span>}
+                  {m.bio && <span className="muted sx-fs-body-s">{m.bio}</span>}
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
     </SectionShell>
   );
 }

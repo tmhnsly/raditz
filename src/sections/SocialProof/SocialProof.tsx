@@ -1,31 +1,58 @@
-import { SectionShell, type SectionVariantProps } from '../../lib/SectionShell';
+import type { ReactNode } from 'react';
+import { SectionShell, type SectionBaseProps } from '../../lib/SectionShell';
 import { Marquee } from '../../components/media/Marquee';
 
-export function SocialProofA({ background = 'none', ...props }: SectionVariantProps = {}) {
+export interface SocialProofProps extends SectionBaseProps {
+  /** Logos/brand names to display (required). */
+  logos: { name: ReactNode; src?: string; node?: ReactNode }[];
+  /** Caption label (e.g. "Trusted by teams at"). */
+  label?: ReactNode;
+}
+
+/** SocialProof A — scrolling marquee of logos. */
+export function SocialProofA({ logos, label, background = 'none', children, ...props }: SocialProofProps) {
   return (
     <SectionShell pad="sm" padClassName="sx-sp__band" background={background} {...props}>
-      {/* a marquee so the logo row never overflows / clips on narrow screens */}
-      <Marquee className="sx-sp__marquee" duration={30}>
-        <strong className="sx-sp__logo sx-sp__logo-tight">Northwind</strong>
-        <strong className="sx-sp__logo sx-sp__logo-mono">ACME</strong>
-        <strong className="sx-sp__logo sx-sp__logo-wide">LUMEN</strong>
-        <strong className="sx-sp__logo sx-sp__logo-italic">Vertex</strong>
-        <strong className="sx-sp__logo sx-sp__logo-tighter">Hatch</strong>
-      </Marquee>
+      {children ?? (
+        <>
+          {label && <div className="muted sx-fs-body-s">{label}</div>}
+          <Marquee className="sx-sp__marquee" duration={30}>
+            {logos.map((logo, i) => (
+              logo.node ? (
+                <span key={i} className="sx-sp__logo">{logo.node}</span>
+              ) : logo.src ? (
+                <img key={i} src={logo.src} alt={typeof logo.name === 'string' ? logo.name : undefined} className="sx-sp__logo" />
+              ) : (
+                <strong key={i} className="sx-sp__logo">{logo.name}</strong>
+              )
+            ))}
+          </Marquee>
+        </>
+      )}
     </SectionShell>
   );
 }
 
-export function SocialProofB({ background = 'none', ...props }: SectionVariantProps = {}) {
+/** SocialProof B — label + static logo row. */
+export function SocialProofB({ logos, label, background = 'none', children, ...props }: SocialProofProps) {
   return (
     <SectionShell pad="sm" padClassName="sx-sp__band" wrap="col sx-items-center sx-gap-4" background={background} {...props}>
-      <span className="muted sx-fs-body-s">Trusted by teams at</span>
-      <div className="row sx-sp__row-b">
-        <strong className="sx-sp__logo-b">Northwind</strong>
-        <strong className="sx-sp__logo-b sx-sp__logo-mono">ACME</strong>
-        <strong className="sx-sp__logo-b">LUMEN</strong>
-        <strong className="sx-sp__logo-b sx-sp__logo-italic">Vertex</strong>
-      </div>
+      {children ?? (
+        <>
+          {label && <span className="muted sx-fs-body-s">{label}</span>}
+          <div className="row sx-sp__row-b">
+            {logos.map((logo, i) => (
+              logo.node ? (
+                <span key={i} className="sx-sp__logo-b">{logo.node}</span>
+              ) : logo.src ? (
+                <img key={i} src={logo.src} alt={typeof logo.name === 'string' ? logo.name : undefined} className="sx-sp__logo-b" />
+              ) : (
+                <strong key={i} className="sx-sp__logo-b">{logo.name}</strong>
+              )
+            ))}
+          </div>
+        </>
+      )}
     </SectionShell>
   );
 }
