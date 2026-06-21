@@ -22,6 +22,17 @@ read-only dependency.
   the OS — the default; `'dark'` or `'light'` opens the site in that scheme, still
   user-toggleable). Vite has no SSR pre-paint script, so the hook applies it on mount.
 
+## Motion / animation
+- Scroll-reveal (`Reveal`, `RevealGroup`, section `animate`), title animations, and
+  `AnimatedIcon` / `TextReveal` / `MotionCard` ride the shared motion tokens and honour
+  `prefers-reduced-motion` — use them, don't hand-roll animations.
+- App-wide "vibe": set `data-reveal` / `data-title-anim` on `<html>` (fixed), or pass the
+  axes to `useTheme({ reveal, titleAnim, motion })` (live, user-tunable).
+- Building a custom animated/controllable component? Import the primitives from `'raditz'`:
+  `useInView`, `useReducedMotion`, `useControllableState`, `cx`, `splitText`.
+- A dashboard/docs layout → `AppShell` (`layout="sidebar" | "topbar"`, `side`, `density`,
+  `collapsible`); feed it your nav once and swap layouts.
+
 ## Changing Raditz itself
 Do it in the library repo, not here:
 - A brand-new reusable component → the **raditz-promote** workflow.

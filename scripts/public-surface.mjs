@@ -9,6 +9,7 @@ export const LIB = [
   './lib/useColorScheme',
   './lib/ThemePicker',
   './lib/theme',
+  './lib/hooks',
   './lib/Frame',
   './lib/SectionShell',
   './lib/HeroBleed',

@@ -7,7 +7,7 @@ component that exists here, and never edit `node_modules/raditz`.
 - Import the stylesheet ONCE at the app root: `import 'raditz/styles.css'`.
 - Props below are the component-specific API; standard HTML attributes also pass through.
 
-142 exported components across 17 categories.
+143 exported components across 17 categories.
 
 ## utilities (CSS classes)
 
@@ -1032,6 +1032,20 @@ Exports:
   - resolveGray
   - themeVars
   - useTheme
+
+> Note: This is a utility/hook module, not a React component — do not render as JSX.
+
+### hooks
+Import: `import { cx, splitText, useControllableState, useInView, useReducedMotion } from 'raditz'`
+
+Utility module — see exports below.
+
+Exports:
+  - cx
+  - splitText
+  - useControllableState
+  - useInView
+  - useReducedMotion
 
 > Note: This is a utility/hook module, not a React component — do not render as JSX.
 

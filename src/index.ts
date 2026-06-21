@@ -120,6 +120,7 @@ export * from './sections/Testimonials';
 export * from './lib/useColorScheme';
 export * from './lib/ThemePicker';
 export * from './lib/theme';
+export * from './lib/hooks';
 export * from './lib/Frame';
 export * from './lib/SectionShell';
 export * from './lib/HeroBleed';

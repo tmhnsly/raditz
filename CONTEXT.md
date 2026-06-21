@@ -379,7 +379,13 @@ The library ships as:
 - **Release tooling** — `pnpm release:preflight` gates drift; `/release` skill cuts a
   tagged version; `/raditz-promote` publishes to a consumer.
 - **Product customisation** — brand via `theme.css` (override `--accent-*` tokens) or
-  `useTheme({ accent })`, and set `DEFAULT_SCHEME` in `app/theme-runtime.tsx`.
+  `useTheme({ accent })`; set `DEFAULT_SCHEME` in `app/theme-runtime.tsx`; set an
+  app-wide animation vibe via `data-reveal`/`data-title-anim` on `<html>` (fixed) or
+  by passing the axes to `useTheme({ reveal, titleAnim })` (live).
+- **Consumer primitives** — `useInView`, `useReducedMotion`, `useControllableState`,
+  `cx`, `splitText` re-export from `'raditz'` (via `lib/hooks`) so a product builds its
+  own animated / controllable / class-composed components on the same primitives the
+  library uses, instead of reimplementing them.
 
 ## Flagged ambiguities
 

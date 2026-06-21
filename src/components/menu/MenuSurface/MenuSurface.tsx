@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import type { Dispatch, HTMLAttributes, KeyboardEvent as ReactKeyboardEvent, MutableRefObject, ReactNode, ReactElement, RefObject, SetStateAction } from 'react';
 import { cx, Overlay, useRovingMenu } from '../../internal';
 import type { Side, Align } from '../../internal';
@@ -50,7 +50,9 @@ export interface MenuRoving {
  * identically.
  */
 export function useMenuRoving(items: MenuItem[], open: boolean, onClose: () => void): MenuRoving {
-  const { plan, enabledCount } = buildPlan(items);
+  // The render plan is pure in `items`; memoise it so hover/roving re-renders (which
+  // fire on every Arrow/MouseEnter while the menu is open) don't rebuild it.
+  const { plan, enabledCount } = useMemo(() => buildPlan(items), [items]);
   const itemRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const { active, setActive, onKeyDown } = useRovingMenu(enabledCount, open, onClose);
 
