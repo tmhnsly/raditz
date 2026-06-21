@@ -22,6 +22,16 @@ describe('Marquee (section)', () => {
     expect(screen.getAllByText('Logo A').length).toBeGreaterThan(0);
   });
 
+  it('renders the optional label when provided', () => {
+    render(<MarqueeA label="Trusted by teams" items={[<span key="1">Logo A</span>]} />);
+    expect(screen.getByText('Trusted by teams')).toBeTruthy();
+  });
+
+  it('omits the label when not provided', () => {
+    render(<MarqueeA items={[<span key="1">Logo A</span>]} />);
+    expect(screen.queryByText('Trusted by fast-moving teams')).toBeNull();
+  });
+
   it('children override the body', () => {
     render(
       <MarqueeA items={[<span key="1">unused</span>]}>

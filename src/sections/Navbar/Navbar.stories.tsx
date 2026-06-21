@@ -34,6 +34,20 @@ export const A_LogoLinksCTAs: Story = {
   ),
 };
 
+export const A_NoLogoFallback: Story = {
+  name: 'A · No logo — monogram fallback',
+  render: () => (
+    <NavbarA
+      brand={{ name: 'Acme' }}
+      links={[
+        { label: 'Product', href: '#' },
+        { label: 'Pricing', href: '#' },
+      ]}
+      actions={[{ label: 'Get started', href: '#', variant: 'primary' }]}
+    />
+  ),
+};
+
 export const B_GlassCentered: Story = {
   name: 'B · Glass, centered links',
   render: () => (

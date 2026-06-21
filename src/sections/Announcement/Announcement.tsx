@@ -1,3 +1,5 @@
+'use client';
+import { useState } from 'react';
 import type { ReactNode } from 'react';
 import { Frame } from '../../lib/Frame';
 import { Button } from '../../components/controls/Button';
@@ -12,8 +14,11 @@ export interface AnnouncementProps extends SectionBaseProps {
   dismissible?: boolean;
 }
 
-/** Announcement A — accent strip banner. */
+/** Announcement A — accent strip banner. The dismiss affordance is functional:
+ * clicking it hides the banner for the rest of the session. */
 export function AnnouncementA({ text, action, dismissible, children }: AnnouncementProps) {
+  const [hidden, setHidden] = useState(false);
+  if (hidden) return null;
   return (
     <Frame>
       {children ?? (
@@ -24,7 +29,14 @@ export function AnnouncementA({ text, action, dismissible, children }: Announcem
               <a href={action.href} onClick={action.onClick} className="sx-ann__link">{action.label}</a>
             )}
             {dismissible && (
-              <button className="sx-ann__dismiss" aria-label="Dismiss">×</button>
+              <button
+                type="button"
+                className="sx-ann__dismiss"
+                aria-label="Dismiss"
+                onClick={() => setHidden(true)}
+              >
+                ×
+              </button>
             )}
           </div>
         </div>

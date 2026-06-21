@@ -27,9 +27,33 @@ describe('Footer (section)', () => {
     getByText('A great lib.');
   });
 
+  it('FooterA renders a monogram glyph (not a hardcoded letter) when brand has no logo', () => {
+    const { getByText, queryByText } = render(<FooterA brand={{ name: 'Acme' }} />);
+    // Full name as the wordmark...
+    getByText('Acme');
+    // ...plus a monogram from the name — not the old hardcoded "S".
+    getByText('A');
+    expect(queryByText('S')).toBeNull();
+  });
+
   it('FooterA renders nothing extra when brand and columns are absent', () => {
     const { container } = render(<FooterA />);
     expect(container).toBeTruthy();
+  });
+
+  it('FooterB renders a brand monogram from brand.name when provided', () => {
+    const { getByText, queryByText } = render(
+      <FooterB brand={{ name: 'Acme' }} copyright="© 2026 Acme" />
+    );
+    getByText('© 2026 Acme');
+    getByText('A');
+    expect(queryByText('S')).toBeNull();
+  });
+
+  it('FooterB renders no brand glyph when brand is absent', () => {
+    const { queryByText } = render(<FooterB copyright="© 2026 Raditz" />);
+    // The old hardcoded "S" glyph must be gone.
+    expect(queryByText('S')).toBeNull();
   });
 
   it('FooterB renders copyright and nav links', () => {

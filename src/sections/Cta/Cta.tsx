@@ -1,3 +1,4 @@
+'use client';
 import type { ReactNode } from 'react';
 import { Button } from '../../components/controls/Button';
 import { SectionShell, SectionActions, type SectionBaseProps, type SectionAction } from '../../lib/SectionShell';

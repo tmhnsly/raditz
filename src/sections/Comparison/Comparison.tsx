@@ -4,7 +4,8 @@ import { SectionShell, type SectionBaseProps } from '../../lib/SectionShell';
 export interface ComparisonProps extends SectionBaseProps {
   /** Table columns (plans/tiers), in order (required). */
   columns: { name: ReactNode; highlight?: boolean }[];
-  /** Feature rows (required). Each `values` entry aligns to the same-index column.
+  /** Feature rows (required). `values` aligns positionally 1:1 with `columns`:
+   *  `row.values[i]` is the cell for `columns[i]` (same length, same order).
    *  `true` → check glyph; `false` → cross/em-dash; any ReactNode → rendered as-is. */
   rows: { feature: ReactNode; values: (boolean | ReactNode)[] }[];
   /** Section heading. */

@@ -35,6 +35,15 @@ describe('Navbar (section)', () => {
     expect(screen.getByRole('link', { name: 'Get started' }).getAttribute('href')).toBe('/signup');
   });
 
+  it('NavbarA falls back to a monogram (not the whole name) when no logo is given', () => {
+    render(<NavbarA brand={{ name: 'Acme' }} />);
+    // The wordmark shows the full name once...
+    expect(screen.getByText('Acme')).toBeTruthy();
+    // ...and the logo glyph shows only the first character — never the whole name twice.
+    expect(screen.getByText('A')).toBeTruthy();
+    expect(screen.getAllByText('Acme')).toHaveLength(1);
+  });
+
   it('NavbarA wraps the brand in a link when brand.href is set', () => {
     render(<NavbarA brand={{ name: 'Raditz', href: '/home' }} />);
     expect(screen.getByRole('link', { name: /Raditz/ }).getAttribute('href')).toBe('/home');

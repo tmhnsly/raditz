@@ -216,8 +216,8 @@ content-driven: pass real copy via props, not via child JSX or placeholder liter
 **Content model** (one interface per section type, shared by all its variants):
 - `SectionBaseProps` — `background`, `parallax`, `image`, `video`, `children`
   (the optional override slot).
-- `SectionAction` — `{ label, href, variant?, size? }` (shared by every section
-  that emits buttons).
+- `SectionAction` — `{ label, href?, onClick?, variant?, size?, icon? }` (shared by
+  every section that emits buttons).
 - Per-section required essentials (e.g. `HeroProps.title`) + optional rest
   (e.g. `eyebrow`, `lede`, `actions`, `media`); item-arrays use named types
   (`FeaturesItem`, `PricingTier`, `StatItem`, `Testimonial`, …).

@@ -64,14 +64,18 @@ function NavSheet({ open, onClose, anchor, children }: {
   );
 }
 
-/** Renders the brand lockup, wrapping in a link when `brand.href` is set. */
+/** Renders the brand lockup, wrapping in a link when `brand.href` is set. When
+ * no `logo` is supplied, the glyph falls back to a monogram (the first character
+ * of a string `name`) — never the whole name, which already shows as the
+ * wordmark beside it. */
 function BrandLockup({ brand, logoClassName, glyphClassName }: {
   brand: NavbarBrand; logoClassName: string; glyphClassName: string;
 }) {
+  const initial = typeof brand.name === 'string' ? brand.name.trim().charAt(0) : null;
   const inner = (
     <>
       <span className={'feat-ico ' + logoClassName}>
-        {brand.logo ?? <span className={glyphClassName}>{brand.name}</span>}
+        {brand.logo ?? (initial && <span className={glyphClassName}>{initial}</span>)}
       </span>
       <strong className="sx-nav__brand">{brand.name}</strong>
     </>

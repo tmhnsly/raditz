@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { composeStories } from '@storybook/react';
 import * as stories from './Announcement.stories';
 import { AnnouncementA, AnnouncementB } from './Announcement';
@@ -24,6 +24,13 @@ describe('Announcement (section)', () => {
     expect(screen.queryByLabelText('Dismiss')).toBeNull();
     rerender(<AnnouncementA text="x" dismissible />);
     expect(screen.getByLabelText('Dismiss')).toBeTruthy();
+  });
+
+  it('AnnouncementA dismiss button hides the banner when clicked', () => {
+    render(<AnnouncementA text="Dismiss me" dismissible />);
+    expect(screen.getByText('Dismiss me')).toBeTruthy();
+    fireEvent.click(screen.getByLabelText('Dismiss'));
+    expect(screen.queryByText('Dismiss me')).toBeNull();
   });
 
   it('AnnouncementA children override the body', () => {

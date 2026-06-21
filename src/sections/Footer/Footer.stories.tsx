@@ -48,5 +48,5 @@ export const A_MultiColumn: Story = {
 
 export const B_MinimalBar: Story = {
   name: 'B · Minimal bar',
-  render: () => <FooterB copyright="© 2026 Raditz" columns={barLinks} />,
+  render: () => <FooterB brand={{ name: 'Raditz' }} copyright="© 2026 Raditz" columns={barLinks} />,
 };

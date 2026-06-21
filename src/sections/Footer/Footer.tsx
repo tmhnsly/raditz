@@ -1,13 +1,26 @@
 import type { ReactNode } from 'react';
 import { SectionShell, type SectionBaseProps } from '../../lib/SectionShell';
 
+/** The brand block both footers can render. */
+export interface FooterBrand {
+  name: ReactNode;
+  /** Optional logo / glyph; absent → a monogram from a string `name`. */
+  logo?: ReactNode;
+  blurb?: ReactNode;
+}
+
 export interface FooterProps extends SectionBaseProps {
   /** Link columns rendered by FooterA. */
   columns?: { heading: ReactNode; links: { label: ReactNode; href?: string }[] }[];
-  /** Brand block rendered by FooterA. */
-  brand?: { name: ReactNode; logo?: ReactNode; blurb?: ReactNode };
+  /** Brand block (logo + name) rendered by FooterA, and the brand glyph in FooterB. */
+  brand?: FooterBrand;
   /** Copyright text rendered by FooterB. */
   copyright?: ReactNode;
+}
+
+/** First character of a string brand name, for the logo monogram fallback. */
+function monogram(name: ReactNode): string | null {
+  return typeof name === 'string' ? name.trim().charAt(0) || null : null;
 }
 
 /** FooterA — brand block + link columns grid. */
@@ -19,7 +32,9 @@ export function FooterA({ brand, columns, background = 'none', children, ...prop
           {brand && (
             <div className="col sx-foot__brand">
               <div className="row sx-foot__brand-row">
-                {brand.logo ?? <span className="feat-ico sx-foot__logo"><span className="sx-foot__logo-glyph">S</span></span>}
+                {brand.logo ?? (monogram(brand.name) && (
+                  <span className="feat-ico sx-foot__logo"><span className="sx-foot__logo-glyph">{monogram(brand.name)}</span></span>
+                ))}
                 <strong>{brand.name}</strong>
               </div>
               {brand.blurb && <span className="muted sx-body-s">{brand.blurb}</span>}
@@ -42,16 +57,19 @@ export function FooterA({ brand, columns, background = 'none', children, ...prop
 }
 
 /** FooterB — compact copyright bar + link row. */
-export function FooterB({ copyright, columns, background = 'none', children, ...props }: FooterProps) {
+export function FooterB({ brand, copyright, columns, background = 'none', children, ...props }: FooterProps) {
   const links = columns?.flatMap(col => col.links) ?? [];
+  const brandGlyph = brand && (brand.logo ?? (monogram(brand.name) && (
+    <span className="feat-ico sx-foot__logo-sm"><span className="sx-foot__logo-glyph-sm">{monogram(brand.name)}</span></span>
+  )));
   return (
     <SectionShell pad="sm" padClassName="sx-foot__bar" wrap="row sx-foot__bar-inner" background={background} {...props}>
       {children ?? (
         <>
-          {copyright && (
+          {(brandGlyph || copyright) && (
             <div className="row sx-foot__bar-brand">
-              <span className="feat-ico sx-foot__logo-sm"><span className="sx-foot__logo-glyph-sm">S</span></span>
-              <span className="muted sx-fs-body-s">{copyright}</span>
+              {brandGlyph}
+              {copyright && <span className="muted sx-fs-body-s">{copyright}</span>}
             </div>
           )}
           {links.length > 0 && (

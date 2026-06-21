@@ -9,6 +9,7 @@ export const A_LogoStrip: Story = {
   name: 'A · Auto-scrolling logo strip',
   render: () => (
     <MarqueeA
+      label="Trusted by fast-moving teams"
       items={[
         <strong key="1">Northwind</strong>,
         <strong key="2" className="sx-mq__mono">ACME</strong>,

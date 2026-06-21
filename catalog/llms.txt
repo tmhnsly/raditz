@@ -1558,7 +1558,7 @@ Usage:
 ### AnnouncementA
 Import: `import { AnnouncementA } from 'raditz'`
 
-Announcement A — accent strip banner.
+Announcement A — accent strip banner. The dismiss affordance is functional: clicking it hides the banner for the rest of the session.
 
 Props:
   - action?: SectionAction — Optional CTA link/button.
@@ -1653,7 +1653,7 @@ Props:
   - heading?: ReactNode — Section heading.
   - image?: string
   - parallax?: boolean
-  - rows: { feature: ReactNode; values: ReactNode[]; }[] — Feature rows (required). Each `values` entry aligns to the same-index column. `true` → check glyph; `false` → cross/em-dash; any ReactNode → rendered as-is.
+  - rows: { feature: ReactNode; values: ReactNode[]; }[] — Feature rows (required). `values` aligns positionally 1:1 with `columns`: `row.values[i]` is the cell for `columns[i]` (same length, same order). `true` → check glyph; `false` → cross/em-dash; any ReactNode → rendered as-is.
   - video?: string
 
 Examples (Storybook stories): A_PlansFeatures
@@ -1824,7 +1824,7 @@ FooterA — brand block + link columns grid.
 
 Props:
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
-  - brand?: { name: ReactNode; logo?: ReactNode; blurb?: ReactNode; } — Brand block rendered by FooterA.
+  - brand?: FooterBrand — Brand block (logo + name) rendered by FooterA, and the brand glyph in FooterB.
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
   - columns?: { heading: ReactNode; links: { label: ReactNode; href?: string; }[]; }[] — Link columns rendered by FooterA.
   - copyright?: ReactNode — Copyright text rendered by FooterB.
@@ -1846,7 +1846,7 @@ FooterB — compact copyright bar + link row.
 
 Props:
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
-  - brand?: { name: ReactNode; logo?: ReactNode; blurb?: ReactNode; } — Brand block rendered by FooterA.
+  - brand?: FooterBrand — Brand block (logo + name) rendered by FooterA, and the brand glyph in FooterB.
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
   - columns?: { heading: ReactNode; links: { label: ReactNode; href?: string; }[]; }[] — Link columns rendered by FooterA.
   - copyright?: ReactNode — Copyright text rendered by FooterB.
@@ -1943,6 +1943,7 @@ Props:
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
   - image?: string
   - items: ReactNode[] — Scrolling items (logos, chips, etc.).
+  - label?: ReactNode — Optional caption above the strip (e.g. a "trusted by" line).
   - parallax?: boolean
   - video?: string
 
@@ -1966,7 +1967,7 @@ Props:
   - parallax?: boolean
   - video?: string
 
-Examples (Storybook stories): A_LogoLinksCTAs, B_GlassCentered, C_MobileDropdown, D_BottomTabBar
+Examples (Storybook stories): A_LogoLinksCTAs, A_NoLogoFallback, B_GlassCentered, C_MobileDropdown, D_BottomTabBar
 
 Usage:
 ```tsx
@@ -1986,7 +1987,7 @@ Props:
   - parallax?: boolean
   - video?: string
 
-Examples (Storybook stories): A_LogoLinksCTAs, B_GlassCentered, C_MobileDropdown, D_BottomTabBar
+Examples (Storybook stories): A_LogoLinksCTAs, A_NoLogoFallback, B_GlassCentered, C_MobileDropdown, D_BottomTabBar
 
 Usage:
 ```tsx
@@ -2006,7 +2007,7 @@ Props:
   - parallax?: boolean
   - video?: string
 
-Examples (Storybook stories): A_LogoLinksCTAs, B_GlassCentered, C_MobileDropdown, D_BottomTabBar
+Examples (Storybook stories): A_LogoLinksCTAs, A_NoLogoFallback, B_GlassCentered, C_MobileDropdown, D_BottomTabBar
 
 Usage:
 ```tsx
@@ -2023,7 +2024,7 @@ Props:
   - onTabChange?: ((id: string) => void) — Called with the new tab id when a tab is selected.
   - tabs: NavbarTab[] — Tabs to render (required).
 
-Examples (Storybook stories): A_LogoLinksCTAs, B_GlassCentered, C_MobileDropdown, D_BottomTabBar
+Examples (Storybook stories): A_LogoLinksCTAs, A_NoLogoFallback, B_GlassCentered, C_MobileDropdown, D_BottomTabBar
 
 Usage:
 ```tsx
