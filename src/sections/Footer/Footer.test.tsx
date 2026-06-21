@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { render } from '@testing-library/react';
 import { composeStories } from '@storybook/react';
 import * as stories from './Footer.stories';
+import { FooterA, FooterB } from './Footer';
 
 const composed = composeStories(stories);
 
@@ -12,4 +13,59 @@ describe('Footer (section)', () => {
       expect(container).toBeTruthy();
     });
   }
+
+  it('FooterA renders brand name and column headings', () => {
+    const { getByText } = render(
+      <FooterA
+        brand={{ name: 'Raditz', blurb: 'A great lib.' }}
+        columns={[{ heading: 'Product', links: [{ label: 'Components' }] }]}
+      />
+    );
+    getByText('Raditz');
+    getByText('Product');
+    getByText('Components');
+    getByText('A great lib.');
+  });
+
+  it('FooterA renders nothing extra when brand and columns are absent', () => {
+    const { container } = render(<FooterA />);
+    expect(container).toBeTruthy();
+  });
+
+  it('FooterB renders copyright and nav links', () => {
+    const { getByText } = render(
+      <FooterB
+        copyright="© 2026 Raditz"
+        columns={[{ heading: 'Legal', links: [{ label: 'Privacy' }, { label: 'Terms' }] }]}
+      />
+    );
+    getByText('© 2026 Raditz');
+    getByText('Privacy');
+    getByText('Terms');
+  });
+
+  it('FooterB renders nothing extra when copyright and columns are absent', () => {
+    const { container } = render(<FooterB />);
+    expect(container).toBeTruthy();
+  });
+
+  it('children override body in FooterA', () => {
+    const { getByText, queryByText } = render(
+      <FooterA brand={{ name: 'Raditz' }}>
+        <span>Custom body</span>
+      </FooterA>
+    );
+    getByText('Custom body');
+    expect(queryByText('Raditz')).toBeNull();
+  });
+
+  it('children override body in FooterB', () => {
+    const { getByText, queryByText } = render(
+      <FooterB copyright="© 2026 Raditz">
+        <span>Custom bar</span>
+      </FooterB>
+    );
+    getByText('Custom bar');
+    expect(queryByText('© 2026 Raditz')).toBeNull();
+  });
 });

@@ -71,7 +71,14 @@ export function Showcase() {
         <div className="row rdz-showcase__cta"><button className="rdz-btn rdz-btn--primary">Start building</button></div>
       </SectionShell>
 
-      <FooterA />
+      <FooterA
+        brand={{ name: 'Raditz', blurb: 'A modular design foundation built on Radix that re-themes from a single accent.' }}
+        columns={[
+          { heading: 'Product', links: [{ label: 'Components' }, { label: 'Tokens' }, { label: 'Templates' }] },
+          { heading: 'Resources', links: [{ label: 'Docs' }, { label: 'Changelog' }, { label: 'GitHub', href: 'https://github.com' }] },
+          { heading: 'Company', links: [{ label: 'About' }, { label: 'Careers' }, { label: 'Contact' }] },
+        ]}
+      />
     </div>
   );
 }

@@ -68,7 +68,10 @@ export function PricingPage() {
         sub="No credit card required."
         emailCapture={{ placeholder: 'you@studio.com', action: { label: 'Request access' } }}
       />
-      <FooterB />
+      <FooterB
+        copyright="© 2026 Raditz"
+        columns={[{ heading: 'Legal', links: [{ label: 'Privacy' }, { label: 'Terms' }, { label: 'Status' }] }]}
+      />
     </div>
   );
 }
