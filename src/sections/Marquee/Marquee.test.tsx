@@ -1,7 +1,8 @@
 import { describe, it, expect } from 'vitest';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { composeStories } from '@storybook/react';
 import * as stories from './Marquee.stories';
+import { MarqueeA } from './Marquee';
 
 const composed = composeStories(stories);
 
@@ -12,4 +13,32 @@ describe('Marquee (section)', () => {
       expect(container).toBeTruthy();
     });
   }
+
+  it('renders required items', () => {
+    render(
+      <MarqueeA items={[<span key="1">Logo A</span>, <span key="2">Logo B</span>]} />,
+    );
+    // MarqueeStrip duplicates items for the seamless loop
+    expect(screen.getAllByText('Logo A').length).toBeGreaterThan(0);
+  });
+
+  it('renders the optional label when provided', () => {
+    render(<MarqueeA label="Trusted by teams" items={[<span key="1">Logo A</span>]} />);
+    expect(screen.getByText('Trusted by teams')).toBeTruthy();
+  });
+
+  it('omits the label when not provided', () => {
+    render(<MarqueeA items={[<span key="1">Logo A</span>]} />);
+    expect(screen.queryByText('Trusted by fast-moving teams')).toBeNull();
+  });
+
+  it('children override the body', () => {
+    render(
+      <MarqueeA items={[<span key="1">unused</span>]}>
+        <span>override content</span>
+      </MarqueeA>,
+    );
+    expect(screen.getByText('override content')).toBeTruthy();
+    expect(screen.queryByText('unused')).toBeNull();
+  });
 });

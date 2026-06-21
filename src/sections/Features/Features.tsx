@@ -1,111 +1,123 @@
-import { SectionShell, type SectionVariantProps } from '../../lib/SectionShell';
+import type { ReactNode } from 'react';
+import { SectionShell, type SectionBaseProps } from '../../lib/SectionShell';
 
-export function FeaturesA({ background = 'none', ...props }: SectionVariantProps = {}) {
+export interface FeaturesItem {
+  title: ReactNode;
+  description?: ReactNode;
+  icon?: ReactNode;
+  media?: ReactNode;
+}
+
+export interface FeaturesProps extends SectionBaseProps {
+  /** Feature cards (required). */
+  items: FeaturesItem[];
+  /** Small label above the heading. */
+  eyebrow?: ReactNode;
+  /** Section heading. */
+  heading?: ReactNode;
+}
+
+/** Features A — 3-up icon card grid. */
+export function FeaturesA({ items, eyebrow, heading, background = 'none', children, ...props }: FeaturesProps) {
   return (
     <SectionShell wrap="col sx-gap-6" background={background} {...props}>
-      <div className="col sx-feat__head">
-        <span className="eyebrow2">Why Raditz</span>
-        <h3 className="h-section">Everything wired together</h3>
-      </div>
-      <div className="sx-g3 sx-gap-5">
-        <div className="rdz-card col sx-gap-3">
-          <span className="feat-ico">
-            <svg className="ico" viewBox="0 0 24 24">
-              <circle cx="12" cy="12" r="9" />
-              <path d="M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18M3 12h18" />
-            </svg>
-          </span>
-          <strong>12-step color</strong>
-          <span className="muted sx-body-s">
-            Radix scales aliased to semantic tokens, light &amp; dark.
-          </span>
-        </div>
-        <div className="rdz-card col sx-gap-3">
-          <span className="feat-ico">
-            <svg className="ico" viewBox="0 0 24 24">
-              <rect x="3" y="3" width="7" height="7" rx="1.5" />
-              <rect x="14" y="3" width="7" height="7" rx="1.5" />
-              <rect x="3" y="14" width="7" height="7" rx="1.5" />
-              <rect x="14" y="14" width="7" height="7" rx="1.5" />
-            </svg>
-          </span>
-          <strong>53 components</strong>
-          <span className="muted sx-body-s">
-            The full Radix primitive surface, styled and accessible.
-          </span>
-        </div>
-        <div className="rdz-card col sx-gap-3">
-          <span className="feat-ico">
-            <svg className="ico" viewBox="0 0 24 24">
-              <path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z" />
-            </svg>
-          </span>
-          <strong>Re-skin instantly</strong>
-          <span className="muted sx-body-s">
-            One accent variable retones the entire product.
-          </span>
-        </div>
-      </div>
+      {children ?? (
+        <>
+          {(eyebrow || heading) && (
+            <div className="col sx-feat__head">
+              {eyebrow && <span className="eyebrow2">{eyebrow}</span>}
+              {heading && <h3 className="h-section">{heading}</h3>}
+            </div>
+          )}
+          <div className="sx-g3 sx-gap-5">
+            {items.map((item, i) => (
+              <div key={i} className="rdz-card col sx-gap-3">
+                {item.icon && <span className="feat-ico">{item.icon}</span>}
+                <strong>{item.title}</strong>
+                {item.description && <span className="muted sx-body-s">{item.description}</span>}
+              </div>
+            ))}
+          </div>
+        </>
+      )}
     </SectionShell>
   );
 }
 
-export function FeaturesB({ background = 'gradient-mesh', ...props }: SectionVariantProps = {}) {
+/** Features B — bento: first item as lead card, remaining as cells + wide. */
+export function FeaturesB({ items, eyebrow, heading, background = 'gradient-mesh', children, ...props }: FeaturesProps) {
+  const [lead, ...rest] = items;
   return (
-    <SectionShell wrap="sx-bento sx-feat__bento" background={background} {...props}>
-      <div className="rdz-card col sx-feat__bento-lead">
-        <span className="feat-ico">
-          <svg className="ico" viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="9" />
-            <path d="M3 12h18" />
-          </svg>
-        </span>
-        <strong className="sx-feat__bento-title">Token-driven theming</strong>
-        <span className="muted sx-fs-body-s">
-          Colors, type, spacing, radius, motion — all variables.
-        </span>
-      </div>
-      <div className="rdz-card col sx-feat__bento-cell">
-        <strong>Dark mode</strong>
-        <span className="muted sx-fs-caption">class="dark"</span>
-      </div>
-      <div className="rdz-card col sx-feat__bento-cell">
-        <strong>A11y</strong>
-        <span className="muted sx-fs-caption">Keyboard + ARIA</span>
-      </div>
-      <div className="rdz-card col sx-feat__bento-wide">
-        <strong>Eight radius rules</strong>
-        <span className="muted sx-fs-body-s">
-          Concentric corners, size-proportional, formal↔friendly.
-        </span>
-      </div>
+    <SectionShell wrap="col sx-gap-6" background={background} {...props}>
+      {children ?? (
+        <>
+          {(eyebrow || heading) && (
+            <div className="col sx-feat__head">
+              {eyebrow && <span className="eyebrow2">{eyebrow}</span>}
+              {heading && <h3 className="h-section">{heading}</h3>}
+            </div>
+          )}
+          <div className="sx-bento sx-feat__bento">
+            {lead && (
+              <div className="rdz-card col sx-feat__bento-lead">
+                {lead.icon && <span className="feat-ico">{lead.icon}</span>}
+                <strong className="sx-feat__bento-title">{lead.title}</strong>
+                {lead.description && <span className="muted sx-fs-body-s">{lead.description}</span>}
+              </div>
+            )}
+            {rest.map((item, i) => {
+              const isLast = i === rest.length - 1;
+              const cls = isLast ? 'rdz-card col sx-feat__bento-wide' : 'rdz-card col sx-feat__bento-cell';
+              return (
+                <div key={i} className={cls}>
+                  {item.icon && <span className="feat-ico">{item.icon}</span>}
+                  <strong>{item.title}</strong>
+                  {item.description && <span className={isLast ? 'muted sx-fs-body-s' : 'muted sx-fs-caption'}>{item.description}</span>}
+                </div>
+              );
+            })}
+          </div>
+        </>
+      )}
     </SectionShell>
   );
 }
 
-export function FeaturesC({ background = 'surface-2', ...props }: SectionVariantProps = {}) {
+/** Features C — alternating media spotlights. */
+export function FeaturesC({ items, eyebrow, heading, background = 'surface-2', children, ...props }: FeaturesProps) {
   return (
-    <SectionShell wrap="col sx-gap-7" background={background} {...props}>
-      <div className="sx-split sx-feat__spotlight">
-        <div className="col sx-gap-3">
-          <span className="eyebrow2">Composable</span>
-          <h3 className="h-section">Build pages from sections</h3>
-          <p className="muted sx-lh-body">
-            Drop in heroes, pricing, testimonials and footers — all sharing one type scale and palette.
-          </p>
-        </div>
-        <div className="ph sx-feat__media">A</div>
-      </div>
-      <div className="sx-split sx-feat__spotlight">
-        <div className="ph ph--neutral sx-feat__media">B</div>
-        <div className="col sx-gap-3">
-          <span className="eyebrow2">Consistent</span>
-          <h3 className="h-section">Themed end to end</h3>
-          <p className="muted sx-lh-body">
-            Every section reads from the same tokens, so a re-skin is global and instant.
-          </p>
-        </div>
-      </div>
+    <SectionShell wrap="col sx-gap-6" background={background} {...props}>
+      {children ?? (
+        <>
+          {(eyebrow || heading) && (
+            <div className="col sx-feat__head">
+              {eyebrow && <span className="eyebrow2">{eyebrow}</span>}
+              {heading && <h3 className="h-section">{heading}</h3>}
+            </div>
+          )}
+          <div className="col sx-gap-7">
+            {items.map((item, i) => {
+              const isEven = i % 2 === 0;
+              const copy = (
+                <div className="col sx-gap-3">
+                  {item.icon && <span className="eyebrow2">{item.icon}</span>}
+                  <h3 className="h-section">{item.title}</h3>
+                  {item.description && <p className="muted sx-lh-body">{item.description}</p>}
+                </div>
+              );
+              return (
+                <div key={i} className="sx-split sx-feat__spotlight">
+                  {isEven ? (
+                    <>{copy}{item.media}</>
+                  ) : (
+                    <>{item.media}{copy}</>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </>
+      )}
     </SectionShell>
   );
 }

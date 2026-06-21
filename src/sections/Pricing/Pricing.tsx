@@ -1,102 +1,161 @@
 'use client';
 import { useState } from 'react';
-import { SectionShell, type SectionVariantProps } from '../../lib/SectionShell';
+import type { ReactNode } from 'react';
+import { SectionShell, type SectionBaseProps, type SectionAction } from '../../lib/SectionShell';
+import { Button } from '../../components/controls/Button';
 import { Tabs } from '../../components/navigation/Tabs';
 
-export function PricingA({ background = 'surface-2', ...props }: SectionVariantProps = {}) {
+export interface PricingTier {
+  name: ReactNode;
+  price: ReactNode;
+  /** Yearly price displayed when the annual toggle is active (PricingB). */
+  priceYearly?: ReactNode;
+  /** Period label, e.g. "/mo". */
+  period?: ReactNode;
+  blurb?: ReactNode;
+  features?: ReactNode[];
+  action?: SectionAction;
+  popular?: boolean;
+}
+
+export interface PricingProps extends SectionBaseProps {
+  /** Tiers to render as cards. */
+  tiers: PricingTier[];
+  heading?: ReactNode;
+  sub?: ReactNode;
+}
+
+/** PricingA — static 3-up tier cards with optional Popular badge. */
+export function PricingA({
+  tiers,
+  heading,
+  sub,
+  background = 'surface-2',
+  children,
+  ...props
+}: PricingProps) {
   return (
     <SectionShell wrap="col sx-gap-6" background={background} {...props}>
-      <div className="col sx-center sx-gap-2">
-        <h3 className="h-section">Simple, scalable pricing</h3>
-        <p className="muted">Start free. Upgrade when your team grows.</p>
-      </div>
-      <div className="sx-price__grid">
-        <div className="rdz-card col sx-price__card">
-          <div className="col sx-price__plan">
-            <strong>Starter</strong>
-            <span className="muted sx-fs-body-s">For solo builders</span>
+      {children ?? (
+        <>
+          {(heading || sub) && (
+            <div className="col sx-center sx-gap-2">
+              {heading && <h3 className="h-section">{heading}</h3>}
+              {sub && <p className="muted">{sub}</p>}
+            </div>
+          )}
+          <div className="sx-price__grid">
+            {tiers.map((tier, i) => (
+              <div
+                key={i}
+                className={`rdz-card col ${tier.popular ? 'sx-price__card-pop' : 'sx-price__card'}`}
+              >
+                {tier.popular && (
+                  <span className="rdz-badge rdz-badge--solid sx-price__badge">Popular</span>
+                )}
+                <div className="col sx-price__plan">
+                  <strong>{tier.name}</strong>
+                  {tier.blurb && <span className="muted sx-fs-body-s">{tier.blurb}</span>}
+                </div>
+                <div>
+                  <span className="sx-price__num">{tier.price}</span>
+                  {tier.period && <span className="muted">{tier.period}</span>}
+                </div>
+                {tier.action && (
+                  <Button
+                    href={tier.action.href}
+                    onClick={tier.action.onClick}
+                    variant={tier.action.variant ?? (tier.popular ? 'primary' : 'outline')}
+                    size={tier.action.size}
+                    icon={tier.action.icon}
+                    className="sx-price__btn"
+                  >
+                    {tier.action.label}
+                  </Button>
+                )}
+                {tier.features && tier.features.length > 0 && (
+                  <ul className="col sx-price__list">
+                    {tier.features.map((f, j) => <li key={j}>{f}</li>)}
+                  </ul>
+                )}
+              </div>
+            ))}
           </div>
-          <div>
-            <span className="sx-price__num">$0</span>
-            <span className="muted">/mo</span>
-          </div>
-          <button className="rdz-btn rdz-btn--outline sx-price__btn">Get started</button>
-          <ul className="col sx-price__list">
-            <li>1 project</li>
-            <li>Community support</li>
-            <li>Core components</li>
-          </ul>
-        </div>
-        <div className="rdz-card col sx-price__card-pop">
-          <span className="rdz-badge rdz-badge--solid sx-price__badge">
-            Popular
-          </span>
-          <div className="col sx-price__plan">
-            <strong>Team</strong>
-            <span className="muted sx-fs-body-s">For growing teams</span>
-          </div>
-          <div>
-            <span className="sx-price__num">$24</span>
-            <span className="muted">/seat/mo</span>
-          </div>
-          <button className="rdz-btn rdz-btn--primary sx-price__btn">Start trial</button>
-          <ul className="col sx-price__list">
-            <li>Unlimited projects</li>
-            <li>Priority support</li>
-            <li>All components</li>
-            <li>Dark mode + themes</li>
-          </ul>
-        </div>
-        <div className="rdz-card col sx-price__card">
-          <div className="col sx-price__plan">
-            <strong>Enterprise</strong>
-            <span className="muted sx-fs-body-s">For organizations</span>
-          </div>
-          <div>
-            <span className="sx-price__num">Custom</span>
-          </div>
-          <button className="rdz-btn rdz-btn--outline sx-price__btn">Contact sales</button>
-          <ul className="col sx-price__list">
-            <li>SSO &amp; SAML</li>
-            <li>Dedicated support</li>
-            <li>Custom themes</li>
-          </ul>
-        </div>
-      </div>
+        </>
+      )}
     </SectionShell>
   );
 }
 
-export function PricingB({ background = 'gradient-accent', ...props }: SectionVariantProps = {}) {
+/** PricingB — interactive monthly/yearly toggle (requires a client boundary). */
+export function PricingB({
+  tiers,
+  heading,
+  sub,
+  background = 'gradient-accent',
+  children,
+  ...props
+}: PricingProps) {
   const [period, setPeriod] = useState<'mo' | 'yr'>('mo');
+  const hasYearly = tiers.some((t) => t.priceYearly !== undefined);
+
   return (
     <SectionShell wrap="col sx-price__toggle-col" background={background} {...props}>
-      <div className="sx-price__toggle-head">
-        <h3 className="h-section">Pay monthly or save yearly</h3>
-        <Tabs
-          value={period}
-          onValueChange={(v) => setPeriod(v as 'mo' | 'yr')}
-          tabs={[{ value: 'mo', label: 'Monthly' }, { value: 'yr', label: 'Annual (−20%)' }]}
-        />
-      </div>
-      <div className="sx-price2 sx-gap-4">
-        <div className="rdz-card col sx-price__card">
-          <strong>Pro</strong>
-          <div>
-            <span className="sx-price__num">{period === 'mo' ? '$24' : '$19'}</span>
-            <span className="muted">/mo</span>
+      {children ?? (
+        <>
+          <div className="sx-price__toggle-head">
+            {heading && <h3 className="h-section">{heading}</h3>}
+            {sub && <p className="muted">{sub}</p>}
+            {hasYearly && (
+              <Tabs
+                value={period}
+                onValueChange={(v) => setPeriod(v as 'mo' | 'yr')}
+                tabs={[
+                  { value: 'mo', label: 'Monthly' },
+                  { value: 'yr', label: 'Annual (−20%)' },
+                ]}
+              />
+            )}
           </div>
-          <button className="rdz-btn rdz-btn--primary sx-price__btn">Choose Pro</button>
-        </div>
-        <div className="rdz-card col sx-price__card">
-          <strong>Business</strong>
-          <div>
-            <span className="sx-price__num">{period === 'mo' ? '$60' : '$48'}</span>
-            <span className="muted">/mo</span>
+          <div className="sx-price2 sx-gap-4">
+            {tiers.map((tier, i) => {
+              const displayPrice = period === 'yr' && tier.priceYearly !== undefined
+                ? tier.priceYearly
+                : tier.price;
+              return (
+                <div key={i} className={`rdz-card col ${tier.popular ? 'sx-price__card-pop' : 'sx-price__card'}`}>
+                  {tier.popular && (
+                    <span className="rdz-badge rdz-badge--solid sx-price__badge">Popular</span>
+                  )}
+                  <strong>{tier.name}</strong>
+                  {tier.blurb && <span className="muted sx-fs-body-s">{tier.blurb}</span>}
+                  <div>
+                    <span className="sx-price__num">{displayPrice}</span>
+                    {tier.period && <span className="muted">{tier.period}</span>}
+                  </div>
+                  {tier.action && (
+                    <Button
+                      href={tier.action.href}
+                      onClick={tier.action.onClick}
+                      variant={tier.action.variant ?? (tier.popular ? 'primary' : 'outline')}
+                      size={tier.action.size}
+                      icon={tier.action.icon}
+                      className="sx-price__btn"
+                    >
+                      {tier.action.label}
+                    </Button>
+                  )}
+                  {tier.features && tier.features.length > 0 && (
+                    <ul className="col sx-price__list">
+                      {tier.features.map((f, j) => <li key={j}>{f}</li>)}
+                    </ul>
+                  )}
+                </div>
+              );
+            })}
           </div>
-          <button className="rdz-btn rdz-btn--outline sx-price__btn">Choose Business</button>
-        </div>
-      </div>
+        </>
+      )}
     </SectionShell>
   );
 }

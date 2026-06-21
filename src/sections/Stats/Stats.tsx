@@ -1,43 +1,64 @@
-import { SectionShell, type SectionVariantProps } from '../../lib/SectionShell';
+import type { ReactNode } from 'react';
+import { SectionShell, type SectionBaseProps } from '../../lib/SectionShell';
 
-export function StatsA({ background = 'none', ...props }: SectionVariantProps = {}) {
+export interface StatItem {
+  value: ReactNode;
+  label: ReactNode;
+}
+
+export interface StatsProps extends SectionBaseProps {
+  /** Stat cells (required). */
+  stats: StatItem[];
+  /** Optional section heading. */
+  heading?: ReactNode;
+}
+
+/** Stats A — 4-across grid. */
+export function StatsA({ stats, heading, background = 'none', children, ...props }: StatsProps) {
   return (
-    <SectionShell wrap="sx-g4 sx-gap-5" background={background} {...props}>
-      <div className="col sx-stat__cell">
-        <span className="sx-stat__num">53</span>
-        <span className="muted sx-fs-body-s">components</span>
-      </div>
-      <div className="col sx-stat__cell">
-        <span className="sx-stat__num">188</span>
-        <span className="muted sx-fs-body-s">design tokens</span>
-      </div>
-      <div className="col sx-stat__cell">
-        <span className="sx-stat__num">12</span>
-        <span className="muted sx-fs-body-s">color steps</span>
-      </div>
-      <div className="col sx-stat__cell">
-        <span className="sx-stat__num">1</span>
-        <span className="muted sx-fs-body-s">line to re-skin</span>
-      </div>
+    <SectionShell wrap="col sx-gap-5" background={background} {...props}>
+      {children ?? (
+        <>
+          {heading && (
+            <div className="col sx-stat__head">
+              <h3 className="h-section">{heading}</h3>
+            </div>
+          )}
+          <div className="sx-g4 sx-gap-5">
+            {stats.map((stat, i) => (
+              <div key={i} className="col sx-stat__cell">
+                <span className="sx-stat__num">{stat.value}</span>
+                <span className="muted sx-fs-body-s">{stat.label}</span>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
     </SectionShell>
   );
 }
 
-export function StatsB({ background = 'none', ...props }: SectionVariantProps = {}) {
+/** Stats B — accent band, 3-cell grid. */
+export function StatsB({ stats, heading, background = 'none', children, ...props }: StatsProps) {
   return (
-    <SectionShell padClassName="sx-stat__band" wrap="sx-g3 sx-gap-5 sx-stat__band-grid" background={background} {...props}>
-      <div className="col sx-stat__cell">
-        <span className="sx-stat__band-num">99.9%</span>
-        <span className="sx-stat__band-label">uptime</span>
-      </div>
-      <div className="col sx-stat__cell">
-        <span className="sx-stat__band-num">40ms</span>
-        <span className="sx-stat__band-label">p95 latency</span>
-      </div>
-      <div className="col sx-stat__cell">
-        <span className="sx-stat__band-num">12k+</span>
-        <span className="sx-stat__band-label">teams</span>
-      </div>
+    <SectionShell padClassName="sx-stat__band" wrap="col sx-gap-5" background={background} {...props}>
+      {children ?? (
+        <>
+          {heading && (
+            <div className="col sx-stat__head">
+              <h3 className="h-section">{heading}</h3>
+            </div>
+          )}
+          <div className="sx-g3 sx-gap-5 sx-stat__band-grid">
+            {stats.map((stat, i) => (
+              <div key={i} className="col sx-stat__cell">
+                <span className="sx-stat__band-num">{stat.value}</span>
+                <span className="sx-stat__band-label">{stat.label}</span>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
     </SectionShell>
   );
 }

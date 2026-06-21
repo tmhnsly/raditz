@@ -13,14 +13,14 @@ function systemScheme(): ColorScheme {
   return typeof window !== 'undefined' && window.matchMedia?.(QUERY).matches ? 'dark' : 'light';
 }
 
-function loadPreference(): ColorPreference {
+function loadPreference(defaultScheme: ColorPreference = 'system'): ColorPreference {
   if (typeof localStorage !== 'undefined') {
     try {
       const v = localStorage.getItem(KEY);
       if (v === 'light' || v === 'dark') return v;
     } catch { /* ignore */ }
   }
-  return 'system';
+  return defaultScheme;
 }
 
 /**
@@ -32,9 +32,13 @@ function loadPreference(): ColorPreference {
  * follow the system again. Only an explicit override is persisted (clearing it
  * removes the key), so a fresh project/visit always honours the OS until the
  * user opts in. Applies `class="dark"` on `<html>`.
+ *
+ * Pass `{ defaultScheme: 'dark' }` to open in dark mode by default (still
+ * user-toggleable; a persisted user choice always wins).
  */
-export function useColorScheme() {
-  const [preference, setPreference] = useState<ColorPreference>(loadPreference);
+export function useColorScheme(opts?: { defaultScheme?: ColorPreference }) {
+  const fallback = opts?.defaultScheme ?? 'system';
+  const [preference, setPreference] = useState<ColorPreference>(() => loadPreference(fallback));
   const [system, setSystem] = useState<ColorScheme>(systemScheme);
 
   // Live-follow the OS preference (matters whenever preference === 'system').

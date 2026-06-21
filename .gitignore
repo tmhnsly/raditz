@@ -8,3 +8,4 @@ tsconfig.tsbuildinfo
 
 # subagent-driven-development scratch (briefs, reports, diffs, ledger)
 .superpowers/
+.claude/worktrees/

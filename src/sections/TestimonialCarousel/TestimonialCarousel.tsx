@@ -1,14 +1,40 @@
-import { SectionShell, type SectionVariantProps } from '../../lib/SectionShell';
+import type { ReactNode } from 'react';
+import { SectionShell, type SectionBaseProps } from '../../lib/SectionShell';
 import { Carousel } from '../../components/media/Carousel';
+import type { Testimonial } from '../Testimonials/Testimonials';
+// Testimonial is re-exported from Testimonials (reaches the barrel there); a
+// second `export type` here makes react-docgen emit a bogus <Testimonial /> entry.
 
-export function TestimonialCarouselA({ background = 'none', ...props }: SectionVariantProps = {}) {
+export interface TestimonialCarouselProps extends SectionBaseProps {
+  /** Testimonial entries (required). */
+  quotes: Testimonial[];
+  /** Optional section heading. */
+  heading?: ReactNode;
+}
+
+/** TestimonialCarousel A — scroll-snap carousel of quote cards. */
+export function TestimonialCarouselA({ quotes, heading, background = 'none', children, ...props }: TestimonialCarouselProps) {
   return (
     <SectionShell background={background} {...props}>
-      <Carousel perView={1.15} arrows dots bleed>
-        <figure className="tcar__card"><blockquote className="sx-lh-body">“We re-skinned our entire app for a rebrand in an afternoon. One token.”</blockquote><figcaption className="row sx-tcar__fig"><span className="rdz-avatar sx-avatar-sm">MO</span><div className="col"><strong className="sx-fs-body-s">Maya Okafor</strong><span className="muted sx-fs-caption">Design Lead, Aurora</span></div></figcaption></figure>
-        <figure className="tcar__card"><blockquote className="sx-lh-body">“The component coverage is unreal. We deleted our internal UI kit.”</blockquote><figcaption className="row sx-tcar__fig"><span className="rdz-avatar sx-avatar-sm">JT</span><div className="col"><strong className="sx-fs-body-s">Jon Tran</strong><span className="muted sx-fs-caption">Eng Manager, Vertex</span></div></figcaption></figure>
-        <figure className="tcar__card"><blockquote className="sx-lh-body">“Accessible by default saved us weeks of audit work.”</blockquote><figcaption className="row sx-tcar__fig"><span className="rdz-avatar sx-avatar-sm">SL</span><div className="col"><strong className="sx-fs-body-s">Sara Lin</strong><span className="muted sx-fs-caption">PM, Lumen</span></div></figcaption></figure>
-      </Carousel>
+      {children ?? (
+        <>
+          {heading && <h2 className="h-section">{heading}</h2>}
+          <Carousel perView={1.15} arrows dots bleed>
+            {quotes.map((q, i) => (
+              <figure key={i} className="tcar__card">
+                <blockquote className="sx-lh-body">{q.quote}</blockquote>
+                <figcaption className="row sx-tcar__fig">
+                  {q.avatar}
+                  <div className="col">
+                    {q.name && <strong className="sx-fs-body-s">{q.name}</strong>}
+                    {q.role && <span className="muted sx-fs-caption">{q.role}</span>}
+                  </div>
+                </figcaption>
+              </figure>
+            ))}
+          </Carousel>
+        </>
+      )}
     </SectionShell>
   );
 }

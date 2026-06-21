@@ -20,6 +20,9 @@ read-only dependency.
   everything derives from it. Override any other token there too.
 - For a live picker starting from your brand, call `useTheme({ accent: 'iris' })`
   in a client component. Don't combine the picker with a CSS accent override.
+- Default colour scheme: set `DEFAULT_SCHEME` in the theme runtime (`'system'` follows
+  the OS — the default; `'dark'` or `'light'` opens the site in that scheme, still
+  user-toggleable). The Next no-flash script reads it so there's no flash.
 
 ## Changing Raditz itself
 - New reusable component → the **raditz-promote** workflow.

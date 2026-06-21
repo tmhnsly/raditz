@@ -1,21 +1,68 @@
-import { SectionShell, type SectionVariantProps } from '../../lib/SectionShell';
+import type { ReactNode } from 'react';
+import { SectionShell, type SectionBaseProps } from '../../lib/SectionShell';
 
-export function ComparisonA({ background = 'surface-2', ...props }: SectionVariantProps = {}) {
+export interface ComparisonProps extends SectionBaseProps {
+  /** Table columns (plans/tiers), in order (required). */
+  columns: { name: ReactNode; highlight?: boolean }[];
+  /** Feature rows (required). `values` aligns positionally 1:1 with `columns`:
+   *  `row.values[i]` is the cell for `columns[i]` (same length, same order).
+   *  `true` → check glyph; `false` → cross/em-dash; any ReactNode → rendered as-is. */
+  rows: { feature: ReactNode; values: (boolean | ReactNode)[] }[];
+  /** Section heading. */
+  heading?: ReactNode;
+}
+
+function CellValue({ value }: { value: boolean | ReactNode }) {
+  if (value === true) return <span className="cmp__yes">✓</span>;
+  if (value === false) return <span className="cmp__no">—</span>;
+  return <>{value}</>;
+}
+
+/** Comparison A — plans × features table, highlighted column for the popular tier. */
+export function ComparisonA({ columns, rows, heading, background = 'surface-2', children, ...props }: ComparisonProps) {
   return (
     <SectionShell background={background} {...props}>
-      <div className="cmp-scroll">
-        <table className="cmp">
-          <thead><tr><th></th><th>Starter</th><th className="cmp__pop">Team</th><th>Enterprise</th></tr></thead>
-          <tbody>
-            <tr><th>Projects</th><td>1</td><td className="cmp__pop">Unlimited</td><td>Unlimited</td></tr>
-            <tr><th>Components</th><td>Core</td><td className="cmp__pop">All 64</td><td>All 64</td></tr>
-            <tr><th>Dark mode &amp; themes</th><td className="cmp__no">—</td><td className="cmp__pop"><span className="cmp__yes">✓</span></td><td><span className="cmp__yes">✓</span></td></tr>
-            <tr><th>SSO &amp; SAML</th><td className="cmp__no">—</td><td className="cmp__pop cmp__no">—</td><td><span className="cmp__yes">✓</span></td></tr>
-            <tr><th>Support</th><td>Community</td><td className="cmp__pop">Priority</td><td>Dedicated</td></tr>
-            <tr><th></th><td><button className="rdz-btn rdz-btn--outline rdz-btn--sm">Start</button></td><td className="cmp__pop"><button className="rdz-btn rdz-btn--primary rdz-btn--sm">Choose Team</button></td><td><button className="rdz-btn rdz-btn--outline rdz-btn--sm">Contact</button></td></tr>
-          </tbody>
-        </table>
-      </div>
+      {children ?? (
+        <>
+          {heading && <h3 className="h-section">{heading}</h3>}
+          <div className="cmp-scroll">
+            <table className="cmp">
+              <thead>
+                <tr>
+                  <th></th>
+                  {columns.map((col, i) => (
+                    <th key={i} className={col.highlight ? 'cmp__pop' : undefined}>
+                      {col.name}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((row, ri) => (
+                  <tr key={ri}>
+                    <th>{row.feature}</th>
+                    {columns.map((col, ci) => {
+                      const val = row.values[ci];
+                      const isBoolFalse = val === false;
+                      return (
+                        <td
+                          key={ci}
+                          className={[
+                            col.highlight ? 'cmp__pop' : undefined,
+                            isBoolFalse ? 'cmp__no' : undefined,
+                          ].filter(Boolean).join(' ') || undefined}
+                        >
+                          <CellValue value={val} />
+                        </td>
+                      );
+                    })}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
+      )}
     </SectionShell>
   );
 }

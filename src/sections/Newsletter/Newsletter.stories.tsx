@@ -5,4 +5,14 @@ const meta: Meta = { title: 'Sections/Newsletter' };
 export default meta;
 type Story = StoryObj;
 
-export const A_CardSignup: Story = { name: 'A · Card signup', render: () => <NewsletterA /> };
+export const A_CardSignup: Story = {
+  name: 'A · Card signup',
+  render: () => (
+    <NewsletterA
+      title="Get the changelog"
+      sub="New components and tokens, monthly. No spam."
+      placeholder="you@studio.com"
+      action={{ label: 'Subscribe' }}
+    />
+  ),
+};

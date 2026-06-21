@@ -18,6 +18,9 @@ read-only dependency.
 - For a live theme picker that starts from your brand, call
   `useTheme({ accent: 'iris' })` from a client component (see `ThemeRuntime.tsx`).
   Do not use both the picker AND a CSS accent override — the picker's inline styles win.
+- Default colour scheme: set `DEFAULT_SCHEME` in the theme runtime (`'system'` follows
+  the OS — the default; `'dark'` or `'light'` opens the site in that scheme, still
+  user-toggleable). Vite has no SSR pre-paint script, so the hook applies it on mount.
 
 ## Changing Raditz itself
 Do it in the library repo, not here:

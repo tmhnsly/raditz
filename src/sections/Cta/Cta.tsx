@@ -1,19 +1,60 @@
-import { SectionShell, type SectionVariantProps } from '../../lib/SectionShell';
+'use client';
+import type { ReactNode } from 'react';
+import { Button } from '../../components/controls/Button';
+import { SectionShell, SectionActions, type SectionBaseProps, type SectionAction } from '../../lib/SectionShell';
 
-export function CtaA({ background = 'gradient-dusk', ...props }: SectionVariantProps = {}) {
+export interface CtaProps extends SectionBaseProps {
+  /** Headline (required). */
+  title: ReactNode;
+  /** Sub-text / tagline under the title. */
+  sub?: ReactNode;
+  /** Call-to-action buttons. */
+  actions?: SectionAction[];
+  /** Inline email-capture form (CtaB). */
+  emailCapture?: { placeholder?: string; action: SectionAction };
+}
+
+/** CTA A — centered column with dual CTA. */
+export function CtaA({ title, sub, actions, background = 'gradient-dusk', children, ...props }: CtaProps) {
   return (
     <SectionShell wrap="col sx-center sx-gap-5" background={background} {...props}>
-      <h3 className="h-section sx-cta__title">Ready to build something consistent?</h3>
-      <div className="row sx-row-center"><button className="rdz-btn rdz-btn--primary rdz-btn--lg sx-cta__pill">Get started free</button><button className="rdz-btn rdz-btn--outline rdz-btn--lg">Talk to us</button></div>
+      {children ?? (
+        <>
+          <h3 className="h-section sx-cta__title">{title}</h3>
+          {sub && <p className="muted sx-cta__sub">{sub}</p>}
+          <SectionActions actions={actions} size="lg" className="row sx-row-center" />
+        </>
+      )}
     </SectionShell>
   );
 }
 
-export function CtaB({ background = 'none', ...props }: SectionVariantProps = {}) {
+/** CTA B — split layout with email capture. */
+export function CtaB({ title, sub, emailCapture, background = 'none', children, ...props }: CtaProps) {
   return (
     <SectionShell padClassName="sx-cta__band" wrap="sx-cta__split" background={background} {...props}>
-      <div className="col sx-cta__copy"><h3 className="h-section sx-cta__title-ink">Start shipping today</h3><p className="muted sx-cta__sub">No credit card required.</p></div>
-      <div className="row"><div className="rdz-input sx-cta__input">you@studio.com</div><button className="rdz-btn rdz-btn--primary rdz-btn--lg">Request access</button></div>
+      {children ?? (
+        <>
+          <div className="col sx-cta__copy">
+            <h3 className="h-section sx-cta__title-ink">{title}</h3>
+            {sub && <p className="muted sx-cta__sub">{sub}</p>}
+          </div>
+          {emailCapture && (
+            <div className="row">
+              <div className="rdz-input sx-cta__input">{emailCapture.placeholder ?? ''}</div>
+              <Button
+                variant={emailCapture.action.variant}
+                size={emailCapture.action.size ?? 'lg'}
+                href={emailCapture.action.href}
+                onClick={emailCapture.action.onClick}
+                icon={emailCapture.action.icon}
+              >
+                {emailCapture.action.label}
+              </Button>
+            </div>
+          )}
+        </>
+      )}
     </SectionShell>
   );
 }

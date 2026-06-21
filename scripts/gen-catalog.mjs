@@ -42,7 +42,14 @@ function storyExampleNames(dir, base) {
 
 function fmtProp(p) {
   const opt = p.required ? '' : '?';
-  const type = (p.type && p.type.name) || 'unknown';
+  let type = (p.type && p.type.name) || 'unknown';
+  // Expand enums/unions to their literal members: enum -> 'a' | 'b' | 'c'
+  if (type === 'enum' && p.type && Array.isArray(p.type.value)) {
+    const members = p.type.value.map((m) => m.value).filter(Boolean);
+    // Drop the noisy `undefined` member optionals carry; keep it readable.
+    const cleaned = members.filter((m) => m !== 'undefined');
+    if (cleaned.length && cleaned.length <= 12) type = cleaned.join(' | ');
+  }
   const dv = p.defaultValue && p.defaultValue.value;
   const def = dv !== undefined && dv !== null && dv !== '' ? ` (default: ${dv})` : '';
   const desc = p.description ? ` — ${p.description.replace(/\s+/g, ' ').trim()}` : '';
@@ -223,11 +230,31 @@ const header = [
   '',
 ];
 
+const UTILITIES = [
+  ['.h-display', 'Largest display heading (hero titles).'],
+  ['.h-section', 'Section heading.'],
+  ['.lede', 'Lead paragraph under a heading.'],
+  ['.eyebrow / .eyebrow2', 'Small label above a heading.'],
+  ['.muted', 'De-emphasized text colour.'],
+  ['.row / .col', 'Flex row / column with token gaps.'],
+  ['.container', 'Max-width centered content wrapper.'],
+];
+const utilitiesBlock = [
+  '## utilities (CSS classes)',
+  '',
+  'For BESPOKE layout only — prefer components/sections first. These public classes',
+  'come from `raditz/styles.css` (already imported); use them in a section\'s `children`',
+  'or your own markup:',
+  '',
+  ...UTILITIES.map(([cls, desc]) => `- \`${cls}\` — ${desc}`),
+  '',
+];
+
 const sections = [];
 for (const cat of [...byCategory.keys()].sort()) {
   sections.push(`## ${cat}`, '', byCategory.get(cat).join('\n\n'), '');
 }
 
 fs.mkdirSync('catalog', { recursive: true });
-fs.writeFileSync('catalog/llms.txt', header.concat(sections).join('\n'));
+fs.writeFileSync('catalog/llms.txt', header.concat(utilitiesBlock).concat(sections).join('\n'));
 console.log(`wrote catalog/llms.txt (${componentCount} components in ${byCategory.size} categories)`);
