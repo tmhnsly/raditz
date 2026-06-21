@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { SectionShell, type SectionBaseProps } from '../../lib/SectionShell';
+import { CardArrow } from '../../components/utility/CardArrow';
 
 export interface BlogProps extends SectionBaseProps {
   /** Blog posts to render (required). */
@@ -46,7 +47,7 @@ export function BlogB({ posts, heading, background = 'surface-2', children, ...p
         <>
           {heading && <h3 className="h-section">{heading}</h3>}
           {posts.map((post, i) => (
-            <a key={i} href={post.href ?? '#'} className="blogrow">
+            <a key={i} href={post.href ?? '#'} className="blogrow rdz-card-arrow-host">
               <div className="col sx-blog__row-body">
                 <div className="row sx-blog__row-meta">
                   {post.tag && <span className="eyebrow2 sx-fs-caption">{post.tag}</span>}
@@ -54,7 +55,7 @@ export function BlogB({ posts, heading, background = 'surface-2', children, ...p
                 </div>
                 <strong className="sx-blog__row-title">{post.title}</strong>
               </div>
-              <span className="blogrow__arrow">→</span>
+              <CardArrow />
             </a>
           ))}
         </>

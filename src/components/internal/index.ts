@@ -17,3 +17,4 @@ export * from './time';
 export * from './format';
 export * from './useReducedMotion';
 export * from './useInView';
+export * from './splitText';

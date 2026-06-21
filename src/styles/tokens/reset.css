@@ -4,7 +4,9 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 * { margin: 0; }
-html { -webkit-text-size-adjust: 100%; }
+/* Reserve the scrollbar gutter so content never shifts when it grows/shrinks, and
+   so opening a modal (scroll-lock) doesn't reflow the page. */
+html { -webkit-text-size-adjust: 100%; scrollbar-gutter: stable; }
 html, body { height: 100%; }
 body {
   background: var(--bg);

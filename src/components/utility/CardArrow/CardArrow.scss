@@ -1,0 +1,32 @@
+// Uses Raditz tokens (var(--…)). Timing rides --duration-fast (a control-level
+// interaction), so it re-tunes with data-motion and goes instant under reduced motion.
+/* ═══════════════════════ Utility · CardArrow ═══════════════════════ */
+
+.rdz-card-arrow {
+  display: inline-grid;
+  place-items: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  flex: none;
+  color: var(--accent-ink);
+}
+
+.rdz-card-arrow svg {
+  width: 1rem;
+  height: 1rem;
+  transition: transform var(--duration-fast) var(--ease-standard);
+}
+
+/* A subtle nudge in the arrow's own direction on hover / keyboard-focus of the host. */
+.rdz-card-arrow-host:hover .rdz-card-arrow svg,
+.rdz-card-arrow-host:focus-visible .rdz-card-arrow svg { transform: translateX(0.18rem); }
+.rdz-card-arrow-host:hover .rdz-card-arrow--external svg,
+.rdz-card-arrow-host:focus-visible .rdz-card-arrow--external svg { transform: translate(0.16rem, -0.16rem); }
+
+@media (prefers-reduced-motion: reduce) {
+  .rdz-card-arrow svg,
+  .rdz-card-arrow-host:hover .rdz-card-arrow svg,
+  .rdz-card-arrow-host:focus-visible .rdz-card-arrow svg,
+  .rdz-card-arrow-host:hover .rdz-card-arrow--external svg,
+  .rdz-card-arrow-host:focus-visible .rdz-card-arrow--external svg { transform: none; transition: none; }
+}

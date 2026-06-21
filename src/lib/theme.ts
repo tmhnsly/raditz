@@ -74,6 +74,25 @@ export type MotionChoice = (typeof MOTIONS)[number];
 export const TITLE_ANIMS = ['none', 'fade', 'fade-up', 'blur-in', 'scale'] as const;
 export type TitleAnimation = (typeof TITLE_ANIMS)[number];
 
+/** Scroll-reveal entrance style — applied app-wide to `<Reveal>` (and section
+ * `animate`) via a `data-reveal` attribute on <html>. A `<Reveal>` with no explicit
+ * `anim` inherits this. */
+export const REVEALS = ['none', 'fade', 'fade-rise', 'rise', 'scale', 'zoom', 'blur', 'flip'] as const;
+export type RevealChoice = (typeof REVEALS)[number];
+
+/** Named animation "vibes" — one pick sets a coordinated reveal + title + motion
+ * personality for the whole app; the individual axes stay overridable after. */
+export const VIBES = ['none', 'minimal', 'kinetic', 'editorial', 'playful'] as const;
+export type VibeChoice = (typeof VIBES)[number];
+
+export const VIBE_PRESETS: Record<VibeChoice, { reveal: RevealChoice; titleAnim: TitleAnimation; motion: MotionChoice }> = {
+  none:      { reveal: 'none',      titleAnim: 'none',    motion: 'smooth' },
+  minimal:   { reveal: 'fade',      titleAnim: 'fade',    motion: 'smooth' },
+  kinetic:   { reveal: 'rise',      titleAnim: 'fade-up', motion: 'snappy' },
+  editorial: { reveal: 'blur',      titleAnim: 'blur-in', motion: 'calm' },
+  playful:   { reveal: 'zoom',      titleAnim: 'scale',   motion: 'snappy' },
+};
+
 /** Pure palette resolution: returns the full set of CSS custom properties that
  * applyTheme writes, as a plain Record. No DOM side-effects. Reusable for SSR
  * and preview contexts. Values stay as var() references so a `.dark` toggle
@@ -126,20 +145,21 @@ export function themeVars(
 /** Repoint the accent + neutral ramps on <html> to the chosen Radix scales, and
  * set the radius factor + motion preset. Values stay as var() references so a
  * `.dark` toggle keeps flipping them. */
-export function applyTheme(accent: Accent, choice: GrayChoice, radius: RadiusChoice = 'default', motion: MotionChoice = 'smooth', titleAnim: TitleAnimation = 'none'): void {
+export function applyTheme(accent: Accent, choice: GrayChoice, radius: RadiusChoice = 'default', motion: MotionChoice = 'smooth', titleAnim: TitleAnimation = 'none', reveal: RevealChoice = 'fade-rise'): void {
   if (typeof document === 'undefined') return;
   const root = document.documentElement;
   const vars = themeVars(accent, choice, radius, motion);
   for (const [k, val] of Object.entries(vars)) root.style.setProperty(k, val);
   root.setAttribute('data-motion', motion);
   root.setAttribute('data-title-anim', titleAnim);
+  root.setAttribute('data-reveal', reveal);
 }
 
 const KEY = 'rdz-theme';
 
-interface ThemeState { accent: Accent; gray: GrayChoice; radius: RadiusChoice; motion: MotionChoice; titleAnim: TitleAnimation; }
+interface ThemeState { accent: Accent; gray: GrayChoice; radius: RadiusChoice; motion: MotionChoice; titleAnim: TitleAnimation; reveal: RevealChoice; }
 
-const DEFAULTS: ThemeState = { accent: 'cyan', gray: 'auto', radius: 'default', motion: 'smooth', titleAnim: 'none' };
+const DEFAULTS: ThemeState = { accent: 'cyan', gray: 'auto', radius: 'default', motion: 'smooth', titleAnim: 'none', reveal: 'fade-rise' };
 
 /** Project-level theme baseline a consuming product can pass to useTheme(). */
 export type ThemeDefaults = {
@@ -148,6 +168,7 @@ export type ThemeDefaults = {
   radius?: RadiusChoice;
   motion?: MotionChoice;
   titleAnim?: TitleAnimation;
+  reveal?: RevealChoice;
 };
 
 function load(projectDefaults?: ThemeDefaults): ThemeState {
@@ -162,6 +183,7 @@ function load(projectDefaults?: ThemeDefaults): ThemeState {
           radius: RADII.includes(v.radius) ? v.radius : base.radius,
           motion: MOTIONS.includes(v.motion) ? v.motion : base.motion,
           titleAnim: TITLE_ANIMS.includes(v.titleAnim) ? v.titleAnim : base.titleAnim,
+          reveal: REVEALS.includes(v.reveal) ? v.reveal : base.reveal,
         };
       }
     } catch { /* ignore */ }
@@ -175,7 +197,7 @@ function load(projectDefaults?: ThemeDefaults): ThemeState {
 export function useTheme(projectDefaults?: ThemeDefaults) {
   const [state, setState] = useState<ThemeState>(() => load(projectDefaults));
   useEffect(() => {
-    applyTheme(state.accent, state.gray, state.radius, state.motion, state.titleAnim);
+    applyTheme(state.accent, state.gray, state.radius, state.motion, state.titleAnim, state.reveal);
     if (typeof localStorage !== 'undefined') localStorage.setItem(KEY, JSON.stringify(state));
   }, [state]);
   return {
@@ -184,11 +206,15 @@ export function useTheme(projectDefaults?: ThemeDefaults) {
     radius: state.radius,
     motion: state.motion,
     titleAnim: state.titleAnim,
+    reveal: state.reveal,
     setAccent: (accent: Accent) => setState((s) => ({ ...s, accent })),
     setGray: (gray: GrayChoice) => setState((s) => ({ ...s, gray })),
     setRadius: (radius: RadiusChoice) => setState((s) => ({ ...s, radius })),
     setMotion: (motion: MotionChoice) => setState((s) => ({ ...s, motion })),
     setTitleAnim: (titleAnim: TitleAnimation) => setState((s) => ({ ...s, titleAnim })),
+    setReveal: (reveal: RevealChoice) => setState((s) => ({ ...s, reveal })),
+    /** Apply a named vibe — sets reveal + titleAnim + motion in one go. */
+    setVibe: (vibe: VibeChoice) => setState((s) => ({ ...s, ...VIBE_PRESETS[vibe] })),
     reset: () => setState({ ...DEFAULTS, ...projectDefaults }),
   };
 }

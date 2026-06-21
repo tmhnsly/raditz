@@ -1,0 +1,40 @@
+// Uses Raditz tokens (var(--…)); timing rides the shared motion tokens.
+/* ═══════════════════════ Utility · TextReveal ═══════════════════════ */
+
+/* Standard visually-hidden recipe — the screen-reader copy of the full text. */
+.rdz-sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; border: 0;
+}
+
+.rdz-textreveal { display: inline-block; }
+
+/* Hidden state via custom properties (same trick as Reveal) so `.is-in` always
+   wins. Each visible word/char animates with its own staggered delay. */
+.rdz-textreveal .rdz-split__unit {
+  display: inline-block;
+  opacity: 0;
+  transform: var(--rdz-unit-tf, none);
+  filter: var(--rdz-unit-filter, none);
+  clip-path: var(--rdz-unit-clip, inset(0));
+  transition:
+    opacity var(--duration-medium) var(--ease-decel),
+    transform var(--duration-medium) var(--ease-decel),
+    filter var(--duration-medium) var(--ease-decel),
+    clip-path var(--duration-medium) var(--ease-decel);
+  transition-delay: calc(var(--rdz-unit-i, 0) * var(--rdz-split-stagger, 40ms));
+  will-change: opacity, transform;
+}
+
+.rdz-textreveal.is-in .rdz-split__unit { opacity: 1; transform: none; filter: none; clip-path: inset(0); }
+
+.rdz-textreveal--flip .rdz-split__unit { --rdz-unit-tf: perspective(600px) rotateX(-90deg); transform-origin: bottom center; }
+.rdz-textreveal--rise .rdz-split__unit { --rdz-unit-tf: translateY(0.7em); }
+.rdz-textreveal--fade .rdz-split__unit { --rdz-unit-tf: none; }
+.rdz-textreveal--blur .rdz-split__unit { --rdz-unit-filter: blur(7px); --rdz-unit-tf: translateY(0.2em); }
+/* mask wipe — each unit reveals upward from a clip */
+.rdz-textreveal--mask .rdz-split__unit { --rdz-unit-clip: inset(0 0 110% 0); --rdz-unit-tf: translateY(0.3em); }
+
+@media (prefers-reduced-motion: reduce) {
+  .rdz-textreveal .rdz-split__unit { opacity: 1; transform: none; filter: none; clip-path: inset(0); transition: none; }
+}

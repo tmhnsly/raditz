@@ -3,7 +3,10 @@
 // Component-local keyframes, like Marquee/Carousel.
 /* ═══════════════════════ Utility · AnimatedIcon ═══════════════════════ */
 
-.rdz-anim { display: inline-grid; place-items: center; line-height: 0; }
+/* Promote to its own compositor layer so the looping transform is GPU-composited
+   (the inline SVG is rasterized once, then just moved) — kills the per-frame
+   re-raster jank on the idle loops. */
+.rdz-anim { display: inline-grid; place-items: center; line-height: 0; will-change: transform; transform: translateZ(0); backface-visibility: hidden; }
 
 .rdz-anim--float  { animation: rdzFloat  calc(3s   * var(--rdz-anim-speed, 1) * var(--motion-scale, 1)) var(--ease-in-out) infinite; }
 /* the moon-orbit glyph reads as orbital motion when it rotates slowly */

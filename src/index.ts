@@ -77,6 +77,7 @@ export * from './components/surfaces/Avatar';
 export * from './components/surfaces/AvatarGroup';
 export * from './components/surfaces/Callout';
 export * from './components/surfaces/Card';
+export * from './components/surfaces/MotionCard';
 export * from './components/surfaces/Separator';
 export * from './components/typography/Code';
 export * from './components/typography/Eyebrow';
@@ -86,9 +87,11 @@ export * from './components/typography/Text';
 export * from './components/utility/AccessibleIcon';
 export * from './components/utility/AnimatedIcon';
 export * from './components/utility/AspectRatio';
+export * from './components/utility/CardArrow';
 export * from './components/utility/Label';
 export * from './components/utility/Reveal';
 export * from './components/utility/ScrollArea';
+export * from './components/utility/TextReveal';
 export * from './components/utility/VisuallyHidden';
 
 // ── sections ──

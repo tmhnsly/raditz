@@ -63,7 +63,7 @@ export const Parallax: Story = {
 
 export const Image: Story = {
   render: () => (
-    <SectionBackground image="https://picsum.photos/1200/600" parallax>
+    <SectionBackground image="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1600&q=75" parallax>
       <GlassPanel label="image backdrop" />
     </SectionBackground>
   ),

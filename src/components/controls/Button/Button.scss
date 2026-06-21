@@ -29,7 +29,9 @@
 
 .rdz-btn--secondary { background: var(--text); color: var(--bg); }
 
-.rdz-btn--secondary:hover { opacity: 0.9; }
+/* Shift the fill (transitioned via --transition-control) rather than snapping
+   opacity, so it animates in step with every other variant's hover. */
+.rdz-btn--secondary:hover { background: color-mix(in srgb, var(--text) 88%, var(--bg)); }
 
 .rdz-btn--soft { background: var(--accent-surface); color: var(--accent-ink); }
 

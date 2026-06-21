@@ -7,7 +7,7 @@ component that exists here, and never edit `node_modules/raditz`.
 - Import the stylesheet ONCE at the app root: `import 'raditz/styles.css'`.
 - Props below are the component-specific API; standard HTML attributes also pass through.
 
-137 exported components across 17 categories.
+141 exported components across 17 categories.
 
 ## utilities (CSS classes)
 
@@ -974,7 +974,7 @@ Usage:
 ```
 
 ### theme
-Import: `import { ACCENTS, Accent, COMPLEMENT, GRAYS, Gray, GrayChoice, LIGHT_ACCENTS, MOTIONS, MotionChoice, PAIRED_GRAY, RADII, RadiusChoice, TITLE_ANIMS, ThemeDefaults, TitleAnimation, applyTheme, resolveGray, themeVars, useTheme } from 'raditz'`
+Import: `import { ACCENTS, Accent, COMPLEMENT, GRAYS, Gray, GrayChoice, LIGHT_ACCENTS, MOTIONS, MotionChoice, PAIRED_GRAY, RADII, REVEALS, RadiusChoice, RevealChoice, TITLE_ANIMS, ThemeDefaults, TitleAnimation, VIBES, VIBE_PRESETS, VibeChoice, applyTheme, resolveGray, themeVars, useTheme } from 'raditz'`
 
 Utility module — see exports below.
 
@@ -990,10 +990,15 @@ Exports:
   - MotionChoice
   - PAIRED_GRAY
   - RADII
+  - REVEALS
   - RadiusChoice
+  - RevealChoice
   - TITLE_ANIMS
   - ThemeDefaults
   - TitleAnimation
+  - VIBES
+  - VIBE_PRESETS
+  - VibeChoice
   - applyTheme
   - resolveGray
   - themeVars
@@ -1593,7 +1598,7 @@ Usage:
 ### AnimationsA
 Import: `import { AnimationsA } from 'raditz'`
 
-Animations A — scroll-reveal entrance cards (a staggered RevealGroup).
+Animations A — scroll-reveal entrances (every variant), with a Replay control.
 
 Props:
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
@@ -1603,7 +1608,7 @@ Props:
   - parallax?: boolean
   - video?: string
 
-Examples (Storybook stories): A_ScrollReveal, B_TitleAnimations, C_IconMotion
+Examples (Storybook stories): A_ScrollReveal, B_TitleAndText, C_IconMotion, D_PresetCards
 
 Usage:
 ```tsx
@@ -1613,17 +1618,17 @@ Usage:
 ### AnimationsB
 Import: `import { AnimationsB } from 'raditz'`
 
-Animations B — the global title-animation set, each row scoped via data-title-anim.
+Animations B — title + kinetic text animations.
 
 Props:
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: surface-2)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
-  - heading?: ReactNode (default: Title animations) — Section heading.
+  - heading?: ReactNode (default: Title & text animations) — Section heading.
   - image?: string
   - parallax?: boolean
   - video?: string
 
-Examples (Storybook stories): A_ScrollReveal, B_TitleAnimations, C_IconMotion
+Examples (Storybook stories): A_ScrollReveal, B_TitleAndText, C_IconMotion, D_PresetCards
 
 Usage:
 ```tsx
@@ -1643,11 +1648,31 @@ Props:
   - parallax?: boolean
   - video?: string
 
-Examples (Storybook stories): A_ScrollReveal, B_TitleAnimations, C_IconMotion
+Examples (Storybook stories): A_ScrollReveal, B_TitleAndText, C_IconMotion, D_PresetCards
 
 Usage:
 ```tsx
 <AnimationsC>…</AnimationsC>
+```
+
+### AnimationsD
+Import: `import { AnimationsD } from 'raditz'`
+
+Animations D — brand-colored MotionCard presets (internal + external arrows).
+
+Props:
+  - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: surface-2)
+  - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - heading?: ReactNode (default: Preset cards) — Section heading.
+  - image?: string
+  - parallax?: boolean
+  - video?: string
+
+Examples (Storybook stories): A_ScrollReveal, B_TitleAndText, C_IconMotion, D_PresetCards
+
+Usage:
+```tsx
+<AnimationsD>…</AnimationsD>
 ```
 
 ### AnnouncementA
@@ -2467,6 +2492,29 @@ Usage:
 <Card />
 ```
 
+### MotionCard
+Import: `import { MotionCard } from 'raditz'`
+
+MotionCard — a ready-made, brand-colored animated card. Pulls the system's accent / secondary / gradient / glass / mono treatments (`tone`), reveals on scroll, can loop an icon, and — when given an `href` — shows the consistent clickable-card arrow. A tasteful default composition of Card + Reveal + AnimatedIcon + CardArrow, so products get a polished card with no wiring.
+
+Props:
+  - external?: boolean — Force the external (up-right) arrow + open-in-new-tab. Auto-detected from an absolute `href` when omitted.
+  - eyebrow?: ReactNode — Mono eyebrow label.
+  - href?: string — Link target — makes the card a clickable `<a>` with the arrow affordance.
+  - icon?: ReactNode — Optional looping icon (a react-icons glyph, Raditz `<Icon/>`, or SVG).
+  - iconAnim?: "float" | "orbit" | "pulse" | "spin" | "wiggle" | "draw" (default: float) — Animation for `icon`.
+  - index?: number — Stagger index when several MotionCards reveal together.
+  - reveal?: "fade" | "rise" | "scale" | "fade-rise" | "zoom" | "blur" | "slide-left" | "slide-right" | "flip" | "flip-y" | "rotate" | "skew" — Scroll-reveal entrance. Omit to inherit the app-wide reveal vibe.
+  - title: ReactNode — Card title (required).
+  - tone?: "accent" | "secondary" | "aurora" | "dusk" | "glass" | "mono" (default: accent) — Brand-colored treatment.
+
+Examples (Storybook stories): Tones
+
+Usage:
+```tsx
+<MotionCard />
+```
+
 ### Separator
 Import: `import { Separator } from 'raditz'`
 
@@ -2616,6 +2664,21 @@ Usage:
 <AspectRatio />
 ```
 
+### CardArrow
+Import: `import { CardArrow } from 'raditz'`
+
+CardArrow — the consistent "this card is clickable" affordance. A horizontal right arrow for in-site links, or an up-right diagonal arrow for external ones. It gives a subtle nudge in its own direction when the host is hovered or keyboard-focused (add `rdz-card-arrow-host` to the clickable wrapper). Decorative, so it's `aria-hidden`.
+
+Props:
+  - external?: boolean (default: false) — External link (opens a new tab/window) → a diagonal up-right arrow; otherwise a horizontal right arrow for in-site navigation.
+
+Examples (Storybook stories): InternalAndExternal
+
+Usage:
+```tsx
+<CardArrow />
+```
+
 ### Label
 Import: `import { Label } from 'raditz'`
 
@@ -2636,10 +2699,10 @@ Usage:
 ### Reveal
 Import: `import { Reveal } from 'raditz'`
 
-Reveal — a tasteful, opt-in scroll entrance. Wraps any content; when it scrolls into view it transitions from a hidden initial state (fade / rise / scale / blur / slide) to its resting state, using the shared motion tokens for timing. Transform/opacity only (no layout thrash); driven by one IntersectionObserver via {@link useInView}. Honours `prefers-reduced-motion` — it then renders the final state immediately, never the hidden one.
+Reveal — a tasteful, opt-in scroll entrance. Wraps any content; when it scrolls into view it transitions from a hidden state (fade / rise / scale / zoom / blur / slide / flip / rotate / skew) to its resting state, using the shared motion tokens for timing. Transform/opacity/filter only (no layout thrash); driven by one IntersectionObserver via {@link useInView}. With no `anim`, it inherits the app-wide reveal vibe (`data-reveal`). Honours `prefers-reduced-motion` — it then renders the final state immediately, never the hidden one.
 
 Props:
-  - anim?: "fade" | "rise" | "scale" | "fade-rise" | "blur" | "slide-left" | "slide-right" (default: fade-rise) — Entrance style.
+  - anim?: "fade" | "rise" | "scale" | "fade-rise" | "zoom" | "blur" | "slide-left" | "slide-right" | "flip" | "flip-y" | "rotate" | "skew" — Entrance style. Omit to inherit the app-wide reveal "vibe" (`data-reveal` on `<html>`, set by the theme config); falls back to `fade-rise` when none is set.
   - as?: ElementType<any, keyof IntrinsicElements> (default: 'div') — Element/tag to render.
   - delay?: number (default: 0) — Extra delay (ms) on top of any group stagger.
   - index?: number (default: 0) — Stagger position — set automatically by {@link RevealGroup}.
@@ -2658,7 +2721,7 @@ Import: `import { RevealGroup } from 'raditz'`
 RevealGroup — staggers a set of {@link Reveal} children by auto-assigning each an `index`, so a grid/list cascades in. The stagger is pure CSS (a per-item `transition-delay`), so there are no JS timers.
 
 Props:
-  - anim?: "fade" | "rise" | "scale" | "fade-rise" | "blur" | "slide-left" | "slide-right" — Default anim for child {@link Reveal}s that don't set their own.
+  - anim?: "fade" | "rise" | "scale" | "fade-rise" | "zoom" | "blur" | "slide-left" | "slide-right" | "flip" | "flip-y" | "rotate" | "skew" — Default anim for child {@link Reveal}s that don't set their own.
   - as?: ElementType<any, keyof IntrinsicElements>
   - stagger?: number (default: 60) — Per-item stagger between children (ms).
 
@@ -2683,6 +2746,26 @@ Examples (Storybook stories): Default
 Usage:
 ```tsx
 <ScrollArea />
+```
+
+### TextReveal
+Import: `import { TextReveal } from 'raditz'`
+
+TextReveal — a kinetic headline: splits `text` into words (or chars) that cascade in on scroll with a per-unit `flip` / `rise` / `fade` / `blur` / `mask` entrance. A11y-safe (full text read once, fragments hidden — see {@link splitText}), transform/opacity/clip only, and honours `prefers-reduced-motion` (renders the plain string). Pair with a heading class (`h-display`/`h-section`) for a hero.
+
+Props:
+  - anim?: "mask" | "flip" | "rise" | "fade" | "blur" (default: flip) — Per-unit entrance.
+  - as?: ElementType<any, keyof IntrinsicElements> (default: 'span') — Element/tag to render.
+  - by?: "word" | "char" (default: word) — Split granularity.
+  - repeat?: boolean (default: false) — Replay every time it re-enters view.
+  - stagger?: number (default: 40) — Per-unit stagger (ms).
+  - text: string — The text to animate — a plain string so it can split safely.
+
+Examples (Storybook stories): PerAnim, PerChar
+
+Usage:
+```tsx
+<TextReveal />
 ```
 
 ### VisuallyHidden

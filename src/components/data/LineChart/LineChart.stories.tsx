@@ -35,7 +35,7 @@ const episodes = Y.map((y, i) => ({
   title: TITLES[i] ?? `Episode ${i + 1}`,
   rating: (y / 10).toFixed(1),
   status: y >= 85 ? 'Hooked' : y >= 70 ? 'Engaged' : 'Drop-off',
-  thumb: `https://picsum.photos/id/${100 + i}/80/80`,
+  thumb: `https://images.unsplash.com/photo-${['1506905925346-21bda4d32df4', '1441974231531-c6227db76b6e', '1470071459604-3b5ec3a7fe05', '1501785888041-af3ef285b470'][i % 4]}?auto=format&fit=crop&w=80&q=60`,
 }));
 const peak = Y.indexOf(Math.max(...Y));
 

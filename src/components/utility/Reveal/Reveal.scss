@@ -2,11 +2,14 @@
 // re-tunes with `data-motion` and goes instant under reduced motion.
 /* ═══════════════════════ Utility · Reveal ═══════════════════════ */
 
-/* Hidden initial state; `.is-in` (added when scrolled into view) resolves to the
-   resting state. transform/opacity/filter only — no layout work. The per-item
-   transition-delay gives a RevealGroup its cascade with zero JS timers. */
+/* The hidden state is expressed via custom properties (--rdz-reveal-tf/-filter) so
+   a variant only ever SETS a property — never `transform`/`filter` directly. That
+   way `.is-in` (which zeroes the real properties) always wins over both an explicit
+   `.rdz-reveal--X` and the app-wide inherited default, with no specificity war. */
 .rdz-reveal {
   opacity: 0;
+  transform: var(--rdz-reveal-tf, none);
+  filter: var(--rdz-reveal-filter, none);
   transition:
     opacity var(--duration-medium) var(--ease-decel),
     transform var(--duration-medium) var(--ease-decel),
@@ -15,17 +18,30 @@
   will-change: opacity, transform;
 }
 
-.rdz-reveal--rise,
-.rdz-reveal--fade-rise { transform: translateY(calc(var(--motion-rise) * 2)); }
-.rdz-reveal--scale { transform: scale(var(--motion-pop)); }
-.rdz-reveal--blur { filter: blur(8px); }
-.rdz-reveal--slide-left { transform: translateX(1.5rem); }
-.rdz-reveal--slide-right { transform: translateX(-1.5rem); }
-
 .rdz-reveal.is-in { opacity: 1; transform: none; filter: none; }
 
-/* Defence in depth: even if the JS hasn't resolved reduced-motion yet, never
-   leave content hidden or animating when the user opted out. */
+/* Default vibe (no `data-reveal`, no explicit `anim`) = fade-rise. */
+.rdz-reveal:not([data-anim]) { --rdz-reveal-tf: translateY(calc(var(--motion-rise) * 2)); }
+
+/* Each variant pairs the explicit class with the inherited app-wide selector, so
+   `<Reveal anim="flip">` and a global `data-reveal="flip"` share one definition. */
+.rdz-reveal--fade,        [data-reveal="fade"]        .rdz-reveal:not([data-anim]) { --rdz-reveal-tf: none; }
+.rdz-reveal--rise,        [data-reveal="rise"]        .rdz-reveal:not([data-anim]),
+.rdz-reveal--fade-rise,   [data-reveal="fade-rise"]   .rdz-reveal:not([data-anim]) { --rdz-reveal-tf: translateY(calc(var(--motion-rise) * 2)); }
+.rdz-reveal--scale,       [data-reveal="scale"]       .rdz-reveal:not([data-anim]) { --rdz-reveal-tf: scale(var(--motion-pop)); }
+.rdz-reveal--zoom,        [data-reveal="zoom"]        .rdz-reveal:not([data-anim]) { --rdz-reveal-tf: scale(0.85); }
+.rdz-reveal--blur,        [data-reveal="blur"]        .rdz-reveal:not([data-anim]) { --rdz-reveal-filter: blur(10px); }
+.rdz-reveal--slide-left,  [data-reveal="slide-left"]  .rdz-reveal:not([data-anim]) { --rdz-reveal-tf: translateX(1.75rem); }
+.rdz-reveal--slide-right, [data-reveal="slide-right"] .rdz-reveal:not([data-anim]) { --rdz-reveal-tf: translateX(-1.75rem); }
+.rdz-reveal--flip,        [data-reveal="flip"]        .rdz-reveal:not([data-anim]) { --rdz-reveal-tf: perspective(1000px) rotateX(-78deg) translateY(var(--motion-rise)); transform-origin: center top; }
+.rdz-reveal--flip-y,      [data-reveal="flip-y"]      .rdz-reveal:not([data-anim]) { --rdz-reveal-tf: perspective(1000px) rotateY(20deg); transform-origin: left center; }
+.rdz-reveal--rotate,      [data-reveal="rotate"]      .rdz-reveal:not([data-anim]) { --rdz-reveal-tf: rotate(-5deg) scale(0.95); }
+.rdz-reveal--skew,        [data-reveal="skew"]        .rdz-reveal:not([data-anim]) { --rdz-reveal-tf: skewY(5deg) translateY(calc(var(--motion-rise) * 1.5)); }
+
+/* The `none` vibe — content just appears, no fade or travel. */
+[data-reveal="none"] .rdz-reveal:not([data-anim]) { opacity: 1; transition: none; --rdz-reveal-tf: none; --rdz-reveal-filter: none; }
+
+/* Defence in depth: never leave content hidden or animating when reduced. */
 @media (prefers-reduced-motion: reduce) {
   .rdz-reveal { opacity: 1; transform: none; filter: none; transition: none; }
 }

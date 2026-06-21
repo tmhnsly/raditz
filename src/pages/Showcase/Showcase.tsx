@@ -3,9 +3,9 @@ import { SectionShell } from '../../lib/SectionShell';
 import { Switch } from '../../components/controls/Switch';
 import { FooterA } from '../../sections/Footer';
 
-// Placeholder imagery (swap for brand photography). Royalty-free Lorem Picsum.
-const HERO_IMG = 'https://picsum.photos/id/1018/1920/1080';
-const BAND_IMG = 'https://picsum.photos/id/1015/1920/1080';
+// Placeholder imagery (swap for brand photography). Royalty-free Unsplash landscapes.
+const HERO_IMG = 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1920&q=75';
+const BAND_IMG = 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1920&q=75';
 
 /**
  * Showcase — a full-bleed, scroll-through page for exercising the section

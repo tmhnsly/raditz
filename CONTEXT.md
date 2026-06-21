@@ -313,9 +313,13 @@ _Avoid_: per-component reduced-motion selector lists for token-driven animation.
 
 **Reveal** (scroll entrance):
 `useInView` (`internal/`, one IntersectionObserver, `once` by default) + the
-`Reveal` / `RevealGroup` components (`components/utility/Reveal`). Opt-in entrance
-(fade/rise/scale/blur/slide) that transitions on scroll-in; RevealGroup auto-staggers
-children via a pure-CSS per-item delay. Transform/opacity only. Sections opt in via a
+`Reveal` / `RevealGroup` components (`components/utility/Reveal`). Opt-in entrance —
+fade / rise / scale / zoom / blur / slide / flip / flip-y / rotate / skew — on scroll-in;
+RevealGroup auto-staggers children via a pure-CSS per-item delay. Transform/opacity/
+filter only. The hidden state rides custom properties (`--rdz-reveal-tf` …) so a variant
+only SETS a property and `.is-in` (which zeroes the real properties) always wins — no
+specificity war between an explicit `anim` and the app-wide default. With no `anim` it
+inherits the global `data-reveal` vibe (fallback `fade-rise`). Sections opt in via a
 prop (e.g. `FeaturesA animate`), never by default (stays SSR-pure).
 _Avoid_: scroll-event entrance handlers; baking reveal into every section.
 
@@ -324,17 +328,44 @@ _Avoid_: scroll-event entrance handlers; baking reveal into every section.
 `<Icon>`, raw SVG) in a looping idle animation (float/orbit/pulse/spin/wiggle) or a
 one-shot `draw` (stroked icons). Icon-agnostic (styles its child only), so it ships
 dependency-free; react-icons is a dev/peer concern of the showcase, not the library.
+The wrapper is GPU-promoted (`will-change`/`translateZ`) so the loop composites smoothly.
 
-**Title-animation config**:
-`applyTheme` sets `data-title-anim` on <html> (parallel to `data-motion`), driven by
-`useTheme().titleAnim` + `TITLE_ANIMS` (`lib/theme`) and the ThemePicker "Title anim"
-control. CSS keyed off the attribute animates every section/hero heading
-(`.h-display`, `.h-section`, `.rdz-heading`) consistently with zero per-heading wiring;
-default `none`. Fires on mount — pair with `Reveal` for a scroll-triggered title.
-_Avoid_: per-section heading animation props.
+**Animation config — vibes + axes** (`lib/theme`):
+Three app-wide axes set as `<html>` attributes by `applyTheme` (parallel to
+`data-motion`): `data-title-anim` (`TITLE_ANIMS` → animates every `.h-display`/
+`.h-section`/`.rdz-heading` on mount) and `data-reveal` (`REVEALS` → the default for
+every `<Reveal>`). A `vibe` (`VIBES` + `VIBE_PRESETS`) is the headline pick — one
+choice sets a coordinated `{ reveal, titleAnim, motion }` personality (Minimal /
+Kinetic / Editorial / Playful); the individual axes stay overridable. `useTheme`
+exposes `setVibe`/`setReveal`/`setTitleAnim`; ThemePicker has Vibe + Reveal + Title
+controls. All default-safe (`none`/`fade-rise`) and CSS-driven, so a heading/reveal
+follows the app's vibe with zero per-instance wiring.
+_Avoid_: per-section heading/reveal animation props; a second motion system.
 
-The `Sections/Animations` showcase composes all three (Reveal grid, title gallery,
-AnimatedIcon cards) so they're viewable/tunable in the explorer.
+**TextReveal** (kinetic headlines):
+`components/utility/TextReveal` + the `splitText` helper (`internal/`). Splits a string
+into per-word/char spans that cascade in (flip / rise / fade / blur / mask). A11y-safe:
+the full text renders once in a visually-hidden span and the fragments are `aria-hidden`,
+so AT reads the heading normally. Opt-in for hero/feature headlines (not the global
+title config).
+_Avoid_: animating split text without the screen-reader copy.
+
+**MotionCard** (preset card):
+`components/surfaces/MotionCard` — a ready-made brand-colored animated card composing
+`Card` + `Reveal` + `AnimatedIcon` + `CardArrow`. `tone` variants pull the system
+gradient/accent/secondary/glass/mono tokens (theme-safe pastels); reveals on scroll;
+clickable (`href`) cards get the arrow + auto `target=_blank` for external links. The
+exported "drop-in polished card" so products don't re-wire the primitives.
+
+**CardArrow** (clickable affordance):
+`components/utility/CardArrow` — the consistent clickable-card arrow: a horizontal `→`
+for in-site links, an up-right `↗` for external ones, with a subtle `--duration-fast`
+nudge on host hover/focus (add `rdz-card-arrow-host` to the wrapper). Replaces the Blog
+editorial row's ad-hoc arrow.
+
+The `Sections/Animations` showcase composes it all (reveal-variant grid with a Replay
+control, title + TextReveal gallery, AnimatedIcon cards, MotionCard presets) so it's
+viewable/tunable in the explorer.
 
 ## Distribution system
 

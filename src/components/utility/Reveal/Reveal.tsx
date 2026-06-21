@@ -7,14 +7,20 @@ export type RevealAnim =
   | 'rise'
   | 'scale'
   | 'fade-rise'
+  | 'zoom'
   | 'blur'
   | 'slide-left'
-  | 'slide-right';
+  | 'slide-right'
+  | 'flip'
+  | 'flip-y'
+  | 'rotate'
+  | 'skew';
 
 export interface RevealProps extends React.HTMLAttributes<HTMLElement> {
   /** Element/tag to render. @default 'div' */
   as?: React.ElementType;
-  /** Entrance style. @default 'fade-rise' */
+  /** Entrance style. Omit to inherit the app-wide reveal "vibe" (`data-reveal` on
+   *  `<html>`, set by the theme config); falls back to `fade-rise` when none is set. */
   anim?: RevealAnim;
   /** Extra delay (ms) on top of any group stagger. @default 0 */
   delay?: number;
@@ -27,15 +33,16 @@ export interface RevealProps extends React.HTMLAttributes<HTMLElement> {
 
 /**
  * Reveal — a tasteful, opt-in scroll entrance. Wraps any content; when it scrolls
- * into view it transitions from a hidden initial state (fade / rise / scale /
- * blur / slide) to its resting state, using the shared motion tokens for timing.
- * Transform/opacity only (no layout thrash); driven by one IntersectionObserver
- * via {@link useInView}. Honours `prefers-reduced-motion` — it then renders the
- * final state immediately, never the hidden one.
+ * into view it transitions from a hidden state (fade / rise / scale / zoom / blur /
+ * slide / flip / rotate / skew) to its resting state, using the shared motion
+ * tokens for timing. Transform/opacity/filter only (no layout thrash); driven by
+ * one IntersectionObserver via {@link useInView}. With no `anim`, it inherits the
+ * app-wide reveal vibe (`data-reveal`). Honours `prefers-reduced-motion` — it then
+ * renders the final state immediately, never the hidden one.
  */
 export function Reveal({
   as,
-  anim = 'fade-rise',
+  anim,
   delay = 0,
   index = 0,
   repeat = false,
@@ -49,7 +56,6 @@ export function Reveal({
   const { ref, inView } = useInView<HTMLElement>({ once: !repeat });
 
   if (reduced) {
-    // Final state, no observer, no hidden frame.
     return React.createElement(Tag, { className: cx('rdz-reveal', 'is-in', className), style, ...rest }, children);
   }
 
@@ -57,7 +63,10 @@ export function Reveal({
     Tag,
     {
       ref,
-      className: cx('rdz-reveal', `rdz-reveal--${anim}`, inView && 'is-in', className),
+      // `data-anim` is present only for an explicit anim — the app-wide
+      // `[data-reveal] .rdz-reveal:not([data-anim])` default skips those.
+      'data-anim': anim,
+      className: cx('rdz-reveal', anim && `rdz-reveal--${anim}`, inView && 'is-in', className),
       style: { '--rdz-reveal-i': index, '--rdz-reveal-delay': `${delay}ms`, ...style } as React.CSSProperties,
       ...rest,
     },

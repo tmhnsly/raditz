@@ -150,8 +150,6 @@
 /* blog list rows */
 .blogrow { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); padding: var(--space-5) var(--space-2); border-bottom: 1px solid var(--rule-soft); text-decoration: none; color: var(--text); transition: padding var(--duration-base) var(--ease-standard); }
 .blogrow:hover { padding-left: var(--space-4); }
-.blogrow__arrow { color: var(--accent-ink); font-size: 1.25rem; opacity: 0; transition: opacity var(--duration-fast) var(--ease-standard); }
-.blogrow:hover .blogrow__arrow { opacity: 1; }
 
 /* testimonial carousel */
 .tcar { display: flex; gap: var(--space-4); overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding-bottom: var(--space-2); }
@@ -198,7 +196,8 @@
 /* ── Animations (showcase section) ── */
 .sx-anim__card { align-items: center; text-align: center; }
 .sx-anim__icon { font-size: 2rem; color: var(--accent-ink); }
-.sx-anim__title-row { gap: 0.25rem; }
+.sx-anim__title-row { gap: 0.25rem; align-items: center; text-align: center; }
+.sx-anim__head-row { justify-content: space-between; align-items: flex-end; gap: var(--space-4); }
 
 /* ── Announcement ── */
 .sx-ann__strip { background: var(--accent); color: var(--on-accent); padding: 10px var(--space-5); }
