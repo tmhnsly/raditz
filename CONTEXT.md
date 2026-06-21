@@ -131,7 +131,7 @@ reuses the `clamp` primitive.
 (has-a-story rule) and where their component/story/test files live" — a single
 `sourceSurface()` walk with fully-resolved paths. `gen-barrel`, `gen-catalog`, and
 `gen-tests` are thin **adapters** over it. Killed 4 duplicated tree-walks and the
-basename≠dirname fragility. The walk is tested (byte-identical output assertion).
+basename≠dirname fragility. The walk is unit-tested (sanity bounds, file-existence, and barrel-agreement); byte-identical generated output is gated by `release:preflight`.
 _Avoid_: per-script dir scans.
 
 **Section-action** (deepened 2026-06-21):
@@ -150,7 +150,7 @@ Features, Stats, and Team. Bare `<h2>` and bespoke headers stay **per-section**
 (deletion test: forcing them through `SectionHeader` would worsen locality). `SectionShell`
 is now **deep** on three concerns: layout (Frame/`.s-pad`/`.s-wrap`), header
 (`SectionHeader`), and section-action rendering (`SectionActionButton`). The
-`children ?? body` override stays an in-variant idiom (see [ADR-0001](docs/adr/0001-body-override-in-variant.md)).
+`children ?? body` override stays an in-variant idiom (see [ADR-0001](docs/adr/0001-section-body-override-stays-in-variant.md)).
 _Avoid_: per-section eyebrow+heading duplication.
 
 **Section variant cores** (internal seams, deepened 2026-06-21):

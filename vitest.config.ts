@@ -8,6 +8,6 @@ export default defineConfig({
     globals: true,
     css: false, // component impls don't import css; skip sass processing in unit tests
     setupFiles: ['./vitest.setup.ts'],
-    include: ['src/**/*.test.{ts,tsx}'],
+    include: ['src/**/*.test.{ts,tsx}', 'scripts/**/*.test.mjs'],
   },
 });
