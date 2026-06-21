@@ -68,42 +68,63 @@ const RADIUS_FACTOR: Record<RadiusChoice, string> = { sharp: '0.5', default: '1.
 export const MOTIONS = ['none', 'snappy', 'smooth', 'calm'] as const;
 export type MotionChoice = (typeof MOTIONS)[number];
 
-/** Repoint the accent + neutral ramps on <html> to the chosen Radix scales, and
- * set the radius factor + motion preset. Values stay as var() references so a
- * `.dark` toggle keeps flipping them. */
-export function applyTheme(accent: Accent, choice: GrayChoice, radius: RadiusChoice = 'default', motion: MotionChoice = 'smooth'): void {
-  if (typeof document === 'undefined') return;
-  const root = document.documentElement;
+/** Pure palette resolution: returns the full set of CSS custom properties that
+ * applyTheme writes, as a plain Record. No DOM side-effects. Reusable for SSR
+ * and preview contexts. Values stay as var() references so a `.dark` toggle
+ * keeps flipping them. */
+export function themeVars(
+  accent: Accent,
+  choice: GrayChoice,
+  radius: RadiusChoice = 'default',
+  motion: MotionChoice = 'smooth',
+): Record<string, string> {
+  const vars: Record<string, string> = {};
   const gray = resolveGray(accent, choice);
+
   for (let i = 1; i <= 12; i++) {
-    root.style.setProperty(`--accent-${i}`, `var(--${accent}-${i})`);
-    root.style.setProperty(`--neutral-${i}`, `var(--${gray}-${i})`);
+    vars[`--accent-${i}`] = `var(--${accent}-${i})`;
+    vars[`--neutral-${i}`] = `var(--${gray}-${i})`;
   }
   for (let i = 1; i <= 6; i++) {
-    root.style.setProperty(`--neutral-a${i}`, `var(--${gray}-a${i})`);
+    vars[`--neutral-a${i}`] = `var(--${gray}-a${i})`;
   }
   // Light accents (sky/mint/lime/yellow/amber) need dark text on their step 9/10.
-  root.style.setProperty('--on-accent', LIGHT_ACCENTS.has(accent) ? 'var(--black-a12)' : 'var(--white-a12)');
+  vars['--on-accent'] = LIGHT_ACCENTS.has(accent) ? 'var(--black-a12)' : 'var(--white-a12)';
 
   // Secondary accent — a curated complement of the accent (gradient backgrounds +
   // the --accent-2 tokens), so it always pairs regardless of which accent is set.
   const comp = COMPLEMENT[accent];
-  root.style.setProperty('--accent-2-solid', `var(--${comp}-9)`);
-  root.style.setProperty('--accent-2-ink', `var(--${comp}-11)`);
-  root.style.setProperty('--accent-2-surface', `var(--${comp}-3)`);
+  vars['--accent-2-solid'] = `var(--${comp}-9)`;
+  vars['--accent-2-ink'] = `var(--${comp}-11)`;
+  vars['--accent-2-surface'] = `var(--${comp}-3)`;
 
   // Semantic palette — conventional hue, but a scale distinct from the accent so
   // a green accent doesn't collide with the green success (etc.). Choose one and
   // it derives the rest.
   for (const name of ['success', 'warning', 'danger', 'info'] as const) {
     const scale = pickAway(SEMANTIC_FAMILIES[name], accent);
-    root.style.setProperty(`--${name}`, `var(--${scale}-9)`);
-    root.style.setProperty(`--${name}-ink`, `var(--${scale}-11)`);
-    root.style.setProperty(`--${name}-surface`, `var(--${scale}-3)`);
-    root.style.setProperty(`--on-${name}`, onSolid(scale));
+    vars[`--${name}`] = `var(--${scale}-9)`;
+    vars[`--${name}-ink`] = `var(--${scale}-11)`;
+    vars[`--${name}-surface`] = `var(--${scale}-3)`;
+    vars[`--on-${name}`] = onSolid(scale);
   }
 
-  root.style.setProperty('--radius-factor', RADIUS_FACTOR[radius]);
+  vars['--radius-factor'] = RADIUS_FACTOR[radius];
+  // NOTE: motion is accepted here so themeVars is callable standalone with all
+  // four params, but data-motion is an HTML attribute — set by applyTheme only.
+  void motion;
+
+  return vars;
+}
+
+/** Repoint the accent + neutral ramps on <html> to the chosen Radix scales, and
+ * set the radius factor + motion preset. Values stay as var() references so a
+ * `.dark` toggle keeps flipping them. */
+export function applyTheme(accent: Accent, choice: GrayChoice, radius: RadiusChoice = 'default', motion: MotionChoice = 'smooth'): void {
+  if (typeof document === 'undefined') return;
+  const root = document.documentElement;
+  const vars = themeVars(accent, choice, radius, motion);
+  for (const [k, val] of Object.entries(vars)) root.style.setProperty(k, val);
   root.setAttribute('data-motion', motion);
 }
 

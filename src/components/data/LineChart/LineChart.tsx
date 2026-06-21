@@ -7,6 +7,7 @@ import { GridRows } from '@visx/grid';
 import { Group } from '@visx/group';
 import { curveMonotoneX } from '@visx/curve';
 import { ChartFrame } from '../charts/ChartFrame';
+import { paddedDomain, TOOLTIP_FLIP_PCT } from '../../internal/scale';
 
 export interface LinePoint {
   /** The plotted value. */
@@ -63,10 +64,7 @@ export function LineChart({
   const n = data.length;
   if (n === 0) return <ChartFrame height={height} ariaLabel={ariaLabel}>{() => null}</ChartFrame>;
   const ys = data.map((d) => d.y);
-  const lo = Math.min(...ys);
-  const hi = Math.max(...ys);
-  const pad = (hi - lo) * 0.12 || 1;
-  const yDomain: [number, number] = [lo - pad, hi + pad];
+  const yDomain = paddedDomain(ys, 0.12);
 
   const xFor = (iw: number) => scaleLinear({ domain: [0, Math.max(1, n - 1)], range: [0, iw] });
   const yFor = (ih: number) => scaleLinear({ domain: yDomain, range: [ih, 0] });
@@ -98,7 +96,7 @@ export function LineChart({
             <div className="rdz-chart__tip-value">{formatY(data[active].y)}</div>
           </>
         );
-        const below = py < 92; // not enough room above → flip the tip below the point
+        const below = py < TOOLTIP_FLIP_PCT; // not enough room above → flip the tip below the point
         return (
           <div className="rdz-chart__tip" data-side={below ? 'below' : 'above'} style={{ ['--rdz-tip-x' as string]: `${px}px`, ['--rdz-tip-y' as string]: `${py}px` }}>
             {node}

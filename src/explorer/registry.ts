@@ -7,6 +7,8 @@
 // Every story here is plain CSF3: a `meta` default export plus named StoryObj
 // exports that are either `{}` (render meta.component with args) or `{ render }`.
 import { createElement } from 'react';
+import { fuzzyScore } from '../components/internal';
+import type { TreeNode as TreeItem } from '../components/navigation/Tree';
 import type { ComponentType, ReactElement } from 'react';
 
 type StoryObj = {
@@ -145,4 +147,34 @@ export function findNode(nodes: TreeNode[], slug: string): TreeNode | undefined 
     if (found) return found;
   }
   return undefined;
+}
+
+// ---------------------------------------------------------------------------
+// Sidebar tree-navigation helpers (pure functions, moved here for testability)
+// ---------------------------------------------------------------------------
+
+/** Slugs of every ancestor (and self) of a route, so deep links open expanded. */
+export function ancestorsOf(slug: string): string[] {
+  if (!slug) return [];
+  const parts = slug.split('/');
+  return parts.map((_, i) => parts.slice(0, i + 1).join('/'));
+}
+
+/** Prune the tree to nodes that fuzzy-match the query (keeping ancestors of any match). */
+export function filterTree(nodes: TreeItem[], query: string): TreeItem[] {
+  const out: TreeItem[] = [];
+  for (const n of nodes) {
+    const kids = n.children ? filterTree(n.children, query) : [];
+    const selfMatch = fuzzyScore(String(n.label), query) !== null;
+    if (selfMatch || kids.length) out.push({ ...n, children: kids.length ? kids : n.children });
+  }
+  return out;
+}
+
+/** Ids of every branch (folder) node — used to fully expand search results. */
+export function allBranchIds(nodes: TreeItem[], acc: string[] = []): string[] {
+  for (const n of nodes) {
+    if (n.children?.length) { acc.push(n.id); allBranchIds(n.children, acc); }
+  }
+  return acc;
 }

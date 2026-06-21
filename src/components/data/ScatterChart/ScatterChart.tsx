@@ -5,6 +5,7 @@ import { Circle } from '@visx/shape';
 import { GridRows, GridColumns } from '@visx/grid';
 import { Group } from '@visx/group';
 import { ChartFrame } from '../charts/ChartFrame';
+import { paddedDomain, TOOLTIP_FLIP_PCT } from '../../internal/scale';
 
 export interface ScatterPoint {
   x: number;
@@ -22,10 +23,6 @@ export interface ScatterChartProps {
   ariaLabel?: string;
 }
 
-const pad = (lo: number, hi: number): [number, number] => {
-  const p = (hi - lo) * 0.08 || 1;
-  return [lo - p, hi + p];
-};
 
 /**
  * ScatterChart — a responsive scatter / bubble plot (visx). Pass `[{ x, y, size?,
@@ -40,8 +37,8 @@ export function ScatterChart({
 }: ScatterChartProps) {
   const [active, setActive] = useState<number | null>(null);
   if (data.length === 0) return <ChartFrame height={height} ariaLabel={ariaLabel}>{() => null}</ChartFrame>;
-  const xDomain = pad(Math.min(...data.map((d) => d.x)), Math.max(...data.map((d) => d.x)));
-  const yDomain = pad(Math.min(...data.map((d) => d.y)), Math.max(...data.map((d) => d.y)));
+  const xDomain = paddedDomain(data.map((d) => d.x), 0.08);
+  const yDomain = paddedDomain(data.map((d) => d.y), 0.08);
   const rMax = Math.max(1, ...data.map((d) => d.size ?? 1));
 
   const xFor = (iw: number) => scaleLinear({ domain: xDomain, range: [0, iw] });
@@ -59,7 +56,7 @@ export function ScatterChart({
         const y = yFor(innerHeight);
         const d = data[active];
         const py = margin.top + (y(d.y) ?? 0);
-        const below = py < 92; // not enough room above → flip the tip below the point
+        const below = py < TOOLTIP_FLIP_PCT; // not enough room above → flip the tip below the point
         return (
           <div
             className="rdz-chart__tip"

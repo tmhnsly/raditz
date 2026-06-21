@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Tree, type TreeNode as TreeItem } from '../components/navigation/Tree';
 import { Search } from '../components/forms/Search';
-import { fuzzyScore } from '../components/internal';
 import type { TreeNode } from './registry';
+import { ancestorsOf, filterTree, allBranchIds } from './registry';
 
 // A few top-level groups read better with a fuller label than their story prefix.
 const LABEL_OVERRIDE: Record<string, string> = {
@@ -14,13 +14,6 @@ const LABEL_OVERRIDE: Record<string, string> = {
 // every branch you've opened expanded instead.
 const AUTO_COLLAPSE = true;
 
-// Slugs of every ancestor of a route, so deep links open expanded to the target.
-function ancestorsOf(slug: string): string[] {
-  if (!slug) return [];
-  const parts = slug.split('/');
-  return parts.map((_, i) => parts.slice(0, i + 1).join('/'));
-}
-
 function toItems(nodes: TreeNode[]): TreeItem[] {
   return nodes.map((n) => ({
     id: n.slug,
@@ -28,25 +21,6 @@ function toItems(nodes: TreeNode[]): TreeItem[] {
     meta: n.entry ? n.entry.variants.length : undefined,
     children: n.children.length ? toItems(n.children) : undefined,
   }));
-}
-
-/** Prune the tree to nodes that fuzzy-match the query (keeping ancestors of any match). */
-function filterTree(nodes: TreeItem[], query: string): TreeItem[] {
-  const out: TreeItem[] = [];
-  for (const n of nodes) {
-    const kids = n.children ? filterTree(n.children, query) : [];
-    const selfMatch = fuzzyScore(String(n.label), query) !== null;
-    if (selfMatch || kids.length) out.push({ ...n, children: kids.length ? kids : n.children });
-  }
-  return out;
-}
-
-/** Ids of every branch (folder) node — used to fully expand search results. */
-function allBranchIds(nodes: TreeItem[], acc: string[] = []): string[] {
-  for (const n of nodes) {
-    if (n.children?.length) { acc.push(n.id); allBranchIds(n.children, acc); }
-  }
-  return acc;
 }
 
 export function Sidebar({

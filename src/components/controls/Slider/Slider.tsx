@@ -1,7 +1,7 @@
 'use client';
 import * as React from 'react';
 import { useRef, useCallback } from 'react';
-import { useControllableState, clamp, roundToStep, onKeys, KEYS, cx } from '../../internal';
+import { useControllableState, clamp, roundToStep, sliderTicks, onKeys, KEYS, cx } from '../../internal';
 
 export interface SliderProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'onChange' | 'defaultValue'> {
   /** Controlled value. */
@@ -46,11 +46,7 @@ export function Slider({
   const pct = ((current - min) / (max - min)) * 100;
 
   // Interior step notches (exclude the 0% and 100% ends).
-  const tickPts: number[] = [];
-  if (ticks && step > 0) {
-    const n = Math.round((max - min) / step);
-    for (let i = 1; i < n; i += 1) tickPts.push((i / n) * 100);
-  }
+  const tickPts = ticks ? sliderTicks(min, max, step) : [];
 
   const setFromClientX = useCallback((clientX: number): void => {
     const el = trackRef.current;

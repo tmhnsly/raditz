@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, fireEvent } from '@testing-library/react';
-import { useControllableState, clamp, roundToStep } from './primitiveUtils';
+import { useControllableState, clamp, roundToStep, sliderTicks } from './primitiveUtils';
 
 /** Drives useControllableState through a button so we can assert what it renders
  * (data-state) and what it reports (onChange) in both controlled & uncontrolled modes. */
@@ -85,5 +85,24 @@ describe('roundToStep', () => {
   });
   it('returns the value unchanged when step is 0', () => {
     expect(roundToStep(7.3, 0, 0)).toBe(7.3);
+  });
+});
+
+describe('sliderTicks', () => {
+  it('returns interior marks for an even division', () => {
+    expect(sliderTicks(0, 100, 10)).toEqual([10, 20, 30, 40, 50, 60, 70, 80, 90]);
+  });
+  it('handles a single interior mark', () => {
+    expect(sliderTicks(0, 50, 25)).toEqual([50]); // n=2, interior i=1 → (1/2)*100 = 50
+  });
+  it('returns empty array when step is 0', () => {
+    expect(sliderTicks(0, 100, 0)).toEqual([]);
+  });
+  it('returns empty array when range divides exactly in two (no interior marks for n=1)', () => {
+    expect(sliderTicks(0, 10, 10)).toEqual([]); // n=1, no interior i
+  });
+  it('handles non-zero min', () => {
+    // n = Math.round((20-10)/5) = 2, interior i=1 → (1/2)*100 = 50
+    expect(sliderTicks(10, 20, 5)).toEqual([50]);
   });
 });
