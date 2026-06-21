@@ -823,22 +823,29 @@ Usage:
 ### AppShell
 Import: `import { AppShell } from 'raditz'`
 
-AppShell — a reusable dashboard/docs layout: a fixed sidebar (brand + search + nav) beside a scrolling content column with a sticky top bar (breadcrumbs + actions). Fills its container (give it a `100vh` parent for a full app, or a fixed-height box to embed), the nav and content scroll independently, and the sidebar collapses to an off-canvas drawer on narrow screens. The same shell the Raditz explorer is built from, generalised into slots.
+AppShell — a reusable app/docs layout with a swappable arrangement: `layout="sidebar"` (a fixed sidebar of brand + search + nav + footer beside a scrolling content column with a sticky breadcrumb bar) or `layout="topbar"` (brand + horizontal nav + actions across the top, content below). Both read the same slots, so a project keeps one set of nav config and just swaps the shell. Configurable `side`, `density`, `railWidth`, and an optional `collapsible` sidebar; collapses to an off-canvas drawer on mobile. Fills its container — give it a `height: 100vh` parent for a full app, or a fixed-height box to embed.
 
 Props:
-  - actions?: ReactNode — Right side of the top bar — actions (theme toggle, profile, …).
-  - brand?: ReactNode — Brand / logo block at the top of the sidebar.
-  - breadcrumbs?: ReactNode — Left side of the top bar — a breadcrumb trail or page title.
-  - children?: ReactNode — Main content.
-  - nav?: ReactNode — Sidebar navigation — e.g. a `<Tree>`.
-  - railWidth?: string (default: 15rem) — Sidebar width.
-  - search?: ReactNode — Optional search slot under the brand.
+  - actions?: ReactNode — Top-bar actions (theme toggle, profile, …).
+  - brand?: ReactNode — Brand / logo block.
+  - breadcrumbs?: ReactNode — Left of the top bar (sidebar) / the sub-bar (topbar) — breadcrumbs or title.
+  - collapsed?: boolean
+  - collapsible?: boolean (default: false) — Show a desktop toggle that collapses the sidebar (sidebar layout).
+  - defaultCollapsed?: boolean (default: false)
+  - density?: "comfortable" | "compact" (default: comfortable) — Spacing density.
+  - footer?: ReactNode — Pinned footer (sidebar bottom, or a bottom bar in `topbar`).
+  - layout?: "sidebar" | "topbar" (default: sidebar) — Overall arrangement: a side sidebar (docs/app) or a horizontal top bar (marketing/app-with-top-nav). The same `nav`/`brand`/`actions` slots feed both, so a project can swap layouts without rewiring its navigation.
+  - nav?: ReactNode — Navigation — a vertical `<Tree>` for `sidebar`, a horizontal nav for `topbar`.
+  - onCollapsedChange?: ((collapsed: boolean) => void)
+  - railWidth?: string (default: 15rem) — Sidebar width (sidebar layout).
+  - search?: ReactNode — Optional search slot.
+  - side?: "left" | "right" (default: left) — Which side the sidebar sits on (sidebar layout).
 
-Examples (Storybook stories): Default
+Examples (Storybook stories): Default, RightCompact, TopBar
 
 Usage:
 ```tsx
-<AppShell>…</AppShell>
+<AppShell />
 ```
 
 ### Container
