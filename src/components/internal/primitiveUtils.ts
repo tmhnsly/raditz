@@ -47,3 +47,16 @@ export function roundToStep(value: number, step: number, min: number): number {
   if (!step) return value;
   return min + Math.round((value - min) / step) * step;
 }
+
+/**
+ * Interior tick-mark percentages for a slider (0% and 100% endpoints excluded).
+ * Reproduces Slider.tsx's `n = Math.round((max-min)/step)` then `(i/n)*100` for
+ * interior i. Returns [] when step ≤ 0.
+ */
+export function sliderTicks(min: number, max: number, step: number): number[] {
+  if (step <= 0) return [];
+  const n = Math.round((max - min) / step);
+  const ticks: number[] = [];
+  for (let i = 1; i < n; i += 1) ticks.push((i / n) * 100);
+  return ticks;
+}
