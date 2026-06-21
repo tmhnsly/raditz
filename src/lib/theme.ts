@@ -68,6 +68,12 @@ const RADIUS_FACTOR: Record<RadiusChoice, string> = { sharp: '0.5', default: '1.
 export const MOTIONS = ['none', 'snappy', 'smooth', 'calm'] as const;
 export type MotionChoice = (typeof MOTIONS)[number];
 
+/** Title/heading entrance animation — applied app-wide (every section + hero
+ * heading, and the <Heading> component) via a `data-title-anim` attribute on
+ * <html>, exactly like `data-motion`. Default `none` keeps headings static. */
+export const TITLE_ANIMS = ['none', 'fade', 'fade-up', 'blur-in', 'scale'] as const;
+export type TitleAnimation = (typeof TITLE_ANIMS)[number];
+
 /** Pure palette resolution: returns the full set of CSS custom properties that
  * applyTheme writes, as a plain Record. No DOM side-effects. Reusable for SSR
  * and preview contexts. Values stay as var() references so a `.dark` toggle
@@ -120,19 +126,20 @@ export function themeVars(
 /** Repoint the accent + neutral ramps on <html> to the chosen Radix scales, and
  * set the radius factor + motion preset. Values stay as var() references so a
  * `.dark` toggle keeps flipping them. */
-export function applyTheme(accent: Accent, choice: GrayChoice, radius: RadiusChoice = 'default', motion: MotionChoice = 'smooth'): void {
+export function applyTheme(accent: Accent, choice: GrayChoice, radius: RadiusChoice = 'default', motion: MotionChoice = 'smooth', titleAnim: TitleAnimation = 'none'): void {
   if (typeof document === 'undefined') return;
   const root = document.documentElement;
   const vars = themeVars(accent, choice, radius, motion);
   for (const [k, val] of Object.entries(vars)) root.style.setProperty(k, val);
   root.setAttribute('data-motion', motion);
+  root.setAttribute('data-title-anim', titleAnim);
 }
 
 const KEY = 'rdz-theme';
 
-interface ThemeState { accent: Accent; gray: GrayChoice; radius: RadiusChoice; motion: MotionChoice; }
+interface ThemeState { accent: Accent; gray: GrayChoice; radius: RadiusChoice; motion: MotionChoice; titleAnim: TitleAnimation; }
 
-const DEFAULTS: ThemeState = { accent: 'cyan', gray: 'auto', radius: 'default', motion: 'smooth' };
+const DEFAULTS: ThemeState = { accent: 'cyan', gray: 'auto', radius: 'default', motion: 'smooth', titleAnim: 'none' };
 
 /** Project-level theme baseline a consuming product can pass to useTheme(). */
 export type ThemeDefaults = {
@@ -140,6 +147,7 @@ export type ThemeDefaults = {
   gray?: GrayChoice;
   radius?: RadiusChoice;
   motion?: MotionChoice;
+  titleAnim?: TitleAnimation;
 };
 
 function load(projectDefaults?: ThemeDefaults): ThemeState {
@@ -153,6 +161,7 @@ function load(projectDefaults?: ThemeDefaults): ThemeState {
           gray: v.gray ?? base.gray,
           radius: RADII.includes(v.radius) ? v.radius : base.radius,
           motion: MOTIONS.includes(v.motion) ? v.motion : base.motion,
+          titleAnim: TITLE_ANIMS.includes(v.titleAnim) ? v.titleAnim : base.titleAnim,
         };
       }
     } catch { /* ignore */ }
@@ -166,7 +175,7 @@ function load(projectDefaults?: ThemeDefaults): ThemeState {
 export function useTheme(projectDefaults?: ThemeDefaults) {
   const [state, setState] = useState<ThemeState>(() => load(projectDefaults));
   useEffect(() => {
-    applyTheme(state.accent, state.gray, state.radius, state.motion);
+    applyTheme(state.accent, state.gray, state.radius, state.motion, state.titleAnim);
     if (typeof localStorage !== 'undefined') localStorage.setItem(KEY, JSON.stringify(state));
   }, [state]);
   return {
@@ -174,10 +183,12 @@ export function useTheme(projectDefaults?: ThemeDefaults) {
     gray: state.gray,
     radius: state.radius,
     motion: state.motion,
+    titleAnim: state.titleAnim,
     setAccent: (accent: Accent) => setState((s) => ({ ...s, accent })),
     setGray: (gray: GrayChoice) => setState((s) => ({ ...s, gray })),
     setRadius: (radius: RadiusChoice) => setState((s) => ({ ...s, radius })),
     setMotion: (motion: MotionChoice) => setState((s) => ({ ...s, motion })),
+    setTitleAnim: (titleAnim: TitleAnimation) => setState((s) => ({ ...s, titleAnim })),
     reset: () => setState({ ...DEFAULTS, ...projectDefaults }),
   };
 }

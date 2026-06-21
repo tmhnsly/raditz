@@ -44,6 +44,8 @@ import '../components/navigation/Toolbar/Toolbar.scss';
 import '../components/utility/AspectRatio/AspectRatio.scss';
 import '../components/utility/ScrollArea/ScrollArea.scss';
 import '../components/utility/Label/Label.scss';
+import '../components/utility/Reveal/Reveal.scss';
+import '../components/utility/AnimatedIcon/AnimatedIcon.scss';
 import '../components/feedback/Spinner/Spinner.scss';
 import '../components/utility/AccessibleIcon/AccessibleIcon.scss';
 import '../components/feedback/Toast/Toast.scss';

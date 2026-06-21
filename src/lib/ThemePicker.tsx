@@ -1,7 +1,7 @@
 'use client';
 import type { CSSProperties } from 'react';
 import { cx } from '../components/internal';
-import { useTheme, ACCENTS, GRAYS, RADII, MOTIONS, resolveGray } from './theme';
+import { useTheme, ACCENTS, GRAYS, RADII, MOTIONS, TITLE_ANIMS, resolveGray } from './theme';
 
 /**
  * ThemePicker — pick an accent, gray, corner radius, and motion feel; the whole
@@ -10,7 +10,7 @@ import { useTheme, ACCENTS, GRAYS, RADII, MOTIONS, resolveGray } from './theme';
  * the data-motion presets. Persists.
  */
 export function ThemePicker() {
-  const { accent, gray, radius, motion, setAccent, setGray, setRadius, setMotion, reset } = useTheme();
+  const { accent, gray, radius, motion, titleAnim, setAccent, setGray, setRadius, setMotion, setTitleAnim, reset } = useTheme();
   const paired = resolveGray(accent, 'auto');
   return (
     <div className="theme-picker">
@@ -89,6 +89,23 @@ export function ThemePicker() {
             onClick={() => setMotion(m)}
           >
             {m}
+          </button>
+        ))}
+      </div>
+
+      <div className="theme-picker__row">
+        <strong className="theme-picker__title">Title anim</strong>
+      </div>
+      <div className="theme-picker__swatches">
+        {TITLE_ANIMS.map((t) => (
+          <button
+            key={t}
+            type="button"
+            aria-pressed={titleAnim === t}
+            className={cx('theme-picker__chip', titleAnim === t && 'is-active')}
+            onClick={() => setTitleAnim(t)}
+          >
+            {t}
           </button>
         ))}
       </div>

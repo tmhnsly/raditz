@@ -300,6 +300,42 @@ Demo copy lives exclusively in stories (`.stories.tsx`); the components carry no
 placeholder strings. Specs + implementation plans: `docs/superpowers/specs/` +
 `docs/superpowers/plans/`.
 
+### Animation (added 2026-06-21)
+
+**Reduced-motion**:
+`useReducedMotion` (`internal/`) — SSR-safe `prefers-reduced-motion` hook for
+JS-gated entrances (skip the hidden state, don't just shorten it). Its CSS
+counterpart: the reduced-motion block in `_shared.scss` now zeroes the motion
+TOKENS themselves (`--motion-scale` etc., as `data-motion="none"` does), so every
+token-driven duration — including new animated components — goes instant for free.
+SectionBackground's parallax effect also bails early when reduced.
+_Avoid_: per-component reduced-motion selector lists for token-driven animation.
+
+**Reveal** (scroll entrance):
+`useInView` (`internal/`, one IntersectionObserver, `once` by default) + the
+`Reveal` / `RevealGroup` components (`components/utility/Reveal`). Opt-in entrance
+(fade/rise/scale/blur/slide) that transitions on scroll-in; RevealGroup auto-staggers
+children via a pure-CSS per-item delay. Transform/opacity only. Sections opt in via a
+prop (e.g. `FeaturesA animate`), never by default (stays SSR-pure).
+_Avoid_: scroll-event entrance handlers; baking reveal into every section.
+
+**AnimatedIcon**:
+`components/utility/AnimatedIcon` — wraps any icon (react-icons glyph, Raditz
+`<Icon>`, raw SVG) in a looping idle animation (float/orbit/pulse/spin/wiggle) or a
+one-shot `draw` (stroked icons). Icon-agnostic (styles its child only), so it ships
+dependency-free; react-icons is a dev/peer concern of the showcase, not the library.
+
+**Title-animation config**:
+`applyTheme` sets `data-title-anim` on <html> (parallel to `data-motion`), driven by
+`useTheme().titleAnim` + `TITLE_ANIMS` (`lib/theme`) and the ThemePicker "Title anim"
+control. CSS keyed off the attribute animates every section/hero heading
+(`.h-display`, `.h-section`, `.rdz-heading`) consistently with zero per-heading wiring;
+default `none`. Fires on mount — pair with `Reveal` for a scroll-triggered title.
+_Avoid_: per-section heading animation props.
+
+The `Sections/Animations` showcase composes all three (Reveal grid, title gallery,
+AnimatedIcon cards) so they're viewable/tunable in the explorer.
+
 ## Distribution system
 
 The library ships as:

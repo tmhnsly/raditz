@@ -84,12 +84,15 @@ export * from './components/typography/Heading';
 export * from './components/typography/Kbd';
 export * from './components/typography/Text';
 export * from './components/utility/AccessibleIcon';
+export * from './components/utility/AnimatedIcon';
 export * from './components/utility/AspectRatio';
 export * from './components/utility/Label';
+export * from './components/utility/Reveal';
 export * from './components/utility/ScrollArea';
 export * from './components/utility/VisuallyHidden';
 
 // ── sections ──
+export * from './sections/Animations';
 export * from './sections/Announcement';
 export * from './sections/Blog';
 export * from './sections/Comparison';

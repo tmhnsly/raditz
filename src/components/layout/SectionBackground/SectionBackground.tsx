@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useRef } from 'react';
 import type { HTMLAttributes, ReactElement, ReactNode } from 'react';
-import { cx } from '../../internal';
+import { cx, useReducedMotion } from '../../internal';
 
 /** Templated background fills (all token-driven, so they re-theme). */
 export type SectionBg =
@@ -56,9 +56,12 @@ export function SectionBackground({
   const hasLayer = !!image || !!video || GRADIENTS.has(background);
   // `motion` overrides the boolean `parallax` alias.
   const isParallax = motion ? motion === 'parallax' : parallax;
+  const reduced = useReducedMotion();
 
   useEffect(() => {
-    if (!isParallax || !hasLayer) return undefined;
+    // Reduced motion: don't even attach the scroll listener (the CSS already pins
+    // the layer) — saves the work and honours the preference.
+    if (!isParallax || !hasLayer || reduced) return undefined;
     const root = rootRef.current;
     const layer = layerRef.current;
     if (!root || !layer) return undefined;
@@ -75,7 +78,7 @@ export function SectionBackground({
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScroll);
     return () => { window.removeEventListener('scroll', onScroll); window.removeEventListener('resize', onScroll); cancelAnimationFrame(raf); };
-  }, [isParallax, hasLayer]);
+  }, [isParallax, hasLayer, reduced]);
 
   return (
     <div

@@ -195,6 +195,11 @@
 /* avatar size used across testimonials/team */
 .sx-avatar-sm { width: 2.25rem; height: 2.25rem; }
 
+/* ── Animations (showcase section) ── */
+.sx-anim__card { align-items: center; text-align: center; }
+.sx-anim__icon { font-size: 2rem; color: var(--accent-ink); }
+.sx-anim__title-row { gap: 0.25rem; }
+
 /* ── Announcement ── */
 .sx-ann__strip { background: var(--accent); color: var(--on-accent); padding: 10px var(--space-5); }
 .sx-ann__strip-inner { justify-content: center; gap: var(--space-3); font-size: var(--fs-body-s); }

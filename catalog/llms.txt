@@ -7,7 +7,7 @@ component that exists here, and never edit `node_modules/raditz`.
 - Import the stylesheet ONCE at the app root: `import 'raditz/styles.css'`.
 - Props below are the component-specific API; standard HTML attributes also pass through.
 
-131 exported components across 17 categories.
+137 exported components across 17 categories.
 
 ## utilities (CSS classes)
 
@@ -974,7 +974,7 @@ Usage:
 ```
 
 ### theme
-Import: `import { ACCENTS, Accent, COMPLEMENT, GRAYS, Gray, GrayChoice, LIGHT_ACCENTS, MOTIONS, MotionChoice, PAIRED_GRAY, RADII, RadiusChoice, ThemeDefaults, applyTheme, resolveGray, themeVars, useTheme } from 'raditz'`
+Import: `import { ACCENTS, Accent, COMPLEMENT, GRAYS, Gray, GrayChoice, LIGHT_ACCENTS, MOTIONS, MotionChoice, PAIRED_GRAY, RADII, RadiusChoice, TITLE_ANIMS, ThemeDefaults, TitleAnimation, applyTheme, resolveGray, themeVars, useTheme } from 'raditz'`
 
 Utility module — see exports below.
 
@@ -991,7 +991,9 @@ Exports:
   - PAIRED_GRAY
   - RADII
   - RadiusChoice
+  - TITLE_ANIMS
   - ThemeDefaults
+  - TitleAnimation
   - applyTheme
   - resolveGray
   - themeVars
@@ -1588,6 +1590,66 @@ Usage:
 
 ## sections
 
+### AnimationsA
+Import: `import { AnimationsA } from 'raditz'`
+
+Animations A — scroll-reveal entrance cards (a staggered RevealGroup).
+
+Props:
+  - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
+  - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - heading?: ReactNode (default: Scroll-reveal entrances) — Section heading.
+  - image?: string
+  - parallax?: boolean
+  - video?: string
+
+Examples (Storybook stories): A_ScrollReveal, B_TitleAnimations, C_IconMotion
+
+Usage:
+```tsx
+<AnimationsA>…</AnimationsA>
+```
+
+### AnimationsB
+Import: `import { AnimationsB } from 'raditz'`
+
+Animations B — the global title-animation set, each row scoped via data-title-anim.
+
+Props:
+  - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: surface-2)
+  - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - heading?: ReactNode (default: Title animations) — Section heading.
+  - image?: string
+  - parallax?: boolean
+  - video?: string
+
+Examples (Storybook stories): A_ScrollReveal, B_TitleAnimations, C_IconMotion
+
+Usage:
+```tsx
+<AnimationsB>…</AnimationsB>
+```
+
+### AnimationsC
+Import: `import { AnimationsC } from 'raditz'`
+
+Animations C — looping icon animations (AnimatedIcon + react-icons).
+
+Props:
+  - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
+  - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - heading?: ReactNode (default: Animated icons) — Section heading.
+  - image?: string
+  - parallax?: boolean
+  - video?: string
+
+Examples (Storybook stories): A_ScrollReveal, B_TitleAnimations, C_IconMotion
+
+Usage:
+```tsx
+<AnimationsC>…</AnimationsC>
+```
+
 ### AnnouncementA
 Import: `import { AnnouncementA } from 'raditz'`
 
@@ -1793,6 +1855,7 @@ Features A — 3-up icon card grid.
 
 Props:
   - align?: "start" | "center" (default: 'start') — Align the heading block: 'center' or 'start' (left).
+  - animate?: boolean (default: false) — Reveal the cards on scroll-in (opt-in entrance animation).
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
   - eyebrow?: ReactNode — Small label above the heading.
@@ -1802,7 +1865,7 @@ Props:
   - parallax?: boolean
   - video?: string
 
-Examples (Storybook stories): A_IconCards, B_BentoGrid, C_AlternatingSpotlight, D_CenteredHeading
+Examples (Storybook stories): A_IconCards, B_BentoGrid, C_AlternatingSpotlight, D_CenteredHeading, E_ScrollReveal
 
 Usage:
 ```tsx
@@ -1816,6 +1879,7 @@ Features B — bento: first item as lead card, remaining as cells + wide.
 
 Props:
   - align?: "start" | "center" (default: 'start') — Align the heading block: 'center' or 'start' (left).
+  - animate?: boolean (default: false) — Reveal the cards on scroll-in (opt-in entrance animation).
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: gradient-mesh)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
   - eyebrow?: ReactNode — Small label above the heading.
@@ -1825,7 +1889,7 @@ Props:
   - parallax?: boolean
   - video?: string
 
-Examples (Storybook stories): A_IconCards, B_BentoGrid, C_AlternatingSpotlight, D_CenteredHeading
+Examples (Storybook stories): A_IconCards, B_BentoGrid, C_AlternatingSpotlight, D_CenteredHeading, E_ScrollReveal
 
 Usage:
 ```tsx
@@ -1839,6 +1903,7 @@ Features C — alternating media spotlights.
 
 Props:
   - align?: "start" | "center" (default: 'start') — Align the heading block: 'center' or 'start' (left).
+  - animate?: boolean (default: false) — Reveal the cards on scroll-in (opt-in entrance animation).
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: surface-2)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
   - eyebrow?: ReactNode — Small label above the heading.
@@ -1848,7 +1913,7 @@ Props:
   - parallax?: boolean
   - video?: string
 
-Examples (Storybook stories): A_IconCards, B_BentoGrid, C_AlternatingSpotlight, D_CenteredHeading
+Examples (Storybook stories): A_IconCards, B_BentoGrid, C_AlternatingSpotlight, D_CenteredHeading, E_ScrollReveal
 
 Usage:
 ```tsx
@@ -2518,6 +2583,24 @@ Usage:
 <AccessibleIcon>…</AccessibleIcon>
 ```
 
+### AnimatedIcon
+Import: `import { AnimatedIcon } from 'raditz'`
+
+AnimatedIcon — wraps any icon in a tasteful idle animation: `float`, `orbit`, `pulse`, `spin`, `wiggle`, or a one-shot `draw` (stroked icons only, e.g. the Raditz `<Icon/>`). Built to pair with `react-icons` — it's icon-agnostic, only styling its child, so it ships dependency-free and tree-shakeable. Timing rides the shared motion tokens (re-tunes with `data-motion`) and it honours `prefers-reduced-motion` by rendering the icon static.
+
+Props:
+  - anim: "float" | "orbit" | "pulse" | "spin" | "wiggle" | "draw" — Which looping (or one-shot, for `draw`) animation to play.
+  - children: ReactNode — The icon: a react-icons glyph (`<GiMoonOrbit/>`), a Raditz `<Icon/>`, or raw SVG.
+  - paused?: boolean (default: false) — Freeze the animation (e.g. resume on hover via your own class).
+  - speed?: "slow" | "base" | "fast" (default: base) — Speed bucket — multiplies the base duration.
+
+Examples (Storybook stories): Gallery
+
+Usage:
+```tsx
+<AnimatedIcon>…</AnimatedIcon>
+```
+
 ### AspectRatio
 Import: `import { AspectRatio } from 'raditz'`
 
@@ -2548,6 +2631,42 @@ Examples (Storybook stories): Default
 Usage:
 ```tsx
 <Label />
+```
+
+### Reveal
+Import: `import { Reveal } from 'raditz'`
+
+Reveal — a tasteful, opt-in scroll entrance. Wraps any content; when it scrolls into view it transitions from a hidden initial state (fade / rise / scale / blur / slide) to its resting state, using the shared motion tokens for timing. Transform/opacity only (no layout thrash); driven by one IntersectionObserver via {@link useInView}. Honours `prefers-reduced-motion` — it then renders the final state immediately, never the hidden one.
+
+Props:
+  - anim?: "fade" | "rise" | "scale" | "fade-rise" | "blur" | "slide-left" | "slide-right" (default: fade-rise) — Entrance style.
+  - as?: ElementType<any, keyof IntrinsicElements> (default: 'div') — Element/tag to render.
+  - delay?: number (default: 0) — Extra delay (ms) on top of any group stagger.
+  - index?: number (default: 0) — Stagger position — set automatically by {@link RevealGroup}.
+  - repeat?: boolean (default: false) — Replay every time it re-enters view (default plays once).
+
+Examples (Storybook stories): StaggeredGroup, EachAnim
+
+Usage:
+```tsx
+<Reveal />
+```
+
+### RevealGroup
+Import: `import { RevealGroup } from 'raditz'`
+
+RevealGroup — staggers a set of {@link Reveal} children by auto-assigning each an `index`, so a grid/list cascades in. The stagger is pure CSS (a per-item `transition-delay`), so there are no JS timers.
+
+Props:
+  - anim?: "fade" | "rise" | "scale" | "fade-rise" | "blur" | "slide-left" | "slide-right" — Default anim for child {@link Reveal}s that don't set their own.
+  - as?: ElementType<any, keyof IntrinsicElements>
+  - stagger?: number (default: 60) — Per-item stagger between children (ms).
+
+Examples (Storybook stories): StaggeredGroup, EachAnim
+
+Usage:
+```tsx
+<RevealGroup />
 ```
 
 ### ScrollArea

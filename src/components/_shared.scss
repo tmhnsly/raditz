@@ -113,6 +113,14 @@
 
 
 @media (prefers-reduced-motion: reduce) {
+  /* Collapse the motion TOKENS themselves (the same knobs `data-motion="none"`
+     zeroes), so every token-driven duration/travel across the system — including
+     new animated components like Reveal / AnimatedIcon / title animations — goes
+     instant for free. The explicit per-selector resets below stay as a belt-and-
+     braces for animations not wired to these tokens. */
+  :root {
+    --motion-scale: 0.001; --motion-rise: 0px; --motion-pop: 1; --motion-lift: 0px;
+  }
   .rdz-btn, .rdz-card, .rdz-input, .rdz-switch__thumb, .rdz-check__box svg, .rdz-tooltip__bubble,
   .rdz-slider__thumb, .rdz-accordion__chevron, .rdz-accordion__panel, .rdz-accordion__content, .rdz-collapsible__chevron, .rdz-progress__indicator, .rdz-lightbox__img { transition-duration: 0.01ms !important; }
   .rdz-progress--indeterminate .rdz-progress__indicator { animation-duration: 0.01ms !important; }
@@ -127,4 +135,21 @@
   .rdz-spinner svg { animation-duration: 1.2s !important; }
   .rdz-rating:not(.is-readonly) .rdz-rating__star:hover { transform: none; }
   .rdz-card--interactive:hover { transform: none; }
+}
+
+/* ═══════════════════════ Title animations (config-driven) ═══════════════════════
+   A global heading-entrance set, chosen once via `data-title-anim` on <html>
+   (set by applyTheme, like data-motion). Applies consistently to every section +
+   hero heading and the <Heading> component. Fires on mount; pair with <Reveal>
+   for a scroll-triggered title. Default `none` (no attribute rule) = static. */
+@keyframes rdzBlurIn { from { opacity: 0; filter: blur(12px); } to { opacity: 1; filter: blur(0); } }
+@keyframes rdzScaleIn { from { opacity: 0; transform: scale(0.92); } to { opacity: 1; transform: none; } }
+
+[data-title-anim="fade"]    :is(.h-display, .h-section, .rdz-heading) { animation: rdzFade    var(--duration-slow) var(--ease-decel) both; }
+[data-title-anim="fade-up"] :is(.h-display, .h-section, .rdz-heading) { animation: rdzPop     var(--duration-slow) var(--ease-decel) both; }
+[data-title-anim="blur-in"] :is(.h-display, .h-section, .rdz-heading) { animation: rdzBlurIn  var(--duration-slow) var(--ease-decel) both; }
+[data-title-anim="scale"]   :is(.h-display, .h-section, .rdz-heading) { animation: rdzScaleIn var(--duration-slow) var(--ease-decel) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-title-anim] :is(.h-display, .h-section, .rdz-heading) { animation: none !important; }
 }

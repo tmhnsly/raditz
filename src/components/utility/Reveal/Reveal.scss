@@ -1,0 +1,31 @@
+// Uses Raditz tokens (var(--…)); timing rides the shared motion tokens so it
+// re-tunes with `data-motion` and goes instant under reduced motion.
+/* ═══════════════════════ Utility · Reveal ═══════════════════════ */
+
+/* Hidden initial state; `.is-in` (added when scrolled into view) resolves to the
+   resting state. transform/opacity/filter only — no layout work. The per-item
+   transition-delay gives a RevealGroup its cascade with zero JS timers. */
+.rdz-reveal {
+  opacity: 0;
+  transition:
+    opacity var(--duration-medium) var(--ease-decel),
+    transform var(--duration-medium) var(--ease-decel),
+    filter var(--duration-medium) var(--ease-decel);
+  transition-delay: calc(var(--rdz-reveal-i, 0) * var(--rdz-reveal-stagger, 0ms) + var(--rdz-reveal-delay, 0ms));
+  will-change: opacity, transform;
+}
+
+.rdz-reveal--rise,
+.rdz-reveal--fade-rise { transform: translateY(calc(var(--motion-rise) * 2)); }
+.rdz-reveal--scale { transform: scale(var(--motion-pop)); }
+.rdz-reveal--blur { filter: blur(8px); }
+.rdz-reveal--slide-left { transform: translateX(1.5rem); }
+.rdz-reveal--slide-right { transform: translateX(-1.5rem); }
+
+.rdz-reveal.is-in { opacity: 1; transform: none; filter: none; }
+
+/* Defence in depth: even if the JS hasn't resolved reduced-motion yet, never
+   leave content hidden or animating when the user opted out. */
+@media (prefers-reduced-motion: reduce) {
+  .rdz-reveal { opacity: 1; transform: none; filter: none; transition: none; }
+}

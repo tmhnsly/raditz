@@ -116,3 +116,15 @@ export const D_CenteredHeading: Story = {
     />
   ),
 };
+
+export const E_ScrollReveal: Story = {
+  name: 'E · Scroll-reveal cards (animate)',
+  render: () => (
+    <FeaturesA
+      animate
+      eyebrow="Why Raditz"
+      heading="Everything wired together"
+      items={iconCardItems}
+    />
+  ),
+};

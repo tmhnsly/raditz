@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { SectionShell, SectionHeader, type SectionBaseProps } from '../../lib/SectionShell';
+import { Reveal, RevealGroup } from '../../components/utility/Reveal';
 
 export interface FeaturesItem {
   title: ReactNode;
@@ -17,24 +18,38 @@ export interface FeaturesProps extends SectionBaseProps {
   heading?: ReactNode;
   /** Align the heading block: 'center' or 'start' (left). @default 'start' */
   align?: 'start' | 'center';
+  /** Reveal the cards on scroll-in (opt-in entrance animation). @default false */
+  animate?: boolean;
 }
 
 /** Features A — 3-up icon card grid. */
-export function FeaturesA({ items, eyebrow, heading, align, background = 'none', children, ...props }: FeaturesProps) {
+export function FeaturesA({ items, eyebrow, heading, align, animate = false, background = 'none', children, ...props }: FeaturesProps) {
+  // One card-content definition; wrap each in <Reveal> only when animating, so the
+  // non-animated path stays byte-for-byte what it was (SSR-pure, no observers).
+  const cards = items.map((item, i) => {
+    const inner = (
+      <>
+        {item.icon && <span className="feat-ico">{item.icon}</span>}
+        <strong>{item.title}</strong>
+        {item.description && <span className="muted sx-body-s">{item.description}</span>}
+      </>
+    );
+    return animate ? (
+      <Reveal key={i} className="rdz-card col sx-gap-3">{inner}</Reveal>
+    ) : (
+      <div key={i} className="rdz-card col sx-gap-3">{inner}</div>
+    );
+  });
   return (
     <SectionShell wrap="col sx-gap-6" background={background} {...props}>
       {children ?? (
         <>
           <SectionHeader eyebrow={eyebrow} heading={heading} align={align} className="col sx-feat__head" />
-          <div className="sx-g3 sx-gap-5">
-            {items.map((item, i) => (
-              <div key={i} className="rdz-card col sx-gap-3">
-                {item.icon && <span className="feat-ico">{item.icon}</span>}
-                <strong>{item.title}</strong>
-                {item.description && <span className="muted sx-body-s">{item.description}</span>}
-              </div>
-            ))}
-          </div>
+          {animate ? (
+            <RevealGroup className="sx-g3 sx-gap-5">{cards}</RevealGroup>
+          ) : (
+            <div className="sx-g3 sx-gap-5">{cards}</div>
+          )}
         </>
       )}
     </SectionShell>
