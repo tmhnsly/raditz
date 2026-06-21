@@ -7,7 +7,7 @@ component that exists here, and never edit `node_modules/raditz`.
 - Import the stylesheet ONCE at the app root: `import 'raditz/styles.css'`.
 - Props below are the component-specific API; standard HTML attributes also pass through.
 
-141 exported components across 17 categories.
+142 exported components across 17 categories.
 
 ## utilities (CSS classes)
 
@@ -820,6 +820,27 @@ Usage:
 
 ## layout
 
+### AppShell
+Import: `import { AppShell } from 'raditz'`
+
+AppShell — a reusable dashboard/docs layout: a fixed sidebar (brand + search + nav) beside a scrolling content column with a sticky top bar (breadcrumbs + actions). Fills its container (give it a `100vh` parent for a full app, or a fixed-height box to embed), the nav and content scroll independently, and the sidebar collapses to an off-canvas drawer on narrow screens. The same shell the Raditz explorer is built from, generalised into slots.
+
+Props:
+  - actions?: ReactNode — Right side of the top bar — actions (theme toggle, profile, …).
+  - brand?: ReactNode — Brand / logo block at the top of the sidebar.
+  - breadcrumbs?: ReactNode — Left side of the top bar — a breadcrumb trail or page title.
+  - children?: ReactNode — Main content.
+  - nav?: ReactNode — Sidebar navigation — e.g. a `<Tree>`.
+  - railWidth?: string (default: 15rem) — Sidebar width.
+  - search?: ReactNode — Optional search slot under the brand.
+
+Examples (Storybook stories): Default
+
+Usage:
+```tsx
+<AppShell>…</AppShell>
+```
+
 ### Container
 Import: `import { Container } from 'raditz'`
 
@@ -974,7 +995,7 @@ Usage:
 ```
 
 ### theme
-Import: `import { ACCENTS, Accent, COMPLEMENT, GRAYS, Gray, GrayChoice, LIGHT_ACCENTS, MOTIONS, MotionChoice, PAIRED_GRAY, RADII, REVEALS, RadiusChoice, RevealChoice, TITLE_ANIMS, ThemeDefaults, TitleAnimation, VIBES, VIBE_PRESETS, VibeChoice, applyTheme, resolveGray, themeVars, useTheme } from 'raditz'`
+Import: `import { ACCENTS, Accent, COMPLEMENT, GRAYS, Gray, GrayChoice, LIGHT_ACCENTS, MOTIONS, MotionChoice, PAIRED_GRAY, RADII, REVEALS, RadiusChoice, RevealChoice, TITLE_ANIMS, ThemeDefaults, TitleAnimation, VIBES, VIBE_PRESETS, VibeChoice, applyStoredTheme, applyTheme, resolveGray, themeVars, useTheme } from 'raditz'`
 
 Utility module — see exports below.
 
@@ -999,6 +1020,7 @@ Exports:
   - VIBES
   - VIBE_PRESETS
   - VibeChoice
+  - applyStoredTheme
   - applyTheme
   - resolveGray
   - themeVars

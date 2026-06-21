@@ -5,7 +5,7 @@ import { Popover } from '../components/overlay/Popover';
 import { IconButton } from '../components/controls/IconButton';
 import { Tooltip } from '../components/navigation/Tooltip';
 import { cx } from '../components/internal';
-import { buildTree, findNode } from './registry';
+import { buildTree, findNode, ancestorsOf } from './registry';
 import { useHashRoute } from './useHashRoute';
 import { GiMoonOrbit } from 'react-icons/gi';
 import { Sidebar } from './Sidebar';
@@ -38,10 +38,13 @@ export default function Explorer() {
   const [navOpen, setNavOpen] = useState(false);
   useEffect(() => { setActiveSlug(route); }, [route]);
 
-  // The top-level group currently in view — shown in the bar so the title and the
-  // theme controls share one row (no separate sticky title bar).
-  const currentTitle = useMemo(
-    () => (activeSlug ? findNode(tree, activeSlug.split('/')[0])?.name ?? 'Overview' : 'Overview'),
+  // Breadcrumb trail for the bar: each ancestor of the active section (clickable),
+  // ending in the current entry — so the bar shows where you are, not just the
+  // top-level group.
+  const crumbs = useMemo(
+    () => (activeSlug
+      ? ancestorsOf(activeSlug).map((s) => ({ slug: s, name: findNode(tree, s)?.name ?? s }))
+      : [{ slug: '', name: 'Overview' }]),
     [activeSlug],
   );
 
@@ -76,7 +79,21 @@ export default function Explorer() {
             </button>
             <div className="rail__brand expbar__brand"><span className="mark"><GiMoonOrbit /></span>Raditz</div>
           </div>
-          <div className="expbar__title">{currentTitle}</div>
+          <nav className="expbar__crumbs" aria-label="Breadcrumb">
+            {crumbs.map((c, i) => {
+              const last = i === crumbs.length - 1;
+              return (
+                <span className="expbar__crumb-wrap" key={c.slug || 'overview'}>
+                  {i > 0 && <span className="expbar__crumb-sep" aria-hidden="true">/</span>}
+                  {last ? (
+                    <span className="expbar__crumb expbar__crumb--current" aria-current="page">{c.name}</span>
+                  ) : (
+                    <button type="button" className="expbar__crumb" onClick={() => go(c.slug)}>{c.name}</button>
+                  )}
+                </span>
+              );
+            })}
+          </nav>
           <div className="expbar__actions">
             <Popover trigger={<Tooltip align="end" label="Theme & accent"><IconButton variant="soft" icon="paintbrush" aria-label="Theme & accent" /></Tooltip>}>
               <ThemePicker />

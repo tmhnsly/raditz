@@ -1,0 +1,72 @@
+// Uses Raditz tokens (var(--…)). Flex/grid layout — fills its container; the nav
+// and content scroll independently; the rail becomes an off-canvas drawer on mobile.
+/* ═══════════════════════ Layout · AppShell ═══════════════════════ */
+
+/* `minmax(0, 1fr)` on the content track (+ min-width:0 on the main) lets it shrink
+   below its content's intrinsic width instead of overflowing — same fix as the
+   explorer shell. */
+.rdz-appshell {
+  display: grid;
+  grid-template-columns: var(--rdz-appshell-rail, 15rem) minmax(0, 1fr);
+  height: 100%;
+  min-height: 0;
+  background: var(--bg-subtle);
+  color: var(--text);
+}
+
+.rdz-appshell__rail {
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--panel);
+  border-right: var(--border-width) solid var(--surface-edge);
+}
+.rdz-appshell__rail-head { flex: none; display: flex; flex-direction: column; gap: var(--space-3); padding: var(--space-5) var(--space-4) var(--space-3); border-bottom: var(--border-width) solid var(--surface-edge); }
+.rdz-appshell__brand { display: flex; align-items: center; gap: 0.625rem; font-weight: 700; letter-spacing: -0.02em; }
+.rdz-appshell__nav { flex: 1; min-height: 0; overflow-y: auto; padding: var(--space-3) var(--space-3) var(--space-5); }
+
+.rdz-appshell__main {
+  --rdz-appshell-pad: clamp(var(--space-4), 4vw, var(--space-8));
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  height: 100%;
+  min-height: 0;
+}
+.rdz-appshell__bar {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--rdz-appshell-pad);
+  background: color-mix(in srgb, var(--bg-subtle) 86%, transparent);
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  backdrop-filter: blur(var(--glass-blur));
+  border-bottom: var(--border-width) solid var(--surface-edge);
+}
+.rdz-appshell__crumbs { margin-right: auto; min-width: 0; }
+.rdz-appshell__actions { display: flex; align-items: center; gap: var(--space-2); }
+.rdz-appshell__content { flex: 1; min-height: 0; overflow-y: auto; padding: var(--space-6) var(--rdz-appshell-pad) var(--space-9); }
+
+.rdz-appshell__burger { display: none; width: 2.25rem; height: 2.25rem; place-items: center; flex: none; border: var(--border-width) solid var(--rule); border-radius: var(--radius-control); background: var(--panel); color: var(--text-soft); cursor: pointer; }
+.rdz-appshell__burger svg { width: 1.25rem; height: 1.25rem; }
+.rdz-appshell__scrim { display: none; }
+
+@media (max-width: 860px) {
+  .rdz-appshell { display: block; }
+  .rdz-appshell__burger { display: inline-grid; }
+  .rdz-appshell__rail {
+    position: fixed; top: 0; left: 0; height: 100%; width: min(18rem, 86vw);
+    transform: translateX(-100%); transition: transform var(--duration-base) var(--ease-standard);
+    z-index: var(--z-drawer); box-shadow: var(--shadow-6);
+  }
+  .rdz-appshell.is-nav-open .rdz-appshell__rail { transform: none; }
+  .rdz-appshell__scrim { display: block; position: fixed; inset: 0; z-index: var(--z-scrim); background: var(--overlay-scrim); opacity: 0; pointer-events: none; transition: opacity var(--duration-base) var(--ease-standard); }
+  .rdz-appshell.is-nav-open .rdz-appshell__scrim { opacity: 1; pointer-events: auto; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rdz-appshell__rail, .rdz-appshell__scrim { transition: none; }
+}

@@ -42,6 +42,7 @@ export * from './components/forms/TagInput';
 export * from './components/forms/Textarea';
 export * from './components/forms/TimePicker';
 export * from './components/foundation/Icon';
+export * from './components/layout/AppShell';
 export * from './components/layout/Container';
 export * from './components/layout/FullBleed';
 export * from './components/layout/Grid';

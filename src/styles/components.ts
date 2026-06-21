@@ -78,6 +78,7 @@ import '../components/navigation/Pagination/Pagination.scss';
 import '../components/feedback/Banner/Banner.scss';
 import '../components/surfaces/AvatarGroup/AvatarGroup.scss';
 // Co-located styles added when inline styles were moved into CSS.
+import '../components/layout/AppShell/AppShell.scss';
 import '../components/layout/Container/Container.scss';
 import '../components/layout/Section/Section.scss';
 import '../components/layout/Grid/Grid.scss';

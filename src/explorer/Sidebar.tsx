@@ -98,7 +98,18 @@ export function Sidebar({
           aria-label="Showcase navigation"
           items={filtered}
           selectedId={activeSlug || route || undefined}
-          onSelect={(id) => { onNavigate(id); setQuery(''); }}
+          onSelect={(id, node) => {
+            // A folder/group row OPENS the folder (the chevron toggles it closed)
+            // and does NOT navigate — otherwise we'd scroll to the group heading and
+            // the scroll-spy would snap the selection to the first leaf under it
+            // (the "wrong section"). A leaf row navigates.
+            if (node.children?.length) {
+              setUserExpanded((prev) => [...new Set([...prev, id])]);
+            } else {
+              onNavigate(id);
+              setQuery('');
+            }
+          }}
           expandedIds={searching ? searchExpanded : userExpanded}
           onExpandedChange={searching ? undefined : setUserExpanded}
           toggleOnRowClick={false}
