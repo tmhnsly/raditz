@@ -24,6 +24,54 @@ export interface PricingProps extends SectionBaseProps {
   sub?: ReactNode;
 }
 
+/** Private: renders one pricing tier card. `displayPrice` lets the caller
+ * substitute the period-toggled price (PricingB). `wrapPlan` wraps name+blurb
+ * in the `sx-price__plan` column used by PricingA. */
+function TierCard({
+  tier,
+  displayPrice,
+  wrapPlan,
+}: {
+  tier: PricingTier;
+  displayPrice: ReactNode;
+  wrapPlan: boolean;
+}) {
+  return (
+    <div className={`rdz-card col ${tier.popular ? 'sx-price__card-pop' : 'sx-price__card'}`}>
+      {tier.popular && (
+        <span className="rdz-badge rdz-badge--solid sx-price__badge">Popular</span>
+      )}
+      {wrapPlan ? (
+        <div className="col sx-price__plan">
+          <strong>{tier.name}</strong>
+          {tier.blurb && <span className="muted sx-fs-body-s">{tier.blurb}</span>}
+        </div>
+      ) : (
+        <>
+          <strong>{tier.name}</strong>
+          {tier.blurb && <span className="muted sx-fs-body-s">{tier.blurb}</span>}
+        </>
+      )}
+      <div>
+        <span className="sx-price__num">{displayPrice}</span>
+        {tier.period && <span className="muted">{tier.period}</span>}
+      </div>
+      {tier.action && (
+        <SectionActionButton
+          action={tier.action}
+          defaultVariant={tier.popular ? 'primary' : 'outline'}
+          className="sx-price__btn"
+        />
+      )}
+      {tier.features && tier.features.length > 0 && (
+        <ul className="col sx-price__list">
+          {tier.features.map((f, j) => <li key={j}>{f}</li>)}
+        </ul>
+      )}
+    </div>
+  );
+}
+
 /** PricingA — static 3-up tier cards with optional Popular badge. */
 export function PricingA({
   tiers,
@@ -45,34 +93,7 @@ export function PricingA({
           )}
           <div className="sx-price__grid">
             {tiers.map((tier, i) => (
-              <div
-                key={i}
-                className={`rdz-card col ${tier.popular ? 'sx-price__card-pop' : 'sx-price__card'}`}
-              >
-                {tier.popular && (
-                  <span className="rdz-badge rdz-badge--solid sx-price__badge">Popular</span>
-                )}
-                <div className="col sx-price__plan">
-                  <strong>{tier.name}</strong>
-                  {tier.blurb && <span className="muted sx-fs-body-s">{tier.blurb}</span>}
-                </div>
-                <div>
-                  <span className="sx-price__num">{tier.price}</span>
-                  {tier.period && <span className="muted">{tier.period}</span>}
-                </div>
-                {tier.action && (
-                  <SectionActionButton
-                    action={tier.action}
-                    defaultVariant={tier.popular ? 'primary' : 'outline'}
-                    className="sx-price__btn"
-                  />
-                )}
-                {tier.features && tier.features.length > 0 && (
-                  <ul className="col sx-price__list">
-                    {tier.features.map((f, j) => <li key={j}>{f}</li>)}
-                  </ul>
-                )}
-              </div>
+              <TierCard key={i} tier={tier} displayPrice={tier.price} wrapPlan={true} />
             ))}
           </div>
         </>
@@ -117,29 +138,7 @@ export function PricingB({
                 ? tier.priceYearly
                 : tier.price;
               return (
-                <div key={i} className={`rdz-card col ${tier.popular ? 'sx-price__card-pop' : 'sx-price__card'}`}>
-                  {tier.popular && (
-                    <span className="rdz-badge rdz-badge--solid sx-price__badge">Popular</span>
-                  )}
-                  <strong>{tier.name}</strong>
-                  {tier.blurb && <span className="muted sx-fs-body-s">{tier.blurb}</span>}
-                  <div>
-                    <span className="sx-price__num">{displayPrice}</span>
-                    {tier.period && <span className="muted">{tier.period}</span>}
-                  </div>
-                  {tier.action && (
-                    <SectionActionButton
-                      action={tier.action}
-                      defaultVariant={tier.popular ? 'primary' : 'outline'}
-                      className="sx-price__btn"
-                    />
-                  )}
-                  {tier.features && tier.features.length > 0 && (
-                    <ul className="col sx-price__list">
-                      {tier.features.map((f, j) => <li key={j}>{f}</li>)}
-                    </ul>
-                  )}
-                </div>
+                <TierCard key={i} tier={tier} displayPrice={displayPrice} wrapPlan={false} />
               );
             })}
           </div>
