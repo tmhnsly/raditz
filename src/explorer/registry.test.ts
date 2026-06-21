@@ -1,6 +1,7 @@
 /// <reference types="vite/client" />
 import { describe, it, expect } from 'vitest';
-import { entries, buildTree, entriesUnder, findNode } from './registry';
+import { entries, buildTree, entriesUnder, findNode, ancestorsOf, filterTree, allBranchIds } from './registry';
+import type { TreeNode as TreeItem } from '../components/navigation/Tree';
 
 describe('story registry', () => {
   it('discovers stories from every area of the library', () => {
@@ -41,5 +42,126 @@ describe('story registry', () => {
     expect(findNode(tree, 'components/controls/button')?.entry?.title).toBe(
       'Components/Controls/Button',
     );
+  });
+});
+
+describe('ancestorsOf', () => {
+  it('returns empty array for empty slug', () => {
+    expect(ancestorsOf('')).toEqual([]);
+  });
+
+  it('returns the slug itself for a single-segment slug', () => {
+    expect(ancestorsOf('components')).toEqual(['components']);
+  });
+
+  it('returns all prefix slugs for a/b/c (includes the slug itself)', () => {
+    expect(ancestorsOf('a/b/c')).toEqual(['a', 'a/b', 'a/b/c']);
+  });
+
+  it('returns two ancestors for a two-segment slug', () => {
+    expect(ancestorsOf('components/controls')).toEqual(['components', 'components/controls']);
+  });
+});
+
+describe('filterTree', () => {
+  const tree: TreeItem[] = [
+    {
+      id: 'components',
+      label: 'Components',
+      children: [
+        {
+          id: 'components/controls',
+          label: 'Controls',
+          children: [
+            { id: 'components/controls/button', label: 'Button' },
+            { id: 'components/controls/input', label: 'Input' },
+          ],
+        },
+        {
+          id: 'components/feedback',
+          label: 'Feedback',
+          children: [
+            { id: 'components/feedback/toast', label: 'Toast' },
+          ],
+        },
+      ],
+    },
+    {
+      id: 'foundations',
+      label: 'Foundations',
+      children: [
+        { id: 'foundations/colors', label: 'Colors' },
+      ],
+    },
+  ];
+
+  it('keeps a matching leaf and all its ancestor branches', () => {
+    const result = filterTree(tree, 'button');
+    // Top-level "Components" branch must be present
+    expect(result.some((n) => n.id === 'components')).toBe(true);
+    // "Foundations" branch must be dropped (no match)
+    expect(result.some((n) => n.id === 'foundations')).toBe(false);
+    // Controls branch must survive
+    const comps = result.find((n) => n.id === 'components');
+    expect(comps?.children?.some((n) => n.id === 'components/controls')).toBe(true);
+    // Button must survive
+    const controls = comps?.children?.find((n) => n.id === 'components/controls');
+    expect(controls?.children?.some((n) => n.id === 'components/controls/button')).toBe(true);
+    // Input must be dropped (does not match "button")
+    expect(controls?.children?.some((n) => n.id === 'components/controls/input')).toBe(false);
+  });
+
+  it('returns all nodes when query matches everything', () => {
+    const result = filterTree(tree, '');
+    // Empty query: fuzzyScore returns 0 (matches) for everything
+    expect(result.length).toBe(tree.length);
+  });
+
+  it('returns empty array when nothing matches', () => {
+    const result = filterTree(tree, 'zzzzzzzzzzzzz');
+    expect(result).toEqual([]);
+  });
+
+  it('matches ancestor branch by its own label', () => {
+    const result = filterTree(tree, 'foundations');
+    expect(result.some((n) => n.id === 'foundations')).toBe(true);
+    expect(result.some((n) => n.id === 'components')).toBe(false);
+  });
+});
+
+describe('allBranchIds', () => {
+  const tree: TreeItem[] = [
+    {
+      id: 'components',
+      label: 'Components',
+      children: [
+        {
+          id: 'components/controls',
+          label: 'Controls',
+          children: [
+            { id: 'components/controls/button', label: 'Button' },
+          ],
+        },
+      ],
+    },
+    { id: 'foundations', label: 'Foundations' },
+  ];
+
+  it('collects only branch (non-leaf) ids', () => {
+    const ids = allBranchIds(tree);
+    expect(ids).toContain('components');
+    expect(ids).toContain('components/controls');
+    // Leaf nodes must not be included
+    expect(ids).not.toContain('components/controls/button');
+    // Node with no children must not be included
+    expect(ids).not.toContain('foundations');
+  });
+
+  it('returns empty array for a flat tree with no branches', () => {
+    const flat: TreeItem[] = [
+      { id: 'a', label: 'A' },
+      { id: 'b', label: 'B' },
+    ];
+    expect(allBranchIds(flat)).toEqual([]);
   });
 });
