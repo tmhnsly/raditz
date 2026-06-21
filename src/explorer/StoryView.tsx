@@ -73,7 +73,23 @@ function useScrollSpy(onActiveChange?: (slug: string) => void): void {
       { rootMargin: '0px 0px -75% 0px', threshold: 0 },
     );
     secs.forEach((s) => io.observe(s));
-    return () => io.disconnect();
+    // The observer only reports sections that reach the top band, so it can never
+    // report the intro ("Overview"), and scrolling back to the very top otherwise
+    // leaves the last active section (e.g. Foundations) stuck. Restore Overview
+    // whenever the first section sits below the activation band — i.e. we're
+    // scrolled above every section.
+    const onScroll = (): void => {
+      const first = secs[0];
+      if (first && first.getBoundingClientRect().top >= window.innerHeight * 0.25) {
+        onActiveChange('');
+      }
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    return () => {
+      io.disconnect();
+      window.removeEventListener('scroll', onScroll);
+    };
   }, [onActiveChange]);
 }
 

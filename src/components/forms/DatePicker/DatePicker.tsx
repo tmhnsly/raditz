@@ -1,8 +1,8 @@
 'use client';
-import { useState } from 'react';
-import type { HTMLAttributes, ReactElement } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import type { HTMLAttributes, ReactElement, KeyboardEvent as ReactKeyboardEvent } from 'react';
 import { addMonths, addYears, format, getMonth, getYear, setMonth, setYear } from 'date-fns';
-import { cx, useControllableState, Overlay, useTrigger, parseISO, toISO, sameDay, outOfRange, monthGrid } from '../../internal';
+import { cx, useControllableState, Overlay, useTrigger, parseISO, toISO, sameDay, outOfRange, monthGrid, KEYS } from '../../internal';
 
 export interface DatePickerProps extends Omit<HTMLAttributes<HTMLSpanElement>, 'onChange' | 'defaultValue'> {
   /** ISO YYYY-MM-DD (controlled). */
@@ -66,6 +66,40 @@ export function DatePicker({
   const title = mode === 'day' ? format(view, 'MMMM yyyy') : mode === 'month' ? format(view, 'yyyy') : `${decadeStart} – ${decadeStart + 9}`;
   const label = selected ? format(selected, 'MMM d, yyyy') : '';
 
+  // Keyboard: focus a day on open, then rove the grid with arrows AND
+  // preventDefault, so they move the selection instead of scrolling the page (the
+  // "freeze boundary"). One generic handler covers the day grid and the
+  // month/year cells — it reads the real column count off the grid so Up/Down
+  // jump a whole row.
+  const gridRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!open || mode !== 'day') return;
+    const grid = gridRef.current;
+    const focusBtn = grid?.querySelector<HTMLButtonElement>('.rdz-calendar__day.is-selected')
+      ?? grid?.querySelector<HTMLButtonElement>('.rdz-calendar__day[aria-current="date"]')
+      ?? grid?.querySelector<HTMLButtonElement>('.rdz-calendar__day:not(:disabled)');
+    focusBtn?.focus();
+  }, [open, mode]);
+
+  const onGridKey = (e: ReactKeyboardEvent<HTMLDivElement>): void => {
+    const grid = e.currentTarget;
+    const btns = Array.from(grid.querySelectorAll<HTMLButtonElement>('button:not(:disabled)'));
+    const i = btns.indexOf(e.target as HTMLButtonElement);
+    if (i === -1) return;
+    const tracks = getComputedStyle(grid).gridTemplateColumns;
+    const cols = Math.max(1, tracks ? tracks.split(' ').filter(Boolean).length : 1);
+    let n: number;
+    if (e.key === KEYS.ArrowRight) n = Math.min(i + 1, btns.length - 1);
+    else if (e.key === KEYS.ArrowLeft) n = Math.max(i - 1, 0);
+    else if (e.key === KEYS.ArrowDown) n = Math.min(i + cols, btns.length - 1);
+    else if (e.key === KEYS.ArrowUp) n = Math.max(i - cols, 0);
+    else if (e.key === KEYS.Home) n = 0;
+    else if (e.key === KEYS.End) n = btns.length - 1;
+    else return;
+    e.preventDefault();
+    btns[n]?.focus();
+  };
+
   return (
     <span className={cx('rdz-datepicker', className)} {...rest}>
       <button
@@ -99,7 +133,7 @@ export function DatePicker({
         {mode === 'day' ? (
           <>
             <div className="rdz-calendar__dow">{DOW.map((d) => <span key={d}>{d}</span>)}</div>
-            <div className="rdz-calendar__grid">
+            <div className="rdz-calendar__grid" ref={gridRef} onKeyDown={onGridKey}>
               {monthGrid(y, m).map((d, i) => d ? (
                 <button
                   key={i}
@@ -113,7 +147,7 @@ export function DatePicker({
             </div>
           </>
         ) : mode === 'month' ? (
-          <div className="rdz-calendar__cells">
+          <div className="rdz-calendar__cells" onKeyDown={onGridKey}>
             {MONTHS_SHORT.map((mn, i) => (
               <button
                 key={mn}
@@ -124,7 +158,7 @@ export function DatePicker({
             ))}
           </div>
         ) : (
-          <div className="rdz-calendar__cells">
+          <div className="rdz-calendar__cells" onKeyDown={onGridKey}>
             {Array.from({ length: 12 }, (_, i) => decadeStart - 1 + i).map((yr) => (
               <button
                 key={yr}

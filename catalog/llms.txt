@@ -1063,6 +1063,7 @@ Import: `import { SectionHeader } from 'raditz'`
 Renders the eyebrow + heading block shared across all content sections. Returns `null` when both `eyebrow` and `heading` are absent so callers can drop it in unconditionally. `className` defaults to `'col sx-sec__head'` and carries each section's modifier (e.g. `"col sx-feat__head"`).
 
 Props:
+  - align?: "start" | "center" — Center or left-align the eyebrow + heading block. Omit to inherit the section's default look.
   - className?: string
   - eyebrow?: ReactNode
   - heading?: ReactNode
@@ -1161,7 +1162,7 @@ Usage:
 ### Lightbox
 Import: `import { Lightbox } from 'raditz'`
 
-Lightbox — a full-screen image viewer (gallery modal). Controlled with `open` + `index`, or uncontrolled with `defaultOpen` / `defaultIndex`. Arrow keys and the on-screen arrows page; the image follows your finger and slides on swipe. Zoom with the wheel, the +/− buttons, a click, or a two-finger pinch; drag to pan when zoomed. Swipe down (or click the black space, or Escape) to close. Pan/zoom/swipe are driven imperatively (the transform is written straight to the image, not through React state) so a drag stays at the display's frame rate instead of thrashing a render per pointer move. The chrome always renders on a dark scrim (identical in light + dark themes) via `.rdz-on-dark`.
+Lightbox — a full-screen image viewer (gallery modal). Controlled with `open` + `index`, or uncontrolled with `defaultOpen` / `defaultIndex`. Arrow keys and the on-screen arrows page; the image follows your finger and slides on swipe. Zoom with a pinch (trackpad or touch), the +/− buttons, or a click; drag to pan when zoomed. Swipe down (or click the black space, or Escape) to close. Pan/zoom/swipe are driven imperatively (the transform is written straight to the image, not through React state) so a drag stays at the display's frame rate instead of thrashing a render per pointer move. The chrome always renders on a dark scrim (identical in light + dark themes) via `.rdz-on-dark`.
 
 Props:
   - defaultIndex?: number (default: 0) — Initial index (uncontrolled).
@@ -1702,6 +1703,7 @@ CTA A — centered column with dual CTA.
 
 Props:
   - actions?: SectionAction[] — Call-to-action buttons.
+  - align?: "start" | "center" (default: center) — CtaA alignment: 'center' or 'start' (left).
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: gradient-dusk)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
   - emailCapture?: { placeholder?: string; action: SectionAction; } — Inline email-capture form (CtaB).
@@ -1725,6 +1727,7 @@ CTA B — split layout with email capture.
 
 Props:
   - actions?: SectionAction[] — Call-to-action buttons.
+  - align?: "start" | "center" (default: 'center') — CtaA alignment: 'center' or 'start' (left).
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
   - emailCapture?: { placeholder?: string; action: SectionAction; } — Inline email-capture form (CtaB).
@@ -1789,6 +1792,7 @@ Import: `import { FeaturesA } from 'raditz'`
 Features A — 3-up icon card grid.
 
 Props:
+  - align?: "start" | "center" (default: 'start') — Align the heading block: 'center' or 'start' (left).
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
   - eyebrow?: ReactNode — Small label above the heading.
@@ -1798,7 +1802,7 @@ Props:
   - parallax?: boolean
   - video?: string
 
-Examples (Storybook stories): A_IconCards, B_BentoGrid, C_AlternatingSpotlight
+Examples (Storybook stories): A_IconCards, B_BentoGrid, C_AlternatingSpotlight, D_CenteredHeading
 
 Usage:
 ```tsx
@@ -1811,6 +1815,7 @@ Import: `import { FeaturesB } from 'raditz'`
 Features B — bento: first item as lead card, remaining as cells + wide.
 
 Props:
+  - align?: "start" | "center" (default: 'start') — Align the heading block: 'center' or 'start' (left).
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: gradient-mesh)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
   - eyebrow?: ReactNode — Small label above the heading.
@@ -1820,7 +1825,7 @@ Props:
   - parallax?: boolean
   - video?: string
 
-Examples (Storybook stories): A_IconCards, B_BentoGrid, C_AlternatingSpotlight
+Examples (Storybook stories): A_IconCards, B_BentoGrid, C_AlternatingSpotlight, D_CenteredHeading
 
 Usage:
 ```tsx
@@ -1833,6 +1838,7 @@ Import: `import { FeaturesC } from 'raditz'`
 Features C — alternating media spotlights.
 
 Props:
+  - align?: "start" | "center" (default: 'start') — Align the heading block: 'center' or 'start' (left).
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: surface-2)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
   - eyebrow?: ReactNode — Small label above the heading.
@@ -1842,7 +1848,7 @@ Props:
   - parallax?: boolean
   - video?: string
 
-Examples (Storybook stories): A_IconCards, B_BentoGrid, C_AlternatingSpotlight
+Examples (Storybook stories): A_IconCards, B_BentoGrid, C_AlternatingSpotlight, D_CenteredHeading
 
 Usage:
 ```tsx
@@ -2114,6 +2120,7 @@ Import: `import { PricingA } from 'raditz'`
 PricingA — static 3-up tier cards with optional Popular badge.
 
 Props:
+  - align?: "start" | "center" (default: center) — Align the heading block: 'center' or 'start' (left).
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: surface-2)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
   - heading?: ReactNode
@@ -2136,6 +2143,7 @@ Import: `import { PricingB } from 'raditz'`
 PricingB — interactive monthly/yearly toggle (requires a client boundary).
 
 Props:
+  - align?: "start" | "center" (default: 'center') — Align the heading block: 'center' or 'start' (left).
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: gradient-accent)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
   - heading?: ReactNode
@@ -2200,6 +2208,7 @@ Import: `import { StatsA } from 'raditz'`
 Stats A — 4-across grid.
 
 Props:
+  - align?: "start" | "center" (default: 'start') — Align the heading block: 'center' or 'start' (left).
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
   - heading?: ReactNode — Optional section heading.
@@ -2221,6 +2230,7 @@ Import: `import { StatsB } from 'raditz'`
 Stats B — accent band, 3-cell grid.
 
 Props:
+  - align?: "start" | "center" (default: 'start') — Align the heading block: 'center' or 'start' (left).
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
   - heading?: ReactNode — Optional section heading.

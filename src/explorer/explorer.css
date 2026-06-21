@@ -6,7 +6,7 @@
 /* (.rail__nav layout lives in App.css — no gap, so the fixed head sits flush
    against the scrolling tree below it.) */
 
-.tree__home { text-align: left; width: 100%; background: none; border: none; cursor: pointer;
+.tree__home { text-align: center; width: 100%; background: none; border: none; cursor: pointer;
   padding: 0.375rem var(--space-2); border-radius: var(--radius-sm);
   color: var(--text-soft); font: inherit; font-size: var(--fs-body-s); transition: var(--transition-control); }
 .tree__home:hover { background: var(--surface); color: var(--text); }

@@ -56,7 +56,7 @@
 .sx-split { display: grid; grid-template-columns: 1fr 1fr; }
 .sx-bento { display: grid; grid-template-columns: repeat(3, 1fr); }
 .sx-price2 { display: flex; flex-wrap: wrap; align-items: stretch; justify-content: center; }
-.sx-price2 > * { flex: 1 1 16rem; max-width: 20rem; min-width: 0; }
+.sx-price2 > * { flex: 1 1 14rem; min-width: 0; }
 .sx-faq2 { display: grid; grid-template-columns: 1fr 1fr; }
 .sx-footer { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; }
 @container (max-width: 1000px) {
@@ -174,6 +174,9 @@
 
 /* common centering / alignment helpers */
 .sx-center { align-items: center; text-align: center; }
+/* Left-align a block that would otherwise centre — the `align="start"` variant
+   sections expose so a build can mix centred and left sections for page rhythm. */
+.sx-align-start { align-items: flex-start; text-align: start; }
 .sx-row-center { justify-content: center; }
 .sx-row-between { justify-content: space-between; }
 .sx-grid-center { align-items: center; }
@@ -253,13 +256,13 @@
 .sx-foot__nav { gap: var(--space-4); font-size: var(--fs-body-s); color: var(--text-soft); }
 
 /* ── Hero ── */
-.sx-hero__title { max-width: 18ch; }
-.sx-hero__lede { max-width: 54ch; }
+.sx-hero__title { max-width: 18ch; text-wrap: balance; }
+.sx-hero__lede { max-width: 54ch; text-wrap: pretty; }
 .sx-hero__pill { border-radius: var(--radius-full); }
 .sx-hero__media { aspect-ratio: 4/3; border-radius: var(--radius-lg); }
 .sx-hero__band { background: var(--accent); color: var(--on-accent); }
-.sx-hero__band-title { max-width: 20ch; }
-.sx-hero__band-lede { font-size: var(--fs-body-l); max-width: 50ch; opacity: 0.92; }
+.sx-hero__band-title { max-width: 20ch; text-wrap: balance; }
+.sx-hero__band-lede { font-size: var(--fs-body-l); max-width: 50ch; opacity: 0.92; text-wrap: pretty; }
 .sx-hero__band-btn, .sx-hero__band .rdz-btn { background: var(--on-accent); color: var(--accent); border-radius: var(--radius-full); }
 
 /* ── Marquee ── */
@@ -298,10 +301,11 @@
 /* ── Pricing ── */
 .sx-price__num { font-size: 2.25rem; font-weight: 700; letter-spacing: -0.03em; }
 .sx-price__list { gap: 0.5rem; list-style: none; padding: 0; margin: 0; font-size: var(--fs-body-s); color: var(--text-soft); }
-/* Equal-size cards that fill when 3-up; a lone trailing card caps to the same
-   width and CENTRES (justify-content) instead of stretching wide or sitting left. */
+/* Cards flex-GROW to fill the row so they use the available width (no capped
+   islands with empty gutters), and stay a row until the container is genuinely
+   tight — then wrap 3 -> 2 -> 1. A lone trailing card grows to fill its own row. */
 .sx-price__grid { display: flex; flex-wrap: wrap; gap: var(--space-4); align-items: stretch; justify-content: center; }
-.sx-price__grid > * { flex: 1 1 16rem; max-width: 20rem; min-width: 0; }
+.sx-price__grid > * { flex: 1 1 14rem; min-width: 0; }
 .sx-price__card { gap: var(--space-4); }
 .sx-price__plan { gap: 0.125rem; }
 .sx-price__btn { width: 100%; }

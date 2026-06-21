@@ -15,15 +15,17 @@ export interface FeaturesProps extends SectionBaseProps {
   eyebrow?: ReactNode;
   /** Section heading. */
   heading?: ReactNode;
+  /** Align the heading block: 'center' or 'start' (left). @default 'start' */
+  align?: 'start' | 'center';
 }
 
 /** Features A — 3-up icon card grid. */
-export function FeaturesA({ items, eyebrow, heading, background = 'none', children, ...props }: FeaturesProps) {
+export function FeaturesA({ items, eyebrow, heading, align, background = 'none', children, ...props }: FeaturesProps) {
   return (
     <SectionShell wrap="col sx-gap-6" background={background} {...props}>
       {children ?? (
         <>
-          <SectionHeader eyebrow={eyebrow} heading={heading} className="col sx-feat__head" />
+          <SectionHeader eyebrow={eyebrow} heading={heading} align={align} className="col sx-feat__head" />
           <div className="sx-g3 sx-gap-5">
             {items.map((item, i) => (
               <div key={i} className="rdz-card col sx-gap-3">
@@ -40,13 +42,13 @@ export function FeaturesA({ items, eyebrow, heading, background = 'none', childr
 }
 
 /** Features B — bento: first item as lead card, remaining as cells + wide. */
-export function FeaturesB({ items, eyebrow, heading, background = 'gradient-mesh', children, ...props }: FeaturesProps) {
+export function FeaturesB({ items, eyebrow, heading, align, background = 'gradient-mesh', children, ...props }: FeaturesProps) {
   const [lead, ...rest] = items;
   return (
     <SectionShell wrap="col sx-gap-6" background={background} {...props}>
       {children ?? (
         <>
-          <SectionHeader eyebrow={eyebrow} heading={heading} className="col sx-feat__head" />
+          <SectionHeader eyebrow={eyebrow} heading={heading} align={align} className="col sx-feat__head" />
           <div className="sx-bento sx-feat__bento">
             {lead && (
               <div className="rdz-card col sx-feat__bento-lead">
@@ -74,12 +76,12 @@ export function FeaturesB({ items, eyebrow, heading, background = 'gradient-mesh
 }
 
 /** Features C — alternating media spotlights. */
-export function FeaturesC({ items, eyebrow, heading, background = 'surface-2', children, ...props }: FeaturesProps) {
+export function FeaturesC({ items, eyebrow, heading, align, background = 'surface-2', children, ...props }: FeaturesProps) {
   return (
     <SectionShell wrap="col sx-gap-6" background={background} {...props}>
       {children ?? (
         <>
-          <SectionHeader eyebrow={eyebrow} heading={heading} className="col sx-feat__head" />
+          <SectionHeader eyebrow={eyebrow} heading={heading} align={align} className="col sx-feat__head" />
           <div className="col sx-gap-7">
             {items.map((item, i) => {
               const isEven = i % 2 === 0;

@@ -66,8 +66,11 @@ _Avoid_: form-group, form-control, wrapper.
 The one stateful arrow-key navigation module — `useRoving` over the pure
 `rovingIndex` (loop/orientation/Home/End). Menu-surface, Combobox, CommandPalette
 and ToggleGroup adapt it; NavBar uses `rovingIndex` directly. Tree keeps its own
-2D expand/collapse nav; RadioGroup roves natively.
-_Avoid_: per-component arrow handlers.
+2D expand/collapse nav; RadioGroup roves natively. TimePicker (3 columns) and
+DatePicker (calendar grid) trap arrows with a thin DOM-focus rover +
+`preventDefault` — the **freeze boundary** that stops arrows scrolling the page
+while the picker is open (a 2D column/grid that `useRoving`'s single index can't model).
+_Avoid_: per-component arrow handlers (except the picker freeze above).
 
 **Scale**:
 Pure chart geometry (`minMax`, `normalize`, `toPercent`, `sparklinePath`,
@@ -151,6 +154,10 @@ Features, Stats, and Team. Bare `<h2>` and bespoke headers stay **per-section**
 is now **deep** on three concerns: layout (Frame/`.s-pad`/`.s-wrap`), header
 (`SectionHeader`), and section-action rendering (`SectionActionButton`). The
 `children ?? body` override stays an in-variant idiom (see [ADR-0001](docs/adr/0001-section-body-override-stays-in-variant.md)).
+`SectionHeader` also takes an optional `align` (`'start' | 'center'`) so a section can
+offer a left or centred heading variant; CtaA/PricingA wire the same `align` into their
+own wrap. Defaults preserve each section's current look, so a build can mix centred/left
+sections for page rhythm.
 _Avoid_: per-section eyebrow+heading duplication.
 
 **Section variant cores** (internal seams, deepened 2026-06-21):
@@ -248,6 +255,10 @@ How a region declares its colour context. Two named contexts:
 - **`.rdz-on-dark`** — the subtree-safe context for content over dark media/scrim:
   re-points the *semantic* tokens (`--text`, rules, `--accent-surface`, …) to the
   `--on-media` (white-alpha) family in **one level**, so it works anywhere.
+
+The `.rdz-btn--glass` CTA is intentionally frosted-**dark** in both themes (black-alpha
+fill + `--on-media` ink) because it lives over hero media/gradients — a `--bg`-tinted
+glass + `--text` ink went invisible in light mode (read fine in dark).
 _Avoid_: applying `.dark` to a region (use `.rdz-on-dark`); hardcoding white text.
 
 **Layer** (deepened 2026-06-19):
@@ -281,6 +292,9 @@ content-driven: pass real copy via props, not via child JSX or placeholder liter
   (`FeaturesItem`, `PricingTier`, `StatItem`, `Testimonial`, …).
 - `children` is always an override slot: when provided, it replaces the
   auto-rendered body, so bespoke layouts stay possible without forking a variant.
+- `align?: 'start' | 'center'` (Features, Stats, Cta, Pricing) — opt-in alignment
+  variant; defaults preserve each section's current look so a page can alternate
+  centred/left for rhythm rather than every section sharing one alignment.
 
 Demo copy lives exclusively in stories (`.stories.tsx`); the components carry no
 placeholder strings. Specs + implementation plans: `docs/superpowers/specs/` +

@@ -69,7 +69,7 @@ interface Gesture {
  * Lightbox — a full-screen image viewer (gallery modal). Controlled with `open`
  * + `index`, or uncontrolled with `defaultOpen` / `defaultIndex`. Arrow keys and
  * the on-screen arrows page; the image follows your finger and slides on swipe.
- * Zoom with the wheel, the +/− buttons, a click, or a two-finger pinch; drag to
+ * Zoom with a pinch (trackpad or touch), the +/− buttons, or a click; drag to
  * pan when zoomed. Swipe down (or click the black space, or Escape) to close.
  *
  * Pan/zoom/swipe are driven imperatively (the transform is written straight to
@@ -166,6 +166,23 @@ export function Lightbox({
     if (ns === 1) applyView(0, 0, 1, true);
     else { const cp = clampPanFor(live.current.x, live.current.y, ns); applyView(cp.x, cp.y, ns, true); }
   }, [applyView, clampPanFor]);
+
+  // Wheel zoom = PINCH ONLY. A trackpad pinch (and ctrl+wheel) arrives with
+  // ctrlKey set; we zoom the image and preventDefault so the browser doesn't
+  // page-zoom. A plain two-finger scroll is left alone, so it never "goes weird"
+  // hijacking into a zoom. Native (non-passive) listener — React's onWheel is
+  // passive, so preventDefault there is a no-op.
+  useEffect(() => {
+    const stage = stageRef.current;
+    if (!stage || !isOpen) return undefined;
+    const onWheelNative = (e: WheelEvent): void => {
+      if (!e.ctrlKey) return;
+      e.preventDefault();
+      zoomTo(scaleRef.current - e.deltaY * 0.01);
+    };
+    stage.addEventListener('wheel', onWheelNative, { passive: false });
+    return () => stage.removeEventListener('wheel', onWheelNative);
+  }, [isOpen, zoomTo]);
 
   // Escape / scroll-lock / focus-trap come from Overlay; paging + zoom are here.
   const onKeyDown = onKeys({ [KEYS.ArrowRight]: () => go(1), [KEYS.ArrowLeft]: () => go(-1) });
@@ -273,7 +290,6 @@ export function Lightbox({
     }
   };
 
-  const onWheel = (e: React.WheelEvent): void => { zoomTo(scaleRef.current - e.deltaY * 0.0016); };
   const onImgClick = (e: React.MouseEvent): void => {
     e.stopPropagation();
     if (moved.current) { moved.current = false; return; }
@@ -311,7 +327,6 @@ export function Lightbox({
         onPointerMove={onPointerMove}
         onPointerUp={endGesture}
         onPointerCancel={endGesture}
-        onWheel={onWheel}
       >
         <img
           key={idx}
@@ -353,7 +368,7 @@ export function Lightbox({
           ) : null}
         </div>
         <div className="rdz-lightbox__controls">
-          <button type="button" className="rdz-ovbtn rdz-ovbtn--lg" aria-label="Zoom out" onClick={() => zoomTo(scaleRef.current - 0.5)} disabled={scale <= 1}>
+          <button type="button" className="rdz-ovbtn rdz-ovbtn--lg" aria-label="Reset zoom" onClick={() => zoomTo(1)} disabled={scale <= 1}>
             {ZOOM_OUT}
           </button>
           <button type="button" className="rdz-ovbtn rdz-ovbtn--lg" aria-label="Zoom in" onClick={() => zoomTo(scaleRef.current + 0.5)} disabled={scale >= MAX_SCALE}>

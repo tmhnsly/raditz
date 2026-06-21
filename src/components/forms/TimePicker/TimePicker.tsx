@@ -1,6 +1,7 @@
 'use client';
-import type { HTMLAttributes, ReactElement } from 'react';
-import { cx, useControllableState, Overlay, useTrigger, parseTime, toISOTime, to12, to24, formatTime } from '../../internal';
+import { useEffect, useRef } from 'react';
+import type { HTMLAttributes, ReactElement, KeyboardEvent as ReactKeyboardEvent } from 'react';
+import { cx, useControllableState, Overlay, useTrigger, parseTime, toISOTime, to12, to24, formatTime, KEYS } from '../../internal';
 
 export interface TimePickerProps extends Omit<HTMLAttributes<HTMLSpanElement>, 'onChange' | 'defaultValue'> {
   /** 24-hour "HH:mm" (controlled). */
@@ -45,6 +46,41 @@ export function TimePicker({
   const minutes = Array.from({ length: Math.ceil(60 / minuteStep) }, (_, i) => i * minuteStep);
   const label = t ? formatTime(h, m, hour12) : '';
 
+  // Keyboard: on open, focus a real option so the columns are immediately
+  // drivable; arrows then rove within/between columns AND preventDefault, so they
+  // move the selection instead of scrolling the page (the "freeze boundary").
+  const menuRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!open) return;
+    const menu = menuRef.current;
+    const opt = menu?.querySelector<HTMLButtonElement>('.rdz-timemenu__opt.is-selected')
+      ?? menu?.querySelector<HTMLButtonElement>('.rdz-timemenu__opt');
+    opt?.focus();
+  }, [open]);
+
+  const onMenuKey = (e: ReactKeyboardEvent<HTMLDivElement>): void => {
+    const opt = (e.target as HTMLElement).closest<HTMLButtonElement>('.rdz-timemenu__opt');
+    const menu = menuRef.current;
+    if (!opt || !menu) return;
+    const col = opt.closest('.rdz-timemenu__col');
+    if (!col) return;
+    const opts = Array.from(col.querySelectorAll<HTMLButtonElement>('.rdz-timemenu__opt'));
+    const i = opts.indexOf(opt);
+    let next: HTMLButtonElement | null | undefined;
+    if (e.key === KEYS.ArrowDown) next = opts[Math.min(i + 1, opts.length - 1)];
+    else if (e.key === KEYS.ArrowUp) next = opts[Math.max(i - 1, 0)];
+    else if (e.key === KEYS.Home) next = opts[0];
+    else if (e.key === KEYS.End) next = opts[opts.length - 1];
+    else if (e.key === KEYS.ArrowRight || e.key === KEYS.ArrowLeft) {
+      const cols = Array.from(menu.querySelectorAll<HTMLElement>('.rdz-timemenu__col'));
+      const ci = cols.indexOf(col as HTMLElement);
+      const nc = cols[e.key === KEYS.ArrowRight ? Math.min(ci + 1, cols.length - 1) : Math.max(ci - 1, 0)];
+      next = nc?.querySelector<HTMLButtonElement>('.rdz-timemenu__opt');
+    } else return;
+    e.preventDefault();
+    next?.focus();
+  };
+
   return (
     <span className={cx('rdz-timepicker', className)} {...rest}>
       <button
@@ -69,7 +105,7 @@ export function TimePicker({
         role="dialog"
         aria-label="Choose time"
       >
-        <div className="rdz-timemenu__cols">
+        <div className="rdz-timemenu__cols" ref={menuRef} onKeyDown={onMenuKey}>
           <div className="rdz-timemenu__col" role="group" aria-label="Hour">
             {hours.map((hh) => {
               const active = !!t && (hour12 ? hh === h12 : hh === h);

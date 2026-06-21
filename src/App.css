@@ -25,10 +25,11 @@ body { font-family: var(--font-display); background-color: var(--bg-subtle); col
 .rail__brand { display: flex; align-items: center; gap: 0.625rem; font-weight: 700; font-size: 0.9375rem; letter-spacing: -0.02em; }
 .rail__tools { display: flex; align-items: center; gap: var(--space-2); }
 .rail__tools .tree__home { flex: 1; }
-.rail__collapse { flex: none; font-family: var(--font-display); font-size: var(--fs-caption); color: var(--text-faint); background: none; border: 0; cursor: pointer; padding: 0.3125rem 0.5rem; border-radius: var(--radius-sm); transition: var(--transition-control); }
+.rail__collapse { flex: none; font-family: var(--font-display); font-size: var(--fs-body-s); color: var(--text-faint); background: none; border: 0; cursor: pointer; padding: 0.3125rem 0.5rem; border-radius: var(--radius-sm); transition: var(--transition-control); }
 .rail__collapse:hover:not(:disabled) { background: var(--surface); color: var(--text-soft); }
 .rail__collapse:disabled { opacity: var(--disabled-opacity); cursor: default; }
 .rail__brand .mark { width: 1.625rem; height: 1.625rem; border-radius: var(--radius-md); background: var(--accent); display: inline-grid; place-items: center; color: var(--on-accent); font-family: var(--font-mono); font-size: 0.875rem; }
+.rail__brand .mark svg { width: 1.05rem; height: 1.05rem; }
 .rail nav { display: flex; flex-direction: column; gap: var(--space-2); }
 .rail a { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); padding: 0.4375rem var(--space-3); border-radius: var(--radius-sm); color: var(--text-soft); font-size: var(--fs-body-s); text-decoration: none; transition: var(--transition-control); }
 .rail a:hover { background: var(--surface); color: var(--text); }

@@ -19,4 +19,19 @@
 
 /* Positioning is owned by the shared Overlay (.rdz-overlay__panel); this class
    carries only the panel's appearance, so it matches Popover/DropdownMenu. */
-.rdz-navmenu__panel { background: var(--panel); border: var(--border-width) solid var(--surface-edge); border-radius: var(--radius-overlay); box-shadow: var(--shadow-5); padding: var(--space-5); min-width: 13.75rem; animation: rdzPopover var(--duration-fast) var(--ease-standard); }
+.rdz-navmenu__panel { background: var(--panel); border: var(--border-width) solid var(--surface-edge); border-radius: var(--radius-overlay); box-shadow: var(--shadow-5); padding: var(--space-2); min-width: 13.75rem; animation: rdzPopover var(--duration-fast) var(--ease-standard); }
+
+/* Style the dropdown content (link lists) with the same item treatment as the
+   DropdownMenu / nav sheet, so panels match the rest of the overlay system
+   instead of rendering raw, unstyled links. Focus rings come from the global
+   :focus-visible reset. */
+.rdz-navmenu__panel ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 0.125rem; }
+.rdz-navmenu__panel a {
+  display: flex; align-items: center; gap: var(--space-2);
+  padding: 0.5rem 0.625rem; border-radius: var(--radius-md);
+  color: var(--text-soft); text-decoration: none;
+  font-size: var(--fs-body-s); font-weight: var(--fw-medium);
+  transition: var(--transition-control);
+}
+.rdz-navmenu__panel a:hover { background: var(--surface); color: var(--text); }
+.rdz-navmenu__panel a[aria-current], .rdz-navmenu__panel a.is-active { background: var(--accent-surface); color: var(--accent-ink); }

@@ -7,6 +7,7 @@ import { Tooltip } from '../components/navigation/Tooltip';
 import { cx } from '../components/internal';
 import { buildTree, findNode } from './registry';
 import { useHashRoute } from './useHashRoute';
+import { GiMoonOrbit } from 'react-icons/gi';
 import { Sidebar } from './Sidebar';
 import { StoryView } from './StoryView';
 import '../App.css';
@@ -73,7 +74,7 @@ export default function Explorer() {
             >
               <Burger />
             </button>
-            <div className="rail__brand expbar__brand"><span className="mark">S</span>Raditz</div>
+            <div className="rail__brand expbar__brand"><span className="mark"><GiMoonOrbit /></span>Raditz</div>
           </div>
           <div className="expbar__title">{currentTitle}</div>
           <div className="expbar__actions">

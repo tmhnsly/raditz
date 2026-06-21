@@ -11,17 +11,20 @@ export interface CtaProps extends SectionBaseProps {
   actions?: SectionAction[];
   /** Inline email-capture form (CtaB). */
   emailCapture?: { placeholder?: string; action: SectionAction };
+  /** CtaA alignment: 'center' or 'start' (left). @default 'center' */
+  align?: 'start' | 'center';
 }
 
 /** CTA A — centered column with dual CTA. */
-export function CtaA({ title, sub, actions, background = 'gradient-dusk', children, ...props }: CtaProps) {
+export function CtaA({ title, sub, actions, align = 'center', background = 'gradient-dusk', children, ...props }: CtaProps) {
+  const centered = align === 'center';
   return (
-    <SectionShell wrap="col sx-center sx-gap-5" background={background} {...props}>
+    <SectionShell wrap={centered ? 'col sx-center sx-gap-5' : 'col sx-gap-5'} background={background} {...props}>
       {children ?? (
         <>
           <h3 className="h-section sx-cta__title">{title}</h3>
           {sub && <p className="muted sx-cta__sub">{sub}</p>}
-          <SectionActions actions={actions} size="lg" className="row sx-row-center" />
+          <SectionActions actions={actions} size="lg" className={centered ? 'row sx-row-center' : 'row'} />
         </>
       )}
     </SectionShell>

@@ -96,14 +96,18 @@ export function SectionHeader({
   eyebrow,
   heading,
   className,
+  align,
 }: {
   eyebrow?: ReactNode;
   heading?: ReactNode;
   className?: string;
+  /** Center or left-align the eyebrow + heading block. Omit to inherit the
+   * section's default look. */
+  align?: 'start' | 'center';
 }): ReactElement | null {
   if (!eyebrow && !heading) return null;
   return (
-    <div className={className ?? 'col sx-sec__head'}>
+    <div className={cx(className ?? 'col sx-sec__head', align === 'center' && 'sx-center', align === 'start' && 'sx-align-start')}>
       {eyebrow && <span className="eyebrow2">{eyebrow}</span>}
       {heading && <h3 className="h-section">{heading}</h3>}
     </div>

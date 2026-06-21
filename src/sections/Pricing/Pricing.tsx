@@ -22,6 +22,8 @@ export interface PricingProps extends SectionBaseProps {
   tiers: PricingTier[];
   heading?: ReactNode;
   sub?: ReactNode;
+  /** Align the heading block: 'center' or 'start' (left). @default 'center' */
+  align?: 'start' | 'center';
 }
 
 /** Private: renders one pricing tier card. `displayPrice` lets the caller
@@ -77,6 +79,7 @@ export function PricingA({
   tiers,
   heading,
   sub,
+  align = 'center',
   background = 'surface-2',
   children,
   ...props
@@ -86,7 +89,7 @@ export function PricingA({
       {children ?? (
         <>
           {(heading || sub) && (
-            <div className="col sx-center sx-gap-2">
+            <div className={align === 'center' ? 'col sx-center sx-gap-2' : 'col sx-align-start sx-gap-2'}>
               {heading && <h3 className="h-section">{heading}</h3>}
               {sub && <p className="muted">{sub}</p>}
             </div>

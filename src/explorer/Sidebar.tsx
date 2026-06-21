@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { GiMoonOrbit } from 'react-icons/gi';
 import { Tree, type TreeNode as TreeItem } from '../components/navigation/Tree';
 import { Search } from '../components/forms/Search';
 import type { TreeNode } from './registry';
@@ -59,7 +60,7 @@ export function Sidebar({
   return (
     <div className="rail__nav">
       <div className="rail__head">
-        <div className="rail__brand rail__brand--desktop"><span className="mark">S</span>Raditz</div>
+        <div className="rail__brand rail__brand--desktop"><span className="mark"><GiMoonOrbit /></span>Raditz</div>
         <Search
           className="rail__search"
           size="sm"

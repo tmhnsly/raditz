@@ -104,3 +104,15 @@ export const C_AlternatingSpotlight: Story = {
   name: 'C · Alternating spotlight',
   render: () => <FeaturesC items={spotlightItems} />,
 };
+
+export const D_CenteredHeading: Story = {
+  name: 'D · Centered heading (align="center")',
+  render: () => (
+    <FeaturesA
+      align="center"
+      eyebrow="Why Raditz"
+      heading="Everything wired together"
+      items={iconCardItems}
+    />
+  ),
+};

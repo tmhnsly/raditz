@@ -13,7 +13,10 @@ export default meta;
 type Story = StoryObj;
 
 export const Default: Story = {
+  // Give the bar room to breathe and its dropdowns space to open downward, so the
+  // component is actually testable in the showcase instead of a cramped strip.
   render: () => (
+    <div style={{ minHeight: '18rem' }}>
     <Menubar
       menus={[
         {
@@ -45,5 +48,6 @@ export const Default: Story = {
         },
       ]}
     />
+    </div>
   ),
 };
