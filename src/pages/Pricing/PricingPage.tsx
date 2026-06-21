@@ -13,7 +13,15 @@ import { FooterB } from '../../sections/Footer';
 export function PricingPage() {
   return (
     <div className="rdz-page">
-      <NavbarB />
+      <NavbarB
+        brand={{ name: 'Raditz', logo: <span className="sx-nav__logo-glyph-md">R</span> }}
+        links={[
+          { label: 'Features', href: '#' },
+          { label: 'Customers', href: '#' },
+          { label: 'Pricing', href: '#' },
+        ]}
+        actions={[{ label: 'Start free', href: '#', variant: 'primary' }]}
+      />
       <PricingB
         heading="Pay monthly or save yearly"
         tiers={[

@@ -1,8 +1,41 @@
 'use client';
 import { useState, useRef } from 'react';
-import type { ReactElement } from 'react';
+import type { ReactNode } from 'react';
 import { Frame } from '../../lib/Frame';
 import { Overlay } from '../../components/internal';
+import { Button } from '../../components/controls/Button';
+import { SectionActions, type SectionBaseProps, type SectionAction } from '../../lib/SectionShell';
+
+/** A brand lockup: a name plus an optional logo node, optionally a link. */
+export interface NavbarBrand {
+  /** Brand name / wordmark (required). */
+  name: ReactNode;
+  /** Optional logo / glyph rendered before the name. */
+  logo?: ReactNode;
+  /** Makes the lockup a link to this href. */
+  href?: string;
+}
+
+/** A single top-nav link. */
+export interface NavbarLink {
+  label: ReactNode;
+  href: string;
+}
+
+/**
+ * Props for the top-nav variants (NavbarA/B/C): a required `brand` lockup, an
+ * optional list of `links` (rendered in both the bar and the collapsed sheet),
+ * and optional `actions` (CTAs, also rendered in both places). The `children`
+ * escape hatch (from {@link SectionBaseProps}) replaces the whole bar body.
+ */
+export interface NavbarProps extends SectionBaseProps {
+  /** Brand lockup (required). */
+  brand: NavbarBrand;
+  /** Primary nav links. */
+  links?: NavbarLink[];
+  /** Call-to-action buttons. */
+  actions?: SectionAction[];
+}
 
 const BurgerIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
@@ -31,145 +64,189 @@ function NavSheet({ open, onClose, anchor, children }: {
   );
 }
 
-export function NavbarA() {
+/** Renders the brand lockup, wrapping in a link when `brand.href` is set. */
+function BrandLockup({ brand, logoClassName, glyphClassName }: {
+  brand: NavbarBrand; logoClassName: string; glyphClassName: string;
+}) {
+  const inner = (
+    <>
+      <span className={'feat-ico ' + logoClassName}>
+        {brand.logo ?? <span className={glyphClassName}>{brand.name}</span>}
+      </span>
+      <strong className="sx-nav__brand">{brand.name}</strong>
+    </>
+  );
+  return brand.href ? (
+    <a className="row sx-nav__brand-link" href={brand.href}>{inner}</a>
+  ) : (
+    inner
+  );
+}
+
+/** The CTA buttons rendered in the bar — direct flex children of
+ * `.nav-bar__cta` (alongside the burger), so the bar keeps its flat layout. */
+function BarActions({ actions, size }: { actions?: SectionAction[]; size?: 'sm' | 'md' | 'lg' }) {
+  if (!actions || actions.length === 0) return null;
+  return (
+    <>
+      {actions.map((action, i) => (
+        <Button
+          key={i}
+          href={action.href}
+          onClick={action.onClick}
+          variant={action.variant}
+          size={action.size ?? size}
+          icon={action.icon}
+        >
+          {action.label}
+        </Button>
+      ))}
+    </>
+  );
+}
+
+/** The links rendered inside the collapsed `NavSheet` (each closes the sheet). */
+function SheetLinks({ links, actions, onClose }: {
+  links?: NavbarLink[]; actions?: SectionAction[]; onClose: () => void;
+}) {
+  return (
+    <>
+      {links?.map((link, i) => (
+        <a key={i} href={link.href} onClick={onClose}>{link.label}</a>
+      ))}
+      {actions && actions.length > 0 && (
+        <SectionActions actions={actions} className="nav-sheet__cta" />
+      )}
+    </>
+  );
+}
+
+export function NavbarA({ brand, links, actions, children }: NavbarProps) {
   const [open, setOpen] = useState(false);
   const burgerRef = useRef<HTMLButtonElement>(null);
   return (
     <Frame className="nav-section">
       <div className="s-pad-sm">
         <div className="s-wrap navcq">
-          <div className="nav-bar">
-            <div className="row sx-nav__brand-row">
-              <span className="feat-ico sx-nav__logo">
-                <span className="sx-nav__logo-glyph">S</span>
-              </span>
-              <strong className="sx-nav__brand">Raditz</strong>
-            </div>
-            <nav className="nav-bar__links">
-              <a href="#">Product</a>
-              <a href="#">Solutions</a>
-              <a href="#">Pricing</a>
-              <a href="#">Docs</a>
-            </nav>
-            <div className="nav-bar__cta">
-              <button className="rdz-btn rdz-btn--ghost nav-hide-sm">Sign in</button>
-              <button className="rdz-btn rdz-btn--primary">Get started</button>
-              <button
-                ref={burgerRef}
-                className="nav-bar__burger"
-                aria-label={open ? 'Close menu' : 'Open menu'}
-                aria-expanded={open}
-                onClick={() => setOpen((o) => !o)}
-              >
-                <BurgerIcon />
-              </button>
-            </div>
-          </div>
-          <NavSheet open={open} onClose={() => setOpen(false)} anchor={burgerRef}>
-            <a href="#" onClick={() => setOpen(false)}>Product</a>
-            <a href="#" onClick={() => setOpen(false)}>Solutions</a>
-            <a href="#" onClick={() => setOpen(false)}>Pricing</a>
-            <a href="#" onClick={() => setOpen(false)}>Docs</a>
-            <div className="nav-sheet__cta">
-              <button className="rdz-btn rdz-btn--ghost">Sign in</button>
-              <button className="rdz-btn rdz-btn--primary">Get started</button>
-            </div>
-          </NavSheet>
+          {children ?? (
+            <>
+              <div className="nav-bar">
+                <div className="row sx-nav__brand-row">
+                  <BrandLockup brand={brand} logoClassName="sx-nav__logo" glyphClassName="sx-nav__logo-glyph" />
+                </div>
+                {links && links.length > 0 && (
+                  <nav className="nav-bar__links">
+                    {links.map((link, i) => (
+                      <a key={i} href={link.href}>{link.label}</a>
+                    ))}
+                  </nav>
+                )}
+                <div className="nav-bar__cta">
+                  <BarActions actions={actions} />
+                  <button
+                    ref={burgerRef}
+                    className="nav-bar__burger"
+                    aria-label={open ? 'Close menu' : 'Open menu'}
+                    aria-expanded={open}
+                    onClick={() => setOpen((o) => !o)}
+                  >
+                    <BurgerIcon />
+                  </button>
+                </div>
+              </div>
+              <NavSheet open={open} onClose={() => setOpen(false)} anchor={burgerRef}>
+                <SheetLinks links={links} actions={actions} onClose={() => setOpen(false)} />
+              </NavSheet>
+            </>
+          )}
         </div>
       </div>
     </Frame>
   );
 }
 
-export function NavbarB() {
+export function NavbarB({ brand, links, actions, children }: NavbarProps) {
   const [open, setOpen] = useState(false);
   const burgerRef = useRef<HTMLButtonElement>(null);
   return (
     <Frame className="ph--neutral sx-nav__frame-b nav-section">
       <div className="s-pad-sm">
         <div className="s-wrap navcq">
-          <div className="nav-bar sx-nav__bar-glass">
-            <div className="row sx-nav__brand-row-sm">
-              <span className="feat-ico sx-nav__logo-md">
-                <span className="sx-nav__logo-glyph-md">S</span>
-              </span>
-              <strong>Raditz</strong>
-            </div>
-            <nav className="nav-bar__links">
-              <a href="#">Features</a>
-              <a href="#">Customers</a>
-              <a href="#">Pricing</a>
-            </nav>
-            <div className="nav-bar__cta">
-              <button className="rdz-btn rdz-btn--primary rdz-btn--sm">Start free</button>
-              <button
-                ref={burgerRef}
-                className="nav-bar__burger"
-                aria-label={open ? 'Close menu' : 'Open menu'}
-                aria-expanded={open}
-                onClick={() => setOpen((o) => !o)}
-              >
-                <BurgerIcon />
-              </button>
-            </div>
-          </div>
-          <NavSheet open={open} onClose={() => setOpen(false)} anchor={burgerRef}>
-            <a href="#" onClick={() => setOpen(false)}>Features</a>
-            <a href="#" onClick={() => setOpen(false)}>Customers</a>
-            <a href="#" onClick={() => setOpen(false)}>Pricing</a>
-            <div className="nav-sheet__cta">
-              <button className="rdz-btn rdz-btn--primary">Start free</button>
-            </div>
-          </NavSheet>
+          {children ?? (
+            <>
+              <div className="nav-bar sx-nav__bar-glass">
+                <div className="row sx-nav__brand-row-sm">
+                  <BrandLockup brand={brand} logoClassName="sx-nav__logo-md" glyphClassName="sx-nav__logo-glyph-md" />
+                </div>
+                {links && links.length > 0 && (
+                  <nav className="nav-bar__links">
+                    {links.map((link, i) => (
+                      <a key={i} href={link.href}>{link.label}</a>
+                    ))}
+                  </nav>
+                )}
+                <div className="nav-bar__cta">
+                  <BarActions actions={actions} size="sm" />
+                  <button
+                    ref={burgerRef}
+                    className="nav-bar__burger"
+                    aria-label={open ? 'Close menu' : 'Open menu'}
+                    aria-expanded={open}
+                    onClick={() => setOpen((o) => !o)}
+                  >
+                    <BurgerIcon />
+                  </button>
+                </div>
+              </div>
+              <NavSheet open={open} onClose={() => setOpen(false)} anchor={burgerRef}>
+                <SheetLinks links={links} actions={actions} onClose={() => setOpen(false)} />
+              </NavSheet>
+            </>
+          )}
         </div>
       </div>
     </Frame>
   );
 }
 
-export function NavbarC() {
+export function NavbarC({ brand, links, actions, children }: NavbarProps) {
   const [open, setOpen] = useState(false);
   const burgerRef = useRef<HTMLButtonElement>(null);
   return (
     <Frame maxWidth="22.5rem" className="nav-section">
       <div className="sx-nav__pad">
         <div className="s-wrap navcq">
-          <div className="nav-bar">
-            <div className="row sx-nav__brand-row-sm">
-              <span className="feat-ico sx-nav__logo-md">
-                <span className="sx-nav__logo-glyph-md">S</span>
-              </span>
-              <strong>Raditz</strong>
-            </div>
-            <nav className="nav-bar__links">
-              <a href="#">Product</a>
-              <a href="#">Pricing</a>
-              <a href="#">Docs</a>
-            </nav>
-            <div className="nav-bar__cta">
-              <button className="rdz-btn rdz-btn--ghost nav-hide-sm">Sign in</button>
-              <button className="rdz-btn rdz-btn--primary">Get started</button>
-              <button
-                ref={burgerRef}
-                className="nav-bar__burger"
-                aria-label={open ? 'Close menu' : 'Open menu'}
-                aria-expanded={open}
-                onClick={() => setOpen((o) => !o)}
-              >
-                <BurgerIcon />
-              </button>
-            </div>
-          </div>
-          <NavSheet open={open} onClose={() => setOpen(false)} anchor={burgerRef}>
-            <a href="#" onClick={() => setOpen(false)}>Product</a>
-            <a href="#" onClick={() => setOpen(false)}>Solutions</a>
-            <a href="#" onClick={() => setOpen(false)}>Pricing</a>
-            <a href="#" onClick={() => setOpen(false)}>Docs</a>
-            <div className="nav-sheet__cta">
-              <button className="rdz-btn rdz-btn--ghost">Sign in</button>
-              <button className="rdz-btn rdz-btn--primary">Get started</button>
-            </div>
-          </NavSheet>
+          {children ?? (
+            <>
+              <div className="nav-bar">
+                <div className="row sx-nav__brand-row-sm">
+                  <BrandLockup brand={brand} logoClassName="sx-nav__logo-md" glyphClassName="sx-nav__logo-glyph-md" />
+                </div>
+                {links && links.length > 0 && (
+                  <nav className="nav-bar__links">
+                    {links.map((link, i) => (
+                      <a key={i} href={link.href}>{link.label}</a>
+                    ))}
+                  </nav>
+                )}
+                <div className="nav-bar__cta">
+                  <BarActions actions={actions} />
+                  <button
+                    ref={burgerRef}
+                    className="nav-bar__burger"
+                    aria-label={open ? 'Close menu' : 'Open menu'}
+                    aria-expanded={open}
+                    onClick={() => setOpen((o) => !o)}
+                  >
+                    <BurgerIcon />
+                  </button>
+                </div>
+              </div>
+              <NavSheet open={open} onClose={() => setOpen(false)} anchor={burgerRef}>
+                <SheetLinks links={links} actions={actions} onClose={() => setOpen(false)} />
+              </NavSheet>
+            </>
+          )}
         </div>
       </div>
       <div className="muted sx-nav__note">
@@ -179,25 +256,40 @@ export function NavbarC() {
   );
 }
 
-const TAB_ICONS: Record<string, ReactElement> = {
-  home: <path d="M3 11.5 12 4l9 7.5M5 10v9h5v-5h4v5h5v-9" />,
-  search: <><circle cx="11" cy="11" r="7" /><path d="m21 21-4.3-4.3" /></>,
-  create: <><circle cx="12" cy="12" r="9" /><path d="M12 8.5v7M8.5 12h7" /></>,
-  activity: <path d="M3 12h4l2.5 7 5-14L17 12h4" />,
-  profile: <><circle cx="12" cy="8" r="3.5" /><path d="M5.5 20a6.5 6.5 0 0 1 13 0" /></>,
-};
+/** A single bottom-tab-bar tab. */
+export interface NavbarTab {
+  /** Stable id used for the active state. */
+  id: string;
+  label: ReactNode;
+  /** Icon node (e.g. an inline `<svg>` or an `<Icon>`). */
+  icon?: ReactNode;
+}
+
+/**
+ * Props for the bottom tab bar (NavbarD). Structurally a tab bar, not a top
+ * nav, so it has its OWN type (no {@link SectionBaseProps} backdrop). Controlled
+ * when `activeId` + `onTabChange` are supplied; otherwise it tracks the active
+ * tab internally, defaulting to the first tab.
+ */
+export interface NavbarDProps {
+  /** Tabs to render (required). */
+  tabs: NavbarTab[];
+  /** Controlled active tab id (pair with `onTabChange`). */
+  activeId?: string;
+  /** Called with the new tab id when a tab is selected. */
+  onTabChange?: (id: string) => void;
+}
 
 /** D — an iOS/Android-style bottom tab bar: pinned to the bottom, icon+label
  * tabs with an accent active state. All Raditz tokens, so it re-themes. */
-export function NavbarD() {
-  const [active, setActive] = useState('home');
-  const tabs = [
-    { id: 'home', label: 'Home' },
-    { id: 'search', label: 'Search' },
-    { id: 'create', label: 'Create' },
-    { id: 'activity', label: 'Activity' },
-    { id: 'profile', label: 'Profile' },
-  ];
+export function NavbarD({ tabs, activeId, onTabChange }: NavbarDProps) {
+  const isControlled = activeId !== undefined;
+  const [internalActive, setInternalActive] = useState(tabs[0]?.id);
+  const active = isControlled ? activeId : internalActive;
+  const select = (id: string) => {
+    if (!isControlled) setInternalActive(id);
+    onTabChange?.(id);
+  };
   return (
     <Frame maxWidth="22.5rem" className="nav-section">
       <div className="nav-tabframe">
@@ -211,11 +303,9 @@ export function NavbarD() {
               type="button"
               aria-current={active === t.id ? 'page' : undefined}
               className={'nav-tab' + (active === t.id ? ' is-active' : '')}
-              onClick={() => setActive(t.id)}
+              onClick={() => select(t.id)}
             >
-              <svg className="nav-tab__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                {TAB_ICONS[t.id]}
-              </svg>
+              {t.icon && <span className="nav-tab__icon" aria-hidden="true">{t.icon}</span>}
               <span className="nav-tab__label">{t.label}</span>
             </button>
           ))}

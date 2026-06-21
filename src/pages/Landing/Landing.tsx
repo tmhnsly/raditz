@@ -17,7 +17,19 @@ import { FooterA } from '../../sections/Footer';
 export function Landing() {
   return (
     <div className="rdz-page">
-      <NavbarA />
+      <NavbarA
+        brand={{ name: 'Raditz', logo: <span className="sx-nav__logo-glyph">R</span> }}
+        links={[
+          { label: 'Product', href: '#' },
+          { label: 'Solutions', href: '#' },
+          { label: 'Pricing', href: '#' },
+          { label: 'Docs', href: '#' },
+        ]}
+        actions={[
+          { label: 'Sign in', href: '#', variant: 'ghost' },
+          { label: 'Get started', href: '#', variant: 'primary' },
+        ]}
+      />
       <HeroB
         eyebrow="Design system"
         title="Ship a polished UI on day one"
