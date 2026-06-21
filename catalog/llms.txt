@@ -974,7 +974,7 @@ Usage:
 ```
 
 ### theme
-Import: `import { ACCENTS, Accent, COMPLEMENT, GRAYS, Gray, GrayChoice, LIGHT_ACCENTS, MOTIONS, MotionChoice, PAIRED_GRAY, RADII, RadiusChoice, ThemeDefaults, applyTheme, resolveGray, useTheme } from 'raditz'`
+Import: `import { ACCENTS, Accent, COMPLEMENT, GRAYS, Gray, GrayChoice, LIGHT_ACCENTS, MOTIONS, MotionChoice, PAIRED_GRAY, RADII, RadiusChoice, ThemeDefaults, applyTheme, resolveGray, themeVars, useTheme } from 'raditz'`
 
 Utility module — see exports below.
 
@@ -994,6 +994,7 @@ Exports:
   - ThemeDefaults
   - applyTheme
   - resolveGray
+  - themeVars
   - useTheme
 
 > Note: This is a utility/hook module, not a React component — do not render as JSX.

@@ -160,6 +160,30 @@ collapse the variant clones: one core to fix, variants are thin **presets**.
 These are private internal seams — not exported.
 _Avoid_: copy-paste variant bodies.
 
+**Palette-resolution** (deepened 2026-06-21):
+`themeVars(accent, gray, radius, motion)` in `lib/theme` is the pure accent→CSS-var map
+(gray pairing, the `COMPLEMENT` secondary, the pick-away semantic scales, light-accent
+on-accent text, radius factor); `applyTheme` is a thin DOM adapter over it, so the
+palette rules are unit-tested (not buried in a `setProperty` loop). Same play as the
+Pure cores. `themeVars` is a public export via `'raditz'`.
+_Avoid_: setProperty loops that can't be tested standalone.
+
+**paddedDomain** (in *Scale*, deepened 2026-06-21):
+Shared chart y-domain padding + the `TOOLTIP_FLIP_PCT` threshold, in `internal/scale.ts`.
+LineChart (factor 0.12) and ScatterChart (factor 0.08) consume it — each keeps its own
+factor, documented and not unified (the values differ intentionally).
+_Avoid_: per-chart domain/tooltip-flip math.
+
+**Sidebar-model** (in `explorer/registry`, deepened 2026-06-21):
+`ancestorsOf` / `filterTree` / `allBranchIds` — the "what's visible/expanded for this
+query/route" logic, now beside the registry it operates on and covered by `registry.test.ts`.
+_Avoid_: expanding/filtering logic spread across the Sidebar render tree.
+
+**sliderTicks** (in *primitiveUtils*, deepened 2026-06-21):
+Interior tick geometry for Slider, in `internal/primitiveUtils.ts`. Unit-tested for
+the uneven-step / non-zero-min edges.
+_Avoid_: tick math inlined in the Slider render.
+
 (Lightbox is now an **Adapter face** over **Overlay**, alongside Dialog/Drawer/etc.)
 
 ## Relationships
