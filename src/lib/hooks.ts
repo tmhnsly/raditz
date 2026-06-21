@@ -5,5 +5,5 @@
 // controlled/uncontrolled state dance, or a classnames helper.
 //
 //   import { useInView, useReducedMotion, useControllableState, cx, splitText } from 'raditz';
-export { cx, useReducedMotion, useInView, useControllableState, splitText } from '../components/internal';
-export type { InViewOptions, SplitBy } from '../components/internal';
+export { cx, useReducedMotion, useInView, useRevealState, useControllableState, splitText } from '../components/internal';
+export type { InViewOptions, RevealState, RevealStateOptions, SplitBy } from '../components/internal';

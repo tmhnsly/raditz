@@ -167,13 +167,16 @@ collapse the variant clones: one core to fix, variants are thin **presets**.
 These are private internal seams — not exported.
 _Avoid_: copy-paste variant bodies.
 
-**Palette-resolution** (deepened 2026-06-21):
-`themeVars(accent, gray, radius, motion)` in `lib/theme` is the pure accent→CSS-var map
-(gray pairing, the `COMPLEMENT` secondary, the pick-away semantic scales, light-accent
-on-accent text, radius factor); `applyTheme` is a thin DOM adapter over it, so the
-palette rules are unit-tested (not buried in a `setProperty` loop). Same play as the
-Pure cores. `themeVars` is a public export via `'raditz'`.
-_Avoid_: setProperty loops that can't be tested standalone.
+**Palette-resolution** (deepened 2026-06-21; interface 2026-06-22):
+`themeVars(state)` in `lib/theme` is the pure accent→CSS-var map (gray pairing, the
+`COMPLEMENT` secondary, the pick-away semantic scales, light-accent on-accent text,
+radius factor); `applyTheme(state)` is a thin DOM adapter over it (CSS vars +
+`data-motion`/`-title-anim`/`-reveal` attributes). Both take the theme axes as an
+**options object** (`Partial<ThemeState>`; omitted fields fall back to `DEFAULTS`) — the
+old positional list grew brittle and mis-orderable as axes were appended (motion → title
+→ reveal), and an object adds an axis without touching a call site. Palette rules stay
+unit-tested (not buried in a `setProperty` loop). Public export via `'raditz'`.
+_Avoid_: positional param lists that grow one arg per axis; setProperty loops that can't be tested standalone.
 
 **paddedDomain** (in *Scale*, deepened 2026-06-21):
 Shared chart y-domain padding + the `TOOLTIP_FLIP_PCT` threshold, in `internal/scale.ts`.
@@ -312,7 +315,11 @@ SectionBackground's parallax effect also bails early when reduced.
 _Avoid_: per-component reduced-motion selector lists for token-driven animation.
 
 **Reveal** (scroll entrance):
-`useInView` (`internal/`, one IntersectionObserver, `once` by default) + the
+`useInView` (`internal/`, one IntersectionObserver, `once` by default — its whole
+lifecycle lives in the ref callback, NOT a `useEffect`, so StrictMode's simulated
+unmount can't disconnect-and-orphan it) under `useRevealState` (`internal/`, the shared
+reduced-motion + in-view gate returning `{ ref, revealed, reduced }` — `Reveal` AND
+`TextReveal` build on it so the reveal contract lives in one place) + the
 `Reveal` / `RevealGroup` components (`components/utility/Reveal`). Opt-in entrance —
 fade / rise / scale / zoom / blur / slide / flip / flip-y / rotate / skew — on scroll-in;
 RevealGroup auto-staggers children via a pure-CSS per-item delay. Transform/opacity/

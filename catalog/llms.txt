@@ -1036,7 +1036,7 @@ Exports:
 > Note: This is a utility/hook module, not a React component — do not render as JSX.
 
 ### hooks
-Import: `import { cx, splitText, useControllableState, useInView, useReducedMotion } from 'raditz'`
+Import: `import { cx, splitText, useControllableState, useInView, useReducedMotion, useRevealState } from 'raditz'`
 
 Utility module — see exports below.
 
@@ -1046,6 +1046,7 @@ Exports:
   - useControllableState
   - useInView
   - useReducedMotion
+  - useRevealState
 
 > Note: This is a utility/hook module, not a React component — do not render as JSX.
 
@@ -2742,7 +2743,7 @@ Usage:
 ### Reveal
 Import: `import { Reveal } from 'raditz'`
 
-Reveal — a tasteful, opt-in scroll entrance. Wraps any content; when it scrolls into view it transitions from a hidden state (fade / rise / scale / zoom / blur / slide / flip / rotate / skew) to its resting state, using the shared motion tokens for timing. Transform/opacity/filter only (no layout thrash); driven by one IntersectionObserver via {@link useInView}. With no `anim`, it inherits the app-wide reveal vibe (`data-reveal`). Honours `prefers-reduced-motion` — it then renders the final state immediately, never the hidden one.
+Reveal — a tasteful, opt-in scroll entrance. Wraps any content; when it scrolls into view it transitions from a hidden state (fade / rise / scale / zoom / blur / slide / flip / rotate / skew) to its resting state, using the shared motion tokens for timing. Transform/opacity/filter only (no layout thrash); driven by one IntersectionObserver via {@link useInView }. With no `anim`, it inherits the app-wide reveal vibe (`data-reveal`). Honours `prefers-reduced-motion` — it then renders the final state immediately, never the hidden one.
 
 Props:
   - anim?: "fade" | "rise" | "scale" | "fade-rise" | "zoom" | "blur" | "slide-left" | "slide-right" | "flip" | "flip-y" | "rotate" | "skew" — Entrance style. Omit to inherit the app-wide reveal "vibe" (`data-reveal` on `<html>`, set by the theme config); falls back to `fade-rise` when none is set.

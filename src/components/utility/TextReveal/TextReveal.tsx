@@ -1,6 +1,6 @@
 'use client';
 import * as React from 'react';
-import { cx, useInView, useReducedMotion } from '../../internal';
+import { cx, useRevealState } from '../../internal';
 import { splitText, type SplitBy } from '../../internal/splitText';
 
 export type TextRevealAnim = 'flip' | 'rise' | 'fade' | 'blur' | 'mask';
@@ -39,8 +39,7 @@ export function TextReveal({
   ...rest
 }: TextRevealProps): React.ReactElement {
   const Tag = (as ?? 'span') as React.ElementType;
-  const reduced = useReducedMotion();
-  const { ref, inView } = useInView<HTMLElement>({ once: !repeat });
+  const { ref, revealed, reduced } = useRevealState({ repeat });
 
   if (reduced) {
     return React.createElement(Tag, { className: cx('rdz-textreveal', className), style, ...rest }, text);
@@ -50,7 +49,7 @@ export function TextReveal({
     Tag,
     {
       ref,
-      className: cx('rdz-textreveal', `rdz-textreveal--${anim}`, by === 'char' && 'is-char', inView && 'is-in', className),
+      className: cx('rdz-textreveal', `rdz-textreveal--${anim}`, by === 'char' && 'is-char', revealed && 'is-in', className),
       style: { '--rdz-split-stagger': `${stagger}ms`, ...style } as React.CSSProperties,
       ...rest,
     },

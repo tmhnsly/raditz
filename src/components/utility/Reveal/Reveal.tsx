@@ -1,6 +1,6 @@
 'use client';
 import * as React from 'react';
-import { cx, useInView, useReducedMotion } from '../../internal';
+import { cx, useRevealState } from '../../internal';
 
 export type RevealAnim =
   | 'fade'
@@ -52,8 +52,7 @@ export function Reveal({
   ...rest
 }: RevealProps): React.ReactElement {
   const Tag = (as ?? 'div') as React.ElementType;
-  const reduced = useReducedMotion();
-  const { ref, inView } = useInView<HTMLElement>({ once: !repeat });
+  const { ref, revealed, reduced } = useRevealState({ repeat });
 
   if (reduced) {
     return React.createElement(Tag, { className: cx('rdz-reveal', 'is-in', className), style, ...rest }, children);
@@ -66,7 +65,7 @@ export function Reveal({
       // `data-anim` is present only for an explicit anim — the app-wide
       // `[data-reveal] .rdz-reveal:not([data-anim])` default skips those.
       'data-anim': anim,
-      className: cx('rdz-reveal', anim && `rdz-reveal--${anim}`, inView && 'is-in', className),
+      className: cx('rdz-reveal', anim && `rdz-reveal--${anim}`, revealed && 'is-in', className),
       style: { '--rdz-reveal-i': index, '--rdz-reveal-delay': `${delay}ms`, ...style } as React.CSSProperties,
       ...rest,
     },

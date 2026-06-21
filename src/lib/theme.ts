@@ -97,12 +97,8 @@ export const VIBE_PRESETS: Record<VibeChoice, { reveal: RevealChoice; titleAnim:
  * applyTheme writes, as a plain Record. No DOM side-effects. Reusable for SSR
  * and preview contexts. Values stay as var() references so a `.dark` toggle
  * keeps flipping them. */
-export function themeVars(
-  accent: Accent,
-  choice: GrayChoice,
-  radius: RadiusChoice = 'default',
-  motion: MotionChoice = 'smooth',
-): Record<string, string> {
+export function themeVars(state: Partial<ThemeState> = {}): Record<string, string> {
+  const { accent = DEFAULTS.accent, gray: choice = DEFAULTS.gray, radius = DEFAULTS.radius } = state;
   const vars: Record<string, string> = {};
   const gray = resolveGray(accent, choice);
 
@@ -135,32 +131,29 @@ export function themeVars(
   }
 
   vars['--radius-factor'] = RADIUS_FACTOR[radius];
-  // NOTE: motion is accepted here so themeVars is callable standalone with all
-  // four params, but data-motion is an HTML attribute — set by applyTheme only.
-  void motion;
-
   return vars;
 }
 
-/** Repoint the accent + neutral ramps on <html> to the chosen Radix scales, and
- * set the radius factor + motion preset. Values stay as var() references so a
- * `.dark` toggle keeps flipping them. */
-export function applyTheme(accent: Accent, choice: GrayChoice, radius: RadiusChoice = 'default', motion: MotionChoice = 'smooth', titleAnim: TitleAnimation = 'none', reveal: RevealChoice = 'fade-rise'): void {
+/** Write a theme to <html>: the accent + neutral ramps + radius factor (as CSS vars,
+ * kept as var() refs so a `.dark` toggle keeps flipping them) plus the motion /
+ * title-anim / reveal data-attributes. Takes the axes as an OBJECT — omitted fields
+ * fall back to the defaults, and adding a new axis never re-orders a call site. */
+export function applyTheme(state: Partial<ThemeState> = {}): void {
   if (typeof document === 'undefined') return;
+  const s: ThemeState = { ...DEFAULTS, ...state };
   const root = document.documentElement;
-  const vars = themeVars(accent, choice, radius, motion);
+  const vars = themeVars(s);
   for (const [k, val] of Object.entries(vars)) root.style.setProperty(k, val);
-  root.setAttribute('data-motion', motion);
-  root.setAttribute('data-title-anim', titleAnim);
-  root.setAttribute('data-reveal', reveal);
+  root.setAttribute('data-motion', s.motion);
+  root.setAttribute('data-title-anim', s.titleAnim);
+  root.setAttribute('data-reveal', s.reveal);
 }
 
 /** Apply the persisted (or default) theme to <html> immediately — call once at app
  * start (before render) so a saved accent / vibe / reveal / title shows on first
  * paint, without waiting for the ThemePicker to mount. */
 export function applyStoredTheme(projectDefaults?: ThemeDefaults): void {
-  const s = load(projectDefaults);
-  applyTheme(s.accent, s.gray, s.radius, s.motion, s.titleAnim, s.reveal);
+  applyTheme(load(projectDefaults));
 }
 
 const KEY = 'rdz-theme';
@@ -205,7 +198,7 @@ function load(projectDefaults?: ThemeDefaults): ThemeState {
 export function useTheme(projectDefaults?: ThemeDefaults) {
   const [state, setState] = useState<ThemeState>(() => load(projectDefaults));
   useEffect(() => {
-    applyTheme(state.accent, state.gray, state.radius, state.motion, state.titleAnim, state.reveal);
+    applyTheme(state);
     if (typeof localStorage !== 'undefined') localStorage.setItem(KEY, JSON.stringify(state));
   }, [state]);
   return {
