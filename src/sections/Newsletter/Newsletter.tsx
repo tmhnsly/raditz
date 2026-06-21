@@ -1,7 +1,6 @@
 'use client';
 import type { ReactNode } from 'react';
-import { Button } from '../../components/controls/Button';
-import { SectionShell, type SectionBaseProps, type SectionAction } from '../../lib/SectionShell';
+import { SectionShell, SectionActionButton, type SectionBaseProps, type SectionAction } from '../../lib/SectionShell';
 
 export interface NewsletterProps extends SectionBaseProps {
   /** Submit button (required). */
@@ -32,15 +31,7 @@ export function NewsletterA({ action, title, sub, placeholder, background = 'gra
           </div>
           <div className="row sx-news__form">
             <div className="rdz-input sx-news__input">{placeholder ?? ''}</div>
-            <Button
-              variant={action.variant}
-              size={action.size}
-              href={action.href}
-              onClick={action.onClick}
-              icon={action.icon}
-            >
-              {action.label}
-            </Button>
+            <SectionActionButton action={action} />
           </div>
         </div>
       )}

@@ -118,6 +118,38 @@ export type SectionBaseProps = SectionVariantProps & {
 };
 
 /**
+ * Renders one {@link SectionAction} as a {@link Button}, forwarding every
+ * field. `variant = action.variant ?? defaultVariant`; `size = action.size ?? size`.
+ * This is the single path from a `SectionAction` to a rendered `<Button>` —
+ * inline sites that used to construct `<Button>` by hand now delegate here so
+ * field-forwarding is tested in one place.
+ */
+export function SectionActionButton({
+  action,
+  size,
+  defaultVariant,
+  className,
+}: {
+  action: SectionAction;
+  size?: ButtonProps['size'];
+  defaultVariant?: ButtonProps['variant'];
+  className?: string;
+}): ReactElement {
+  return (
+    <Button
+      href={action.href}
+      onClick={action.onClick}
+      variant={action.variant ?? defaultVariant}
+      size={action.size ?? size}
+      icon={action.icon}
+      className={className}
+    >
+      {action.label}
+    </Button>
+  );
+}
+
+/**
  * Renders a row of CTAs from `actions` as {@link Button}s. Returns `null` when
  * there are no actions, so callers can drop it in unconditionally. `size` sets
  * the default for every button (each action may override via its own `size`).
@@ -139,16 +171,11 @@ export function SectionActions({
   return (
     <div className={className}>
       {actions.map((action, i) => (
-        <Button
+        <SectionActionButton
           key={action.href ?? action.label ?? i}
-          href={action.href}
-          onClick={action.onClick}
-          variant={action.variant}
-          size={action.size ?? size}
-          icon={action.icon}
-        >
-          {action.label}
-        </Button>
+          action={action}
+          size={size}
+        />
       ))}
     </div>
   );

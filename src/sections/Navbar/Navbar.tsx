@@ -3,8 +3,7 @@ import { useState, useRef } from 'react';
 import type { ReactNode } from 'react';
 import { Frame } from '../../lib/Frame';
 import { Overlay } from '../../components/internal';
-import { Button } from '../../components/controls/Button';
-import { SectionActions, type SectionBaseProps, type SectionAction } from '../../lib/SectionShell';
+import { SectionActions, SectionActionButton, type SectionBaseProps, type SectionAction } from '../../lib/SectionShell';
 
 /** A brand lockup: a name plus an optional logo node, optionally a link. */
 export interface NavbarBrand {
@@ -94,16 +93,7 @@ function BarActions({ actions, size }: { actions?: SectionAction[]; size?: 'sm' 
   return (
     <>
       {actions.map((action, i) => (
-        <Button
-          key={i}
-          href={action.href}
-          onClick={action.onClick}
-          variant={action.variant}
-          size={action.size ?? size}
-          icon={action.icon}
-        >
-          {action.label}
-        </Button>
+        <SectionActionButton key={i} action={action} size={size} />
       ))}
     </>
   );

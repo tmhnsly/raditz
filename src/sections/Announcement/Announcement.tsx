@@ -2,8 +2,7 @@
 import { useState } from 'react';
 import type { ReactNode } from 'react';
 import { Frame } from '../../lib/Frame';
-import { Button } from '../../components/controls/Button';
-import { SectionShell, type SectionBaseProps, type SectionAction } from '../../lib/SectionShell';
+import { SectionShell, SectionActionButton, type SectionBaseProps, type SectionAction } from '../../lib/SectionShell';
 
 export interface AnnouncementProps extends SectionBaseProps {
   /** Banner body text (required). */
@@ -54,15 +53,7 @@ export function AnnouncementB({ text, action, background = 'none', children, ...
           <span className="muted sx-ann__banner-text">{text}</span>
           {action && (
             <div className="row">
-              <Button
-                variant={action.variant ?? 'primary'}
-                size={action.size ?? 'sm'}
-                href={action.href}
-                onClick={action.onClick}
-                icon={action.icon}
-              >
-                {action.label}
-              </Button>
+              <SectionActionButton action={action} defaultVariant="primary" size="sm" />
             </div>
           )}
         </>

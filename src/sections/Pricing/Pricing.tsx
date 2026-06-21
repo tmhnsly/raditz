@@ -1,8 +1,7 @@
 'use client';
 import { useState } from 'react';
 import type { ReactNode } from 'react';
-import { SectionShell, type SectionBaseProps, type SectionAction } from '../../lib/SectionShell';
-import { Button } from '../../components/controls/Button';
+import { SectionShell, SectionActionButton, type SectionBaseProps, type SectionAction } from '../../lib/SectionShell';
 import { Tabs } from '../../components/navigation/Tabs';
 
 export interface PricingTier {
@@ -62,16 +61,11 @@ export function PricingA({
                   {tier.period && <span className="muted">{tier.period}</span>}
                 </div>
                 {tier.action && (
-                  <Button
-                    href={tier.action.href}
-                    onClick={tier.action.onClick}
-                    variant={tier.action.variant ?? (tier.popular ? 'primary' : 'outline')}
-                    size={tier.action.size}
-                    icon={tier.action.icon}
+                  <SectionActionButton
+                    action={tier.action}
+                    defaultVariant={tier.popular ? 'primary' : 'outline'}
                     className="sx-price__btn"
-                  >
-                    {tier.action.label}
-                  </Button>
+                  />
                 )}
                 {tier.features && tier.features.length > 0 && (
                   <ul className="col sx-price__list">
@@ -134,16 +128,11 @@ export function PricingB({
                     {tier.period && <span className="muted">{tier.period}</span>}
                   </div>
                   {tier.action && (
-                    <Button
-                      href={tier.action.href}
-                      onClick={tier.action.onClick}
-                      variant={tier.action.variant ?? (tier.popular ? 'primary' : 'outline')}
-                      size={tier.action.size}
-                      icon={tier.action.icon}
+                    <SectionActionButton
+                      action={tier.action}
+                      defaultVariant={tier.popular ? 'primary' : 'outline'}
                       className="sx-price__btn"
-                    >
-                      {tier.action.label}
-                    </Button>
+                    />
                   )}
                   {tier.features && tier.features.length > 0 && (
                     <ul className="col sx-price__list">
