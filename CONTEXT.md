@@ -126,6 +126,40 @@ otp.ts`, `TagInput/tags.ts`, `Form/validate.ts`. Each control is the thin consum
 high-leverage `useControllableState` finally has tests, and Rating's fractional fill
 reuses the `clamp` primitive.
 
+**Source-surface** (deepened 2026-06-21):
+`scripts/public-surface.mjs` is the one module that answers "which dirs are public
+(has-a-story rule) and where their component/story/test files live" — a single
+`sourceSurface()` walk with fully-resolved paths. `gen-barrel`, `gen-catalog`, and
+`gen-tests` are thin **adapters** over it. Killed 4 duplicated tree-walks and the
+basename≠dirname fragility. The walk is tested (byte-identical output assertion).
+_Avoid_: per-script dir scans.
+
+**Section-action** (deepened 2026-06-21):
+`SectionActionButton` (in `lib/SectionShell`) is the one **renderer** from a
+`SectionAction` to a `<Button>` — forwards `href`/`onClick`/`icon`/`variant`/`size`.
+`SectionActions` maps it over the actions array. Every section CTA crosses this seam,
+so field-forwarding is **tested once** (killed the recurring dropped-`onClick`/`icon`
+bugs). `AnnouncementA`'s banner text-link is the one deliberate non-Button — its
+exception is documented in its story.
+_Avoid_: per-section Button renders from a raw `SectionAction`.
+
+**Section-header** (deepened 2026-06-21):
+`SectionHeader` (in `lib/SectionShell`) is the shared eyebrow+heading block —
+`eyebrow2` label + `h-section` heading, with the wrapper class as a prop. Used by
+Features, Stats, and Team. Bare `<h2>` and bespoke headers stay **per-section**
+(deletion test: forcing them through `SectionHeader` would worsen locality). `SectionShell`
+is now **deep** on three concerns: layout (Frame/`.s-pad`/`.s-wrap`), header
+(`SectionHeader`), and section-action rendering (`SectionActionButton`). The
+`children ?? body` override stays an in-variant idiom (see [ADR-0001](docs/adr/0001-body-override-in-variant.md)).
+_Avoid_: per-section eyebrow+heading duplication.
+
+**Section variant cores** (internal seams, deepened 2026-06-21):
+`NavCore` (shared by NavbarA/B/C; NavbarD is its own thing), `TierCard`
+(PricingA/B — reuses `SectionActionButton`), and `LogoMark` (SocialProofA/B)
+collapse the variant clones: one core to fix, variants are thin **presets**.
+These are private internal seams — not exported.
+_Avoid_: copy-paste variant bodies.
+
 (Lightbox is now an **Adapter face** over **Overlay**, alongside Dialog/Drawer/etc.)
 
 ## Relationships
