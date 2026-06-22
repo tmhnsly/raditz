@@ -1,3 +1,4 @@
+'use client';
 import { useState, useCallback, useRef, useId } from 'react';
 
 // Shared internals for Raditz primitives. Kept dependency-free (React only)

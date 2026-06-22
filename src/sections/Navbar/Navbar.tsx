@@ -1,7 +1,8 @@
 'use client';
-import { useState, useRef } from 'react';
-import type { ReactNode } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import { Frame } from '../../lib/Frame';
+import { ColorSchemeToggle } from '../../lib/ColorSchemeToggle';
 import { Overlay } from '../../components/internal';
 import { SectionActions, SectionActionButton, type SectionBaseProps, type SectionAction } from '../../lib/SectionShell';
 
@@ -115,8 +116,96 @@ function SheetLinks({ links, actions, onClose }: {
   );
 }
 
+/**
+ * The primary-nav links with an animated active indicator: a pill that slides to
+ * the hovered link and rests on the one matching the current route. Route-aware
+ * with no router dependency — it reads `location.pathname` on mount (an explicit
+ * `activeHref` wins). Falls back gracefully (indicator hidden) when nothing
+ * matches or before hydration.
+ */
+function NavLinks({ links, activeHref }: { links: NavbarLink[]; activeHref?: string }) {
+  const wrapRef = useRef<HTMLElement>(null);
+  const [active, setActive] = useState<string | null>(activeHref ?? null);
+  const [ind, setInd] = useState<{ x: number; w: number; show: boolean }>({ x: 0, w: 0, show: false });
+
+  useEffect(() => {
+    if (activeHref !== undefined) { setActive(activeHref); return; }
+    if (typeof window === 'undefined') return;
+    const path = window.location.pathname;
+    const exact = links.find((l) => typeof l.href === 'string' && l.href === path);
+    const nested = links.find((l) => typeof l.href === 'string' && l.href !== '/' && path.startsWith(l.href));
+    setActive((exact ?? nested)?.href ?? null);
+  }, [links, activeHref]);
+
+  const move = useCallback((el: HTMLElement | null) => {
+    const wrap = wrapRef.current;
+    if (!wrap || !el) return;
+    const w = wrap.getBoundingClientRect();
+    const r = el.getBoundingClientRect();
+    setInd({ x: r.left - w.left, w: r.width, show: true });
+  }, []);
+
+  const rest = useCallback(() => {
+    const el = wrapRef.current?.querySelector<HTMLElement>('[data-active="true"]');
+    if (el) move(el);
+    else setInd((s) => ({ ...s, show: false }));
+  }, [move]);
+
+  // Settle the indicator on the active link whenever it (or the link set) changes.
+  useEffect(() => { rest(); }, [active, links, rest]);
+
+  return (
+    <nav className="rdz-nav__links" ref={wrapRef} onMouseLeave={rest}>
+      <span className="rdz-nav__ind" aria-hidden="true" data-show={ind.show ? 'true' : 'false'} style={{ '--nav-x': `${ind.x}px`, '--nav-w': `${ind.w}px` } as CSSProperties} />
+      {links.map((link, i) => (
+        <a
+          key={i}
+          href={link.href}
+          data-active={active === link.href ? 'true' : undefined}
+          aria-current={active === link.href ? 'page' : undefined}
+          onMouseEnter={(e) => move(e.currentTarget)}
+          onFocus={(e) => move(e.currentTarget)}
+        >
+          {link.label}
+        </a>
+      ))}
+    </nav>
+  );
+}
+
+/**
+ * NavbarA — the default top nav: a compact, floating **glass pill** that re-themes
+ * with the accent. A preset over `NavCore` with the animated route-aware active
+ * indicator and a built-in light/dark toggle switched on. Collapses links into a
+ * burger sheet on narrow widths. `activeHref` overrides route auto-detection.
+ */
+export function NavbarA({ brand, links, actions, children, activeHref }: NavbarProps & { activeHref?: string }) {
+  return (
+    <NavCore
+      brand={brand}
+      links={links}
+      actions={actions}
+      activeHref={activeHref}
+      animatedLinks
+      showToggle
+      frameClassName="nav-section rdz-nav__frame"
+      padClassName="s-pad-sm"
+      barClassName="rdz-nav rdz-nav--pill"
+      brandRowClassName="sx-nav__brand-row-sm"
+      logoClassName="sx-nav__logo-md"
+      glyphClassName="sx-nav__logo-glyph-md"
+      endClassName="rdz-nav__end"
+      actionSize="sm"
+    >
+      {children}
+    </NavCore>
+  );
+}
+
 /** Shared bar + burger + NavSheet wiring, parameterized by the per-variant
- * classes and action size. NavbarA/B/C are thin presets over this. */
+ * classes, action size, and two behavioural toggles (animated active links, a
+ * color-scheme toggle). NavbarA/B/C are thin presets over this — one core owns
+ * the open-state + sheet + brand + actions machinery, so it lives in one place. */
 function NavCore({
   brand,
   links,
@@ -131,6 +220,10 @@ function NavCore({
   glyphClassName,
   actionSize,
   footer,
+  endClassName = 'nav-bar__cta',
+  animatedLinks = false,
+  showToggle = false,
+  activeHref,
 }: {
   brand: NavbarBrand;
   links?: NavbarLink[];
@@ -145,6 +238,14 @@ function NavCore({
   glyphClassName: string;
   actionSize?: 'sm' | 'md' | 'lg';
   footer?: ReactNode;
+  /** Class on the right-hand cluster (toggle + actions + burger). */
+  endClassName?: string;
+  /** Render links with the sliding active indicator (`NavLinks`) vs plain links. */
+  animatedLinks?: boolean;
+  /** Ship a light/dark `ColorSchemeToggle` in the cluster. */
+  showToggle?: boolean;
+  /** Explicit active route for the indicator (else auto-detected). */
+  activeHref?: string;
 }) {
   const [open, setOpen] = useState(false);
   const burgerRef = useRef<HTMLButtonElement>(null);
@@ -159,13 +260,18 @@ function NavCore({
                   <BrandLockup brand={brand} logoClassName={logoClassName} glyphClassName={glyphClassName} />
                 </div>
                 {links && links.length > 0 && (
-                  <nav className="nav-bar__links">
-                    {links.map((link, i) => (
-                      <a key={i} href={link.href}>{link.label}</a>
-                    ))}
-                  </nav>
+                  animatedLinks ? (
+                    <NavLinks links={links} activeHref={activeHref} />
+                  ) : (
+                    <nav className="nav-bar__links">
+                      {links.map((link, i) => (
+                        <a key={i} href={link.href}>{link.label}</a>
+                      ))}
+                    </nav>
+                  )
                 )}
-                <div className="nav-bar__cta">
+                <div className={endClassName}>
+                  {showToggle && <ColorSchemeToggle />}
                   <BarActions actions={actions} size={actionSize} />
                   <button
                     ref={burgerRef}
@@ -187,24 +293,6 @@ function NavCore({
       </div>
       {footer}
     </Frame>
-  );
-}
-
-export function NavbarA({ brand, links, actions, children }: NavbarProps) {
-  return (
-    <NavCore
-      brand={brand}
-      links={links}
-      actions={actions}
-      frameClassName="nav-section"
-      padClassName="s-pad-sm"
-      barClassName="nav-bar"
-      brandRowClassName="sx-nav__brand-row"
-      logoClassName="sx-nav__logo"
-      glyphClassName="sx-nav__logo-glyph"
-    >
-      {children}
-    </NavCore>
   );
 }
 

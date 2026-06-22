@@ -11,6 +11,16 @@ read-only dependency.
 - **Discover components** in `node_modules/raditz/catalog/llms.txt`.
 - Dark mode is wired in `src/ThemeRuntime.tsx` (`useColorScheme`).
 
+## Composing a page
+- **Sections are edge-to-edge (full-bleed) by default** — each brings its own inner
+  gutters, so you just stack them. `src/App.tsx` wraps everything once in
+  `<div className="rdz-page">`, which pins the `Navbar` sticky.
+- A page is an ordered list of sections (`<NavbarA/> <HeroA/> … <FooterA/>`). Don't
+  hand-roll page padding — sections bring their own. **No inline `style` for layout;**
+  use `Container`/`Section`/`Grid`/`Stack`.
+- For a **bespoke full-bleed band**, use `SectionShell` (`background`/`image`/`scrim` +
+  children) rather than raw layout classes.
+
 ## Brand / theming
 - This project's tokens live in `src/theme.css` (imported AFTER `raditz/styles.css`).
   Set your accent by repointing the `--accent-1..12` ramp (built-in Radix scale or a

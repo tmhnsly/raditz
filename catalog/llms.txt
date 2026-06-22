@@ -7,6 +7,27 @@ component that exists here, and never edit `node_modules/raditz`.
 - Import the stylesheet ONCE at the app root: `import 'raditz/styles.css'`.
 - Props below are the component-specific API; standard HTML attributes also pass through.
 
+## Composing a page
+
+A page is an ordered list of sections (`<NavbarA/> <HeroA/> … <FooterA/>`). Sections
+are **edge-to-edge by default** — full-bleed bands, each bringing its own inner gutter
++ max-width — so you just stack them; never hand-roll page padding or inline `style`
+for layout. Wrap the app once in `<div className="rdz-page">` to pin the `Navbar`
+sticky (the next/vite templates already do). For a bespoke full-bleed band that is NOT
+one of the canned sections, use `SectionShell` (`background`/`image`/`scrim` + children)
+instead of reaching for raw layout classes.
+
+BACKGROUND RHYTHM — choose section `background`s for FLOW, not decoration. Give the hero
+the media (`image`+`scrim`) or one gradient; keep most content sections `none`/`surface`
+(alternating subtly); reserve a gradient or accent band (e.g. `StatsB`) for ONE mid-page
+emphasis plus the closing CTA. NEVER stack two different gradients adjacent — it reads as
+random "willy-nilly" backgrounds rather than a designed page.
+
+HERO BLEED — add `rdz-bleed` next to `rdz-page` so the nav floats over the first section
+and the hero background reaches the very top (no nav "band"). On an `image`+`scrim` hero,
+text goes on-dark (white) automatically; use the `glass` or default (accent) button — and
+`secondary` now stays legible over media too, so no CTA goes invisible on a photo.
+
 143 exported components across 17 categories.
 
 ## utilities (CSS classes)
@@ -978,13 +999,11 @@ Usage:
 ## lib
 
 ### useColorScheme
-Import: `import { ColorPreference, ColorScheme, useColorScheme } from 'raditz'`
+Import: `import { useColorScheme } from 'raditz'`
 
 Utility module — see exports below.
 
 Exports:
-  - ColorPreference
-  - ColorScheme
   - useColorScheme
 
 > Note: This is a utility/hook module, not a React component — do not render as JSX.
@@ -1650,6 +1669,7 @@ Props:
   - heading?: ReactNode (default: Scroll-reveal entrances) — Section heading.
   - image?: string
   - parallax?: boolean
+  - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
   - video?: string
 
 Examples (Storybook stories): A_ScrollReveal, B_TitleAndText, C_IconMotion, D_PresetCards
@@ -1670,6 +1690,7 @@ Props:
   - heading?: ReactNode (default: Title & text animations) — Section heading.
   - image?: string
   - parallax?: boolean
+  - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
   - video?: string
 
 Examples (Storybook stories): A_ScrollReveal, B_TitleAndText, C_IconMotion, D_PresetCards
@@ -1690,6 +1711,7 @@ Props:
   - heading?: ReactNode (default: Animated icons) — Section heading.
   - image?: string
   - parallax?: boolean
+  - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
   - video?: string
 
 Examples (Storybook stories): A_ScrollReveal, B_TitleAndText, C_IconMotion, D_PresetCards
@@ -1710,6 +1732,7 @@ Props:
   - heading?: ReactNode (default: Preset cards) — Section heading.
   - image?: string
   - parallax?: boolean
+  - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
   - video?: string
 
 Examples (Storybook stories): A_ScrollReveal, B_TitleAndText, C_IconMotion, D_PresetCards
@@ -1731,6 +1754,7 @@ Props:
   - dismissible?: boolean — Show a dismiss (×) affordance.
   - image?: string
   - parallax?: boolean
+  - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
   - text: ReactNode — Banner body text (required).
   - video?: string
 
@@ -1753,6 +1777,7 @@ Props:
   - dismissible?: boolean — Show a dismiss (×) affordance.
   - image?: string
   - parallax?: boolean
+  - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
   - text: ReactNode — Banner body text (required).
   - video?: string
 
@@ -1775,6 +1800,7 @@ Props:
   - image?: string
   - parallax?: boolean
   - posts: { title: ReactNode; href?: string | undefined; excerpt?: ReactNode; image?: ReactNode; date?: ReactNode; tag?: ReactNode; }[] — Blog posts to render (required).
+  - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
   - video?: string
 
 Examples (Storybook stories): A_CardGrid, B_EditorialList
@@ -1796,6 +1822,7 @@ Props:
   - image?: string
   - parallax?: boolean
   - posts: { title: ReactNode; href?: string | undefined; excerpt?: ReactNode; image?: ReactNode; date?: ReactNode; tag?: ReactNode; }[] — Blog posts to render (required).
+  - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
   - video?: string
 
 Examples (Storybook stories): A_CardGrid, B_EditorialList
@@ -1818,6 +1845,7 @@ Props:
   - image?: string
   - parallax?: boolean
   - rows: { feature: ReactNode; values: ReactNode[]; }[] — Feature rows (required). `values` aligns positionally 1:1 with `columns`: `row.values[i]` is the cell for `columns[i]` (same length, same order). `true` → check glyph; `false` → cross/em-dash; any ReactNode → rendered as-is.
+  - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
   - video?: string
 
 Examples (Storybook stories): A_PlansFeatures
@@ -1840,6 +1868,7 @@ Props:
   - emailCapture?: { placeholder?: string; action: SectionAction; } — Inline email-capture form (CtaB).
   - image?: string
   - parallax?: boolean
+  - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
   - sub?: ReactNode — Sub-text / tagline under the title.
   - title: ReactNode — Headline (required).
   - video?: string
@@ -1864,6 +1893,7 @@ Props:
   - emailCapture?: { placeholder?: string; action: SectionAction; } — Inline email-capture form (CtaB).
   - image?: string
   - parallax?: boolean
+  - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
   - sub?: ReactNode — Sub-text / tagline under the title.
   - title: ReactNode — Headline (required).
   - video?: string
@@ -1887,6 +1917,7 @@ Props:
   - image?: string
   - items: { question: ReactNode; answer: ReactNode; }[] — FAQ items (required).
   - parallax?: boolean
+  - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
   - video?: string
 
 Examples (Storybook stories): A_Accordion, B_TwoColumn
@@ -1908,6 +1939,7 @@ Props:
   - image?: string
   - items: { question: ReactNode; answer: ReactNode; }[] — FAQ items (required).
   - parallax?: boolean
+  - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
   - video?: string
 
 Examples (Storybook stories): A_Accordion, B_TwoColumn
@@ -1932,6 +1964,7 @@ Props:
   - image?: string
   - items: FeaturesItem[] — Feature cards (required).
   - parallax?: boolean
+  - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
   - video?: string
 
 Examples (Storybook stories): A_IconCards, B_BentoGrid, C_AlternatingSpotlight, D_CenteredHeading, E_ScrollReveal
@@ -1956,6 +1989,7 @@ Props:
   - image?: string
   - items: FeaturesItem[] — Feature cards (required).
   - parallax?: boolean
+  - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
   - video?: string
 
 Examples (Storybook stories): A_IconCards, B_BentoGrid, C_AlternatingSpotlight, D_CenteredHeading, E_ScrollReveal
@@ -1980,6 +2014,7 @@ Props:
   - image?: string
   - items: FeaturesItem[] — Feature cards (required).
   - parallax?: boolean
+  - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
   - video?: string
 
 Examples (Storybook stories): A_IconCards, B_BentoGrid, C_AlternatingSpotlight, D_CenteredHeading, E_ScrollReveal
@@ -2002,6 +2037,7 @@ Props:
   - copyright?: ReactNode — Copyright text rendered by FooterB.
   - image?: string
   - parallax?: boolean
+  - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
   - video?: string
 
 Examples (Storybook stories): A_MultiColumn, B_MinimalBar
@@ -2024,6 +2060,7 @@ Props:
   - copyright?: ReactNode — Copyright text rendered by FooterB.
   - image?: string
   - parallax?: boolean
+  - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
   - video?: string
 
 Examples (Storybook stories): A_MultiColumn, B_MinimalBar
@@ -2047,6 +2084,7 @@ Props:
   - lede?: ReactNode — Lead paragraph under the title.
   - media?: ReactNode — Media slot (used by the split/full-bleed variants).
   - parallax?: boolean
+  - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
   - title: ReactNode — Headline (required).
   - video?: string
 
@@ -2071,6 +2109,7 @@ Props:
   - lede?: ReactNode — Lead paragraph under the title.
   - media?: ReactNode — Media slot (used by the split/full-bleed variants).
   - parallax?: boolean
+  - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
   - title: ReactNode — Headline (required).
   - video?: string
 
@@ -2095,6 +2134,7 @@ Props:
   - lede?: ReactNode — Lead paragraph under the title.
   - media?: ReactNode — Media slot (used by the split/full-bleed variants).
   - parallax?: boolean (default: true)
+  - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
   - title: ReactNode — Headline (required).
   - video?: string
 
@@ -2117,6 +2157,7 @@ Props:
   - items: ReactNode[] — Scrolling items (logos, chips, etc.).
   - label?: ReactNode — Optional caption above the strip (e.g. a "trusted by" line).
   - parallax?: boolean
+  - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
   - video?: string
 
 Examples (Storybook stories): A_LogoStrip
@@ -2129,14 +2170,18 @@ Usage:
 ### NavbarA
 Import: `import { NavbarA } from 'raditz'`
 
+NavbarA — the default top nav: a compact, floating **glass pill** that re-themes with the accent. A preset over `NavCore` with the animated route-aware active indicator and a built-in light/dark toggle switched on. Collapses links into a burger sheet on narrow widths. `activeHref` overrides route auto-detection.
+
 Props:
   - actions?: SectionAction[] — Call-to-action buttons.
+  - activeHref?: string
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh"
   - brand: NavbarBrand — Brand lockup (required).
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
   - image?: string
   - links?: NavbarLink[] — Primary nav links.
   - parallax?: boolean
+  - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
   - video?: string
 
 Examples (Storybook stories): A_LogoLinksCTAs, A_NoLogoFallback, B_GlassCentered, C_MobileDropdown, D_BottomTabBar
@@ -2157,6 +2202,7 @@ Props:
   - image?: string
   - links?: NavbarLink[] — Primary nav links.
   - parallax?: boolean
+  - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
   - video?: string
 
 Examples (Storybook stories): A_LogoLinksCTAs, A_NoLogoFallback, B_GlassCentered, C_MobileDropdown, D_BottomTabBar
@@ -2177,6 +2223,7 @@ Props:
   - image?: string
   - links?: NavbarLink[] — Primary nav links.
   - parallax?: boolean
+  - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
   - video?: string
 
 Examples (Storybook stories): A_LogoLinksCTAs, A_NoLogoFallback, B_GlassCentered, C_MobileDropdown, D_BottomTabBar
@@ -2215,6 +2262,7 @@ Props:
   - image?: string
   - parallax?: boolean
   - placeholder?: string — Input placeholder text.
+  - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
   - sub?: ReactNode — Card sub-text.
   - title?: ReactNode — Card heading.
   - video?: string
@@ -2238,6 +2286,7 @@ Props:
   - image?: string
   - message?: ReactNode — Body copy.
   - parallax?: boolean
+  - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
   - title?: ReactNode (default: 'Page not found') — Page heading.
   - video?: string
 
@@ -2260,6 +2309,7 @@ Props:
   - heading?: ReactNode
   - image?: string
   - parallax?: boolean
+  - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
   - sub?: ReactNode
   - tiers: PricingTier[] — Tiers to render as cards.
   - video?: string
@@ -2283,6 +2333,7 @@ Props:
   - heading?: ReactNode
   - image?: string
   - parallax?: boolean
+  - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
   - sub?: ReactNode
   - tiers: PricingTier[] — Tiers to render as cards.
   - video?: string
@@ -2306,6 +2357,7 @@ Props:
   - label?: ReactNode — Caption label (e.g. "Trusted by teams at").
   - logos: { name: ReactNode; src?: string | undefined; node?: ReactNode; }[] — Logos/brand names to display (required).
   - parallax?: boolean
+  - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
   - video?: string
 
 Examples (Storybook stories): A_LogoRow, B_HeadingLogos
@@ -2327,6 +2379,7 @@ Props:
   - label?: ReactNode — Caption label (e.g. "Trusted by teams at").
   - logos: { name: ReactNode; src?: string | undefined; node?: ReactNode; }[] — Logos/brand names to display (required).
   - parallax?: boolean
+  - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
   - video?: string
 
 Examples (Storybook stories): A_LogoRow, B_HeadingLogos
@@ -2348,6 +2401,7 @@ Props:
   - heading?: ReactNode — Optional section heading.
   - image?: string
   - parallax?: boolean
+  - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
   - stats: StatItem[] — Stat cells (required).
   - video?: string
 
@@ -2370,6 +2424,7 @@ Props:
   - heading?: ReactNode — Optional section heading.
   - image?: string
   - parallax?: boolean
+  - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
   - stats: StatItem[] — Stat cells (required).
   - video?: string
 
@@ -2392,6 +2447,7 @@ Props:
   - image?: string
   - members: { name: ReactNode; role?: ReactNode; avatar?: ReactNode; bio?: ReactNode; }[] — Team members to render (required).
   - parallax?: boolean
+  - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
   - video?: string
 
 Examples (Storybook stories): A_MemberGrid
@@ -2413,6 +2469,7 @@ Props:
   - image?: string
   - parallax?: boolean
   - quotes: Testimonial[] — Testimonial entries (required).
+  - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
   - video?: string
 
 Examples (Storybook stories): A_ScrollSnap
@@ -2434,6 +2491,7 @@ Props:
   - image?: string
   - parallax?: boolean
   - quotes: Testimonial[] — Testimonial entries (required).
+  - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
   - video?: string
 
 Examples (Storybook stories): A_QuoteCards, B_SingleQuote
@@ -2455,6 +2513,7 @@ Props:
   - image?: string
   - parallax?: boolean
   - quotes: Testimonial[] — Testimonial entries (required).
+  - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
   - video?: string
 
 Examples (Storybook stories): A_QuoteCards, B_SingleQuote

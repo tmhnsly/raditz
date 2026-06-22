@@ -25,7 +25,11 @@ function walk(dir, out = []) {
   for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
     const p = path.join(dir, e.name);
     if (e.isDirectory()) walk(p, out);
-    else if (e.name.endsWith('.tsx') && !e.name.endsWith('.stories.tsx') && !e.name.endsWith('.test.tsx')) out.push(p);
+    // .ts and .tsx both: hook-bearing internals (e.g. primitiveUtils.ts exporting
+    // useControllableState) are plain .ts but get re-exported through the barrel,
+    // so a consumer's Server Component pulls them into the RSC graph. The CLIENT_RE
+    // gate leaves pure-util .ts (format.ts, scale.ts) as server components.
+    else if (/\.tsx?$/.test(e.name) && !/\.(stories|test)\.tsx?$/.test(e.name) && !e.name.endsWith('.d.ts')) out.push(p);
   }
   return out;
 }

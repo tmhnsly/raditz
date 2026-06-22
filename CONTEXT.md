@@ -160,12 +160,17 @@ own wrap. Defaults preserve each section's current look, so a build can mix cent
 sections for page rhythm.
 _Avoid_: per-section eyebrow+heading duplication.
 
-**Section variant cores** (internal seams, deepened 2026-06-21):
+**Section variant cores** (internal seams, deepened 2026-06-21; NavCore re-unified 2026-06-22):
 `NavCore` (shared by NavbarA/B/C; NavbarD is its own thing), `TierCard`
 (PricingA/B — reuses `SectionActionButton`), and `LogoMark` (SocialProofA/B)
 collapse the variant clones: one core to fix, variants are thin **presets**.
-These are private internal seams — not exported.
-_Avoid_: copy-paste variant bodies.
+These are private internal seams — not exported. `NavCore`'s interface carries
+two **behavioural** toggles, not just class strings — `animatedLinks` (render the
+sliding active indicator `NavLinks` vs plain links) and `showToggle` (ship a
+`ColorSchemeToggle`) — so the glass-pill `NavbarA` (default) is a preset that
+switches them on, NOT a fork. (It briefly forked when the pill was added; the
+open-state + sheet + burger wiring is back in one core.)
+_Avoid_: copy-paste variant bodies; forking a variant when the core only varies CSS — widen the core's interface instead.
 
 **Palette-resolution** (deepened 2026-06-21; interface 2026-06-22):
 `themeVars(state)` in `lib/theme` is the pure accent→CSS-var map (gray pairing, the
@@ -240,13 +245,19 @@ concept's roles. _Avoid_: `--surface-info`, `--surface-success`.
 ### Theming (deepened 2026-06-19)
 
 **Color-scheme**:
-Light vs dark resolution — the `useColorScheme` hook (`src/lib`, framework primitive
-for any project). Starts from the OS (`prefers-color-scheme`) and **live-follows**
-it; a toggle sets an explicit override that wins over the OS; toggling back to the
-OS's current value clears the override (so we follow the system again). Only an
-explicit override is persisted (`rdz-color-scheme`), so a fresh project honours the
-OS until the user opts in. Drives `class="dark"` on the root.
-_Avoid_: `useDarkMode` (removed — a boolean can't express "follow system").
+Light vs dark resolution — one rule (explicit stored choice wins, else follow the OS
+via `prefers-color-scheme` and **live-follow** it; toggling back to the OS's current
+value clears the override; only an override is persisted under `rdz-color-scheme`),
+behind **two faces** that share the key/query/precedence in `lib/colorScheme.ts`
+(server-safe, no `'use client'`):
+- the **runtime** face `useColorScheme` (`src/lib`) — a shared singleton store
+  (`useSyncExternalStore`, resets on zero subscribers) so a `ThemeRuntime` default-setter
+  and any nav `ColorSchemeToggle` stay in sync instead of fighting `class="dark"`.
+- the **pre-paint** face `colorSchemeScript(defaultScheme)` — the no-flash `<head>`
+  string, so the SSR flash-guard can't drift from the runtime rule. Templates/products
+  call it instead of hand-writing the IIFE.
+_Avoid_: `useDarkMode` (removed — a boolean can't express "follow system"); a second
+copy of the resolution rule as an inline script string.
 
 **Surface context**:
 How a region declares its colour context. Two named contexts:
@@ -286,8 +297,10 @@ All 18 marketing sections (`Hero`, `Features`, `Pricing`, `Footer`, `Cta`, `Stat
 content-driven: pass real copy via props, not via child JSX or placeholder literals.
 
 **Content model** (one interface per section type, shared by all its variants):
-- `SectionBaseProps` — `background`, `parallax`, `image`, `video`, `children`
-  (the optional override slot).
+- `SectionBaseProps` — `background`, `parallax`, `image`, `video`, `scrim`, `children`
+  (the optional override slot). `scrim` darkens an `image`/`video`/gradient backdrop
+  and switches content to on-dark tokens — required to use `image` as a legible
+  full-bleed section background behind copy.
 - `SectionAction` — `{ label, href?, onClick?, variant?, size?, icon? }` (shared by
   every section that emits buttons).
 - Per-section required essentials (e.g. `HeroProps.title`) + optional rest
@@ -302,6 +315,39 @@ content-driven: pass real copy via props, not via child JSX or placeholder liter
 Demo copy lives exclusively in stories (`.stories.tsx`); the components carry no
 placeholder strings. Specs + implementation plans: `docs/superpowers/specs/` +
 `docs/superpowers/plans/`.
+
+### Page composition & nav (revised 2026-06-22; preview-frame inverted 2026-06-22)
+
+- **Preview-frame seam (inverted).** `Frame` is now **flat / edge-to-edge by default** —
+  the real-page case, so composing a page needs no incantation and a forgotten wrapper
+  no longer makes every section look like a rounded card. The bordered, rounded, shadowed
+  catalog "card" is **opt-in** preview chrome via **`.rdz-preview`**, added by the explorer's
+  variant wrapper (`StoryView`) and the Storybook decorator. `.rdz-page` no longer *flattens*
+  anything; it just pins the nav sticky and tidies page rhythm (`.rdz-page .frame` stays
+  explicitly flat so a page previewed inside `.rdz-preview` wins). The next/vite templates
+  still wrap in `.rdz-page` for the sticky nav.
+- **`NavbarA` is the default nav** and a **preset** over `NavCore` (see Section variant
+  cores): a compact floating **glass pill** (transparent frame, blurred) with the animated
+  route-aware active indicator (`NavLinks`, reads `location.pathname` or an `activeHref`
+  prop) and a built-in `ColorSchemeToggle`. NavbarB/C/D unchanged.
+- **Bespoke full-bleed bands** in a product use **`SectionShell`** (`background`/`image`/
+  `scrim` + arbitrary children) — it owns the `.s-pad`/`.s-wrap` padding+container so a
+  product never hand-writes those internal layout classes.
+- **Hero bleed (`.rdz-bleed`, added 2026-06-22)**: add `rdz-bleed` alongside `rdz-page` to
+  float the nav (fixed) over the first section so the hero background reaches the very top —
+  no nav "band". The first section gets top clearance (`--rdz-bleed-top`); anchored sections
+  get `scroll-margin-top`. Opt-in (fixed escapes an in-explorer page preview, so the sticky
+  default stays for previews).
+- **Buttons over media (fixed 2026-06-22)**: under `.rdz-on-dark` (a `scrim`'d section),
+  `primary` (accent), `soft`, `outline` and `glass` already stay legible; `secondary` used
+  to vanish (its `--text` fill went white over a `--bg` ink that stays light) — it now
+  renders as a solid white pill with dark ink. So no CTA goes invisible on a photo; `glass`
+  remains the premium over-media button.
+- **Background rhythm** (a build-time discipline, not a component): choose section
+  `background`s for FLOW — hero gets the media/one gradient, content sections stay
+  `none`/`surface`, reserve a gradient or accent band for ONE mid-page emphasis + the closing
+  CTA. Never two different gradients adjacent. Documented in the catalog header so every
+  Raditz build sees it. See [[design-aesthetic-fullbleed]].
 
 ### Animation (added 2026-06-21)
 

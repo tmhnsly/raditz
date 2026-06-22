@@ -1,14 +1,19 @@
 /* ─────────────────────────────────────────────────────────────────────────
-   Project theme — set YOUR brand here. Imported AFTER raditz/styles.css in
-   app/layout.tsx, so these win. Everything derives from --accent-1..12
+   Project theme — set YOUR brand here. Everything derives from --accent-1..12
    (--accent = step 9).
 
-   Built-in Radix accent (auto light/dark):
-     :root { --accent-1: var(--iris-1); … --accent-12: var(--iris-12); }
-   Custom brand hue — provide 12 steps for :root AND .dark, and set --on-accent.
+   Use the `:root:root` selector (NOT plain `:root`). Next.js doesn't always keep
+   this file after raditz/styles.css in the built bundle, so a plain `:root`
+   override can load first and lose to raditz's defaults. Doubling the selector
+   wins on specificity regardless of bundle order.
+
+   Built-in Radix accent (auto light/dark) — pick a scale and repoint all 12:
+     :root:root { --accent-1: var(--grass-1); … --accent-12: var(--grass-12); }
+   Custom brand hue — provide 12 steps for :root:root AND .dark, and set --on-accent.
    Override any other token here too (--radius-factor, --font-display, …).
-   NOTE: the runtime picker (useTheme) writes inline accent styles that beat
-   this file — for picker + brand, use useTheme({ accent: … }) instead.
+   NOTE: the runtime picker (useTheme) writes inline accent styles that beat this
+   file — for picker + brand, use useTheme({ accent: … }) instead.
    ───────────────────────────────────────────────────────────────────────── */
 
-/* Default: inherit Raditz's cyan brand. Replace with your accent above. */
+/* Default: inherit Raditz's cyan brand. Replace with your accent above, e.g.:
+   :root:root { --accent-1: var(--iris-1); --accent-2: var(--iris-2);  … --accent-12: var(--iris-12); } */

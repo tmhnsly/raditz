@@ -4,11 +4,18 @@
    from Raditz tokens, so sections re-skin and re-theme with the system.
    ────────────────────────────────────────────────────────────────────────── */
 
-/* a frame to preview a section inside (used by stories + the catalog) */
-.frame { background: var(--bg); border: 1px solid var(--surface-edge); border-radius: var(--radius-card); overflow: hidden; box-shadow: var(--shadow-2); max-width: var(--rdz-frame-maxw); }
+/* Frame is FLAT / edge-to-edge by DEFAULT — the real-page case, so composing a
+   page needs no incantation. The bordered, rounded, shadowed catalog "card" is
+   the preview chrome, opt-in via .rdz-preview (added by the explorer's variant
+   wrapper + the Storybook decorator). This inverts the old default, where Frame
+   always framed and .rdz-page had to undo it (forgetting that made every section
+   look like a card). */
+.frame { background: var(--bg); overflow: hidden; max-width: var(--rdz-frame-maxw); }
+.rdz-preview .frame { border: 1px solid var(--surface-edge); border-radius: var(--radius-card); box-shadow: var(--shadow-2); }
 
-/* A real page composed from sections: flatten the preview frame so sections
-   stack seamlessly edge-to-edge instead of as separate cards. */
+/* A real page composed from sections stacks seamlessly edge-to-edge. Listed AFTER
+   .rdz-preview .frame (equal specificity) so a page previewed inside .rdz-preview
+   still wins flat. */
 .rdz-page { background: var(--bg); }
 .rdz-page .frame { border: 0; border-radius: 0; box-shadow: none; }
 /* In a composed page the navbar pins to the top; its panel bg covers content
@@ -16,6 +23,20 @@
 .rdz-page .nav-section { position: sticky; top: 0; z-index: var(--z-nav); }
 .rdz-page .variant { margin: 0; }
 .rdz-page .variant__tag { display: none; }
+
+/* Hero bleed (opt-in): add `rdz-bleed` alongside `rdz-page` to FLOAT the nav over
+   the first section, so the hero's full-bleed background (image or gradient)
+   reaches the very top of the viewport behind the transparent glass nav — no
+   separate nav "band". The nav becomes fixed (overlay) and the first section gets
+   top padding to clear it. Listed after the sticky rule so it wins when both
+   classes are present. Use in a real app — NOT for an in-explorer full-page
+   preview, where `fixed` would escape the preview frame (the sticky default suits
+   previews). Override `--rdz-bleed-top` to tune the hero's top clearance. */
+.rdz-bleed { --rdz-bleed-top: clamp(9rem, 13vw, 12rem); }
+.rdz-bleed .nav-section { position: fixed; top: 0; left: 0; right: 0; z-index: var(--z-nav); }
+.rdz-bleed .nav-section + * .s-pad { padding-top: var(--rdz-bleed-top); padding-bottom: clamp(5rem, 9vw, 8rem); }
+/* Anchored sections clear the fixed nav when jumped to. */
+.rdz-bleed [id] { scroll-margin-top: 6rem; }
 
 /* section internals — shared helpers */
 /* container-type on the padding wrapper makes the responsive grids respond to the
@@ -108,9 +129,55 @@
 /* Collapse links into the burger before they crowd the brand/CTA — 720px gives
    the nav room to breathe instead of cramming links until it's truly tiny. */
 @container (max-width: 720px) {
-  .nav-bar__links, .nav-hide-sm { display: none; }
+  .nav-bar__links, .rdz-nav__links, .nav-hide-sm { display: none; }
   .nav-bar__burger { display: inline-flex; }
 }
+
+/* ── Navbar A — floating glass pill with an animated active indicator ──
+   The frame is transparent so the pill floats over the page; in .rdz-page the
+   nav-section pins sticky and the glass blurs content scrolling beneath it. */
+.rdz-nav { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); }
+.rdz-nav--pill {
+  padding: 0.4375rem 0.4375rem 0.4375rem var(--space-4);
+  background: var(--glass);
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-sheen);
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-3);
+}
+.rdz-nav__frame { background: none; border-color: transparent; box-shadow: none; }
+.rdz-nav__end { display: flex; align-items: center; gap: var(--space-2); }
+
+/* links + sliding indicator */
+.rdz-nav__links { position: relative; display: flex; align-items: center; gap: var(--space-1); }
+.rdz-nav__links > a {
+  position: relative; z-index: 1; padding: 0.4375rem 0.8125rem; border-radius: var(--radius-full);
+  font-size: var(--fs-body-s); font-weight: var(--fw-medium); color: var(--text-soft);
+  text-decoration: none; white-space: nowrap; transition: color var(--duration-fast) var(--ease-standard);
+}
+.rdz-nav__links > a:hover { color: var(--text); }
+.rdz-nav__links > a[data-active="true"] { color: var(--accent-ink); }
+.rdz-nav__ind {
+  position: absolute; left: 0; top: 50%; z-index: 0;
+  width: var(--nav-w, 0); height: 2rem;
+  transform: translate(var(--nav-x, 0), -50%);
+  border-radius: var(--radius-full); background: var(--accent-surface);
+  transition: transform 0.28s var(--ease-standard), width 0.28s var(--ease-standard), opacity 0.2s var(--ease-standard);
+  pointer-events: none;
+}
+.rdz-nav__ind[data-show="false"] { opacity: 0; }
+@media (prefers-reduced-motion: reduce) { .rdz-nav__ind { transition: opacity 0.2s; } }
+
+/* light/dark toggle button (ships in NavbarA by default) */
+.rdz-scheme-toggle {
+  display: inline-flex; align-items: center; justify-content: center; flex: none;
+  width: 2.25rem; height: 2.25rem; border: 1px solid var(--rule); background: var(--panel);
+  border-radius: var(--radius-full); color: var(--text-soft); cursor: pointer; transition: var(--transition-control);
+}
+.rdz-scheme-toggle:hover { background: var(--surface); color: var(--text); }
+.rdz-scheme-toggle:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.rdz-scheme-toggle svg { width: 1.125rem; height: 1.125rem; }
 
 /* Bottom tab bar (iOS-style) — pinned to the bottom of an app frame; icon+label
    tabs with an accent active state. Glass surface like the top bar. */
@@ -231,7 +298,9 @@
 .sx-cta__input { display: inline-flex; align-items: center; width: 15rem; background: var(--panel); }
 
 /* ── Faq ── */
-.sx-faq__wrap { max-width: 45rem; margin-inline: auto; }
+/* Flex column with a gap so the heading isn't flush against the accordion (and
+   any custom children breathe). Was just a max-width box → cramped spacing. */
+.sx-faq__wrap { max-width: 45rem; margin-inline: auto; display: flex; flex-direction: column; gap: var(--space-6); }
 .sx-faq__item { gap: 0.375rem; }
 
 /* ── Features ── */

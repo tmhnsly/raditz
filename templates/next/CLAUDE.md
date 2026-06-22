@@ -14,6 +14,19 @@ read-only dependency.
   theme before paint; `app/theme-runtime.tsx` keeps it in sync.
 - `transpilePackages` is NOT needed — Raditz ships built output.
 
+## Composing a page
+- **Sections are edge-to-edge (full-bleed) by default** — each brings its own inner
+  gutter + max-width, so you just stack them. `app/layout.tsx` wraps everything once in
+  `<div className="rdz-page">`, which pins the `Navbar` sticky and tidies page rhythm.
+- A page is just an ordered list of sections (`<NavbarA/> <HeroA/> … <FooterA/>`).
+  Put shared chrome (Navbar, Footer) in `app/layout.tsx`; per-route content in
+  `app/<route>/page.tsx`. Don't hand-roll page padding — sections bring their own.
+- For a **bespoke full-bleed band** (not one of the canned sections), use `SectionShell`
+  (`background`/`image`/`scrim` + your children) — it owns the padding + constrained
+  container, so you never write internal layout classes yourself.
+- **No inline `style`/padding for layout.** Use the layout primitives
+  (`Container`, `Section`, `Grid`, `Stack`) and section components.
+
 ## Brand / theming
 - This project's tokens live in `app/theme.css` (imported AFTER `raditz/styles.css`).
   Set your accent by repointing `--accent-1..12` (a Radix scale or a custom hue);

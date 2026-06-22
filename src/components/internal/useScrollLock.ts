@@ -1,3 +1,4 @@
+'use client';
 import { useEffect } from 'react';
 
 // Overlay concern: lock body scroll (modal topologies). Re-exported by overlayHooks.ts.

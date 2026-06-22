@@ -15,6 +15,10 @@ export interface SectionVariantProps {
   parallax?: boolean;
   image?: string;
   video?: string;
+  /** Darken an `image`/`video`/gradient backdrop so overlaid text stays legible
+   *  (and content switches to on-dark tokens). Essential when using `image` as a
+   *  full-bleed section background behind copy. */
+  scrim?: boolean;
 }
 
 export interface SectionShellProps {

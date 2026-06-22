@@ -13,8 +13,10 @@ const withTheme: Decorator = (Story, context) => {
   }, [theme]);
   // Docs pages render many stories; don't force full-height padding there.
   const isDocs = context.viewMode === 'docs';
+  // .rdz-preview opts stories into the bordered preview "card" chrome (Frame is
+  // flat by default now — that's the real-page look).
   return (
-    <div style={{ padding: isDocs ? 0 : '1.5rem', background: 'var(--bg-subtle)', minHeight: isDocs ? undefined : '100vh' }}>
+    <div className="rdz-preview" style={{ padding: isDocs ? 0 : '1.5rem', background: 'var(--bg-subtle)', minHeight: isDocs ? undefined : '100vh' }}>
       <Story />
     </div>
   );

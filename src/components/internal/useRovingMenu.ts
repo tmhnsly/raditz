@@ -1,3 +1,4 @@
+'use client';
 import { useEffect, useCallback } from 'react';
 import type { Dispatch, SetStateAction, KeyboardEvent as ReactKeyboardEvent } from 'react';
 import { useRoving, KEYS } from './keyboard';

@@ -46,6 +46,22 @@
 .rdz-btn--ghost:hover { background: var(--surface); }
 
 
+/* Over media (the .rdz-on-dark scrim context), a neutral "solid" secondary button
+   would go invisible: its fill is var(--text) — repointed to white — over a var(--bg)
+   ink that stays light in light mode (white-on-white). Render it as a solid WHITE
+   pill with dark ink instead — the classic white-button-on-hero, legible in both
+   themes (the backdrop is always dark under a scrim). primary/soft/outline/glass
+   already survive; this closes the one gap so no button vanishes over an image. */
+.rdz-on-dark .rdz-btn--secondary {
+  background: var(--on-media);
+  color: var(--black-a12);
+  box-shadow: none;
+  border-color: transparent;
+}
+.rdz-on-dark .rdz-btn--secondary:hover { background: color-mix(in srgb, var(--on-media) 86%, transparent); }
+/* Keep the transparent variants' hover legible over media too (not a light flash). */
+.rdz-on-dark :is(.rdz-btn--outline, .rdz-btn--ghost):hover { background: var(--white-a4); }
+
 /* Frosted glass — translucent + blurred, for buttons over media/gradients
    (e.g. the Hero "Live demo" CTA, Lightbox controls). Shares the --glass* tokens
    with .rdz-glass so it re-themes with cards + chrome. */

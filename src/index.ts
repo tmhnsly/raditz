@@ -117,7 +117,9 @@ export * from './sections/TestimonialCarousel';
 export * from './sections/Testimonials';
 
 // ── lib (curated public primitives) ──
+export * from './lib/colorScheme';
 export * from './lib/useColorScheme';
+export * from './lib/ColorSchemeToggle';
 export * from './lib/ThemePicker';
 export * from './lib/theme';
 export * from './lib/hooks';

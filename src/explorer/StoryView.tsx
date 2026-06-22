@@ -46,7 +46,10 @@ function EntryBlock({ entry }: { entry: Entry }) {
       {entry.description && <p className="sec__desc">{entry.description}</p>}
       <LazyMount minHeight={180}>
         {entry.variants.map(({ id, name, Component }) => (
-          <div className="variant" key={id}>
+          // .rdz-preview opts this isolated preview into the bordered "card" chrome
+          // (Frame is flat by default for real pages); a page entry renders its own
+          // .rdz-page inside, which stays flat.
+          <div className={cx('variant', 'rdz-preview')} key={id}>
             {entry.variants.length > 1 && <span className="variant__tag">{name}</span>}
             <Component />
           </div>
