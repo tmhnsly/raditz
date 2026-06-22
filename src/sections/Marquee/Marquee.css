@@ -1,0 +1,11 @@
+/* Marquee — section styles (co-located with the component). */
+/* marquee section — now driven by the <Marquee> component (seamless loop); these
+   just style the logo items inside it. */
+.sx-mq { width: 100%; opacity: 0.7; }
+.sx-mq strong { font-size: 1.25rem; white-space: nowrap; }
+
+/* ── Marquee ── */
+.sx-mq__band { padding-top: var(--space-6); padding-bottom: var(--space-6); }
+.sx-mq__mono { font-family: var(--font-mono); }
+.sx-mq__italic { font-style: italic; }
+.sx-mq__tight { letter-spacing: -0.03em; }

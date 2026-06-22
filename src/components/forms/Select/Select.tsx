@@ -1,4 +1,5 @@
-import type { SelectHTMLAttributes, ReactElement, ReactNode } from 'react';
+import { forwardRef } from 'react';
+import type { SelectHTMLAttributes, ReactNode } from 'react';
 import { cx } from '../../internal';
 
 export interface SelectOption { value: string; label: string; }
@@ -12,12 +13,16 @@ export interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
 
 /**
  * A styled native <select> with a custom chevron. Pass <option> children, or an
- * `options` array of { value, label }.
+ * `options` array of { value, label }. Forwards its ref to the inner <select> so
+ * forms can read its validity.
  */
-export function Select({ options, invalid = false, className, children, ...rest }: SelectProps): ReactElement {
+export const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select(
+  { options, invalid = false, className, children, ...rest },
+  ref,
+) {
   return (
     <span className={cx('rdz-select', className)}>
-      <select aria-invalid={invalid || undefined} {...rest}>
+      <select ref={ref} aria-invalid={invalid || undefined} {...rest}>
         {options ? options.map((o) => <option key={o.value} value={o.value}>{o.label}</option>) : children}
       </select>
       <span className="rdz-select__chevron" aria-hidden="true">
@@ -27,4 +32,4 @@ export function Select({ options, invalid = false, className, children, ...rest 
       </span>
     </span>
   );
-}
+});

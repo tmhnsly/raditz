@@ -11,7 +11,7 @@ import { GiMoonOrbit } from 'react-icons/gi';
 import { Sidebar } from './Sidebar';
 import { StoryView } from './StoryView';
 import '../App.css';
-import '../sections/sections.css';
+import '../styles/sections'; // shared utilities + every section's co-located .css
 import './explorer.css';
 
 // Built once at module load from the discovered stories.

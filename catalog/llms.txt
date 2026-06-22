@@ -28,7 +28,7 @@ and the hero background reaches the very top (no nav "band"). On an `image`+`scr
 text goes on-dark (white) automatically; use the `glass` or default (accent) button — and
 `secondary` now stays legible over media too, so no CTA goes invisible on a photo.
 
-143 exported components across 17 categories.
+146 exported components across 17 categories.
 
 ## utilities (CSS classes)
 
@@ -642,7 +642,7 @@ Props:
   - onSubmit?: ((values: Record<string, string>) => void) — Fires with the values object only when all fields are valid.
   - submitLabel?: ReactNode (default: Submit) — Submit button label.
 
-Examples (Storybook stories): Default
+Examples (Storybook stories): Default, ConditionalField
 
 Usage:
 ```tsx
@@ -748,7 +748,7 @@ Usage:
 ### Select
 Import: `import { Select } from 'raditz'`
 
-A styled native <select> with a custom chevron. Pass <option> children, or an `options` array of { value, label }.
+A styled native <select> with a custom chevron. Pass <option> children, or an `options` array of { value, label }. Forwards its ref to the inner <select> so forms can read its validity.
 
 Props:
   - invalid?: boolean (default: false)
@@ -824,12 +824,15 @@ Usage:
 ### Icon
 Import: `import { Icon } from 'raditz'`
 
-Icon — renders a named icon from the Raditz registry. Inherits color via `currentColor` and sizes to `1em` by default, so it scales with surrounding text and tints with the parent's color. <Icon name="search" /> <Icon name="bell" size="1.25rem" />
+Icon — renders a named icon from the Raditz set, backed by react-icons (Lucide), so every icon shares one consistent look and is sized by the single `size` prop. Inherits color via `currentColor` and sizes to `1em` by default. <Icon name="search" /> <Icon name="instagram" size="1.25rem" />
 
 Props:
+  - className?: string
+  - color?: string — Icon color (defaults to `currentColor`, so it tints with the parent).
   - name: enum — Registry icon name (see icons.ts).
-  - size?: string | number (default: 1em) — Width/height — defaults to `1em` so it scales with surrounding text.
-  - strokeWidth?: number (default: 2)
+  - onClick?: MouseEventHandler<SVGElement>
+  - size?: string | number (default: 1em) — Width/height — a single size variable for consistency. Defaults to `1em` so it scales with surrounding text.
+  - strokeWidth?: number (default: 2) — Stroke weight of the (Lucide) glyph.
   - title?: string — When set, the icon is a labelled image for screen readers; otherwise aria-hidden.
 
 Examples (Storybook stories): AllIcons
@@ -2024,6 +2027,31 @@ Usage:
 <FeaturesC>…</FeaturesC>
 ```
 
+### FeaturesTabbed
+Import: `import { FeaturesTabbed } from 'raditz'`
+
+FeaturesTabbed — a vertical tab rail beside a detail panel: pick an offering on the left, read its lead (price/rates), description, ticked feature list and CTA on the right. Built for "a few rich, comparable offerings" where cards bury the detail. The panel holds a steady min-height so switching tabs never makes the page jump. Uncontrolled (first tab open) — a deep section, no wiring required.
+
+Props:
+  - align?: "start" | "center" (default: center) — Header alignment.
+  - aside?: ReactNode — Extra node pinned under the tab rail (e.g. opening hours, terms).
+  - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh"
+  - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - eyebrow?: ReactNode
+  - heading?: ReactNode
+  - image?: string
+  - items: FeaturesTabbedItem[] — One entry per tab (required).
+  - parallax?: boolean
+  - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
+  - video?: string
+
+Examples (Storybook stories): Default
+
+Usage:
+```tsx
+<FeaturesTabbed>…</FeaturesTabbed>
+```
+
 ### FooterA
 Import: `import { FooterA } from 'raditz'`
 
@@ -2143,6 +2171,34 @@ Examples (Storybook stories): A_CenteredDualCTA, B_SplitCopyMedia, C_AccentFullB
 Usage:
 ```tsx
 <HeroC>…</HeroC>
+```
+
+### ImageFocus
+Import: `import { ImageFocus } from 'raditz'`
+
+ImageFocus — a full-bleed image section with optional text over it. The one component for both a media **hero** (with the page's nav bleeding over it) AND an **inline** image band that gives a page some visual breathing room (image alone, or image + a line of copy). The image always covers; the text block's `align` (left/centre), `place` (centre/bottom) and `titleSize` are configurable so the same component reads as a punchy hero or a quiet inline band.
+
+Props:
+  - actions?: SectionAction[] — CTAs.
+  - align?: "start" | "center" (default: center) — Horizontal alignment of the text block.
+  - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh"
+  - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - eyebrow?: ReactNode — Eyebrow / kicker above the title.
+  - image: string — Full-bleed background image URL (required).
+  - parallax?: boolean
+  - place?: "center" | "bottom" (default: center) — Vertical placement of the text.
+  - scrim?: boolean (default: true) — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
+  - size?: "hero" | "band" | "auto" (default: band) — Band height: a tall 'hero', a medium 'band', or 'auto' (fits content).
+  - sub?: ReactNode — Sub-text under the title.
+  - title?: ReactNode — Headline.
+  - titleSize?: "section" | "display" (default: section) — Title visual size.
+  - video?: string
+
+Examples (Storybook stories): A_Hero, B_Band, C_ImageOnly
+
+Usage:
+```tsx
+<ImageFocus>…</ImageFocus>
 ```
 
 ### MarqueeA
@@ -2634,6 +2690,24 @@ Usage:
 ```
 
 ## typography
+
+### CheckList
+Import: `import { CheckList } from 'raditz'`
+
+CheckList — a ticked feature list. The recurring "what's included" pattern: a list of points, each led by an accent check (or dot), optionally in two columns. A deep module so products stop hand-rolling `ul + icon + grid` CSS.
+
+Props:
+  - className?: string
+  - columns?: 1 | 2 (default: 1) — Lay out across this many columns (collapses to 1 on a narrow container).
+  - items: ReactNode[] — The items to list (strings or nodes).
+  - marker?: "check" | "dot" (default: check) — Marker style.
+
+Examples (Storybook stories): Default, TwoColumn, DotMarker
+
+Usage:
+```tsx
+<CheckList />
+```
 
 ### Code
 Import: `import { Code } from 'raditz'`

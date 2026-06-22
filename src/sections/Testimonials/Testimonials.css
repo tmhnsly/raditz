@@ -1,0 +1,9 @@
+/* Testimonials — section styles (co-located with the component). */
+/* ── Testimonials / TestimonialCarousel ── */
+.sx-tst__card { gap: var(--space-4); }
+.sx-tst__quote { line-height: var(--lh-body); }
+.sx-tst__person { gap: 0.625rem; }
+.sx-tst__person-center { gap: 0.625rem; justify-content: center; }
+.sx-tst__person-meta { text-align: left; }
+.sx-tst__big-quote { font-size: clamp(1.25rem, 2.6vw, 1.875rem); line-height: 1.3; letter-spacing: -0.02em; max-width: 24ch; }
+.sx-tst__avatar-md { width: 2.5rem; height: 2.5rem; }

@@ -1,0 +1,4 @@
+/* NotFound — section styles (co-located with the component). */
+/* ── NotFound ── */
+.sx-nf__code { font-family: var(--font-mono); font-size: clamp(60px, 11vw, 120px); font-weight: 700; line-height: 1; color: var(--accent-ink); letter-spacing: -0.04em; }
+.sx-nf__lede { max-width: 42ch; }

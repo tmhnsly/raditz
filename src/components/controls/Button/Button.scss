@@ -65,15 +65,20 @@
 /* Frosted glass — translucent + blurred, for buttons over media/gradients
    (e.g. the Hero "Live demo" CTA, Lightbox controls). Shares the --glass* tokens
    with .rdz-glass so it re-themes with cards + chrome. */
+/* Frosted glass — for CTAs over media/gradients. THEME-SPECIFIC (not locked to one
+   look): the default uses the theme glass tokens (so over a gradient it follows the
+   scheme), and OVER MEDIA (.rdz-on-dark, where text is forced white) it's a LIGHT
+   frost with dark ink in the light scheme and a DARK frost with light ink in the
+   dark scheme. Either way it reads on a hero image AND reflects the active theme. */
 .rdz-btn--glass {
-  /* Frosted DARK glass in BOTH themes (black-alpha tint + on-media ink). Glass
-     CTAs live over hero gradients/photos; a --bg-tinted glass + --text ink went
-     invisible in light mode (pale button, low-contrast ink), while dark mode read
-     fine. A dark frost with white-alpha text reads on any hero background, so
-     light now matches dark. */
-  background: var(--black-a7); color: var(--on-media); border-color: var(--on-media-border);
+  background: var(--glass); color: var(--text); border-color: var(--glass-sheen);
   -webkit-backdrop-filter: blur(var(--glass-blur));
   backdrop-filter: blur(var(--glass-blur));
 }
-
-.rdz-btn--glass:hover { background: var(--black-a8); border-color: var(--on-media-soft); }
+.rdz-btn--glass:hover { border-color: var(--rule-strong); }
+/* over media — light scheme: light frost, dark ink */
+.rdz-on-dark .rdz-btn--glass { background: var(--white-a9); color: var(--black-a12); border-color: var(--white-a7); }
+.rdz-on-dark .rdz-btn--glass:hover { background: var(--white-a11); border-color: var(--white-a8); }
+/* over media — dark scheme: dark frost, light ink */
+.dark .rdz-on-dark .rdz-btn--glass { background: var(--black-a7); color: var(--on-media); border-color: var(--on-media-border); }
+.dark .rdz-on-dark .rdz-btn--glass:hover { background: var(--black-a8); border-color: var(--on-media-soft); }

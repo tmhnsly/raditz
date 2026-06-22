@@ -137,6 +137,25 @@ reuses the `clamp` primitive.
 basename≠dirname fragility. The walk is unit-tested (sanity bounds, file-existence, and barrel-agreement); byte-identical generated output is gated by `release:preflight`.
 _Avoid_: per-script dir scans.
 
+**Style-aggregation** (deepened 2026-06-22):
+`src/styles/components.ts` and `src/styles/sections.ts` are eager `import.meta.glob`
+aggregators — every component `.scss` and every section's co-located `.css` is pulled
+in by pattern, not a hand-written list. Killed the "add a stylesheet, forget to
+register it → silently missing from `dist/raditz.css`" footgun (the old hand-list had
+no agreement test). Cascade safety: `_shared.scss` (leading `_`) and
+`internal/Overlay.scss` sort first; everything else is component-/section-scoped, so
+inter-file order is irrelevant, and no `.scss` `@use`s another. The app, Storybook, the
+explorer, and the CSS build all import these two aggregators — one source of truth.
+Section styles are now **co-located** (`src/sections/<Name>/<Name>.css` beside the
+`.tsx`, matching components); `sections.css` keeps only the cross-section utilities
+(page shell, `.s-pad`/grids, gap/center modifiers, the gradient-card rule).
+_Avoid_: hand-maintained `import './X.scss'` lists; a section's CSS in a far-away file.
+
+**Icon is server-renderable** (2026-06-22): `Icon` has no event handlers or hooks, so
+it carries no `'use client'` — its react-icons (Lucide) graph never forces a client
+boundary onto otherwise-static consumers. A *clickable* icon belongs in an interactive
+control (`IconButton`/`Button`). _Avoid_: an `onClick` on `Icon` (re-adds the directive).
+
 **Section-action** (deepened 2026-06-21):
 `SectionActionButton` (in `lib/SectionShell`) is the one **renderer** from a
 `SectionAction` to a `<Button>` — forwards `href`/`onClick`/`icon`/`variant`/`size`.
@@ -376,12 +395,19 @@ inherits the global `data-reveal` vibe (fallback `fade-rise`). Sections opt in v
 prop (e.g. `FeaturesA animate`), never by default (stays SSR-pure).
 _Avoid_: scroll-event entrance handlers; baking reveal into every section.
 
+**Icon** (revised 2026-06-22 — now react-icons-backed):
+`components/foundation/Icon` renders a named icon (`<Icon name="instagram" size="1.25rem"/>`)
+from ONE consistent set — the registry (`icons.ts`) maps each name to a **react-icons
+(Lucide)** component, sized by a single `size` prop. This **reverses** the earlier
+"dependency-free icons" decision: `react-icons` is now a real library `dependency`
+(externalised in the lib build, tree-shaken per icon). Reason: the hand-drawn SVG registry
+was limited (no brand logos) and visually inconsistent (mixed fills/weights); the user
+chose library-wide react-icons. Add an icon = import its `Lu*` glyph + add a name.
+
 **AnimatedIcon**:
-`components/utility/AnimatedIcon` — wraps any icon (react-icons glyph, Raditz
-`<Icon>`, raw SVG) in a looping idle animation (float/orbit/pulse/spin/wiggle) or a
-one-shot `draw` (stroked icons). Icon-agnostic (styles its child only), so it ships
-dependency-free; react-icons is a dev/peer concern of the showcase, not the library.
-The wrapper is GPU-promoted (`will-change`/`translateZ`) so the loop composites smoothly.
+`components/utility/AnimatedIcon` — wraps any icon (a Raditz `<Icon>`, a react-icons glyph,
+raw SVG) in a looping idle animation (float/orbit/pulse/spin/wiggle) or a one-shot `draw`
+(stroked icons). Icon-agnostic (styles its child only). GPU-promoted so the loop composites smoothly.
 
 **Animation config — vibes + axes** (`lib/theme`):
 Three app-wide axes set as `<html>` attributes by `applyTheme` (parallel to
@@ -435,6 +461,29 @@ The library ships as:
   `useTheme({ accent })`; set `DEFAULT_SCHEME` in `app/theme-runtime.tsx`; set an
   app-wide animation vibe via `data-reveal`/`data-title-anim` on `<html>` (fixed) or
   by passing the axes to `useTheme({ reveal, titleAnim })` (live).
+- **Published CSS is wrapped in `@layer raditz`** (post-build `scripts/wrap-css-layer.mjs`,
+  run by `build:pkg`). Cascade layers make a consumer's UNLAYERED `theme.css` override win
+  regardless of bundler import order — so brand `:root { --accent-* }` needs no `:root:root`
+  specificity trick and no guaranteed load order. Storybook/explorer use source SCSS, so
+  they're unaffected. (Decided 2026-06-22, replacing the `:root:root` plaster.)
+
+### New from the beats-dj-studio test build (2026-06-22)
+The product surfaced library gaps; these were fixed IN the library, not plastered:
+- **`FeaturesTabbed`** section — vertical tab rail + steady-height detail panel
+  (lead/rates → description → ticked features → CTA). For a few rich, comparable
+  offerings where cards bury the detail; switching tabs never reflows the page.
+- **`ImageFocus`** section — one full-bleed image block for both a media **hero** (nav
+  bleeds over it) and an inline band; `size`/`align`/`place`/`titleSize` configure the text.
+- **`CheckList`** (typography) — the ticked "what's included" list (1–2 col), so products
+  stop hand-rolling `ul + icon + grid`.
+- **`Form` gained `select` + `when`** — `type:'select'` (with `options`) and a `when(values)`
+  predicate render+validate a field conditionally (e.g. "Other → please specify"). `Select`
+  now forwards its ref so the Form reads its validity.
+- **`MotionCard` icons rest static, animate on hover** (not a continuous loop) — looping
+  icons are noise in a grid of info cards.
+- **Nav** is the floating glass pill with a SELECTED-route sliding pill + a separate hover
+  state; collapses to a burger via a viewport media query (the fixed bar confounds the
+  container query). The next template ships a `ScrollToTop` (top-on-route-change).
 - **Consumer primitives** — `useInView`, `useReducedMotion`, `useControllableState`,
   `cx`, `splitText` re-export from `'raditz'` (via `lib/hooks`) so a product builds its
   own animated / controllable / class-composed components on the same primitives the

@@ -1,0 +1,15 @@
+/* SocialProof — section styles (co-located with the component). */
+/* ── SocialProof ── */
+.sx-sp__band { padding-top: var(--space-6); padding-bottom: var(--space-6); }
+.sx-sp__row { justify-content: space-between; gap: var(--space-5); opacity: 0.75; }
+/* the label sits centred above the strip; the marquee items get even breathing
+   room so the logos read as a deliberate row, not scattered. */
+.sx-sp__marquee { opacity: 0.75; width: 100%; }
+.sx-sp__logo { font-size: 1.125rem; padding-inline: var(--space-6); white-space: nowrap; }
+.sx-sp__logo-tight { letter-spacing: -0.02em; }
+.sx-sp__logo-mono { font-family: var(--font-mono); }
+.sx-sp__logo-wide { letter-spacing: 0.04em; }
+.sx-sp__logo-italic { font-style: italic; }
+.sx-sp__logo-tighter { letter-spacing: -0.03em; }
+.sx-sp__row-b { justify-content: center; gap: var(--space-6); opacity: 0.7; }
+.sx-sp__logo-b { font-size: 1.0625rem; }

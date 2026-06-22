@@ -25,6 +25,10 @@ a.rdz-motion-card:hover {
   border-color: var(--accent);
   box-shadow: var(--shadow-4);
 }
+/* The icon rests static — a continuously looping icon is noise in a grid of info
+   cards. It comes alive only when the user engages a clickable card (hover). */
+a.rdz-motion-card:hover .rdz-anim.is-paused,
+a.rdz-motion-card:hover .rdz-anim.is-paused * { animation-play-state: running; }
 
 .rdz-motion-card__eyebrow { font-family: var(--font-mono); font-size: var(--fs-mono-xs); text-transform: uppercase; letter-spacing: var(--ls-eyebrow); color: var(--accent-ink); }
 .rdz-motion-card__title { font-size: var(--fs-h4); letter-spacing: -0.01em; }

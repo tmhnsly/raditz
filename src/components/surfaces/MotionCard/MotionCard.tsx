@@ -64,7 +64,7 @@ export function MotionCard({
       ...rest,
     },
     <>
-      {icon ? <AnimatedIcon anim={iconAnim} className="rdz-motion-card__icon">{icon}</AnimatedIcon> : null}
+      {icon ? <AnimatedIcon anim={iconAnim} paused className="rdz-motion-card__icon">{icon}</AnimatedIcon> : null}
       {eyebrow ? <span className="rdz-motion-card__eyebrow">{eyebrow}</span> : null}
       <strong className="rdz-motion-card__title">{title}</strong>
       {children ? <span className="rdz-motion-card__body">{children}</span> : null}

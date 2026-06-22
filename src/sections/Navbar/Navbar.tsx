@@ -1,5 +1,5 @@
 'use client';
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import type { CSSProperties, ReactNode } from 'react';
 import { Frame } from '../../lib/Frame';
 import { ColorSchemeToggle } from '../../lib/ColorSchemeToggle';
@@ -117,16 +117,16 @@ function SheetLinks({ links, actions, onClose }: {
 }
 
 /**
- * The primary-nav links with an animated active indicator: a pill that slides to
- * the hovered link and rests on the one matching the current route. Route-aware
- * with no router dependency — it reads `location.pathname` on mount (an explicit
- * `activeHref` wins). Falls back gracefully (indicator hidden) when nothing
- * matches or before hydration.
+ * The primary-nav links with a **selected-route** pill that slides to the active
+ * link on navigation (NOT hover-following) — hover is a separate, subtler state.
+ * Route-aware with no router dependency: reads `location.pathname` (an explicit
+ * `activeHref` wins). Offsets are measured against the list (scroll-independent),
+ * so a route change that resets scroll never makes the pill fly from a stale box.
  */
 function NavLinks({ links, activeHref }: { links: NavbarLink[]; activeHref?: string }) {
   const wrapRef = useRef<HTMLElement>(null);
   const [active, setActive] = useState<string | null>(activeHref ?? null);
-  const [ind, setInd] = useState<{ x: number; w: number; show: boolean }>({ x: 0, w: 0, show: false });
+  const [box, setBox] = useState<{ x: number; w: number; h: number } | null>(null);
 
   useEffect(() => {
     if (activeHref !== undefined) { setActive(activeHref); return; }
@@ -137,36 +137,38 @@ function NavLinks({ links, activeHref }: { links: NavbarLink[]; activeHref?: str
     setActive((exact ?? nested)?.href ?? null);
   }, [links, activeHref]);
 
-  const move = useCallback((el: HTMLElement | null) => {
-    const wrap = wrapRef.current;
-    if (!wrap || !el) return;
-    const w = wrap.getBoundingClientRect();
-    const r = el.getBoundingClientRect();
-    setInd({ x: r.left - w.left, w: r.width, show: true });
-  }, []);
-
-  const rest = useCallback(() => {
-    const el = wrapRef.current?.querySelector<HTMLElement>('[data-active="true"]');
-    if (el) move(el);
-    else setInd((s) => ({ ...s, show: false }));
-  }, [move]);
-
-  // Settle the indicator on the active link whenever it (or the link set) changes.
-  useEffect(() => { rest(); }, [active, links, rest]);
+  // Measure the ACTIVE item and slide the pill to it. ResizeObserver + the font
+  // swap recompute (item widths shift when the display face loads).
+  useEffect(() => {
+    const measure = () => {
+      const wrap = wrapRef.current;
+      const el = wrap?.querySelector<HTMLElement>('[data-active="true"]');
+      setBox(el ? { x: el.offsetLeft, w: el.offsetWidth, h: el.offsetHeight } : null);
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    if (wrapRef.current) ro.observe(wrapRef.current);
+    document.fonts?.ready.then(measure).catch(() => {});
+    return () => ro.disconnect();
+  }, [active, links]);
 
   return (
-    <nav className="rdz-nav__links" ref={wrapRef} onMouseLeave={rest}>
-      <span className="rdz-nav__ind" aria-hidden="true" data-show={ind.show ? 'true' : 'false'} style={{ '--nav-x': `${ind.x}px`, '--nav-w': `${ind.w}px` } as CSSProperties} />
+    <nav className="rdz-nav__links" ref={wrapRef} aria-label="Primary">
+      {box && (
+        <span
+          className="rdz-nav__pill"
+          aria-hidden="true"
+          style={{ '--nav-x': `${box.x}px`, '--nav-w': `${box.w}px`, '--nav-h': `${box.h}px` } as CSSProperties}
+        />
+      )}
       {links.map((link, i) => (
         <a
           key={i}
           href={link.href}
           data-active={active === link.href ? 'true' : undefined}
           aria-current={active === link.href ? 'page' : undefined}
-          onMouseEnter={(e) => move(e.currentTarget)}
-          onFocus={(e) => move(e.currentTarget)}
         >
-          {link.label}
+          <span className="rdz-nav__label">{link.label}</span>
         </a>
       ))}
     </nav>

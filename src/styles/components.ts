@@ -1,91 +1,15 @@
-// Aggregates every component's co-located .scss in original cascade order.
-// Imported once globally (app + Storybook) so all rdz-* component styles are present.
-import '../components/patterns/PageHeader/PageHeader.scss';
-import '../components/typography/Code/Code.scss';
-import '../components/overlay/CommandPalette/CommandPalette.scss';
-import '../components/controls/Button/Button.scss';
-import '../components/controls/IconButton/IconButton.scss';
-import '../components/controls/Badge/Badge.scss';
-import '../components/controls/Pill/Pill.scss';
-import '../components/controls/Toggle/Toggle.scss';
-import '../components/controls/Switch/Switch.scss';
-import '../components/controls/Checkbox/Checkbox.scss';
-import '../components/controls/Radio/Radio.scss';
-import '../components/forms/Combobox/Combobox.scss';
-import '../components/forms/Search/Search.scss';
-import '../components/layout/SectionBackground/SectionBackground.scss';
-import '../components/forms/Form/Form.scss';
-import '../components/forms/Select/Select.scss';
-import '../components/forms/Field/Field.scss';
-import '../components/forms/OneTimePasswordField/OneTimePasswordField.scss';
-import '../components/forms/PasswordToggleField/PasswordToggleField.scss';
-import '../components/surfaces/Card/Card.scss';
-import '../components/surfaces/MotionCard/MotionCard.scss';
-import '../components/_shared.scss';
-import '../components/surfaces/Callout/Callout.scss';
-import '../components/surfaces/Separator/Separator.scss';
-import '../components/surfaces/Avatar/Avatar.scss';
-import '../components/navigation/Tabs/Tabs.scss';
-import '../components/navigation/Tooltip/Tooltip.scss';
-import '../components/controls/ToggleGroup/ToggleGroup.scss';
-import '../components/controls/Slider/Slider.scss';
-import '../components/controls/RadioGroup/RadioGroup.scss';
-import '../components/controls/Progress/Progress.scss';
-import '../components/disclosure/Accordion/Accordion.scss';
-import '../components/disclosure/Collapsible/Collapsible.scss';
-import '../components/internal/Overlay.scss';
-import '../components/overlay/AlertDialog/AlertDialog.scss';
-import '../components/overlay/Popover/Popover.scss';
-import '../components/overlay/HoverCard/HoverCard.scss';
-import '../components/menu/ContextMenu/ContextMenu.scss';
-import '../components/menu/Menubar/Menubar.scss';
-import '../components/navigation/NavigationMenu/NavigationMenu.scss';
-import '../components/navigation/Tree/Tree.scss';
-import '../components/navigation/Toolbar/Toolbar.scss';
-import '../components/utility/AspectRatio/AspectRatio.scss';
-import '../components/utility/ScrollArea/ScrollArea.scss';
-import '../components/utility/Label/Label.scss';
-import '../components/utility/Reveal/Reveal.scss';
-import '../components/utility/AnimatedIcon/AnimatedIcon.scss';
-import '../components/utility/CardArrow/CardArrow.scss';
-import '../components/utility/TextReveal/TextReveal.scss';
-import '../components/feedback/Spinner/Spinner.scss';
-import '../components/utility/AccessibleIcon/AccessibleIcon.scss';
-import '../components/feedback/Toast/Toast.scss';
-import '../components/media/Lightbox/Lightbox.scss';
-import '../components/media/Gallery/Gallery.scss';
-import '../components/media/Carousel/Carousel.scss';
-import '../components/media/Marquee/Marquee.scss';
-import '../components/data/DataTable/DataTable.scss';
-import '../components/overlay/Drawer/Drawer.scss';
-import '../components/forms/DatePicker/DatePicker.scss';
-import '../components/forms/TimePicker/TimePicker.scss';
-import '../components/forms/DateTimePicker/DateTimePicker.scss';
-import '../components/navigation/Stepper/Stepper.scss';
-import '../components/forms/FileDropzone/FileDropzone.scss';
-import '../components/forms/TagInput/TagInput.scss';
-import '../components/forms/Rating/Rating.scss';
-import '../components/feedback/Skeleton/Skeleton.scss';
-import '../components/navigation/NavBar/NavBar.scss';
-import '../components/foundation/Icon/Icon.scss';
-import '../components/patterns/EmptyState/EmptyState.scss';
-import '../components/data/Sparkline/Sparkline.scss';
-import '../components/data/BarChart/BarChart.scss';
-import '../components/data/charts/charts.scss';
-import '../components/data/Donut/Donut.scss';
-import '../components/navigation/Breadcrumb/Breadcrumb.scss';
-import '../components/navigation/Pagination/Pagination.scss';
-import '../components/feedback/Banner/Banner.scss';
-import '../components/surfaces/AvatarGroup/AvatarGroup.scss';
-// Co-located styles added when inline styles were moved into CSS.
-import '../components/layout/AppShell/AppShell.scss';
-import '../components/layout/Container/Container.scss';
-import '../components/layout/Section/Section.scss';
-import '../components/layout/Grid/Grid.scss';
-import '../components/layout/Stack/Stack.scss';
-import '../components/layout/Popout/Popout.scss';
-import '../components/layout/FullBleed/FullBleed.scss';
-import '../pages/Showcase/Showcase.scss';
-import '../components/menu/DropdownMenu/DropdownMenu.scss';
-import '../components/typography/Heading/Heading.scss';
-import '../components/typography/Text/Text.scss';
+// Aggregates every component's co-located .scss (plus the Showcase page) via a
+// build-time glob — so adding a component with a stylesheet can't silently drop
+// its CSS from dist (the old hand-maintained import list did exactly that when a
+// line was forgotten). Imported once globally (app + Storybook) so all rdz-*
+// component styles are present.
+//
+// Cascade safety: the alphabetical glob order keeps the two load-bearing base
+// files first — `_shared.scss` (leading underscore sorts first) and
+// `internal/Overlay.scss` (the `internal` dir sorts before its overlay/menu
+// consumers). Every other stylesheet is component-scoped (.rdz-<name>__…), so
+// inter-file order is irrelevant. No .scss `@use`s another, so there's no Sass
+// coupling to preserve.
+const styles = import.meta.glob(['../components/**/*.scss', '../pages/**/*.scss'], { eager: true });
+
+export default styles;

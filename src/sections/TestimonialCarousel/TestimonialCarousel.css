@@ -1,0 +1,8 @@
+/* TestimonialCarousel — section styles (co-located with the component). */
+/* testimonial carousel */
+.tcar { display: flex; gap: var(--space-4); overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding-bottom: var(--space-2); }
+.tcar::-webkit-scrollbar { display: none; }
+.tcar__card { flex: 0 0 min(22rem, 80%); scroll-snap-align: center; margin: 0; display: flex; flex-direction: column; gap: var(--space-4); background: var(--panel); border: 1px solid var(--surface-edge); border-radius: var(--radius-card); padding: var(--space-5); box-shadow: var(--shadow-2); }
+.tcar__card blockquote { margin: 0; font-size: var(--fs-body-l); }
+
+.sx-tcar__fig { gap: 10px; }

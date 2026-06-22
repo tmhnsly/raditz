@@ -48,3 +48,32 @@ export const Default: Story = {
     onSubmit: (values: Record<string, unknown>) => console.log('submit', values),
   },
 };
+
+// A `select` field plus a CONDITIONAL field: "Please specify" appears (and becomes
+// required) only when the reason is "Other".
+export const ConditionalField: Story = {
+  args: {
+    submitLabel: 'Send',
+    fields: [
+      { name: 'name', label: 'Name', required: true },
+      {
+        name: 'reason',
+        label: 'Reason for contact',
+        type: 'select',
+        placeholder: 'Choose one…',
+        options: [
+          { value: 'support', label: 'Support' },
+          { value: 'sales', label: 'Sales' },
+          { value: 'Other', label: 'Other' },
+        ],
+      },
+      {
+        name: 'detail',
+        label: 'Please specify',
+        required: true,
+        when: (v: Record<string, string>) => v.reason === 'Other',
+      },
+    ],
+    onSubmit: (values: Record<string, unknown>) => console.log('submit', values),
+  },
+};

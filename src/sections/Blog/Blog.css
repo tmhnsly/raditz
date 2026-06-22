@@ -1,0 +1,16 @@
+/* Blog — section styles (co-located with the component). */
+/* blog list rows */
+.blogrow { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); padding: var(--space-5) var(--space-2); border-bottom: 1px solid var(--rule-soft); text-decoration: none; color: var(--text); transition: padding var(--duration-base) var(--ease-standard); }
+.blogrow:hover { padding-left: var(--space-4); }
+
+/* ── Blog ── */
+.sx-blog__card { padding: 0; overflow: hidden; }
+/* drop the cover's own top/side border (the card supplies the outer border +
+   rounding) so it doesn't trace a square corner inside the card's radius. */
+.sx-blog__cover { aspect-ratio: 16/10; border-width: 0 0 1px; }
+.sx-blog__body { gap: 8px; padding: var(--space-4); }
+.sx-blog__title { font-size: var(--fs-h4); letter-spacing: -0.01em; }
+.sx-blog__list { gap: 0; max-width: 720px; margin-inline: auto; }
+.sx-blog__row-body { gap: 6px; }
+.sx-blog__row-meta { gap: 10px; }
+.sx-blog__row-title { font-size: var(--fs-h4); }

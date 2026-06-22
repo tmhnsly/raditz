@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import type { Preview, Decorator } from '@storybook/react';
 import '../src/styles/styles.css'; // design tokens
 import '../src/styles/components'; // co-located per-component styles (aggregated)
-import '../src/sections/sections.css';
+import '../src/styles/sections'; // shared utilities + every section's co-located .css
 
 /* Toolbar toggle for light/dark — flips `class="dark"` on <html>, exactly like
    the design system expects. Every token/component re-themes from it. */

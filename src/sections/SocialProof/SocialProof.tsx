@@ -29,7 +29,7 @@ function LogoMark({
 /** SocialProof A — scrolling marquee of logos. */
 export function SocialProofA({ logos, label, background = 'none', children, ...props }: SocialProofProps) {
   return (
-    <SectionShell pad="sm" padClassName="sx-sp__band" background={background} {...props}>
+    <SectionShell pad="sm" padClassName="sx-sp__band" wrap="col sx-items-center sx-gap-4" background={background} {...props}>
       {children ?? (
         <>
           {label && <div className="muted sx-fs-body-s">{label}</div>}

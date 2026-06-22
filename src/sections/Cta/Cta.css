@@ -1,0 +1,10 @@
+/* Cta — section styles (co-located with the component). */
+/* ── Cta ── */
+.sx-cta__title { max-width: 20ch; }
+.sx-cta__pill { border-radius: var(--radius-full); }
+.sx-cta__band { background: var(--accent-surface); }
+.sx-cta__split { display: flex; align-items: center; justify-content: space-between; gap: var(--space-5); flex-wrap: wrap; }
+.sx-cta__copy { gap: 0.375rem; }
+.sx-cta__title-ink { color: var(--accent-ink); }
+.sx-cta__sub { margin: 0; }
+.sx-cta__input { display: inline-flex; align-items: center; width: 15rem; background: var(--panel); }

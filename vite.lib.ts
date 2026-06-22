@@ -42,7 +42,9 @@ export default defineConfig({
         id.startsWith('react-dom/') ||
         id.startsWith('@visx/') ||
         id === 'date-fns' ||
-        id.startsWith('date-fns/'),
+        id.startsWith('date-fns/') ||
+        id === 'react-icons' ||
+        id.startsWith('react-icons/'),
       output: {
         preserveModules: true,
         preserveModulesRoot: 'src',

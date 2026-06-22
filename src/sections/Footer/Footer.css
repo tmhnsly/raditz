@@ -1,0 +1,15 @@
+/* Footer — section styles (co-located with the component). */
+/* ── Footer ── */
+.sx-foot__panel { background: var(--panel); }
+.sx-foot__brand { gap: var(--space-3); max-width: 32ch; }
+.sx-foot__brand-row { gap: 0.625rem; }
+.sx-foot__logo { width: 1.75rem; height: 1.75rem; border-radius: var(--radius-md); }
+.sx-foot__logo-glyph { font-family: var(--font-mono); font-size: 0.875rem; font-weight: 700; }
+.sx-foot__col { gap: 0.625rem; font-size: var(--fs-body-s); }
+.sx-foot__col-head { font-size: var(--fs-caption); text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); }
+.sx-foot__bar { background: var(--panel); padding-top: var(--space-5); padding-bottom: var(--space-5); }
+.sx-foot__bar-inner { justify-content: space-between; gap: var(--space-4); }
+.sx-foot__bar-brand { gap: 0.5rem; }
+.sx-foot__logo-sm { width: 1.5rem; height: 1.5rem; border-radius: var(--radius-sm); }
+.sx-foot__logo-glyph-sm { font-family: var(--font-mono); font-size: 0.75rem; font-weight: 700; }
+.sx-foot__nav { gap: var(--space-4); font-size: var(--fs-body-s); color: var(--text-soft); }

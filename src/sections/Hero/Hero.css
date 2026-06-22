@@ -1,0 +1,10 @@
+/* Hero — section styles (co-located with the component). */
+/* ── Hero ── */
+.sx-hero__title { max-width: 18ch; text-wrap: balance; }
+.sx-hero__lede { max-width: 54ch; text-wrap: pretty; }
+.sx-hero__pill { border-radius: var(--radius-full); }
+.sx-hero__media { aspect-ratio: 4/3; border-radius: var(--radius-lg); }
+.sx-hero__band { background: var(--accent); color: var(--on-accent); }
+.sx-hero__band-title { max-width: 20ch; text-wrap: balance; }
+.sx-hero__band-lede { font-size: var(--fs-body-l); max-width: 50ch; opacity: 0.92; text-wrap: pretty; }
+.sx-hero__band-btn, .sx-hero__band .rdz-btn { background: var(--on-accent); color: var(--accent); border-radius: var(--radius-full); }

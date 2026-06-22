@@ -1,0 +1,21 @@
+/* Pricing — section styles (co-located with the component). */
+/* ── Pricing ── */
+.sx-price__num { font-size: 2.25rem; font-weight: 700; letter-spacing: -0.03em; }
+.sx-price__list { gap: 0.5rem; list-style: none; padding: 0; margin: 0; font-size: var(--fs-body-s); color: var(--text-soft); }
+/* Cards flex-GROW to fill the row so they use the available width (no capped
+   islands with empty gutters), and stay a row until the container is genuinely
+   tight — then wrap 3 -> 2 -> 1. A lone trailing card grows to fill its own row. */
+.sx-price__grid { display: flex; flex-wrap: wrap; gap: var(--space-4); align-items: stretch; justify-content: center; }
+.sx-price__grid > * { flex: 1 1 14rem; min-width: 0; }
+.sx-price__card { gap: var(--space-4); }
+/* Reserve space for the name + blurb so the price/CTA rows align ACROSS cards
+   regardless of blurb length (a 1-line vs 3-line blurb used to shove the price
+   down by different amounts). */
+.sx-price__plan { gap: 0.125rem; min-height: 5.25rem; }
+.sx-price__btn { width: 100%; }
+.sx-price__card-pop { gap: var(--space-4); box-shadow: var(--shadow-5); border-color: var(--accent-border); position: relative; }
+.sx-price__badge { position: absolute; top: -0.6875rem; left: var(--space-5); }
+.sx-price__toggle-col { gap: var(--space-6); align-items: center; }
+/* Heading + period toggle share a row while there's room (flex-wrap), stacking
+   only when genuinely tight — not at an arbitrary early breakpoint. */
+.sx-price__toggle-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: var(--space-3) var(--space-6); width: 100%; text-align: center; }

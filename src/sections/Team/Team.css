@@ -1,0 +1,5 @@
+/* Team — section styles (co-located with the component). */
+/* ── Team ── */
+.sx-team__head { gap: var(--space-2); max-width: 46ch; }
+.sx-team__member { gap: var(--space-3); align-items: flex-start; }
+.sx-team__photo { width: 100%; aspect-ratio: 1; border-radius: var(--radius-lg); }
