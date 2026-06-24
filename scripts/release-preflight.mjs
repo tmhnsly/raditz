@@ -16,6 +16,10 @@ const run = (cmd) => {
   }
 };
 
+// Taxonomy first: a folder outside the category set, or a story title that has
+// drifted from its folder, blocks the release before anything is regenerated.
+run('pnpm validate:taxonomy');
+
 run('pnpm gen:barrel');
 run('pnpm gen:catalog');
 

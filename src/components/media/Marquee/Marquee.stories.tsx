@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Marquee } from './Marquee';
 
-const meta: Meta<typeof Marquee> = { title: 'Media/Marquee', component: Marquee };
+const meta: Meta<typeof Marquee> = { title: 'Components/Media/Marquee', component: Marquee };
 export default meta;
 type Story = StoryObj<typeof Marquee>;
 

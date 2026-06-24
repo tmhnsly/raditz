@@ -47,7 +47,7 @@ export function AnnouncementA({ text, action, dismissible, children }: Announcem
 /** Announcement B — consent / cookie banner. */
 export function AnnouncementB({ text, action, background = 'none', children, ...props }: AnnouncementProps) {
   return (
-    <SectionShell pad="sm" wrap="sx-ann__banner" background={background} {...props}>
+    <SectionShell pad="sm" wrap="sx-ann__banner" background={background} {...props} animate={false}>
       {children ?? (
         <>
           <span className="muted sx-ann__banner-text">{text}</span>

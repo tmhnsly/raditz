@@ -1,9 +1,10 @@
-// Aggregates the shared section utilities + every section's co-located .css, so
-// the app, Storybook, the explorer, and the CSS build all load the same set.
-// A new section's styles can't be forgotten — the per-section files are globbed.
-// Shared utilities load first; the per-section blocks are component-scoped
-// (.sx-<name>__… / .rdz-<name>…), so inter-file order is irrelevant.
+// Section styles in cascade order: shared utilities FIRST, then each section's
+// co-located styles — so a per-section rule wins the same-specificity conflicts it
+// won when everything lived (later) in one file (e.g. the nav frame's transparent
+// background for hero bleed, the brand chip size). The co-located glob is in its
+// own module because an eager glob's generated imports hoist to the top of THEIR
+// module; keeping it separate guarantees sections.css evaluates first.
+//
+// All consumers (app, Storybook, explorer, CSS build) import this one module.
 import '../sections/sections.css';
-const sectionStyles = import.meta.glob('../sections/*/*.css', { eager: true });
-
-export default sectionStyles;
+import './section-co-located';

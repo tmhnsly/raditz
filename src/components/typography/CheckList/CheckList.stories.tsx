@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { CheckList } from './CheckList';
 
-const meta: Meta<typeof CheckList> = { title: 'Typography/CheckList', component: CheckList };
+const meta: Meta<typeof CheckList> = { title: 'Components/Typography/CheckList', component: CheckList };
 export default meta;
 type Story = StoryObj<typeof CheckList>;
 

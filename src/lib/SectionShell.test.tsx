@@ -1,6 +1,16 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { SectionActionButton, SectionHeader } from './SectionShell';
+import { SectionActionButton, SectionHeader, SectionShell } from './SectionShell';
+
+describe('SectionShell choreography', () => {
+  it('wraps content in the .s-choreo cascade by default, and not when animate={false}', () => {
+    const { container, rerender } = render(<SectionShell><p>body</p></SectionShell>);
+    expect(container.querySelector('.s-wrap.s-choreo')).toBeTruthy();
+    rerender(<SectionShell animate={false}><p>body</p></SectionShell>);
+    expect(container.querySelector('.s-wrap.s-choreo')).toBeNull();
+    expect(container.querySelector('.s-wrap')).toBeTruthy();
+  });
+});
 
 describe('SectionActionButton', () => {
   it('forwards every SectionAction field (href, onClick, icon, variant, size)', () => {

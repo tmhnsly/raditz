@@ -13,9 +13,9 @@ describe('story registry', () => {
   });
 
   it('derives kebab slugs and at least one variant per entry', () => {
-    const button = entries.find((e) => e.title === 'Components/Controls/Button');
+    const button = entries.find((e) => e.title === 'Components/Actions/Button');
     expect(button).toBeDefined();
-    expect(button!.slug).toBe('components/controls/button');
+    expect(button!.slug).toBe('components/actions/button');
     expect(button!.variants.length).toBeGreaterThan(0);
     expect(button!.variants[0].Component).toBeTypeOf('function');
   });
@@ -31,16 +31,16 @@ describe('story registry', () => {
   it('entriesUnder treats a branch slug as a prefix', () => {
     const all = entriesUnder('');
     expect(all.length).toBe(entries.length);
-    const controls = entriesUnder('components/controls');
-    expect(controls.length).toBeGreaterThan(1);
-    expect(controls.every((e) => e.slug.startsWith('components/controls'))).toBe(true);
+    const actions = entriesUnder('components/actions');
+    expect(actions.length).toBeGreaterThan(1);
+    expect(actions.every((e) => e.slug.startsWith('components/actions'))).toBe(true);
   });
 
   it('findNode locates branches and leaves by slug', () => {
     const tree = buildTree();
     expect(findNode(tree, 'components')?.name).toBe('Components');
-    expect(findNode(tree, 'components/controls/button')?.entry?.title).toBe(
-      'Components/Controls/Button',
+    expect(findNode(tree, 'components/actions/button')?.entry?.title).toBe(
+      'Components/Actions/Button',
     );
   });
 });

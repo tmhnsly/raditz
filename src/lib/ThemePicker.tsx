@@ -1,22 +1,18 @@
 'use client';
 import type { CSSProperties } from 'react';
 import { cx } from '../components/internal';
-import { useTheme, ACCENTS, GRAYS, RADII, MOTIONS, TITLE_ANIMS, REVEALS, VIBES, VIBE_PRESETS, resolveGray } from './theme';
+import { useTheme, ACCENTS, GRAYS, RADII, MOTIONS, REVEALS, resolveGray } from './theme';
 
 /**
- * ThemePicker — pick an accent, gray, corner radius, and motion feel; the whole
- * app re-themes live. Accent swatches repoint the accent ramp; "Auto" uses
- * Radix's recommended paired gray; radius scales --radius-factor; motion maps to
- * the data-motion presets. Persists.
+ * ThemePicker — pick an accent, gray, corner radius, motion feel, and animation
+ * style; the whole app re-themes live. Accent swatches repoint the accent ramp;
+ * "Auto" uses Radix's recommended paired gray; radius scales --radius-factor;
+ * motion maps to the data-motion presets; the Animation choice sets the scroll
+ * reveal and its matching heading entrance together (they stay in step). Persists.
  */
 export function ThemePicker() {
-  const { accent, gray, radius, motion, titleAnim, reveal, setAccent, setGray, setRadius, setMotion, setTitleAnim, setReveal, setVibe, reset } = useTheme();
+  const { accent, gray, radius, motion, reveal, setAccent, setGray, setRadius, setMotion, setReveal, reset } = useTheme();
   const paired = resolveGray(accent, 'auto');
-  // The active vibe is whichever preset all three axes currently match (else none).
-  const activeVibe = VIBES.find((v) => {
-    const p = VIBE_PRESETS[v];
-    return p.reveal === reveal && p.titleAnim === titleAnim && p.motion === motion;
-  });
   return (
     <div className="theme-picker">
       <div className="theme-picker__row">
@@ -82,23 +78,6 @@ export function ThemePicker() {
       </div>
 
       <div className="theme-picker__row">
-        <strong className="theme-picker__title">Vibe</strong>
-      </div>
-      <div className="theme-picker__swatches">
-        {VIBES.map((v) => (
-          <button
-            key={v}
-            type="button"
-            aria-pressed={activeVibe === v}
-            className={cx('theme-picker__chip', activeVibe === v && 'is-active')}
-            onClick={() => setVibe(v)}
-          >
-            {v}
-          </button>
-        ))}
-      </div>
-
-      <div className="theme-picker__row">
         <strong className="theme-picker__title">Motion</strong>
       </div>
       <div className="theme-picker__swatches">
@@ -116,24 +95,8 @@ export function ThemePicker() {
       </div>
 
       <div className="theme-picker__row">
-        <strong className="theme-picker__title">Title anim</strong>
-      </div>
-      <div className="theme-picker__swatches">
-        {TITLE_ANIMS.map((t) => (
-          <button
-            key={t}
-            type="button"
-            aria-pressed={titleAnim === t}
-            className={cx('theme-picker__chip', titleAnim === t && 'is-active')}
-            onClick={() => setTitleAnim(t)}
-          >
-            {t}
-          </button>
-        ))}
-      </div>
-
-      <div className="theme-picker__row">
-        <strong className="theme-picker__title">Reveal</strong>
+        <strong className="theme-picker__title">Animation</strong>
+        <span className="theme-picker__hint">reveal + title, in step</span>
       </div>
       <div className="theme-picker__swatches">
         {REVEALS.map((r) => (

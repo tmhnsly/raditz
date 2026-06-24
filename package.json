@@ -30,6 +30,7 @@
     "test:watch": "vitest",
     "gen:barrel": "node scripts/gen-barrel.mjs",
     "gen:catalog": "node scripts/gen-catalog.mjs",
+    "validate:taxonomy": "node scripts/validate-taxonomy.mjs",
     "build:lib": "vite build --config vite.lib.ts",
     "build:css": "vite build --config vite.css.ts",
     "build:pkg": "pnpm build:lib && pnpm build:css && node scripts/wrap-css-layer.mjs",

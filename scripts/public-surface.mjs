@@ -12,6 +12,7 @@ export const LIB = [
   './lib/hooks',
   './lib/Frame',
   './lib/SectionShell',
+  './lib/InView',
   './lib/HeroBleed',
 ];
 

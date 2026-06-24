@@ -2,9 +2,9 @@
 import { Fragment, useState, useEffect, useMemo } from 'react';
 import type { HTMLAttributes, ReactNode, ReactElement, KeyboardEvent as ReactKeyboardEvent } from 'react';
 import { cx, Overlay, useRoving, fuzzyFilter } from '../../internal';
-import { Icon } from '../../foundation/Icon/Icon';
-import { Search } from '../../forms/Search/Search';
-import type { IconName } from '../../foundation/Icon/Icon';
+import { Icon } from '../../display/Icon/Icon';
+import { Search } from '../../inputs/Search/Search';
+import type { IconName } from '../../display/Icon/Icon';
 
 export interface CommandItem {
   id?: string;

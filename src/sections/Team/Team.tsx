@@ -19,7 +19,7 @@ export function TeamA({ members, heading, background = 'none', children, ...prop
             {members.map((m, i) => (
               <div key={i} className="col sx-team__member">
                 {m.avatar ? (
-                  <div className="ph sx-team__photo">{m.avatar}</div>
+                  <div className="ph sx-team__photo sx-media-reveal">{m.avatar}</div>
                 ) : null}
                 <div className="col">
                   <strong>{m.name}</strong>

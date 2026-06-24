@@ -2,8 +2,8 @@
 import { useRef, useState, useLayoutEffect, useCallback } from 'react';
 import type { CSSProperties, HTMLAttributes, KeyboardEvent as ReactKeyboardEvent, ReactElement, ReactNode } from 'react';
 import { useControllableState, cx, rovingIndex } from '../../internal';
-import { Icon } from '../../foundation/Icon/Icon';
-import type { IconName } from '../../foundation/Icon/Icon';
+import { Icon } from '../../display/Icon/Icon';
+import type { IconName } from '../../display/Icon/Icon';
 
 export interface NavBarItem {
   key: string;

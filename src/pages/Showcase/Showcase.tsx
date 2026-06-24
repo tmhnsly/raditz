@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { SectionShell } from '../../lib/SectionShell';
-import { Switch } from '../../components/controls/Switch';
+import { Switch } from '../../components/inputs/Switch';
 import { FooterA } from '../../sections/Footer';
 
 // Placeholder imagery (swap for brand photography). Royalty-free Unsplash landscapes.

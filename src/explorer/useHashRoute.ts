@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 // Tiny dependency-free hash router. The route is the slug after "#/", so
-// "#/components/controls/button" → "components/controls/button" and "" → overview.
+// "#/components/actions/button" → "components/actions/button" and "" → overview.
 const read = () => decodeURIComponent(window.location.hash.replace(/^#\/?/, ''));
 
 export function useHashRoute() {

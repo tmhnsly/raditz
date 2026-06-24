@@ -1,0 +1,12 @@
+/* Spotlight — animated thumbnail-card grid (co-located with the component). */
+.rdz-spotlight__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: var(--space-4); }
+
+/* The card: a clipped column — vignette flush to the top, padded body below. */
+.rdz-spotlight__card { display: flex; flex-direction: column; padding: 0; overflow: hidden; }
+.rdz-spotlight__thumb { border-bottom: 1px solid var(--surface-edge); }
+.rdz-spotlight__body { display: flex; flex-direction: column; gap: var(--space-2); padding: var(--space-5); }
+.rdz-spotlight__title { font-size: var(--fs-h5); font-weight: var(--fw-semibold); letter-spacing: -0.01em; color: var(--text); }
+.rdz-spotlight__text { color: var(--text-soft); font-size: var(--fs-body-s); line-height: var(--lh-body); }
+
+/* Top-right link arrow — plain (inherits .rdz-card__arrow position + tone colour). */
+.rdz-spotlight__arrow svg { width: 1rem; height: 1rem; }

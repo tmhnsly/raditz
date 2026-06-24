@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import type { Preview, Decorator } from '@storybook/react';
+import { useReplay } from '../src/components/internal';
 import '../src/styles/styles.css'; // design tokens
 import '../src/styles/components'; // co-located per-component styles (aggregated)
 import '../src/styles/sections'; // shared utilities + every section's co-located .css
@@ -22,6 +23,38 @@ const withTheme: Decorator = (Story, context) => {
   );
 };
 
+/* Universal Replay: a workbench-only control that remounts the story subtree so
+   any entrance animation (Reveal / TextReveal / Vignette / title-anim) re-fires —
+   the AnimationsA pattern, made global via useReplay. Applies on every story AND
+   its Docs canvas. Harmless on static stories. Story tests never see this (no
+   setProjectAnnotations → composeStories ignores preview decorators), so the a11y
+   gate is unaffected. The explorer showroom has its own per-variant Replay (its
+   renderer ignores Storybook decorators) — see explorer/StoryView.tsx. */
+const withReplay: Decorator = (Story) => {
+  const { key, replay } = useReplay();
+  return (
+    <div style={{ position: 'relative' }}>
+      <button
+        type="button"
+        onClick={replay}
+        aria-label="Replay story animations"
+        style={{
+          position: 'absolute', top: 8, right: 8, zIndex: 10,
+          font: 'inherit', fontSize: 12, lineHeight: 1, padding: '5px 10px',
+          borderRadius: 6, border: '1px solid var(--rule, #8884)',
+          background: 'var(--surface, #fff)', color: 'var(--text, inherit)',
+          cursor: 'pointer', opacity: 0.8,
+        }}
+      >
+        ↻ Replay
+      </button>
+      <div key={key}>
+        <Story />
+      </div>
+    </div>
+  );
+};
+
 const preview: Preview = {
   // every story group gets an auto-generated Docs page
   tags: ['autodocs'],
@@ -34,9 +67,9 @@ const preview: Preview = {
           'Overview',
           'Foundations', ['Colors', 'Typography', 'Spacing', 'Radius', 'Elevation', 'Motion'],
           'Components', [
-            'Typography', 'Controls', 'Forms', 'Surfaces', 'Layout',
-            'Navigation', 'Overlay', 'Menu', 'Disclosure', 'Feedback',
-            'Data', 'Media', 'Patterns', 'Utility', 'Foundation',
+            'Typography', 'Display', 'Actions', 'Inputs', 'Feedback',
+            'Surfaces', 'Layout', 'Navigation', 'Overlay', 'Disclosure',
+            'Data', 'Media', 'Motion',
           ],
           'Sections',
           'Pages',
@@ -59,7 +92,7 @@ const preview: Preview = {
       },
     },
   },
-  decorators: [withTheme],
+  decorators: [withTheme, withReplay],
 };
 
 export default preview;

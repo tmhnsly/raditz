@@ -391,7 +391,7 @@ RevealGroup auto-staggers children via a pure-CSS per-item delay. Transform/opac
 filter only. The hidden state rides custom properties (`--rdz-reveal-tf` …) so a variant
 only SETS a property and `.is-in` (which zeroes the real properties) always wins — no
 specificity war between an explicit `anim` and the app-wide default. With no `anim` it
-inherits the global `data-reveal` vibe (fallback `fade-rise`). Sections opt in via a
+inherits the global `data-reveal` style (fallback `fade-rise`). Sections opt in via a
 prop (e.g. `FeaturesA animate`), never by default (stays SSR-pure).
 _Avoid_: scroll-event entrance handlers; baking reveal into every section.
 
@@ -409,17 +409,25 @@ chose library-wide react-icons. Add an icon = import its `Lu*` glyph + add a nam
 raw SVG) in a looping idle animation (float/orbit/pulse/spin/wiggle) or a one-shot `draw`
 (stroked icons). Icon-agnostic (styles its child only). GPU-promoted so the loop composites smoothly.
 
-**Animation config — vibes + axes** (`lib/theme`):
-Three app-wide axes set as `<html>` attributes by `applyTheme` (parallel to
-`data-motion`): `data-title-anim` (`TITLE_ANIMS` → animates every `.h-display`/
-`.h-section`/`.rdz-heading` on mount) and `data-reveal` (`REVEALS` → the default for
-every `<Reveal>`). A `vibe` (`VIBES` + `VIBE_PRESETS`) is the headline pick — one
-choice sets a coordinated `{ reveal, titleAnim, motion }` personality (Minimal /
-Kinetic / Editorial / Playful); the individual axes stay overridable. `useTheme`
-exposes `setVibe`/`setReveal`/`setTitleAnim`; ThemePicker has Vibe + Reveal + Title
-controls. All default-safe (`none`/`fade-rise`) and CSS-driven, so a heading/reveal
-follows the app's vibe with zero per-instance wiring.
-_Avoid_: per-section heading/reveal animation props; a second motion system.
+**Animation config — coordinated reveal + title** (`lib/theme`, reworked 2026-06-24):
+App-wide `<html>` attributes set by `applyTheme` (parallel to `data-motion`):
+`data-reveal` (`REVEALS` → the default for every `<Reveal>`) and `data-title-anim`
+(`TITLE_ANIMS` → animates every `.h-display`/`.h-section`/`.rdz-heading` on mount).
+The two are **tied**: `reveal` is the single control and the title entrance is
+DERIVED from it via `REVEAL_TITLE` (e.g. `flip`→`scale`, `blur`→`blur-in`), so the
+heading and scroll reveal always stay stylistically in step — they can't drift.
+`useTheme` exposes `setReveal` (and a read-only derived `titleAnim`); ThemePicker has
+one "Animation" control. (The old `vibe` preset layer + the independent `setTitleAnim`
+were removed — coordination is now intrinsic, not a preset you can break.) All
+default-safe (`fade-rise`→`fade-up`) and CSS-driven, zero per-instance wiring.
+_Avoid_: per-section heading/reveal animation props; setting title + reveal apart; a second motion system.
+
+**Section content choreography** (`lib/SectionShell` + `lib/InView`, added 2026-06-24; spec in `docs/superpowers/specs/2026-06-24-section-animation-choreography-design.md`):
+Every section now choreographs its WHOLE content on scroll-in, not just the heading. `SectionShell` (default `animate` = true) routes its content through `InView` — a thin client wrapper that toggles `is-in` when the section enters view — and the staggered cascade is pure CSS (`.s-choreo` in `sections.css`): direct content blocks fade-rise in, offset by `--s-stagger` (rides `data-motion`). The entrance style follows the app-wide `data-reveal` axis (curated to the smooth ones at section scale — fade / fade-rise / rise / scale; others fall back to fade-rise; `none` off). A choreographed section suppresses the standalone mount-based `data-title-anim` on its heading (it's part of the cascade now). Sections that drive their own reveals (Features/Spotlight/Animations) or shouldn't choreograph (Marquee/Announcement) pass `animate={false}`.
+- **SSR-pure with zero consumer wiring**: the reveal/choreo hidden state is gated by `@media (scripting: enabled)` (in `Reveal.scss` + `sections.css`). JS on → hide+animate; no-JS/crawler → `scripting: none` → content renders visible; old browsers without the feature → visible, un-animated. No `html.js` script, no FOUC.
+- **Smooth**: GPU transform/opacity only; the permanent `will-change` on every reveal was REMOVED (it left a standing compositor layer per reveal); transitions auto-composite.
+- **Cinematic media motions** (all reduced-motion-safe, scripting-gated): image/video backdrops **scale-settle** 1.06→1 (`SectionBackground.scss`); **`CountUp`** (`components/display/CountUp`) rolls stat numbers 0→value on view (final value is the SSR/reduced/a11y value, prefix/suffix preserved) — wired into `Stats`; the featured **Pricing** tier scale-pops; card media scales in via the `.sx-media-reveal` clip utility (on `Team` photos).
+_Avoid_: hiding section content unconditionally (breaks SSR — always gate on `scripting`); a permanent `will-change`; per-element reveal wrappers when the section-level cascade suffices.
 
 **TextReveal** (kinetic headlines):
 `components/utility/TextReveal` + the `splitText` helper (`internal/`). Splits a string
@@ -429,12 +437,22 @@ so AT reads the heading normally. Opt-in for hero/feature headlines (not the glo
 title config).
 _Avoid_: animating split text without the screen-reader copy.
 
-**MotionCard** (preset card):
-`components/surfaces/MotionCard` — a ready-made brand-colored animated card composing
-`Card` + `Reveal` + `AnimatedIcon` + `CardArrow`. `tone` variants pull the system
-gradient/accent/secondary/glass/mono tokens (theme-safe pastels); reveals on scroll;
-clickable (`href`) cards get the arrow + auto `target=_blank` for external links. The
-exported "drop-in polished card" so products don't re-wire the primitives.
+**Card tones + Vignette + Spotlight** (preset cards; replaced MotionCard 2026-06-24):
+- **`Card.tone`** — `MotionCard` is gone; its six treatments are now a `tone` prop on
+  the base `Card` (`accent`/`secondary`/`aurora`/`dusk`/`glass`/`mono`). Each tone sets
+  the `--card-ink` (eyebrow/icon) and `--card-arrow` (CardArrow pop) **pairing custom
+  properties** so a card's accents complement its tone (a secondary card's arrow is
+  primary; an accent card's ink is neutral). `.rdz-card__eyebrow/__icon/__title/__body/
+  __arrow` consume them; `.rdz-card--col` is the content-column layout.
+- **`Vignette`** (`components/surfaces/Vignette`, was `Thumbnail`) — a toned visual area
+  holding a product-supplied animated `scene`. It plays the scene ONCE on scroll-reveal
+  (`useInView`) and again whenever `replay` changes (a host card bumps it on hover): the
+  scene is remounted via a `key` so its one-shot CSS animation restarts — **never loops**.
+  `bg` is a preset background treatment (plain/gradient/accent/secondary/mono/aurora).
+- **`Spotlight`** (`sections/Spotlight`) — the reusable animated-thumbnail-card section:
+  a `RevealGroup` grid of cards, each = `Card` tone + `Vignette` + title/text + top-right
+  `CardArrow`; the card owns the hover→replay token. Scenes are product-supplied (e.g.
+  beats ships bespoke DJ-deck / two-figure-coaching / camera scenes).
 
 **CardArrow** (clickable affordance):
 `components/utility/CardArrow` — the consistent clickable-card arrow: a horizontal `→`
@@ -443,8 +461,41 @@ nudge on host hover/focus (add `rdz-card-arrow-host` to the wrapper). Replaces t
 editorial row's ad-hoc arrow.
 
 The `Sections/Animations` showcase composes it all (reveal-variant grid with a Replay
-control, title + TextReveal gallery, AnimatedIcon cards, MotionCard presets) so it's
+control, title + TextReveal gallery, AnimatedIcon cards, Card-tone presets) so it's
 viewable/tunable in the explorer.
+
+## Component taxonomy (single source of truth, reorganised 2026-06-24)
+
+Every public component lives at `src/components/<category>/<Name>/`. The **folder is the
+single source of truth**: the public API path (`gen:barrel` → `src/index.ts`), the catalog
+grouping (`gen:catalog`), and the test scaffold all read it. A story's `meta.title` is
+**derived** from the folder as `Components/<TitleCase(category)>/<Name>` and validated by
+`scripts/validate-taxonomy.mjs`, so the explorer showroom tree (built from titles) can
+never drift from the folders. The validator is wired into `release:preflight` (a drifted
+title or an unknown category blocks a release) and the test suite
+(`scripts/validate-taxonomy.test.mjs`); it prints the per-category counts (don't hand-count).
+
+The **13 categories** (each crisp + non-overlapping; counts from the validator):
+- **actions** (4) — controls that act on activation: Button, IconButton, Toggle, ToggleGroup.
+- **inputs** (20) — value entry bound to form state: Input/Textarea/Select/Combobox, Checkbox, Radio(+Group), Slider, Switch, the pickers, Rating, Search, TagInput, Field, Form…
+- **display** (4) — small non-interactive inline visuals: Badge, Pill, Icon, AccessibleIcon.
+- **feedback** (5) — status / progress / transient notices: Spinner, Skeleton, Progress, Toast, Banner.
+- **typography** (8) — text + screen-reader primitives: Heading, Text, Code, Kbd, Eyebrow, CheckList, Label, VisuallyHidden.
+- **layout** (11) — space-arranging primitives: Container, Grid, Stack, Section, SectionBackground, FullBleed, Popout, AspectRatio, ScrollArea, Separator, AppShell.
+- **surfaces** (7) — content-bearing planes: Card, Callout, Vignette, Avatar, AvatarGroup, CardArrow, EmptyState.
+- **overlay** (11) — floating/fixed layers (the Overlay adapter faces, incl. menus): Dialog, Drawer, AlertDialog, Popover, HoverCard, CommandPalette, Tooltip, ContextMenu, DropdownMenu, Menubar, Lightbox.
+- **navigation** (9) — wayfinding: NavBar, NavigationMenu, Breadcrumb, Pagination, Tabs, Stepper, Tree, Toolbar, PageHeader.
+- **disclosure** (2) — show/hide in place: Accordion, Collapsible.
+- **data** (6) — viz + tables: DataTable, BarChart, LineChart, ScatterChart, Donut, Sparkline.
+- **media** (3) — image/gallery content: Carousel, Gallery, Marquee.
+- **motion** (3) — entrance/animation primitives: Reveal, TextReveal, AnimatedIcon.
+
+A component may sit under a different SHOWROOM top bucket via `TITLE_EXCEPTIONS` in the
+validator (only `layout/AppShell → Pages/App shell` today). The pre-reorg categories
+`controls`, `forms`, `foundation`, `menu`, `patterns`, `utility` are **retired** — don't
+re-create them; the shared, non-public `MenuSurface` now lives in `components/internal/`.
+_Avoid_: a new top-level component folder outside the 13 (the validator rejects it); a
+hand-written story title that doesn't match its folder; hand-counted member lists.
 
 ## Distribution system
 
@@ -459,8 +510,8 @@ The library ships as:
   tagged version; `/raditz-promote` publishes to a consumer.
 - **Product customisation** — brand via `theme.css` (override `--accent-*` tokens) or
   `useTheme({ accent })`; set `DEFAULT_SCHEME` in `app/theme-runtime.tsx`; set an
-  app-wide animation vibe via `data-reveal`/`data-title-anim` on `<html>` (fixed) or
-  by passing the axes to `useTheme({ reveal, titleAnim })` (live).
+  app-wide animation style via `data-reveal` on `<html>` (fixed; `data-title-anim`
+  is derived from it) or by passing `useTheme({ reveal })` (live; title follows).
 - **Published CSS is wrapped in `@layer raditz`** (post-build `scripts/wrap-css-layer.mjs`,
   run by `build:pkg`). Cascade layers make a consumer's UNLAYERED `theme.css` override win
   regardless of bundler import order — so brand `:root { --accent-* }` needs no `:root:root`
@@ -479,8 +530,9 @@ The product surfaced library gaps; these were fixed IN the library, not plastere
 - **`Form` gained `select` + `when`** — `type:'select'` (with `options`) and a `when(values)`
   predicate render+validate a field conditionally (e.g. "Other → please specify"). `Select`
   now forwards its ref so the Form reads its validity.
-- **`MotionCard` icons rest static, animate on hover** (not a continuous loop) — looping
-  icons are noise in a grid of info cards.
+- **Card animations play once, on reveal + hover — never loop** (looping is noise in a
+  card grid): `Vignette` remounts its scene to replay it; `Spotlight` drives the hover.
+  (Superseded the interim `MotionCard` hover-unfreeze, now removed.)
 - **Nav** is the floating glass pill with a SELECTED-route sliding pill + a separate hover
   state; collapses to a burger via a viewport media query (the fixed bar confounds the
   container query). The next template ships a `ScrollToTop` (top-on-route-change).

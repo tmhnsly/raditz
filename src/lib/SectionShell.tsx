@@ -1,10 +1,11 @@
 import type { ReactElement, ReactNode } from 'react';
 import { Frame } from './Frame';
+import { InView } from './InView';
 import { cx } from '../components/internal';
 import { SectionBackground } from '../components/layout/SectionBackground';
 import type { SectionBg } from '../components/layout/SectionBackground/SectionBackground';
-import { Button, type ButtonProps } from '../components/controls/Button';
-import type { IconName } from '../components/foundation/Icon/Icon';
+import { Button, type ButtonProps } from '../components/actions/Button';
+import type { IconName } from '../components/display/Icon/Icon';
 
 export type { SectionBg } from '../components/layout/SectionBackground/SectionBackground';
 
@@ -45,6 +46,11 @@ export interface SectionShellProps {
   frameClassName?: string;
   /** Constrain the Frame width. */
   frameMaxWidth?: string;
+  /** Choreograph the content entrance: the section's content blocks cascade in
+   *  (staggered) when the section scrolls into view, in the app-wide entrance style
+   *  (`data-reveal`). @default true. Set `false` for structural bands (nav/footer) or
+   *  sections that drive their own reveals (Features/Spotlight/Animations). */
+  animate?: boolean;
   children?: ReactNode;
 }
 
@@ -67,15 +73,22 @@ export function SectionShell({
   nav,
   frameClassName,
   frameMaxWidth,
+  animate = true,
   children,
 }: SectionShellProps) {
   const padClass = pad === 'sm' ? 's-pad-sm' : pad === 'none' ? undefined : 's-pad';
+  // Choreographed sections route their content through InView (a client boundary that
+  // toggles `is-in` on scroll-in); the staggered entrance is pure CSS (.s-choreo). The
+  // children stay server-rendered. Non-animated sections render a plain wrapper.
+  const wrapBody = animate ? (
+    <InView className={cx('s-wrap', 's-choreo', wrap)} inViewClassName="is-in">{children}</InView>
+  ) : (
+    <div className={cx('s-wrap', wrap)}>{children}</div>
+  );
   const inner = (
     <>
       {nav ? <div className="section-shell__nav">{nav}</div> : null}
-      <div className={cx(padClass, padClassName)}>
-        <div className={cx('s-wrap', wrap)}>{children}</div>
-      </div>
+      <div className={cx(padClass, padClassName)}>{wrapBody}</div>
     </>
   );
   const hasBg = background !== 'none' || !!image || !!video;
@@ -145,6 +158,9 @@ export type SectionAction = {
  * interfaces (e.g. `HeroProps`) extend this and add their content fields.
  */
 export type SectionBaseProps = SectionVariantProps & {
+  /** Choreograph the content entrance (staggered cascade on scroll-in). @default true.
+   *  Forwarded to {@link SectionShell}; set `false` to keep a section static. */
+  animate?: boolean;
   /** Replaces the auto-rendered body inside the themed shell when provided. */
   children?: ReactNode;
 };

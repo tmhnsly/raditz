@@ -20,7 +20,7 @@ export interface RevealState<T extends Element = HTMLElement> {
 
 /**
  * The shared gate behind every scroll-reveal: folds reduced-motion + in-view into a
- * single `revealed` flag. {@link import('../utility/Reveal/Reveal').Reveal} and
+ * single `revealed` flag. {@link import('../motion/Reveal/Reveal').Reveal} and
  * `TextReveal` both build on this, so the reveal contract — and any bug in it, like
  * the StrictMode IntersectionObserver issue — lives in ONE place. Callers: when
  * `reduced`, render the final state WITHOUT the `ref`; otherwise attach `ref` and

@@ -1,7 +1,7 @@
 'use client';
 import type { ReactElement } from 'react';
 import { useColorScheme } from './useColorScheme';
-import { Icon } from '../components/foundation/Icon';
+import { Icon } from '../components/display/Icon';
 import { cx } from '../components/internal';
 
 export interface ColorSchemeToggleProps {

@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Toolbar } from './Toolbar';
-import { ToggleGroup } from '../../controls/ToggleGroup';
-import { IconButton } from '../../controls/IconButton';
-import { Separator } from '../../surfaces/Separator';
+import { ToggleGroup } from '../../actions/ToggleGroup';
+import { IconButton } from '../../actions/IconButton';
+import { Separator } from '../../layout/Separator';
 
 const meta = {
   title: 'Components/Navigation/Toolbar',

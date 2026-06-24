@@ -23,12 +23,12 @@ describe('Explorer', () => {
     // Everything is on one page, so the Button section is already present.
     expect(screen.getByRole('heading', { name: 'Button' })).toBeTruthy();
 
-    // Drill in: Components → Controls → Button (file-browser: click folders to open).
+    // Drill in: Components → Actions → Button (file-browser: click folders to open).
     fireEvent.click(within(tree).getByText('Components').closest('[role="treeitem"]')!);
-    fireEvent.click(within(tree).getByText('Controls').closest('[role="treeitem"]')!);
+    fireEvent.click(within(tree).getByText('Actions').closest('[role="treeitem"]')!);
     fireEvent.click(within(tree).getByText('Button').closest('[role="treeitem"]')!);
 
     // The link updates the hash (for deep-linking + scroll), not what's rendered.
-    expect(window.location.hash).toBe('#/components/controls/button');
+    expect(window.location.hash).toBe('#/components/actions/button');
   });
 });

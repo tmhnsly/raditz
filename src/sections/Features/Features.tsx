@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { SectionShell, SectionHeader, type SectionBaseProps } from '../../lib/SectionShell';
-import { Reveal, RevealGroup } from '../../components/utility/Reveal';
+import { Reveal, RevealGroup } from '../../components/motion/Reveal';
 
 export interface FeaturesItem {
   title: ReactNode;
@@ -41,7 +41,7 @@ export function FeaturesA({ items, eyebrow, heading, align, animate = false, bac
     );
   });
   return (
-    <SectionShell wrap="col sx-gap-6" background={background} {...props}>
+    <SectionShell wrap="col sx-gap-6" background={background} {...props} animate={false}>
       {children ?? (
         <>
           <SectionHeader eyebrow={eyebrow} heading={heading} align={align} className="col sx-feat__head" />
@@ -60,7 +60,7 @@ export function FeaturesA({ items, eyebrow, heading, align, animate = false, bac
 export function FeaturesB({ items, eyebrow, heading, align, background = 'gradient-mesh', children, ...props }: FeaturesProps) {
   const [lead, ...rest] = items;
   return (
-    <SectionShell wrap="col sx-gap-6" background={background} {...props}>
+    <SectionShell wrap="col sx-gap-6" background={background} {...props} animate={false}>
       {children ?? (
         <>
           <SectionHeader eyebrow={eyebrow} heading={heading} align={align} className="col sx-feat__head" />
@@ -93,7 +93,7 @@ export function FeaturesB({ items, eyebrow, heading, align, background = 'gradie
 /** Features C — alternating media spotlights. */
 export function FeaturesC({ items, eyebrow, heading, align, background = 'surface-2', children, ...props }: FeaturesProps) {
   return (
-    <SectionShell wrap="col sx-gap-6" background={background} {...props}>
+    <SectionShell wrap="col sx-gap-6" background={background} {...props} animate={false}>
       {children ?? (
         <>
           <SectionHeader eyebrow={eyebrow} heading={heading} align={align} className="col sx-feat__head" />

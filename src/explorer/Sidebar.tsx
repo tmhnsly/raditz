@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { GiMoonOrbit } from 'react-icons/gi';
 import { Tree, type TreeNode as TreeItem } from '../components/navigation/Tree';
-import { Search } from '../components/forms/Search';
+import { Search } from '../components/inputs/Search';
 import type { TreeNode } from './registry';
 import { ancestorsOf, filterTree, allBranchIds } from './registry';
 

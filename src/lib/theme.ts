@@ -80,17 +80,18 @@ export type TitleAnimation = (typeof TITLE_ANIMS)[number];
 export const REVEALS = ['none', 'fade', 'fade-rise', 'rise', 'scale', 'zoom', 'blur', 'flip'] as const;
 export type RevealChoice = (typeof REVEALS)[number];
 
-/** Named animation "vibes" — one pick sets a coordinated reveal + title + motion
- * personality for the whole app; the individual axes stay overridable after. */
-export const VIBES = ['none', 'minimal', 'kinetic', 'editorial', 'playful'] as const;
-export type VibeChoice = (typeof VIBES)[number];
-
-export const VIBE_PRESETS: Record<VibeChoice, { reveal: RevealChoice; titleAnim: TitleAnimation; motion: MotionChoice }> = {
-  none:      { reveal: 'none',      titleAnim: 'none',    motion: 'smooth' },
-  minimal:   { reveal: 'fade',      titleAnim: 'fade',    motion: 'smooth' },
-  kinetic:   { reveal: 'rise',      titleAnim: 'fade-up', motion: 'snappy' },
-  editorial: { reveal: 'blur',      titleAnim: 'blur-in', motion: 'calm' },
-  playful:   { reveal: 'zoom',      titleAnim: 'scale',   motion: 'snappy' },
+/** The title entrance is TIED to the reveal style — picking a reveal always sets
+ * the matching heading animation, so the two never drift out of step. `reveal` is
+ * the single control; `titleAnim` is derived from it (never set independently). */
+export const REVEAL_TITLE: Record<RevealChoice, TitleAnimation> = {
+  none: 'none',
+  fade: 'fade',
+  'fade-rise': 'fade-up',
+  rise: 'fade-up',
+  scale: 'scale',
+  zoom: 'scale',
+  blur: 'blur-in',
+  flip: 'scale',
 };
 
 /** Pure palette resolution: returns the full set of CSS custom properties that
@@ -145,12 +146,13 @@ export function applyTheme(state: Partial<ThemeState> = {}): void {
   const vars = themeVars(s);
   for (const [k, val] of Object.entries(vars)) root.style.setProperty(k, val);
   root.setAttribute('data-motion', s.motion);
-  root.setAttribute('data-title-anim', s.titleAnim);
   root.setAttribute('data-reveal', s.reveal);
+  // Title entrance is always derived from the reveal, so they stay in step.
+  root.setAttribute('data-title-anim', REVEAL_TITLE[s.reveal]);
 }
 
 /** Apply the persisted (or default) theme to <html> immediately — call once at app
- * start (before render) so a saved accent / vibe / reveal / title shows on first
+ * start (before render) so a saved accent / reveal / motion shows on first
  * paint, without waiting for the ThemePicker to mount. */
 export function applyStoredTheme(projectDefaults?: ThemeDefaults): void {
   applyTheme(load(projectDefaults));
@@ -158,9 +160,9 @@ export function applyStoredTheme(projectDefaults?: ThemeDefaults): void {
 
 const KEY = 'rdz-theme';
 
-interface ThemeState { accent: Accent; gray: GrayChoice; radius: RadiusChoice; motion: MotionChoice; titleAnim: TitleAnimation; reveal: RevealChoice; }
+interface ThemeState { accent: Accent; gray: GrayChoice; radius: RadiusChoice; motion: MotionChoice; reveal: RevealChoice; }
 
-const DEFAULTS: ThemeState = { accent: 'cyan', gray: 'auto', radius: 'default', motion: 'smooth', titleAnim: 'none', reveal: 'fade-rise' };
+const DEFAULTS: ThemeState = { accent: 'cyan', gray: 'auto', radius: 'default', motion: 'smooth', reveal: 'fade-rise' };
 
 /** Project-level theme baseline a consuming product can pass to useTheme(). */
 export type ThemeDefaults = {
@@ -168,7 +170,6 @@ export type ThemeDefaults = {
   gray?: GrayChoice;
   radius?: RadiusChoice;
   motion?: MotionChoice;
-  titleAnim?: TitleAnimation;
   reveal?: RevealChoice;
 };
 
@@ -183,7 +184,6 @@ function load(projectDefaults?: ThemeDefaults): ThemeState {
           gray: v.gray ?? base.gray,
           radius: RADII.includes(v.radius) ? v.radius : base.radius,
           motion: MOTIONS.includes(v.motion) ? v.motion : base.motion,
-          titleAnim: TITLE_ANIMS.includes(v.titleAnim) ? v.titleAnim : base.titleAnim,
           reveal: REVEALS.includes(v.reveal) ? v.reveal : base.reveal,
         };
       }
@@ -206,16 +206,15 @@ export function useTheme(projectDefaults?: ThemeDefaults) {
     gray: state.gray,
     radius: state.radius,
     motion: state.motion,
-    titleAnim: state.titleAnim,
     reveal: state.reveal,
+    /** The heading entrance derived from the current reveal (read-only — they're tied). */
+    titleAnim: REVEAL_TITLE[state.reveal],
     setAccent: (accent: Accent) => setState((s) => ({ ...s, accent })),
     setGray: (gray: GrayChoice) => setState((s) => ({ ...s, gray })),
     setRadius: (radius: RadiusChoice) => setState((s) => ({ ...s, radius })),
     setMotion: (motion: MotionChoice) => setState((s) => ({ ...s, motion })),
-    setTitleAnim: (titleAnim: TitleAnimation) => setState((s) => ({ ...s, titleAnim })),
+    /** Sets the reveal style — and, in lockstep, the matching title entrance. */
     setReveal: (reveal: RevealChoice) => setState((s) => ({ ...s, reveal })),
-    /** Apply a named vibe — sets reveal + titleAnim + motion in one go. */
-    setVibe: (vibe: VibeChoice) => setState((s) => ({ ...s, ...VIBE_PRESETS[vibe] })),
     reset: () => setState({ ...DEFAULTS, ...projectDefaults }),
   };
 }

@@ -1,5 +1,5 @@
 import type { HTMLAttributes, ReactElement, ReactNode } from 'react';
-import { Icon } from '../../foundation/Icon/Icon';
+import { Icon } from '../../display/Icon/Icon';
 import { cx } from '../../internal';
 
 export interface BreadcrumbItem {

@@ -5,7 +5,7 @@ import './styles/components'; // co-located per-component styles (aggregated)
 import App from './App';
 import { applyStoredTheme } from './lib/theme';
 
-// Apply the saved theme (accent / vibe / reveal / motion) to <html> before the
+// Apply the saved theme (accent / reveal / motion) to <html> before the
 // first paint, so a persisted choice shows on load instead of waiting for the
 // ThemePicker popover to mount.
 applyStoredTheme();

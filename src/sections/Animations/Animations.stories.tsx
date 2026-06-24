@@ -21,6 +21,6 @@ export const C_IconMotion: Story = {
 };
 
 export const D_PresetCards: Story = {
-  name: 'D · MotionCard presets',
+  name: 'D · Card tone presets',
   render: () => <AnimationsD />,
 };

@@ -1,7 +1,7 @@
 'use client';
 import type { HTMLAttributes, ReactElement } from 'react';
 import { useControllableState, buildPages, cx } from '../../internal';
-import { Icon } from '../../foundation/Icon/Icon';
+import { Icon } from '../../display/Icon/Icon';
 
 export interface PaginationProps extends Omit<HTMLAttributes<HTMLElement>, 'onChange'> {
   /** Total number of pages. @default 1 */

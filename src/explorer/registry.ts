@@ -32,7 +32,7 @@ type StoryModule = { default?: Meta } & Record<string, StoryObj | StoryFn | Meta
 export type Variant = { id: string; name: string; Component: ComponentType };
 
 export type Entry = {
-  slug: string; // full kebab path, e.g. "components/controls/button"
+  slug: string; // full kebab path, e.g. "components/actions/button"
   segments: string[]; // ["Components", "Controls", "Button"]
   title: string; // raw meta.title
   description?: string;

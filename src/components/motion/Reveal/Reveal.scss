@@ -1,0 +1,65 @@
+// Uses Raditz tokens (var(--…)); timing rides the shared motion tokens so it
+// re-tunes with `data-motion` and goes instant under reduced motion.
+/* ═══════════════════════ Utility · Reveal ═══════════════════════ */
+
+/* The hidden state + entrance transition apply ONLY when scripting is enabled (JS is
+   running and can drive the reveal). Without JS — crawlers, no-JS, SSR HTML before
+   hydration — none of this matches, so content renders in its final visible state:
+   SSR-pure, with ZERO consumer-side script. Older browsers lacking the `scripting`
+   media feature simply show content un-animated (graceful). The hidden state is
+   expressed via custom properties (--rdz-reveal-tf/-filter) so a variant only ever
+   SETS a property — `.is-in` (which zeroes the real properties) always wins. */
+@media (scripting: enabled) {
+  .rdz-reveal {
+    opacity: 0;
+    transform: var(--rdz-reveal-tf, none);
+    filter: var(--rdz-reveal-filter, none);
+  }
+
+  /* The entrance transition + stagger delay sit on a DOUBLED class so they win against
+     a co-class that also declares `transition`. `<Reveal className="rdz-card …">` is a
+     normal pattern (reveal a card), but `.rdz-card`'s hover transition (transform +
+     box-shadow) loads later and the `transition` shorthand REPLACES — not merges — so it
+     would strip opacity/filter from the reveal (fade/blur "pop") and zero the stagger.
+     Opacity & filter ride the EVEN emphasized curve, not the spatial "fast-in" decel:
+     a front-loaded curve dumps ~¾ of an opacity/blur change into the first ~⅙ of the
+     duration, reading as a pop. Transform keeps the decel — travel wants quick-in.
+     (No `will-change`: a permanent hint kept a standing compositor layer on EVERY
+     reveal; opacity/transform transitions auto-composite without it.) */
+  .rdz-reveal.rdz-reveal {
+    transition:
+      opacity var(--duration-medium) var(--ease-emphasized),
+      transform var(--duration-medium) var(--ease-decel),
+      filter var(--duration-medium) var(--ease-emphasized);
+    transition-delay: calc(var(--rdz-reveal-i, 0) * var(--rdz-reveal-stagger, 0ms) + var(--rdz-reveal-delay, 0ms));
+  }
+}
+
+.rdz-reveal.is-in { opacity: 1; transform: none; filter: none; }
+
+/* Default style (no `data-reveal`, no explicit `anim`) = fade-rise. */
+.rdz-reveal:not([data-anim]) { --rdz-reveal-tf: translateY(calc(var(--motion-rise) * 2)); }
+
+/* Each variant pairs the explicit class with the inherited app-wide selector, so
+   `<Reveal anim="flip">` and a global `data-reveal="flip"` share one definition. */
+.rdz-reveal--fade,        [data-reveal="fade"]        .rdz-reveal:not([data-anim]) { --rdz-reveal-tf: none; }
+.rdz-reveal--rise,        [data-reveal="rise"]        .rdz-reveal:not([data-anim]),
+.rdz-reveal--fade-rise,   [data-reveal="fade-rise"]   .rdz-reveal:not([data-anim]) { --rdz-reveal-tf: translateY(calc(var(--motion-rise) * 2)); }
+.rdz-reveal--scale,       [data-reveal="scale"]       .rdz-reveal:not([data-anim]) { --rdz-reveal-tf: scale(var(--motion-pop)); }
+.rdz-reveal--zoom,        [data-reveal="zoom"]        .rdz-reveal:not([data-anim]) { --rdz-reveal-tf: scale(0.85); }
+.rdz-reveal--blur,        [data-reveal="blur"]        .rdz-reveal:not([data-anim]) { --rdz-reveal-filter: blur(10px); }
+.rdz-reveal--slide-left,  [data-reveal="slide-left"]  .rdz-reveal:not([data-anim]) { --rdz-reveal-tf: translateX(1.75rem); }
+.rdz-reveal--slide-right, [data-reveal="slide-right"] .rdz-reveal:not([data-anim]) { --rdz-reveal-tf: translateX(-1.75rem); }
+.rdz-reveal--flip,        [data-reveal="flip"]        .rdz-reveal:not([data-anim]) { --rdz-reveal-tf: perspective(1000px) rotateX(-78deg) translateY(var(--motion-rise)); transform-origin: center top; }
+.rdz-reveal--flip-y,      [data-reveal="flip-y"]      .rdz-reveal:not([data-anim]) { --rdz-reveal-tf: perspective(1000px) rotateY(20deg); transform-origin: left center; }
+.rdz-reveal--rotate,      [data-reveal="rotate"]      .rdz-reveal:not([data-anim]) { --rdz-reveal-tf: rotate(-5deg) scale(0.95); }
+.rdz-reveal--skew,        [data-reveal="skew"]        .rdz-reveal:not([data-anim]) { --rdz-reveal-tf: skewY(5deg) translateY(calc(var(--motion-rise) * 1.5)); }
+
+/* The `none` style — content just appears, no fade or travel. */
+[data-reveal="none"] .rdz-reveal:not([data-anim]) { opacity: 1; transition: none; --rdz-reveal-tf: none; --rdz-reveal-filter: none; }
+
+/* Defence in depth: never leave content hidden or animating when reduced. */
+@media (prefers-reduced-motion: reduce) {
+  /* Match the doubled specificity so this still beats the entrance transition above. */
+  .rdz-reveal, .rdz-reveal.rdz-reveal { opacity: 1; transform: none; filter: none; transition: none; }
+}

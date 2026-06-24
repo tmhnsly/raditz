@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Card } from '../components/surfaces/Card';
-import { Field } from '../components/forms/Field';
-import { Input } from '../components/forms/Input';
-import { Checkbox } from '../components/controls/Checkbox';
-import { Button } from '../components/controls/Button';
+import { Field } from '../components/inputs/Field';
+import { Input } from '../components/inputs/Input';
+import { Checkbox } from '../components/inputs/Checkbox';
+import { Button } from '../components/actions/Button';
 
 // Demos / design ideas: ad-hoc compositions that show several components working
 // TOGETHER in real context (the showroom), as opposed to inspecting one component

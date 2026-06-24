@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { HoverCard } from './HoverCard';
-import { Button } from '../../controls/Button';
+import { Button } from '../../actions/Button';
 
 const meta = {
   title: 'Components/Overlay/HoverCard',

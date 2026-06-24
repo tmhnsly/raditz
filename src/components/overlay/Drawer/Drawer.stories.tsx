@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { Drawer } from './Drawer';
-import { Button } from '../../controls/Button';
+import { Button } from '../../actions/Button';
 
 const meta = {
   title: 'Components/Overlay/Drawer',

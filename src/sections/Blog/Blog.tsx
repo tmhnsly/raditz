@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { SectionShell, type SectionBaseProps } from '../../lib/SectionShell';
-import { CardArrow } from '../../components/utility/CardArrow';
+import { CardArrow } from '../../components/surfaces/CardArrow';
 
 export interface BlogProps extends SectionBaseProps {
   /** Blog posts to render (required). */

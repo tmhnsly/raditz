@@ -14,6 +14,20 @@
 .sx-price__plan { gap: 0.125rem; min-height: 5.25rem; }
 .sx-price__btn { width: 100%; }
 .sx-price__card-pop { gap: var(--space-4); box-shadow: var(--shadow-5); border-color: var(--accent-border); position: relative; }
+/* Featured tier emphasis: a single subtle scale-pop once the section reveals (after the
+   content cascade). Scripting-gated; off when reduced. (The card has no static transform,
+   so the pop owns `transform` cleanly.) */
+@media (scripting: enabled) {
+  .s-choreo.is-in .sx-price__card-pop {
+    animation-name: rdz-price-pop;
+    animation-duration: calc(var(--duration-slow) * 1.1);
+    animation-timing-function: var(--ease-spring);
+    animation-delay: calc(3 * var(--s-stagger));
+    animation-fill-mode: both;
+  }
+}
+@keyframes rdz-price-pop { 0% { transform: scale(1); } 45% { transform: scale(1.035); } 100% { transform: scale(1); } }
+@media (prefers-reduced-motion: reduce) { .sx-price__card-pop { animation: none; } }
 .sx-price__badge { position: absolute; top: -0.6875rem; left: var(--space-5); }
 .sx-price__toggle-col { gap: var(--space-6); align-items: center; }
 /* Heading + period toggle share a row while there's room (flex-wrap), stacking

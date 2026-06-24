@@ -12,7 +12,7 @@ export interface MarqueeSectionProps extends SectionBaseProps {
 /** Marquee A — auto-scrolling logo strip. */
 export function MarqueeA({ items, label, background = 'none', children, ...props }: MarqueeSectionProps) {
   return (
-    <SectionShell pad="sm" padClassName="sx-mq__band" wrap="col sx-grid-center sx-gap-4" background={background} {...props}>
+    <SectionShell pad="sm" padClassName="sx-mq__band" wrap="col sx-grid-center sx-gap-4" background={background} {...props} animate={false}>
       {children ?? (
         <>
           {label && <span className="muted sx-fs-body-s">{label}</span>}

@@ -4,8 +4,8 @@ import type { CSSProperties } from 'react';
 import { GiMoonOrbit } from 'react-icons/gi';
 import { AppShell } from './AppShell';
 import { Tree, type TreeNode } from '../../navigation/Tree';
-import { Search } from '../../forms/Search';
-import { IconButton } from '../../controls/IconButton';
+import { Search } from '../../inputs/Search';
+import { IconButton } from '../../actions/IconButton';
 
 const meta: Meta = { title: 'Pages/App shell' };
 export default meta;

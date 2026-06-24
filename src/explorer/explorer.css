@@ -19,6 +19,18 @@
 .sec--fullscreen .variant { border: 1px solid var(--surface-edge); border-radius: var(--radius-lg);
   overflow: hidden; background: var(--bg); }
 
+/* Per-variant Replay: remounts the preview so entrance animations re-fire for visual
+   testing. Present on every showcase, subtle by default, brightens on hover. */
+.variant { position: relative; }
+.variant__replay { position: absolute; top: 0; right: 0; z-index: 3;
+  display: inline-flex; align-items: center; gap: 0.3rem;
+  font-family: var(--font-mono); font-size: var(--fs-mono-xs); line-height: 1;
+  padding: 0.3rem 0.55rem; border-radius: var(--radius-full);
+  border: 1px solid var(--surface-edge); background: var(--panel); color: var(--text-muted);
+  cursor: pointer; opacity: 0.55; transition: var(--transition-control); }
+.variant__replay:hover { opacity: 1; color: var(--accent-ink); border-color: var(--accent-border); }
+.sec--fullscreen .variant__replay { top: 0.5rem; right: 0.5rem; }
+
 /* overview group cards */
 .overview-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
   gap: var(--space-4); }

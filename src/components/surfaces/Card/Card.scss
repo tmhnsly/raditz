@@ -2,6 +2,7 @@
 // Uses Raditz tokens (var(--…)); re-skins/re-themes with the system.
 /* ═══════════════════════ Surfaces ═══════════════════════ */
 .rdz-card {
+  position: relative;
   background: var(--panel); border: var(--border-width) solid var(--surface-edge);
   border-radius: var(--radius-card); padding: var(--pad-card);
   box-shadow: var(--shadow-card); transition: var(--transition-hover);
@@ -19,3 +20,36 @@
 .rdz-card--interactive:hover { transform: translateY(calc(-1 * var(--motion-lift))); box-shadow: var(--shadow-card-hover); border-color: var(--rule); }
 
 .rdz-card--clip { overflow: hidden; }
+
+/* Content-card column layout (icon → eyebrow → title → body), as MotionCard had. */
+.rdz-card--col { display: flex; flex-direction: column; gap: var(--space-3); }
+
+/* ── Tone treatments (folded in from MotionCard) ──────────────────────────────
+   Each tone tints the surface AND sets two pairing custom properties consumed by
+   `.rdz-card__*` children: `--card-ink` = eyebrow/icon colour, `--card-arrow` =
+   the CardArrow colour. Both take the tone's OWN hue so the card reads as one
+   piece (secondary → gold, accent/aurora/dusk/glass → accent ink); `mono` is
+   neutral, so it keeps the accent pop on the arrow. */
+.rdz-card--accent { background: var(--accent-surface); border-color: var(--accent-border); --card-ink: var(--text-muted); --card-arrow: var(--accent-ink); }
+.rdz-card--secondary {
+  background: var(--accent-2-surface); border-color: color-mix(in srgb, var(--accent-2-solid) 28%, transparent);
+  --card-ink: var(--accent-2-ink); --card-arrow: var(--accent-2-ink);
+}
+.rdz-card--aurora {
+  background:
+    radial-gradient(90% 90% at 8% 8%, var(--accent-surface), transparent 60%),
+    radial-gradient(90% 90% at 92% 92%, var(--accent-2-surface), transparent 60%),
+    var(--panel);
+  --card-ink: var(--accent-ink); --card-arrow: var(--accent-ink);
+}
+.rdz-card--dusk { background: linear-gradient(135deg, var(--accent-surface), var(--accent-2-surface)); border-color: transparent; --card-ink: var(--accent-ink); --card-arrow: var(--accent-ink); }
+.rdz-card--glass { --card-ink: var(--accent-ink); --card-arrow: var(--accent-ink); }
+.rdz-card--mono { background: var(--surface); border-color: var(--rule); --card-ink: var(--text-muted); --card-arrow: var(--accent); }
+
+/* ── Card content elements (consume the tone pairing) ── */
+.rdz-card__eyebrow { font-family: var(--font-mono); font-size: var(--fs-mono-xs); text-transform: uppercase; letter-spacing: var(--ls-eyebrow); color: var(--card-ink, var(--accent-ink)); }
+.rdz-card__icon { font-size: 1.9rem; line-height: 1; color: var(--card-ink, var(--accent-ink)); }
+.rdz-card__title { font-size: var(--fs-h4); letter-spacing: -0.01em; color: var(--text); }
+.rdz-card__body { color: var(--text-soft); font-size: var(--fs-body-s); line-height: var(--lh-body); }
+.rdz-card__arrow { position: absolute; top: var(--space-4); right: var(--space-4); color: var(--card-arrow, var(--text-muted)); }
+.rdz-card--mono .rdz-card__title { font-family: var(--font-mono); letter-spacing: -0.02em; }

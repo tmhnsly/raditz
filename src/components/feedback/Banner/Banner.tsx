@@ -1,7 +1,7 @@
 'use client';
 import * as React from 'react';
-import { Icon } from '../../foundation/Icon/Icon';
-import type { IconName } from '../../foundation/Icon/Icon';
+import { Icon } from '../../display/Icon/Icon';
+import type { IconName } from '../../display/Icon/Icon';
 import { cx } from '../../internal';
 
 type BannerTone = 'info' | 'success' | 'warning' | 'danger';

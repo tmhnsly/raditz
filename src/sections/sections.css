@@ -144,3 +144,64 @@
 
 /* avatar size used across testimonials/team */
 .sx-avatar-sm { width: 2.25rem; height: 2.25rem; }
+
+/* ── Section content choreography ──────────────────────────────────────────────
+   When a section scrolls into view, its content blocks cascade in (staggered) — not
+   just the heading. SectionShell adds `.s-choreo` and toggles `.is-in` (via InView);
+   the stagger + entrance are pure CSS. Gated on `scripting: enabled` so content is
+   visible without JS (SSR-pure); fully off under reduced motion. The hidden transform
+   is a custom property set from the app-wide `data-reveal` axis (curated to the smooth
+   styles at section scale — fade / fade-rise / rise / scale; others fall back to
+   fade-rise; `none` disables), so there's no per-child specificity war. */
+.s-choreo { --s-stagger: calc(70ms * var(--motion-scale, 1)); }
+
+@media (scripting: enabled) {
+  .s-choreo > * {
+    opacity: 0;
+    transform: var(--s-tf, translateY(0.7rem));   /* fade-rise default */
+    transition:
+      opacity var(--duration-medium) var(--ease-emphasized),
+      transform var(--duration-medium) var(--ease-emphasized);
+  }
+  .s-choreo.is-in > * { opacity: 1; transform: none; }
+
+  /* per-child stagger (caps so a long list doesn't trail forever) */
+  .s-choreo > :nth-child(1)   { transition-delay: 0ms; }
+  .s-choreo > :nth-child(2)   { transition-delay: calc(1 * var(--s-stagger)); }
+  .s-choreo > :nth-child(3)   { transition-delay: calc(2 * var(--s-stagger)); }
+  .s-choreo > :nth-child(4)   { transition-delay: calc(3 * var(--s-stagger)); }
+  .s-choreo > :nth-child(5)   { transition-delay: calc(4 * var(--s-stagger)); }
+  .s-choreo > :nth-child(6)   { transition-delay: calc(5 * var(--s-stagger)); }
+  .s-choreo > :nth-child(n+7) { transition-delay: calc(6 * var(--s-stagger)); }
+}
+
+/* Entrance style follows the app-wide reveal axis (sets the hidden transform var). */
+[data-reveal="fade"]  .s-choreo { --s-tf: none; }
+[data-reveal="rise"]  .s-choreo { --s-tf: translateY(1rem); }
+[data-reveal="scale"] .s-choreo { --s-tf: scale(0.97); }
+/* `none` (and reduced motion) → content just appears, no stagger. */
+[data-reveal="none"] .s-choreo > * { opacity: 1; transform: none; transition: none; }
+@media (prefers-reduced-motion: reduce) {
+  .s-choreo > * { opacity: 1; transform: none; transition: none; }
+}
+
+/* A choreographed section reveals its heading as part of the cascade, so suppress the
+   standalone mount-based title animation to avoid a competing double entrance. */
+[data-title-anim] .s-choreo :is(.h-display, .h-section, .rdz-heading) { animation: none; }
+
+/* Card media reveal: wrap a card's image in `.sx-media-reveal` (it clips) and the image
+   scales in when the choreographed section enters view, just after the content cascade —
+   the cinematic touch for card grids (Blog/Team/Gallery). Scripting-gated; off when
+   reduced. Scale-only so it never fights the content choreography's opacity. */
+.sx-media-reveal { overflow: hidden; }
+@media (scripting: enabled) {
+  .s-choreo .sx-media-reveal > :is(img, video) {
+    transform: scale(1.06);
+    transition: transform calc(var(--duration-slow) * 1.3) var(--ease-decel);
+    transition-delay: calc(2 * var(--s-stagger));
+  }
+  .s-choreo.is-in .sx-media-reveal > :is(img, video) { transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .s-choreo .sx-media-reveal > :is(img, video) { transform: none; transition: none; }
+}

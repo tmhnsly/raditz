@@ -1,5 +1,6 @@
 import { useEffect, useMemo } from 'react';
-import { cx } from '../components/internal';
+import type { ComponentType } from 'react';
+import { cx, useReplay } from '../components/internal';
 import { entries, type Entry, type TreeNode } from './registry';
 import { LazyMount } from './LazyMount';
 
@@ -33,6 +34,27 @@ function GroupHeading({ slug, name, level }: { slug: string; name: string; level
   );
 }
 
+/** One isolated variant preview. The Replay control remounts the preview (a key
+ *  bump) so any entrance animation — Reveal / TextReveal / the title-anim heading
+ *  entrance / a section's `animate` — re-fires for visual testing, on EVERY
+ *  showcase (not just the few sections with a built-in Replay). `.rdz-preview` opts
+ *  the preview into the bordered "card" chrome; page entries render their own flat
+ *  `.rdz-page` inside. */
+function VariantPreview({ name, Component, showTag }: { name: string; Component: ComponentType; showTag: boolean }) {
+  const { key, replay } = useReplay();
+  return (
+    <div className={cx('variant', 'rdz-preview')}>
+      {showTag && <span className="variant__tag">{name}</span>}
+      <button type="button" className="variant__replay" onClick={replay} aria-label={`Replay ${name}`} title="Replay animations">
+        ↻ Replay
+      </button>
+      <div className="variant__stage" key={key}>
+        <Component />
+      </div>
+    </div>
+  );
+}
+
 function EntryBlock({ entry }: { entry: Entry }) {
   const leafName = entry.segments[entry.segments.length - 1];
   return (
@@ -46,13 +68,7 @@ function EntryBlock({ entry }: { entry: Entry }) {
       {entry.description && <p className="sec__desc">{entry.description}</p>}
       <LazyMount minHeight={180}>
         {entry.variants.map(({ id, name, Component }) => (
-          // .rdz-preview opts this isolated preview into the bordered "card" chrome
-          // (Frame is flat by default for real pages); a page entry renders its own
-          // .rdz-page inside, which stays flat.
-          <div className={cx('variant', 'rdz-preview')} key={id}>
-            {entry.variants.length > 1 && <span className="variant__tag">{name}</span>}
-            <Component />
-          </div>
+          <VariantPreview key={id} name={name} Component={Component} showTag={entry.variants.length > 1} />
         ))}
       </LazyMount>
     </section>

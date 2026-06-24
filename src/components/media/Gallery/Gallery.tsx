@@ -1,7 +1,7 @@
 'use client';
 import * as React from 'react';
-import { Lightbox } from '../Lightbox/Lightbox';
-import type { LightboxImage } from '../Lightbox/Lightbox';
+import { Lightbox } from '../../overlay/Lightbox/Lightbox';
+import type { LightboxImage } from '../../overlay/Lightbox/Lightbox';
 import { cx } from '../../internal';
 
 const { useState } = React;
