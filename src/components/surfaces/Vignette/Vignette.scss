@@ -14,6 +14,14 @@
 }
 .rdz-vignette__scene > svg { display: block; }
 
+/* The Vignette OWNS the reduced-motion off-switch for whatever scene it plays — a
+   scene author never ships one. Under reduced motion the scene holds its final
+   (resting) frame. Scenes time their CSS with the motion tokens (var(--duration-*),
+   var(--ease-*)) so they ride `data-motion` and stay in step with the system. */
+@media (prefers-reduced-motion: reduce) {
+  .rdz-vignette__scene, .rdz-vignette__scene * { animation: none !important; }
+}
+
 /* ── Preset background treatments (props: plain / gradient / accent / secondary /
    mono / aurora). `color` is the scene's currentColor ink, paired to the bg. ── */
 .rdz-vignette--plain { background: var(--surface); color: var(--accent-ink); }

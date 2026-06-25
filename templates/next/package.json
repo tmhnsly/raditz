@@ -2,7 +2,8 @@
   "name": "raditz-next-app",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "node scripts/dev.mjs",
+    "prebuild": "[ -d ../raditz ] && pnpm -C ../raditz build:pkg || true",
     "build": "next build",
     "start": "next start",
     "rdz:link": "node scripts/rdz-link.mjs link",

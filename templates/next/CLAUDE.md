@@ -12,7 +12,8 @@ read-only dependency.
 - Interactive Raditz components carry `"use client"`, so they work in Server
   Components. Dark mode: the inline no-flash script in `app/layout.tsx` sets the
   theme before paint; `app/theme-runtime.tsx` keeps it in sync.
-- `transpilePackages` is NOT needed — Raditz ships built output.
+- `transpilePackages: ['raditz']` is set so `pnpm dev` hot-reloads local Raditz edits
+  during co-development (see "Changing Raditz itself"); for installed/CI it's a no-op.
 
 ## Composing a page
 - **Sections are edge-to-edge (full-bleed) by default** — each brings its own inner
@@ -38,11 +39,12 @@ read-only dependency.
   user-toggleable). The Next no-flash script reads it so there's no flash.
 
 ## Motion / animation
-- Scroll-reveal (`Reveal`, `RevealGroup`, section `animate`), title animations, and
-  `AnimatedIcon` / `TextReveal` / `MotionCard` all ride the shared motion tokens and
-  honour `prefers-reduced-motion` — use them, don't hand-roll animations.
-- App-wide "vibe": set `data-reveal` / `data-title-anim` on `<html>` (fixed), or pass
-  the axes to `useTheme({ reveal, titleAnim, motion })` (live, user-tunable).
+- Scroll-reveal (`Reveal`, `RevealGroup`, and section content choreography — ON by
+  default via `SectionShell`, opt out per section with `animate={false}`), `AnimatedIcon`,
+  `TextReveal`, and `Card` `tone` cards all ride the shared motion tokens and honour
+  `prefers-reduced-motion` — use them, don't hand-roll animations.
+- App-wide entrance style: set `data-reveal` on `<html>` (fixed; the heading entrance is
+  derived from it), or pass it live via `useTheme({ reveal, motion })` (user-tunable).
 - Building a custom animated/controllable component? Import the primitives from
   `'raditz'`: `useInView`, `useReducedMotion`, `useControllableState`, `cx`, `splitText`.
 - A dashboard/docs layout → `AppShell` (`layout="sidebar" | "topbar"`, `side`, `density`,
@@ -50,4 +52,6 @@ read-only dependency.
 
 ## Changing Raditz itself
 - New reusable component → the **raditz-promote** workflow.
-- Fix an existing component → `pnpm rdz:link`, fix in the library, release, `pnpm rdz:unlink`.
+- Co-develop locally → `pnpm rdz:link`, then `pnpm dev`: it builds + watches the linked
+  raditz checkout and runs Next together, so library edits hot-reload here live (no
+  release needed). When done, release the library and `pnpm rdz:unlink`.

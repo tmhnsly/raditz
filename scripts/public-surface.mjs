@@ -6,7 +6,9 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 export const LIB = [
+  './lib/colorScheme',
   './lib/useColorScheme',
+  './lib/ColorSchemeToggle',
   './lib/ThemePicker',
   './lib/theme',
   './lib/hooks',

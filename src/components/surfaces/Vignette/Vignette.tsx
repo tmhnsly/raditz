@@ -6,9 +6,13 @@ import { cx, useInView } from '../../internal';
 export type VignetteBg = 'plain' | 'gradient' | 'accent' | 'secondary' | 'mono' | 'aurora';
 
 export interface VignetteProps {
-  /** The animated scene — an SVG / illustration. Its CSS animations should be
-   *  ONE-SHOT (`animation-iteration-count: 1`); they restart whenever the scene
-   *  is (re)mounted, which is how reveal/hover replay works. */
+  /** The animated scene — a BESPOKE SVG / illustration authored for THIS card's
+   *  subject (don't reuse one scene across cards). Its CSS animations should be
+   *  ONE-SHOT (`animation-iteration-count: 1`) and timed with the motion tokens
+   *  (`var(--duration-*)`, `var(--ease-*)`) so they ride `data-motion` and match the
+   *  system's feel. They restart whenever the scene is (re)mounted — how reveal/hover
+   *  replay works. Reduced motion is handled by the Vignette; the scene needs no
+   *  off-switch. */
   scene: ReactNode;
   /** Background treatment, from the system palette. @default 'gradient' */
   bg?: VignetteBg;
@@ -21,7 +25,9 @@ export interface VignetteProps {
  * Vignette — a styled visual area that plays its `scene` ONCE when it scrolls
  * into view, and again whenever `replay` changes (a host card bumps it on hover).
  * It never loops: the scene is remounted via a `key` so its one-shot CSS
- * animation restarts. Scenes ship their own `prefers-reduced-motion` off-switch.
+ * animation restarts. The Vignette owns the `prefers-reduced-motion` off-switch for
+ * its scene, and scenes time their CSS with the motion tokens — so the animation
+ * stays tied to the global system while the scene CONTENT is bespoke to each card.
  * The `bg` is a preset, token-driven background treatment.
  */
 export function Vignette({ scene, bg = 'gradient', replay = 0, className }: VignetteProps) {

@@ -15,8 +15,19 @@ describe('sourceSurface', () => {
       expect(fs.existsSync(e.storyFile), e.storyFile).toBe(true);
     }
   });
-  it('keeps the curated lib allowlist', () => {
-    expect(LIB).toContain('./lib/SectionShell');
+  it('keeps the curated lib primitives products import (guards LIB drift)', () => {
+    // Regression guard: a LIB omission once dropped colorScheme/ColorSchemeToggle,
+    // breaking a consumer's `import { colorSchemeScript } from 'raditz'`. Pin the set
+    // in BOTH the allowlist and the generated barrel so a drop fails here, not in a app.
+    const critical = [
+      './lib/colorScheme', './lib/useColorScheme', './lib/ColorSchemeToggle',
+      './lib/theme', './lib/ThemePicker', './lib/SectionShell', './lib/InView', './lib/hooks',
+    ];
+    const barrel = fs.readFileSync('src/index.ts', 'utf8');
+    for (const m of critical) {
+      expect(LIB, `${m} missing from LIB allowlist`).toContain(m);
+      expect(barrel, `${m} missing from generated barrel`).toContain(`from '${m}'`);
+    }
   });
   it('agrees with the committed barrel (every surface entry has a barrel export)', () => {
     const barrel = fs.readFileSync('src/index.ts', 'utf8');

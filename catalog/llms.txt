@@ -28,7 +28,7 @@ and the hero background reaches the very top (no nav "band"). On an `image`+`scr
 text goes on-dark (white) automatically; use the `glass` or default (accent) button — and
 `secondary` now stays legible over media too, so no CTA goes invisible on a photo.
 
-150 exported components across 15 categories.
+152 exported components across 15 categories.
 
 ## utilities (CSS classes)
 
@@ -1093,6 +1093,20 @@ Usage:
 
 ## lib
 
+### colorScheme
+Import: `import { COLOR_SCHEME_KEY, COLOR_SCHEME_QUERY, ColorPreference, ColorScheme, colorSchemeScript } from 'raditz'`
+
+Utility module — see exports below.
+
+Exports:
+  - COLOR_SCHEME_KEY
+  - COLOR_SCHEME_QUERY
+  - ColorPreference
+  - ColorScheme
+  - colorSchemeScript
+
+> Note: This is a utility/hook module, not a React component — do not render as JSX.
+
 ### useColorScheme
 Import: `import { useColorScheme } from 'raditz'`
 
@@ -1102,6 +1116,19 @@ Exports:
   - useColorScheme
 
 > Note: This is a utility/hook module, not a React component — do not render as JSX.
+
+### ColorSchemeToggle
+Import: `import { ColorSchemeToggle } from 'raditz'`
+
+ColorSchemeToggle — a single icon button that flips light ↔ dark. Wraps {@link useColorScheme}, so it persists the choice, live-follows the OS until the user opts in, and applies `class="dark"` on `<html>`. Drop it in any nav.
+
+Props:
+  - className?: string
+
+Usage:
+```tsx
+<ColorSchemeToggle />
+```
 
 ### ThemePicker
 Import: `import { ThemePicker } from 'raditz'`
@@ -2948,13 +2975,13 @@ Usage:
 ### Vignette
 Import: `import { Vignette } from 'raditz'`
 
-Vignette — a styled visual area that plays its `scene` ONCE when it scrolls into view, and again whenever `replay` changes (a host card bumps it on hover). It never loops: the scene is remounted via a `key` so its one-shot CSS animation restarts. Scenes ship their own `prefers-reduced-motion` off-switch. The `bg` is a preset, token-driven background treatment.
+Vignette — a styled visual area that plays its `scene` ONCE when it scrolls into view, and again whenever `replay` changes (a host card bumps it on hover). It never loops: the scene is remounted via a `key` so its one-shot CSS animation restarts. The Vignette owns the `prefers-reduced-motion` off-switch for its scene, and scenes time their CSS with the motion tokens — so the animation stays tied to the global system while the scene CONTENT is bespoke to each card. The `bg` is a preset, token-driven background treatment.
 
 Props:
   - bg?: "plain" | "gradient" | "accent" | "secondary" | "mono" | "aurora" (default: gradient) — Background treatment, from the system palette.
   - className?: string
   - replay?: number (default: 0) — Bump this number to replay the scene (the host card raises it on hover).
-  - scene: ReactNode — The animated scene — an SVG / illustration. Its CSS animations should be ONE-SHOT (`animation-iteration-count: 1`); they restart whenever the scene is (re)mounted, which is how reveal/hover replay works.
+  - scene: ReactNode — The animated scene — a BESPOKE SVG / illustration authored for THIS card's subject (don't reuse one scene across cards). Its CSS animations should be ONE-SHOT (`animation-iteration-count: 1`) and timed with the motion tokens (`var(--duration-*)`, `var(--ease-*)`) so they ride `data-motion` and match the system's feel. They restart whenever the scene is (re)mounted — how reveal/hover replay works. Reduced motion is handled by the Vignette; the scene needs no off-switch.
 
 Examples (Storybook stories): Backgrounds
 
