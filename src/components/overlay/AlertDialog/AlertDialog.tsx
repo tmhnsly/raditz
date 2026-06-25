@@ -1,6 +1,6 @@
 'use client';
 import type { HTMLAttributes, ReactNode, ReactElement } from 'react';
-import { cx, Overlay } from '../../internal';
+import { cx, Overlay, useOverlayLabels } from '../../internal';
 
 export interface AlertDialogProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
   /** Open state (controlled). */
@@ -40,6 +40,7 @@ export function AlertDialog({
   ...rest
 }: AlertDialogProps): ReactElement | null {
   const cancel = (): void => { if (onOpenChange) onOpenChange(false); };
+  const { titleId, descId, labelledby, describedby } = useOverlayLabels(title, description);
   const actionClass = tone === 'danger'
     ? 'rdz-btn rdz-btn--primary rdz-alert__danger'
     : 'rdz-btn rdz-btn--primary';
@@ -51,13 +52,14 @@ export function AlertDialog({
       focus="trap"
       dismissOnOutside={false}
       role="alertdialog"
-      aria-label={typeof title === 'string' ? title : undefined}
+      aria-labelledby={labelledby}
+      aria-describedby={describedby}
       className={cx('rdz-dialog', 'rdz-dialog--sm', className)}
       {...rest}
     >
       <div className="rdz-dialog__header">
-        {title ? <h2 className="rdz-dialog__title">{title}</h2> : null}
-        {description ? <p className="rdz-dialog__desc">{description}</p> : null}
+        {title ? <h2 id={titleId} className="rdz-dialog__title">{title}</h2> : null}
+        {description ? <p id={descId} className="rdz-dialog__desc">{description}</p> : null}
       </div>
       <div className="rdz-dialog__footer">
         <button type="button" className="rdz-btn rdz-btn--ghost" onClick={cancel}>{cancelText}</button>

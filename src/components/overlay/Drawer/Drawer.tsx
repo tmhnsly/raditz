@@ -1,6 +1,6 @@
 'use client';
 import type { CSSProperties, HTMLAttributes, ReactNode, ReactElement } from 'react';
-import { cx, Overlay, OverlayClose } from '../../internal';
+import { cx, Overlay, OverlayClose, useOverlayLabels } from '../../internal';
 
 export interface DrawerProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
   /** Open state (controlled). */
@@ -37,6 +37,7 @@ export function Drawer({
   ...rest
 }: DrawerProps): ReactElement | null {
   const close = (): void => { if (onOpenChange) onOpenChange(false); };
+  const { titleId, descId, labelledby, describedby } = useOverlayLabels(title, description);
   // Dynamic size flows through a CSS custom property (data, not inline styling);
   // the side class decides whether it drives width or height.
   const style = { '--rdz-drawer-size': size } as CSSProperties;
@@ -47,7 +48,8 @@ export function Drawer({
       position={{ kind: 'side', side }}
       focus="trap"
       role="dialog"
-      aria-label={typeof title === 'string' ? title : undefined}
+      aria-labelledby={labelledby}
+      aria-describedby={describedby}
       className={cx('rdz-drawer', `rdz-drawer--${side}`, className)}
       style={style}
       {...rest}
@@ -55,8 +57,8 @@ export function Drawer({
       {title || description ? (
         <div className="rdz-drawer__header">
           <div>
-            {title ? <h2 className="rdz-drawer__title">{title}</h2> : null}
-            {description ? <p className="rdz-drawer__desc">{description}</p> : null}
+            {title ? <h2 id={titleId} className="rdz-drawer__title">{title}</h2> : null}
+            {description ? <p id={descId} className="rdz-drawer__desc">{description}</p> : null}
           </div>
           <OverlayClose className="rdz-drawer__close" onClick={close} />
         </div>

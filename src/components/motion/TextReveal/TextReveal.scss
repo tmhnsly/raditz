@@ -23,7 +23,9 @@
     filter var(--duration-medium) var(--ease-decel),
     clip-path var(--duration-medium) var(--ease-decel);
   transition-delay: calc(var(--rdz-unit-i, 0) * var(--rdz-split-stagger, 40ms));
-  will-change: opacity, transform;
+  /* No `will-change`: a permanent hint on every split unit kept a standing compositor
+     layer per char/word (dozens on one heading) — opacity/transform transitions
+     auto-composite without it, same call Reveal makes. */
 }
 
 .rdz-textreveal.is-in .rdz-split__unit { opacity: 1; transform: none; filter: none; clip-path: inset(0); }

@@ -19,4 +19,5 @@ export * from './useReducedMotion';
 export * from './useInView';
 export * from './useRevealState';
 export * from './useReplay';
+export * from './useOverlayLabels';
 export * from './splitText';

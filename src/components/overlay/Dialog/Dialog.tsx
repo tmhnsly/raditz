@@ -1,6 +1,6 @@
 'use client';
 import type { HTMLAttributes, ReactNode, ReactElement } from 'react';
-import { cx, Overlay, OverlayClose } from '../../internal';
+import { cx, Overlay, OverlayClose, useOverlayLabels } from '../../internal';
 
 export interface DialogProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
   /** Open state (controlled). */
@@ -37,6 +37,7 @@ export function Dialog({
   ...rest
 }: DialogProps): ReactElement | null {
   const close = (): void => { if (onOpenChange) onOpenChange(false); };
+  const { titleId, descId, labelledby, describedby } = useOverlayLabels(title, description);
   return (
     <Overlay
       open={!!open}
@@ -44,14 +45,15 @@ export function Dialog({
       position={{ kind: 'centered' }}
       focus="trap"
       role="dialog"
-      aria-label={typeof title === 'string' ? title : undefined}
+      aria-labelledby={labelledby}
+      aria-describedby={describedby}
       className={cx('rdz-dialog', `rdz-dialog--${size}`, className)}
       {...rest}
     >
       {title || description ? (
         <div className="rdz-dialog__header">
-          {title ? <h2 className="rdz-dialog__title">{title}</h2> : null}
-          {description ? <p className="rdz-dialog__desc">{description}</p> : null}
+          {title ? <h2 id={titleId} className="rdz-dialog__title">{title}</h2> : null}
+          {description ? <p id={descId} className="rdz-dialog__desc">{description}</p> : null}
         </div>
       ) : null}
       {children ? <div className="rdz-dialog__body">{children}</div> : null}
