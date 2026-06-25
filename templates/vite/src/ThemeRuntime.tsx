@@ -8,8 +8,8 @@ const DEFAULT_SCHEME = 'system' as const;
 // useTheme({ accent: 'iris' }) here too (import it from 'raditz').
 //
 // Scroll reveals + title animations follow CSS defaults out of the box. To set an
-// app-wide "vibe", add data-reveal / data-title-anim to <html> in index.html (fixed),
-// or pass the axes to useTheme({ reveal: 'blur', titleAnim: 'blur-in', motion: 'calm' }).
+// app-wide entrance style, add data-reveal to <html> in index.html (fixed; the heading
+// entrance is derived from it), or pass it live via useTheme({ reveal: 'blur', motion: 'calm' }).
 export function ThemeRuntime() {
   useColorScheme({ defaultScheme: DEFAULT_SCHEME });
   return null;

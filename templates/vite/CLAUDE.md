@@ -33,11 +33,12 @@ read-only dependency.
   user-toggleable). Vite has no SSR pre-paint script, so the hook applies it on mount.
 
 ## Motion / animation
-- Scroll-reveal (`Reveal`, `RevealGroup`, section `animate`), title animations, and
-  `AnimatedIcon` / `TextReveal` / `MotionCard` ride the shared motion tokens and honour
+- Scroll-reveal (`Reveal`, `RevealGroup`, and section content choreography — ON by
+  default via `SectionShell`, opt out per section with `animate={false}`), `AnimatedIcon`,
+  `TextReveal`, and `Card` `tone` cards all ride the shared motion tokens and honour
   `prefers-reduced-motion` — use them, don't hand-roll animations.
-- App-wide "vibe": set `data-reveal` / `data-title-anim` on `<html>` (fixed), or pass the
-  axes to `useTheme({ reveal, titleAnim, motion })` (live, user-tunable).
+- App-wide entrance style: set `data-reveal` on `<html>` (fixed; the heading entrance is
+  derived from it), or pass it live via `useTheme({ reveal, motion })` (user-tunable).
 - Building a custom animated/controllable component? Import the primitives from `'raditz'`:
   `useInView`, `useReducedMotion`, `useControllableState`, `cx`, `splitText`.
 - A dashboard/docs layout → `AppShell` (`layout="sidebar" | "topbar"`, `side`, `density`,

@@ -21,10 +21,10 @@
 
 .rdz-card--clip { overflow: hidden; }
 
-/* Content-card column layout (icon → eyebrow → title → body), as MotionCard had. */
+/* Content-card column layout (icon → eyebrow → title → body). */
 .rdz-card--col { display: flex; flex-direction: column; gap: var(--space-3); }
 
-/* ── Tone treatments (folded in from MotionCard) ──────────────────────────────
+/* ── Tone treatments ──────────────────────────────────────────────────────────
    Each tone tints the surface AND sets two pairing custom properties consumed by
    `.rdz-card__*` children: `--card-ink` = eyebrow/icon colour, `--card-arrow` =
    the CardArrow colour. Both take the tone's OWN hue so the card reads as one

@@ -74,7 +74,7 @@ export function SectionShell({
   nav,
   frameClassName,
   frameMaxWidth,
-  animate = true,
+  animate = 'scroll',
   children,
 }: SectionShellProps) {
   const padClass = pad === 'sm' ? 's-pad-sm' : pad === 'none' ? undefined : 's-pad';
@@ -93,7 +93,7 @@ export function SectionShell({
     );
   const inner = (
     <>
-      {nav ? <div className="section-shell__nav">{nav}</div> : null}
+      {nav ? <div className="s-shell__nav">{nav}</div> : null}
       <div className={cx(padClass, padClassName)}>{wrapBody}</div>
     </>
   );

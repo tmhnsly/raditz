@@ -20,6 +20,7 @@ function build() {
   p.on('exit', (code) => {
     building = false;
     if (code === 0) console.log(`▲ raditz: dist rebuilt in ${Date.now() - started}ms`);
+    else console.error(`▲ raditz: build:pkg FAILED (exit ${code}) — see the error above; dist NOT updated`);
     if (queued) { queued = false; build(); }
   });
 }

@@ -33,12 +33,12 @@ export interface VignetteProps {
 export function Vignette({ scene, bg = 'gradient', replay = 0, className }: VignetteProps) {
   const [key, setKey] = useState(0);
   const { ref, inView } = useInView<HTMLSpanElement>({ once: true });
+  // Replay the one-shot scene when it (re)enters view or the host bumps `replay` — but
+  // only while in view, so an off-screen replay doesn't burn a remount before it's seen.
   useEffect(() => {
-    if (inView) setKey((k) => k + 1);
-  }, [inView]);
-  useEffect(() => {
-    if (replay) setKey((k) => k + 1);
-  }, [replay]);
+    if (!inView) return;
+    setKey((k) => k + 1);
+  }, [inView, replay]);
   return (
     <span ref={ref} className={cx('rdz-vignette', `rdz-vignette--${bg}`, className)} aria-hidden="true">
       <span className="rdz-vignette__scene" key={key}>

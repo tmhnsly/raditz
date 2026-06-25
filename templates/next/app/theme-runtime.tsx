@@ -8,8 +8,8 @@ export const DEFAULT_SCHEME = 'system' as const;
 // For the live accent picker with your brand baseline, also call useTheme({ accent: … }).
 //
 // Scroll reveals + title animations follow CSS defaults out of the box. For an app-wide
-// "vibe", add data-reveal / data-title-anim to <html> in layout (fixed), or pass the
-// axes to useTheme({ reveal: 'blur', titleAnim: 'blur-in', motion: 'calm' }).
+// entrance style, set data-reveal on <html> in layout (fixed; the heading entrance is
+// derived from it), or pass it live via useTheme({ reveal: 'blur', motion: 'calm' }).
 export function ThemeRuntime() {
   useColorScheme({ defaultScheme: DEFAULT_SCHEME });
   return null;

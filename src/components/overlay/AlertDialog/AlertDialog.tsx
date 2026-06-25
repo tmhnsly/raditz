@@ -57,10 +57,12 @@ export function AlertDialog({
       className={cx('rdz-dialog', 'rdz-dialog--sm', className)}
       {...rest}
     >
-      <div className="rdz-dialog__header">
-        {title ? <h2 id={titleId} className="rdz-dialog__title">{title}</h2> : null}
-        {description ? <p id={descId} className="rdz-dialog__desc">{description}</p> : null}
-      </div>
+      {title || description ? (
+        <div className="rdz-dialog__header">
+          {title ? <h2 id={titleId} className="rdz-dialog__title">{title}</h2> : null}
+          {description ? <p id={descId} className="rdz-dialog__desc">{description}</p> : null}
+        </div>
+      ) : null}
       <div className="rdz-dialog__footer">
         <button type="button" className="rdz-btn rdz-btn--ghost" onClick={cancel}>{cancelText}</button>
         <button type="button" className={actionClass} onClick={() => { if (onAction) onAction(); cancel(); }}>{actionText}</button>

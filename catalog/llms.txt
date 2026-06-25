@@ -1269,7 +1269,7 @@ Import: `import { SectionShell } from 'raditz'`
 SectionShell — the one home for the section layout boilerplate every section variant used to repeat: the preview Frame + `.s-pad` padding + `.s-wrap` max-width wrapper (where the responsive container-query lives), with an optional SectionBackground. Sections become content + a shell choice instead of re-typing the triple-nested wrapper ~50 times.
 
 Props:
-  - animate?: boolean | "scroll" | "load" (default: true) — Content entrance choreography — the section's content blocks cascade in (staggered) in the app-wide entrance style (`data-reveal`). `'scroll'` (the default, also `true`) reveals on scroll-into-view; `'load'` plays a pure-CSS mount animation at first paint (no observer, no blank flash — use for above-the-fold sections like the hero); `false` is static.
+  - animate?: boolean | "scroll" | "load" (default: scroll) — Content entrance choreography — the section's content blocks cascade in (staggered) in the app-wide entrance style (`data-reveal`). `'scroll'` (the default, also `true`) reveals on scroll-into-view; `'load'` plays a pure-CSS mount animation at first paint (no observer, no blank flash — use for above-the-fold sections like the hero); `false` is static.
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none) — Optional decorative backdrop (composes SectionBackground).
   - frameClassName?: string — Class on the preview Frame (e.g. "nav-frame", "ph--neutral").
   - frameMaxWidth?: string — Constrain the Frame width.

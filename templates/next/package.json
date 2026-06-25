@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "dev": "node scripts/dev.mjs",
-    "prebuild": "[ -d ../raditz ] && pnpm -C ../raditz build:pkg || true",
+    "prebuild": "[ ! -d ../raditz ] || pnpm -C ../raditz build:pkg",
     "build": "next build",
     "start": "next start",
     "rdz:link": "node scripts/rdz-link.mjs link",

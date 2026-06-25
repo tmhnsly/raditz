@@ -58,7 +58,7 @@ export function CountUp({ value, duration = 1400, className }: CountUpProps) {
 
   if (num === null) return <span className={className}>{value}</span>;
   return (
-    <span ref={ref} className={cx('rdz-countup', className)}>
+    <span ref={reduced ? undefined : ref} className={cx('rdz-countup', className)}>
       {pre}{fmt(display ?? num, decimals)}{post}
     </span>
   );
