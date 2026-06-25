@@ -25,7 +25,7 @@ export function BlogA({ posts, heading, background = 'none', children, ...props 
           {heading && <h3 className="h-section s-wrap__full">{heading}</h3>}
           {posts.map((post, i) => (
             <article key={i} className="rdz-card sx-blog__card">
-              {post.image && <div className="ph sx-blog__cover">{post.image}</div>}
+              {post.image && <div className="ph sx-blog__cover sx-media-reveal">{post.image}</div>}
               <div className="col sx-blog__body">
                 {post.tag && <span className="eyebrow2 sx-fs-caption">{post.tag}</span>}
                 <strong className="sx-blog__title">{post.title}</strong>

@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
-import { cx, useInView, useReducedMotion } from '../../internal';
+import { cx, useRevealState } from '../../internal';
 
 export interface CountUpProps {
   /** Target value — a number, or a string the number is pulled from with its
@@ -33,14 +33,16 @@ const fmt = (n: number, decimals: number): string =>
  */
 export function CountUp({ value, duration = 1400, className }: CountUpProps) {
   const { pre, num, post, decimals } = parseCountUp(value);
-  const reduced = useReducedMotion();
-  const { ref, inView } = useInView<HTMLSpanElement>({ once: true });
+  // Shared scroll-reveal gate (in-view + reduced-motion folded into one) — the same
+  // primitive Reveal/TextReveal use, so "when does an on-view animation run?" lives in
+  // one place. `revealed` is `reduced || inView`; under reduced motion we skip the tween.
+  const { ref, revealed, reduced } = useRevealState<HTMLSpanElement>();
   // Start at the final value so SSR/no-JS/hydration all show it; animate from 0 on view.
   const [display, setDisplay] = useState<number | null>(num);
   const started = useRef(false);
 
   useEffect(() => {
-    if (num === null || reduced || !inView || started.current) return;
+    if (num === null || reduced || !revealed || started.current) return;
     started.current = true;
     let raf = 0;
     const t0 = performance.now();
@@ -52,7 +54,7 @@ export function CountUp({ value, duration = 1400, className }: CountUpProps) {
     };
     raf = requestAnimationFrame(step);
     return () => cancelAnimationFrame(raf);
-  }, [num, reduced, inView, duration]);
+  }, [num, reduced, revealed, duration]);
 
   if (num === null) return <span className={className}>{value}</span>;
   return (
