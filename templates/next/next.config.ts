@@ -1,11 +1,11 @@
 import type { NextConfig } from 'next';
 
-// `transpilePackages: ['raditz']` lets Next WATCH + hot-reload the linked raditz dist
-// during co-development (`pnpm dev` rebuilds it on every raditz edit — see scripts/dev.mjs).
-// raditz still ships pre-built ESM/CSS, so this only adds watching, not a real transpile;
-// it's harmless (and a no-op for watching) when raditz is the installed git dependency.
+// DEV ONLY: make Next watch + hot-reload the linked raditz dist while co-developing
+// (`pnpm dev` rebuilds it on every raditz edit — see scripts/dev.mjs). In a production
+// build raditz is consumed as the external pre-built dist, so its Vite-only source
+// (`import.meta.glob`) is never pulled into Next's typecheck.
 const nextConfig: NextConfig = {
-  transpilePackages: ['raditz'],
+  ...(process.env.NODE_ENV === 'development' ? { transpilePackages: ['raditz'] } : {}),
 };
 
 export default nextConfig;

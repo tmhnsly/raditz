@@ -1,3 +1,4 @@
+/// <reference types="vite/client" />
 // Aggregates every component's co-located .scss (plus the Showcase page) via a
 // build-time glob — so adding a component with a stylesheet can't silently drop
 // its CSS from dist (the old hand-maintained import list did exactly that when a

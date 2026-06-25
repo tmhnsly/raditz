@@ -1,3 +1,4 @@
+/// <reference types="vite/client" />
 // Story registry — the single source of truth for the showcase. Discovers every
 // *.stories.tsx at build time via import.meta.glob and derives a navigable tree
 // from each story's `meta.title` path (e.g. "Components/Controls/Button").
