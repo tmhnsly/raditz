@@ -18,6 +18,9 @@
 
 /* Layout only — the disc visual is the shared .rdz-oclose. */
 .rdz-drawer__close { flex: none; }
+/* A title-less drawer has no header to host the close — float it top-right over the
+   body (the drawer is `position: fixed`, so it's the positioning context), like Dialog. */
+.rdz-drawer__close--solo { position: absolute; top: var(--space-4); right: var(--space-4); z-index: 1; }
 
 .rdz-drawer__body { flex: 1; overflow-y: auto; padding: var(--space-5); }
 

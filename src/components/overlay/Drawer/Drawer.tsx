@@ -62,7 +62,9 @@ export function Drawer({
           </div>
           <OverlayClose className="rdz-drawer__close" onClick={close} />
         </div>
-      ) : null}
+      ) : (
+        <OverlayClose className="rdz-drawer__close rdz-drawer__close--solo" onClick={close} />
+      )}
       <div className="rdz-drawer__body rdz-scrollbar">{children}</div>
       {footer ? <div className="rdz-drawer__footer">{footer}</div> : null}
     </Overlay>

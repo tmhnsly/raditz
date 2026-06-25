@@ -120,6 +120,7 @@ export function SectionHeader({
   heading,
   className,
   align,
+  as: HeadingTag = 'h3',
 }: {
   eyebrow?: ReactNode;
   heading?: ReactNode;
@@ -127,12 +128,16 @@ export function SectionHeader({
   /** Center or left-align the eyebrow + heading block. Omit to inherit the
    * section's default look. */
   align?: 'start' | 'center';
+  /** Heading level for the title, so a page keeps a correct outline (e.g. `'h2'`
+   * directly under a hero's heading). The visual size is fixed by `h-section`
+   * regardless of level. @default 'h3' */
+  as?: 'h2' | 'h3' | 'h4';
 }): ReactElement | null {
   if (!eyebrow && !heading) return null;
   return (
     <div className={cx(className ?? 'col sx-sec__head', align === 'center' && 'sx-center', align === 'start' && 'sx-align-start')}>
       {eyebrow && <span className="eyebrow2">{eyebrow}</span>}
-      {heading && <h3 className="h-section">{heading}</h3>}
+      {heading && <HeadingTag className="h-section">{heading}</HeadingTag>}
     </div>
   );
 }

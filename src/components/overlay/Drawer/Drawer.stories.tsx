@@ -34,3 +34,19 @@ export const Default: Story = {
     );
   },
 };
+
+export const NoTitle: Story = {
+  name: 'Title-less (solo close)',
+  render: () => {
+    const [open, setOpen] = useState(false);
+    return (
+      <>
+        <Button onClick={() => setOpen(true)}>Open drawer</Button>
+        <Drawer open={open} onOpenChange={setOpen} side="right">
+          A title-less drawer — with no header to host it, the close button floats
+          top-right over the body.
+        </Drawer>
+      </>
+    );
+  },
+};

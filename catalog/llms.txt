@@ -1254,6 +1254,7 @@ Renders the eyebrow + heading block shared across all content sections. Returns 
 
 Props:
   - align?: "start" | "center" — Center or left-align the eyebrow + heading block. Omit to inherit the section's default look.
+  - as?: "h2" | "h3" | "h4" (default: h3) — Heading level for the title, so a page keeps a correct outline (e.g. `'h2'` directly under a hero's heading). The visual size is fixed by `h-section` regardless of level.
   - className?: string
   - eyebrow?: ReactNode
   - heading?: ReactNode
@@ -1719,7 +1720,7 @@ Props:
   - size?: string (default: 22rem) — Width (left/right) or height (top/bottom).
   - title?: ReactNode
 
-Examples (Storybook stories): Default
+Examples (Storybook stories): Default, NoTitle
 
 Usage:
 ```tsx
