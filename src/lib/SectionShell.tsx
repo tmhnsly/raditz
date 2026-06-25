@@ -46,11 +46,12 @@ export interface SectionShellProps {
   frameClassName?: string;
   /** Constrain the Frame width. */
   frameMaxWidth?: string;
-  /** Choreograph the content entrance: the section's content blocks cascade in
-   *  (staggered) when the section scrolls into view, in the app-wide entrance style
-   *  (`data-reveal`). @default true. Set `false` for structural bands (nav/footer) or
-   *  sections that drive their own reveals (Features/Spotlight/Animations). */
-  animate?: boolean;
+  /** Content entrance choreography — the section's content blocks cascade in (staggered)
+   *  in the app-wide entrance style (`data-reveal`). `'scroll'` (the default, also `true`)
+   *  reveals on scroll-into-view; `'load'` plays a pure-CSS mount animation at first paint
+   *  (no observer, no blank flash — use for above-the-fold sections like the hero);
+   *  `false` is static. @default 'scroll' */
+  animate?: boolean | 'scroll' | 'load';
   children?: ReactNode;
 }
 
@@ -77,14 +78,19 @@ export function SectionShell({
   children,
 }: SectionShellProps) {
   const padClass = pad === 'sm' ? 's-pad-sm' : pad === 'none' ? undefined : 's-pad';
-  // Choreographed sections route their content through InView (a client boundary that
-  // toggles `is-in` on scroll-in); the staggered entrance is pure CSS (.s-choreo). The
-  // children stay server-rendered. Non-animated sections render a plain wrapper.
-  const wrapBody = animate ? (
-    <InView className={cx('s-wrap', 's-choreo', wrap)} inViewClassName="is-in">{children}</InView>
-  ) : (
-    <div className={cx('s-wrap', wrap)}>{children}</div>
-  );
+  // `scroll` routes content through InView (a client boundary that toggles `is-in` on
+  // scroll-in; the staggered entrance is pure CSS via `.s-choreo`). `load` is pure CSS —
+  // `.s-load` plays a mount keyframe at first paint, so above-the-fold content (the hero)
+  // animates in with no observer/hydration wait. Either way children stay server-rendered.
+  const mode = animate === true ? 'scroll' : animate; // 'scroll' | 'load' | false
+  const wrapBody =
+    mode === 'scroll' ? (
+      <InView className={cx('s-wrap', 's-choreo', wrap)} inViewClassName="is-in">{children}</InView>
+    ) : mode === 'load' ? (
+      <div className={cx('s-wrap', 's-load', wrap)}>{children}</div>
+    ) : (
+      <div className={cx('s-wrap', wrap)}>{children}</div>
+    );
   const inner = (
     <>
       {nav ? <div className="section-shell__nav">{nav}</div> : null}
@@ -158,9 +164,10 @@ export type SectionAction = {
  * interfaces (e.g. `HeroProps`) extend this and add their content fields.
  */
 export type SectionBaseProps = SectionVariantProps & {
-  /** Choreograph the content entrance (staggered cascade on scroll-in). @default true.
-   *  Forwarded to {@link SectionShell}; set `false` to keep a section static. */
-  animate?: boolean;
+  /** Content entrance choreography, forwarded to {@link SectionShell}: `'scroll'`
+   *  (default) reveals on scroll, `'load'` animates on mount (above-the-fold heroes),
+   *  `false` is static. @default 'scroll' */
+  animate?: boolean | 'scroll' | 'load';
   /** Replaces the auto-rendered body inside the themed shell when provided. */
   children?: ReactNode;
 };

@@ -153,8 +153,17 @@
    is a custom property set from the app-wide `data-reveal` axis (curated to the smooth
    styles at section scale — fade / fade-rise / rise / scale; others fall back to
    fade-rise; `none` disables), so there's no per-child specificity war. */
-.s-choreo { --s-stagger: calc(70ms * var(--motion-scale, 1)); }
+:is(.s-choreo, .s-load) { --s-stagger: calc(70ms * var(--motion-scale, 1)); }
 
+/* Entrance style follows the app-wide reveal axis (sets the hidden transform var),
+   shared by both reveal modes. */
+[data-reveal="fade"]  :is(.s-choreo, .s-load) { --s-tf: none; }
+[data-reveal="rise"]  :is(.s-choreo, .s-load) { --s-tf: translateY(1rem); }
+[data-reveal="scale"] :is(.s-choreo, .s-load) { --s-tf: scale(0.97); }
+
+/* SCROLL mode (`.s-choreo`, default for in-page sections): content is hidden until the
+   section scrolls into view (SectionShell toggles `.is-in` via InView). Gated on
+   `scripting: enabled` so content is visible without JS (SSR-pure); off under reduced. */
 @media (scripting: enabled) {
   .s-choreo > * {
     opacity: 0;
@@ -174,20 +183,34 @@
   .s-choreo > :nth-child(6)   { transition-delay: calc(5 * var(--s-stagger)); }
   .s-choreo > :nth-child(n+7) { transition-delay: calc(6 * var(--s-stagger)); }
 }
-
-/* Entrance style follows the app-wide reveal axis (sets the hidden transform var). */
-[data-reveal="fade"]  .s-choreo { --s-tf: none; }
-[data-reveal="rise"]  .s-choreo { --s-tf: translateY(1rem); }
-[data-reveal="scale"] .s-choreo { --s-tf: scale(0.97); }
-/* `none` (and reduced motion) → content just appears, no stagger. */
 [data-reveal="none"] .s-choreo > * { opacity: 1; transform: none; transition: none; }
 @media (prefers-reduced-motion: reduce) {
   .s-choreo > * { opacity: 1; transform: none; transition: none; }
 }
-
-/* A choreographed section reveals its heading as part of the cascade, so suppress the
-   standalone mount-based title animation to avoid a competing double entrance. */
+/* Scroll mode folds the heading into the cascade, so suppress its standalone title-anim
+   (load mode KEEPS the title-anim — the heading wins by specificity — see below). */
 [data-title-anim] .s-choreo :is(.h-display, .h-section, .rdz-heading) { animation: none; }
+
+/* LOAD mode (`.s-load`, default for the hero / above-the-fold): content animates in on
+   MOUNT via a pure-CSS keyframe that plays at first paint — no observer, no hydration
+   wait, no blank flash, and it runs even without JS. Same staggered fade-rise entrance as
+   scroll mode. The heading keeps its own title-anim (wins by specificity); the rest of
+   the content cascades. Off under reduced motion (content simply appears). */
+@media (prefers-reduced-motion: no-preference) {
+  .s-load > * { animation: rdz-section-in var(--duration-medium) var(--ease-emphasized) both; }
+  .s-load > :nth-child(1)   { animation-delay: 0ms; }
+  .s-load > :nth-child(2)   { animation-delay: calc(1 * var(--s-stagger)); }
+  .s-load > :nth-child(3)   { animation-delay: calc(2 * var(--s-stagger)); }
+  .s-load > :nth-child(4)   { animation-delay: calc(3 * var(--s-stagger)); }
+  .s-load > :nth-child(5)   { animation-delay: calc(4 * var(--s-stagger)); }
+  .s-load > :nth-child(6)   { animation-delay: calc(5 * var(--s-stagger)); }
+  .s-load > :nth-child(n+7) { animation-delay: calc(6 * var(--s-stagger)); }
+  [data-reveal="none"] .s-load > * { animation: none; }
+}
+@keyframes rdz-section-in {
+  from { opacity: 0; transform: var(--s-tf, translateY(0.7rem)); }
+  to   { opacity: 1; transform: none; }
+}
 
 /* Card media reveal: wrap a card's image in `.sx-media-reveal` (it clips) and the image
    scales in when the choreographed section enters view, just after the content cascade —

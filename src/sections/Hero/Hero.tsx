@@ -14,11 +14,11 @@ export interface HeroProps extends SectionBaseProps {
   media?: ReactNode;
 }
 
-/** Hero A — centered column, dual CTA. Heroes are above the fold, so the scroll-in
- *  content choreography is OFF by default (it would hide the first screen until JS
- *  hydrates — a blank flash). The heading still gets its mount title-anim. Pass
- *  `animate` to opt a below-the-fold hero back into the cascade. */
-export function HeroA({ title, eyebrow, lede, actions, background = 'none', animate = false, children, ...props }: HeroProps) {
+/** Hero A — centered column, dual CTA. Heroes are above the fold, so they default to the
+ *  `'load'` entrance — a pure-CSS mount animation that plays at first paint (no observer,
+ *  no blank flash). Pass `animate="scroll"` to reveal on scroll instead, or `false` for
+ *  static. */
+export function HeroA({ title, eyebrow, lede, actions, background = 'none', animate = 'load', children, ...props }: HeroProps) {
   return (
     <SectionShell wrap="col sx-center sx-gap-5" background={background} animate={animate} {...props}>
       {children ?? (
@@ -34,7 +34,7 @@ export function HeroA({ title, eyebrow, lede, actions, background = 'none', anim
 }
 
 /** Hero B — split: copy beside a media slot. */
-export function HeroB({ title, eyebrow, lede, actions, media, background = 'surface-2', animate = false, children, ...props }: HeroProps) {
+export function HeroB({ title, eyebrow, lede, actions, media, background = 'surface-2', animate = 'load', children, ...props }: HeroProps) {
   return (
     <SectionShell wrap="sx-split sx-feat__spotlight" background={background} animate={animate} {...props}>
       {children ?? (
@@ -53,7 +53,7 @@ export function HeroB({ title, eyebrow, lede, actions, media, background = 'surf
 }
 
 /** Hero C — accent full-bleed band. */
-export function HeroC({ title, lede, actions, background = 'gradient-aurora', parallax = true, animate = false, children, ...props }: HeroProps) {
+export function HeroC({ title, lede, actions, background = 'gradient-aurora', parallax = true, animate = 'load', children, ...props }: HeroProps) {
   return (
     <SectionShell padClassName="sx-hero__band" wrap="col sx-center sx-gap-5" background={background} parallax={parallax} animate={animate} {...props}>
       {children ?? (
