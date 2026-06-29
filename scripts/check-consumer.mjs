@@ -25,7 +25,7 @@ const mod = await import(new URL('../dist/index.js', import.meta.url));
 must(typeof mod === 'object' && Object.keys(mod).length > 50, 'barrel exported too few names');
 
 // tree-shaking guard: Button leaf must not inline visx/date-fns.
-const btn = 'dist/components/controls/Button/Button.js';
+const btn = 'dist/components/actions/Button/Button.js';
 must(fs.existsSync(btn), `${btn} missing (preserveModules layout changed?)`);
 must(!/@visx|date-fns/.test(fs.readFileSync(btn, 'utf8')), 'Button.js inlined an externalized dep');
 

@@ -127,7 +127,14 @@ the same play as **Scale** / **Page-model**: `internal/datetime.ts` (calendar ma
 DatePicker), `internal/format.ts` (`formatBytes`), and co-located `OneTimePasswordField/
 otp.ts`, `TagInput/tags.ts`, `Form/validate.ts`. Each control is the thin consumer; the
 high-leverage `useControllableState` finally has tests, and Rating's fractional fill
-reuses the `clamp` primitive.
+reuses the `clamp` primitive. Extended 2026-06-25 to the two heaviest entangled cores:
+`Lightbox/gestures.ts` (the pinch/pan/swipe/dismiss geometry + the swipe-vs-dismiss axis
+rule, paging/close thresholds, scrim fade, pan-clamp math — was a 394-line gesture machine
+reachable only by simulating multi-touch; Lightbox is now the thin adapter feeding
+DOM-measured numbers in) and `Form/formModel.ts` (the conditional-field rules — `isVisible`,
+the one-source `visibleFields`, and the "hiding a field clears its stale error" prune — were
+inline across Form's change/submit/render closures). Co-located one-component cores, not
+shared utils; deletion test passes (the logic reappears in the consumer if removed).
 
 **Source-surface** (deepened 2026-06-21):
 `scripts/public-surface.mjs` is the one module that answers "which dirs are public
@@ -136,6 +143,23 @@ reuses the `clamp` primitive.
 `gen-tests` are thin **adapters** over it. Killed 4 duplicated tree-walks and the
 basename≠dirname fragility. The walk is unit-tested (sanity bounds, file-existence, and barrel-agreement); byte-identical generated output is gated by `release:preflight`.
 _Avoid_: per-script dir scans.
+(The three remaining `readdirSync` walks — `public-surface`'s structured 2-level walk,
+`add-use-client`'s all-files walk, `watch`'s per-dir watcher walk — are deliberately NOT
+unified: they differ in return shape and one is a cold fallback, so a shared walker would
+be a one-real-caller seam whose interface ≈ its implementation. See [ADR-0004](docs/adr/0004-script-tree-walks-stay-separate.md).)
+
+**Taxonomy-grammar** (deepened 2026-06-25):
+`scripts/taxonomy.mjs` is the ONE definition of how a component folder, its showroom
+story title, and its slug relate: the `CATEGORIES` table (category → TitleCase segment),
+`expectedTitle` (folder → title), `titleSegments`/`kebab`/`slugForTitle` (title → slug),
+and `humanize`. Pure (no `fs`/Vite/DOM), so it crosses the Node↔browser format boundary —
+`validate-taxonomy` and `public-surface` (Node release pipeline) AND `explorer/registry.ts`
+(Vite, via `allowJs` + JSDoc types) consume the SAME grammar. Before, the validator owned
+folder→title while the registry independently re-derived title→slug (`kebab`/`humanize`
+inline) and blindly trusted `meta.title`; the showroom tree could drift from the rule the
+release gate enforces. Now the tree is built from the grammar the gate checks. Unit-tested
+in `scripts/taxonomy.test.mjs`.
+_Avoid_: re-deriving the title/slug rule per consumer; an inline `kebab` in the registry.
 
 **Style-aggregation** (deepened 2026-06-22):
 `src/styles/components.ts` and `src/styles/sections.ts` are eager `import.meta.glob`
@@ -208,10 +232,26 @@ LineChart (factor 0.12) and ScatterChart (factor 0.08) consume it — each keeps
 factor, documented and not unified (the values differ intentionally).
 _Avoid_: per-chart domain/tooltip-flip math.
 
-**Sidebar-model** (in `explorer/registry`, deepened 2026-06-21):
+**Sidebar-model** (in `explorer/registry`, deepened 2026-06-21; expansion split 2026-06-25):
 `ancestorsOf` / `filterTree` / `allBranchIds` — the "what's visible/expanded for this
-query/route" logic, now beside the registry it operates on and covered by `registry.test.ts`.
+query/route" logic, beside the registry it operates on and covered by `registry.test.ts`.
+The Sidebar's *expansion* set algebra now lives in `explorer/expansion.ts` (`initialExpanded`
+compositions-open/components-collapsed/route-opened, `reconcileExpanded` scroll-spy
+close-behind-you, `openBranch`) — pure (ancestor paths passed in, so no `registry` glob
+dependency) and unit-tested in `expansion.test.ts`, instead of tangled across the Sidebar's
+initializer + scroll-spy effect + onSelect closure.
 _Avoid_: expanding/filtering logic spread across the Sidebar render tree.
+
+**Scroll-spy** (in `explorer/scrollSpy`, deepened 2026-06-25):
+`activeSection(sections, line)` — the pure pick of "which section the reader is on":
+the deepest `.sec` whose top has crossed an activation line a quarter down the
+viewport, or `''` (Overview) above them all. `StoryView`'s `useScrollSpy` now
+recomputes it from live geometry every scroll frame (rAF-throttled `scroll`/`resize`),
+replacing an IntersectionObserver that reported only its *changed-entries* batch's
+first still-intersecting target — a stateless-but-stale pattern that could hold the
+wrong breadcrumb under fast scroll or post-lazy-mount reflow ("gets stuck"). The
+geometry recompute can't stick; the pick is unit-tested in `scrollSpy.test.ts`.
+_Avoid_: a scroll-spy that only updates on IntersectionObserver state *changes*.
 
 **sliderTicks** (in *primitiveUtils*, deepened 2026-06-21):
 Interior tick geometry for Slider, in `internal/primitiveUtils.ts`. Unit-tested for

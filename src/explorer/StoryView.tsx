@@ -2,6 +2,7 @@ import { useEffect, useMemo } from 'react';
 import type { ComponentType } from 'react';
 import { cx, useReplay } from '../components/internal';
 import { entries, type Entry, type TreeNode } from './registry';
+import { activeSection } from './scrollSpy';
 import { LazyMount } from './LazyMount';
 
 const VARIANT_TOTAL = entries.reduce((n, e) => n + e.variants.length, 0);
@@ -75,39 +76,38 @@ function EntryBlock({ entry }: { entry: Entry }) {
   );
 }
 
-/** Scroll-spy: report the section nearest the top of the viewport so the tree
- * highlights + expands to whatever the user is scrolled to. */
+/** Scroll-spy: report the section the reader is on so the tree + breadcrumb track
+ * the scroll position. Recomputed from live geometry every scroll frame (see
+ * `activeSection`) — NOT from an IntersectionObserver's changed-entries batch,
+ * which could hold a stale section under fast scroll or post-lazy-mount reflow. */
 function useScrollSpy(onActiveChange?: (slug: string) => void): void {
   useEffect(() => {
     if (!onActiveChange) return undefined;
-    const secs = Array.from(document.querySelectorAll<HTMLElement>('.sec[id]'));
-    if (!secs.length) return undefined;
-    const io = new IntersectionObserver(
-      (list) => {
-        const visible = list
-          .filter((e) => e.isIntersecting)
-          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
-        if (visible[0]) onActiveChange((visible[0].target as HTMLElement).id);
-      },
-      { rootMargin: '0px 0px -75% 0px', threshold: 0 },
-    );
-    secs.forEach((s) => io.observe(s));
-    // The observer only reports sections that reach the top band, so it can never
-    // report the intro ("Overview"), and scrolling back to the very top otherwise
-    // leaves the last active section (e.g. Foundations) stuck. Restore Overview
-    // whenever the first section sits below the activation band — i.e. we're
-    // scrolled above every section.
-    const onScroll = (): void => {
-      const first = secs[0];
-      if (first && first.getBoundingClientRect().top >= window.innerHeight * 0.25) {
-        onActiveChange('');
+    let raf = 0;
+    let last: string | null = null;
+    const compute = (): void => {
+      raf = 0;
+      const secs = Array.from(document.querySelectorAll<HTMLElement>('.sec[id]')).map((el) => ({
+        id: el.id,
+        top: el.getBoundingClientRect().top,
+      }));
+      // Activation line a quarter down the viewport — the section crossing it is "current".
+      const id = activeSection(secs, window.innerHeight * 0.25);
+      if (id !== last) {
+        last = id;
+        onActiveChange(id);
       }
     };
+    const onScroll = (): void => {
+      if (!raf) raf = requestAnimationFrame(compute);
+    };
     window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
+    window.addEventListener('resize', onScroll, { passive: true });
+    compute();
     return () => {
-      io.disconnect();
       window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+      if (raf) cancelAnimationFrame(raf);
     };
   }, [onActiveChange]);
 }

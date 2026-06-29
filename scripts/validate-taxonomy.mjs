@@ -6,29 +6,12 @@
 // and the test suite; see CONTEXT.md "Component taxonomy".
 import fs from 'node:fs';
 import { sourceSurface } from './public-surface.mjs';
+import { CATEGORIES, TITLE_EXCEPTIONS, expectedTitle } from './taxonomy.mjs';
 
-/** The canonical category set. A component folder MUST be one of these; the value
- *  is the TitleCase segment used in the derived story title. Adding a category
- *  here is the deliberate act of widening the taxonomy (also document it). */
-export const CATEGORIES = {
-  actions: 'Actions', inputs: 'Inputs', display: 'Display', feedback: 'Feedback',
-  typography: 'Typography', layout: 'Layout', surfaces: 'Surfaces', overlay: 'Overlay',
-  navigation: 'Navigation', disclosure: 'Disclosure', data: 'Data', media: 'Media', motion: 'Motion',
-};
-
-/** Curated showroom overrides: a component whose code lives in one category but
- *  belongs under a different top bucket in the showcase. Keyed `<category>/<Name>`. */
-export const TITLE_EXCEPTIONS = {
-  'layout/AppShell': 'Pages/App shell',
-};
-
-/** The story title a component's folder dictates (or its curated exception). */
-export function expectedTitle(e) {
-  const key = `${e.category}/${e.name}`;
-  if (TITLE_EXCEPTIONS[key]) return TITLE_EXCEPTIONS[key];
-  const seg = CATEGORIES[e.category];
-  return seg ? `Components/${seg}/${e.name}` : null;
-}
+// The category set + title grammar live in taxonomy.mjs (the ONE grammar the
+// browser registry also consumes); re-exported here for back-compat with callers
+// that import them from the validator.
+export { CATEGORIES, TITLE_EXCEPTIONS, expectedTitle };
 
 const TITLE_RE = /title:\s*['"]([^'"]+)['"]/;
 export function readTitle(storyFile) {

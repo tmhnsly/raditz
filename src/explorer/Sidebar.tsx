@@ -4,6 +4,7 @@ import { Tree, type TreeNode as TreeItem } from '../components/navigation/Tree';
 import { Search } from '../components/inputs/Search';
 import type { TreeNode } from './registry';
 import { ancestorsOf, filterTree, allBranchIds } from './registry';
+import { initialExpanded, reconcileExpanded, openBranch } from './expansion';
 
 // A few top-level groups read better with a fuller label than their story prefix.
 const LABEL_OVERRIDE: Record<string, string> = {
@@ -42,17 +43,11 @@ export function Sidebar({
 
   // Compositions-first groups start open; Components starts collapsed. User
   // toggles persist; scroll-spy expands the branch you're currently viewing.
-  const [userExpanded, setUserExpanded] = useState<string[]>(() => {
-    const open = new Set<string>(tree.filter((n) => n.slug !== 'components').map((n) => n.slug));
-    ancestorsOf(route).forEach((s) => open.add(s));
-    return [...open];
-  });
+  const [userExpanded, setUserExpanded] = useState<string[]>(() =>
+    initialExpanded(tree.map((n) => n.slug), ancestorsOf(route), 'components'),
+  );
   useEffect(() => {
-    const anc = ancestorsOf(activeSlug);
-    if (!anc.length) return;
-    // Keep only the active branch path open (close others "behind"), or merge into
-    // the existing set when AUTO_COLLAPSE is off.
-    setUserExpanded((prev) => (AUTO_COLLAPSE ? anc : [...new Set([...prev, ...anc])]));
+    setUserExpanded((prev) => reconcileExpanded(prev, ancestorsOf(activeSlug), AUTO_COLLAPSE));
   }, [activeSlug]);
 
   const searchExpanded = useMemo(() => (searching ? allBranchIds(filtered) : []), [searching, filtered]);
@@ -104,7 +99,7 @@ export function Sidebar({
             // the scroll-spy would snap the selection to the first leaf under it
             // (the "wrong section"). A leaf row navigates.
             if (node.children?.length) {
-              setUserExpanded((prev) => [...new Set([...prev, id])]);
+              setUserExpanded((prev) => openBranch(prev, id));
             } else {
               onNavigate(id);
               setQuery('');

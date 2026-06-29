@@ -1,6 +1,9 @@
 'use client';
 import * as React from 'react';
 import { useControllableState, Overlay, onKeys, KEYS, cx, OverlayClose } from '../../internal';
+import {
+  MAX_SCALE, dist, pinch, clampPan, zoomScale, resolveDrag, swipePage, dismissShouldClose, dismissView,
+} from './gestures';
 
 const { useState, useEffect, useRef, useCallback } = React;
 
@@ -45,12 +48,6 @@ const ZOOM_OUT = (
     <circle cx="11" cy="11" r="7" /><line x1="21" y1="21" x2="16.65" y2="16.65" /><line x1="8" y1="11" x2="14" y2="11" />
   </svg>
 );
-
-const MAX_SCALE = 4;
-const SWIPE_X = 60;     // px of horizontal travel to page
-const DISMISS_Y = 120;  // px of downward travel to dismiss
-const clamp = (n: number, lo: number, hi: number): number => Math.min(hi, Math.max(lo, n));
-const dist = (a: { x: number; y: number }, b: { x: number; y: number }): number => Math.hypot(a.x - b.x, a.y - b.y);
 
 type GestureMode = 'pending' | 'pan' | 'swipe' | 'dismiss' | 'pinch';
 interface Gesture {
@@ -152,15 +149,16 @@ export function Lightbox({
     const ir = img.getBoundingClientRect();
     const sr = stage.getBoundingClientRect();
     const domScale = live.current.scale || 1;
-    const projW = (ir.width / domScale) * s;
-    const projH = (ir.height / domScale) * s;
-    const mx = Math.max(0, (projW - sr.width) / 2 + 24);
-    const my = Math.max(0, (projH - sr.height) / 2 + 24);
-    return { x: clamp(x, -mx, mx), y: clamp(y, -my, my) };
+    return clampPan(x, y, {
+      projW: (ir.width / domScale) * s,
+      projH: (ir.height / domScale) * s,
+      stageW: sr.width,
+      stageH: sr.height,
+    });
   }, []);
 
   const zoomTo = useCallback((s: number): void => {
-    const ns = clamp(s, 1, MAX_SCALE);
+    const ns = zoomScale(s);
     scaleRef.current = ns;
     setScale(ns);
     if (ns === 1) applyView(0, 0, 1, true);
@@ -222,13 +220,11 @@ export function Lightbox({
 
     if (g.mode === 'pinch' && pts.length >= 2) {
       const [a, b] = pts;
-      const s = clamp(g.startScale * (dist(a, b) / (g.startDist || 1)), 1, MAX_SCALE);
-      const ncx = (a.x + b.x) / 2;
-      const ncy = (a.y + b.y) / 2;
-      const cp = clampPanFor(g.panX + (ncx - g.cx), g.panY + (ncy - g.cy), s);
+      const next = pinch(g, a, b);
+      const cp = clampPanFor(next.x, next.y, next.scale);
       moved.current = true;
-      scaleRef.current = s;
-      applyView(cp.x, cp.y, s, false);
+      scaleRef.current = next.scale;
+      applyView(cp.x, cp.y, next.scale, false);
       return;
     }
     if (g.mode === 'pan') {
@@ -244,16 +240,16 @@ export function Lightbox({
       const dy = e.clientY - g.startY;
       if (Math.abs(dx) + Math.abs(dy) < 6) return;
       moved.current = true;
-      g.mode = Math.abs(dy) > Math.abs(dx) * 1.2 && dy > 0 ? 'dismiss' : 'swipe';
+      g.mode = resolveDrag(dx, dy);
     }
     if (g.mode === 'swipe') {
       applyView(e.clientX - g.startX, 0, 1, false); // image follows the finger
       return;
     }
     if (g.mode === 'dismiss') {
-      const dy = Math.max(0, e.clientY - g.startY);
-      applyView((e.clientX - g.startX) * 0.4, dy, 1, false);
-      setScrim(clamp(1 - dy / 500, 0.2, 1));
+      const view = dismissView(e.clientX - g.startX, e.clientY - g.startY);
+      applyView(view.x, view.y, 1, false);
+      setScrim(view.scrim);
     }
   };
 
@@ -277,14 +273,13 @@ export function Lightbox({
     gesture.current = null;
     if (g.mode === 'pan') return; // committed live; nothing to animate
     if (g.mode === 'swipe') {
-      const dx = e.clientX - g.startX;
-      if (Math.abs(dx) > SWIPE_X && count > 1) go(dx < 0 ? 1 : -1); // remount slides the new image in
+      const page = swipePage(e.clientX - g.startX, count);
+      if (page) go(page); // remount slides the new image in
       else applyView(0, 0, 1, true); // snap back
       return;
     }
     if (g.mode === 'dismiss') {
-      const dy = e.clientY - g.startY;
-      if (dy > DISMISS_Y) { close(); return; }
+      if (dismissShouldClose(e.clientY - g.startY)) { close(); return; }
       applyView(0, 0, 1, true);
       setScrim(null);
     }

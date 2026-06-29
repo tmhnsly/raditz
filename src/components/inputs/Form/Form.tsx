@@ -6,6 +6,7 @@ import { Field } from '../Field/Field';
 import { Select, type SelectOption } from '../Select/Select';
 import { resolveFieldError } from './validate';
 import type { ValidityKey } from './validate';
+import { visibleFields as liveFields, pruneHiddenErrors } from './formModel';
 
 export type { ValidityKey };
 
@@ -82,22 +83,16 @@ export function Form({ fields = [], submitLabel = 'Submit', onSubmit, footer, cl
     });
   };
 
-  const isVisible = (f: FormFieldSpec, vals: Record<string, string>): boolean => !f.when || f.when(vals);
   // One source of "which fields are live right now" — render and submit-validation
   // both read this, so they can't disagree about what a `when` predicate hides.
-  const visibleFields = fields.filter((f) => isVisible(f, values));
+  const visibleFields = liveFields(fields, values);
 
   const onChange = (name: string, value: string): void => {
     const next = { ...values, [name]: value };
     setValues(next);
     if (submitted) recompute(name, next);
     // A field this change hides shouldn't keep showing a stale error.
-    setErrors((prev) => {
-      const cp = { ...prev };
-      let changed = false;
-      fields.forEach((f) => { if (!isVisible(f, next) && cp[f.name]) { delete cp[f.name]; changed = true; } });
-      return changed ? cp : prev;
-    });
+    setErrors((prev) => pruneHiddenErrors(prev, fields, next));
   };
 
   const handleSubmit = (ev: FormEvent<HTMLFormElement>): void => {

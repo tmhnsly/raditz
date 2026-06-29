@@ -9,6 +9,9 @@
 // exports that are either `{}` (render meta.component with args) or `{ render }`.
 import { createElement } from 'react';
 import { fuzzyScore } from '../components/internal';
+// The folder→title→slug helpers come from the shared taxonomy grammar (scripts/),
+// so the showroom tree is built from the SAME rule the release gate enforces.
+import { kebab, humanize, titleSegments, slugForTitle } from '../../scripts/taxonomy.mjs';
 import type { TreeNode as TreeItem } from '../components/navigation/Tree';
 import type { ComponentType, ReactElement } from 'react';
 
@@ -48,17 +51,6 @@ export type TreeNode = {
   entry?: Entry; // present only on leaves
 };
 
-const kebab = (s: string) =>
-  s.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-
-// "A_CenteredDualCTA" → "A Centered Dual CTA"
-const humanize = (id: string) =>
-  id
-    .replace(/_/g, ' ')
-    .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
-    .replace(/\s+/g, ' ')
-    .trim();
-
 // Build a real component per story so render functions (which may use hooks) run
 // in their own render context, exactly as Storybook composes them.
 function toComponent(meta: Meta, story: StoryObj | StoryFn): ComponentType {
@@ -78,7 +70,8 @@ export const entries: Entry[] = Object.values(modules)
   .filter((m) => m?.default?.title)
   .map((m) => {
     const meta = m.default!;
-    const segments = String(meta.title).split('/').map((s) => s.trim());
+    const title = String(meta.title);
+    const segments = titleSegments(title);
     const variants: Variant[] = Object.entries(m)
       .filter(([key, val]) => key !== 'default' && val != null)
       .map(([id, val]) => {
@@ -90,9 +83,9 @@ export const entries: Entry[] = Object.values(modules)
         };
       });
     return {
-      slug: segments.map(kebab).join('/'),
+      slug: slugForTitle(title),
       segments,
-      title: String(meta.title),
+      title,
       description: meta.parameters?.docs?.description?.component,
       fullscreen: meta.parameters?.layout === 'fullscreen',
       variants,
