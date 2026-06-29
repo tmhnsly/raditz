@@ -12,8 +12,10 @@ read-only dependency.
 - Interactive Raditz components carry `"use client"`, so they work in Server
   Components. Dark mode: the inline no-flash script in `app/layout.tsx` sets the
   theme before paint; `app/theme-runtime.tsx` keeps it in sync.
-- `transpilePackages: ['raditz']` is set so `pnpm dev` hot-reloads local Raditz edits
-  during co-development (see "Changing Raditz itself"); for installed/CI it's a no-op.
+- `pnpm dev` runs Next with **Turbopack** and does NOT watch the library (fast, cool
+  spin-up). To co-develop linked Raditz live, run `pnpm dev:lib` — it builds + watches
+  raditz too. `transpilePackages: ['raditz']` lets those rebuilt-dist edits hot-reload;
+  for installed/CI it's a no-op.
 
 ## Composing a page
 - **Sections are edge-to-edge (full-bleed) by default** — each brings its own inner
@@ -52,6 +54,7 @@ read-only dependency.
 
 ## Changing Raditz itself
 - New reusable component → the **raditz-promote** workflow.
-- Co-develop locally → `pnpm rdz:link`, then `pnpm dev`: it builds + watches the linked
-  raditz checkout and runs Next together, so library edits hot-reload here live (no
-  release needed). When done, release the library and `pnpm rdz:unlink`.
+- Co-develop locally → `pnpm rdz:link`, then `pnpm dev:lib`: it builds + watches the linked
+  raditz checkout and runs Next (Turbopack) together, so library edits hot-reload here live
+  (no release needed). Plain `pnpm dev` skips the library watcher — use it when you're only
+  editing the product. When done, release the library and `pnpm rdz:unlink`.
