@@ -12,7 +12,7 @@ pkg.pnpm.overrides ||= {};
 if (mode === 'link') {
   const target = process.env.RADITZ_PATH || '../raditz';
   pkg.pnpm.overrides.raditz = `link:${target}`;
-  console.log(`Linked raditz → ${target}. Rebuild the library (pnpm build:pkg) to propagate edits.`);
+  console.log(`Linked raditz → ${target}. Co-develop with \`pnpm dev:lib\` (build + watch), or rebuild once with \`pnpm -C ${target} build:pkg\`.`);
 } else if (mode === 'unlink') {
   delete pkg.pnpm.overrides.raditz;
   if (Object.keys(pkg.pnpm.overrides).length === 0) delete pkg.pnpm.overrides;

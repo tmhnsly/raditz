@@ -47,5 +47,5 @@ read-only dependency.
 ## Changing Raditz itself
 Do it in the library repo, not here:
 - A brand-new reusable component → the **raditz-promote** workflow.
-- A fix to an existing component → `pnpm rdz:link`, fix in the library, cut a
-  release, then `pnpm rdz:unlink`.
+- A fix to an existing component → `pnpm rdz:link`, then `pnpm dev:lib` to edit it
+  live (builds + watches raditz alongside Vite); cut a release, then `pnpm rdz:unlink`.
