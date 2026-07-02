@@ -81,11 +81,9 @@ export function AppShell({
     onChange: onCollapsedChange,
   });
 
-  const densityClass = density === 'compact' && 'rdz-appshell--compact';
-
   if (layout === 'topbar') {
     return (
-      <div className={cx('rdz-appshell', 'rdz-appshell--topbar', densityClass, className)} style={style} {...rest}>
+      <div className={cx('rdz-appshell', className)} data-layout="topbar" data-density={density} style={style} {...rest}>
         <header className="rdz-appshell__bar">
           {brand && <div className="rdz-appshell__brand">{brand}</div>}
           {nav && <nav className="rdz-appshell__topnav" aria-label="Primary">{nav}</nav>}
@@ -101,7 +99,10 @@ export function AppShell({
 
   return (
     <div
-      className={cx('rdz-appshell', `rdz-appshell--${side}`, densityClass, isCollapsed && 'is-collapsed', navOpen && 'is-nav-open', className)}
+      className={cx('rdz-appshell', isCollapsed && 'is-collapsed', navOpen && 'is-nav-open', className)}
+      data-layout="sidebar"
+      data-side={side}
+      data-density={density}
       style={{ '--rdz-appshell-rail': railWidth, ...style } as React.CSSProperties}
       {...rest}
     >

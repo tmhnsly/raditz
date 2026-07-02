@@ -11,32 +11,32 @@
 
 .rdz-icon-btn svg { width: 1.2em; height: 1.2em; }
 
-.rdz-icon-btn--sm { width: var(--control-h-sm); height: var(--control-h-sm); }
+.rdz-icon-btn[data-size='sm'] { width: var(--control-h-sm); height: var(--control-h-sm); }
 
 /* lg — matches Button's lg control height. */
-.rdz-icon-btn--lg { width: var(--control-h-lg); height: var(--control-h-lg); }
+.rdz-icon-btn[data-size='lg'] { width: var(--control-h-lg); height: var(--control-h-lg); }
 
-.rdz-icon-btn--solid { background: var(--accent); color: var(--on-accent); }
+.rdz-icon-btn[data-variant='solid'] { background: var(--accent); color: var(--on-accent); }
 
-.rdz-icon-btn--soft { background: var(--surface); }
+.rdz-icon-btn[data-variant='soft'] { background: var(--surface); }
 
-.rdz-icon-btn--soft:hover { background: var(--surface-strong); }
+.rdz-icon-btn[data-variant='soft']:hover { background: var(--surface-strong); }
 
-.rdz-icon-btn--outline { border-color: var(--rule); }
+.rdz-icon-btn[data-variant='outline'] { border-color: var(--rule); }
 
-.rdz-icon-btn--outline:hover { background: var(--surface); }
+.rdz-icon-btn[data-variant='outline']:hover { background: var(--surface); }
 
-.rdz-icon-btn--ghost:hover { background: var(--surface); }
+.rdz-icon-btn[data-variant='ghost']:hover { background: var(--surface); }
 
 .rdz-icon-btn:active { transform: var(--press-down); }
 
 /* Frosted glass — shares the --glass* tokens with .rdz-glass / Button's glass. */
-.rdz-icon-btn--glass {
+.rdz-icon-btn[data-variant='glass'] {
   background: var(--glass); border-color: var(--glass-sheen);
   -webkit-backdrop-filter: blur(var(--glass-blur));
   backdrop-filter: blur(var(--glass-blur));
 }
 
-.rdz-icon-btn--glass:hover { background: color-mix(in srgb, var(--bg) 90%, transparent); }
+.rdz-icon-btn[data-variant='glass']:hover { background: color-mix(in srgb, var(--bg) 90%, transparent); }
 
 .rdz-icon-btn:disabled { opacity: var(--disabled-opacity); cursor: not-allowed; }

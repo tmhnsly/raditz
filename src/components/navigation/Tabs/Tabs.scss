@@ -15,11 +15,11 @@
 
 
 /* underline variant */
-.rdz-tabs--underline { background: none; padding: 0; gap: var(--space-5); border-bottom: var(--border-width) solid var(--rule-soft); }
+.rdz-tabs[data-variant='underline'] { background: none; padding: 0; gap: var(--space-5); border-bottom: var(--border-width) solid var(--rule-soft); }
 
-.rdz-tabs--underline .rdz-tabs__tab { border-radius: 0; padding: 0.625rem 0.125rem; background: none; box-shadow: none; border-bottom: var(--border-width-2) solid transparent; margin-bottom: -0.0625rem; }
+.rdz-tabs[data-variant='underline'] .rdz-tabs__tab { border-radius: 0; padding: 0.625rem 0.125rem; background: none; box-shadow: none; border-bottom: var(--border-width-2) solid transparent; margin-bottom: -0.0625rem; }
 
-.rdz-tabs--underline .rdz-tabs__tab--active { color: var(--accent-ink); border-bottom-color: var(--accent); background: none; box-shadow: none; }
+.rdz-tabs[data-variant='underline'] .rdz-tabs__tab--active { color: var(--accent-ink); border-bottom-color: var(--accent); background: none; box-shadow: none; }
 
 
 /* Let a horizontal control track scroll instead of overflowing the viewport

@@ -143,8 +143,8 @@ export function StoryView({
           </p>
         </div>
         <div className="row">
-          <span className="rdz-badge rdz-badge--soft">{entries.length} entries</span>
-          <span className="rdz-badge rdz-badge--solid">{VARIANT_TOTAL} variants</span>
+          <span className="rdz-badge" data-variant="soft">{entries.length} entries</span>
+          <span className="rdz-badge" data-variant="solid">{VARIANT_TOTAL} variants</span>
         </div>
       </div>
 

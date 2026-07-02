@@ -1199,6 +1199,7 @@ Frame — previews a section inside a bordered, rounded card (matching the origi
 
 Props:
   - className?: string
+  - data?: Record<`data-${string}`, string> — `data-*` attributes forwarded to the frame element — enumerated section axes (e.g. ImageFocus `data-size`/`data-place`) ride data attributes.
   - maxWidth?: string
   - style?: CSSProperties
 
@@ -1277,6 +1278,7 @@ Props:
   - animate?: boolean | "scroll" | "load" (default: scroll) — Content entrance choreography — the section's content blocks cascade in (staggered) in the app-wide entrance style (`data-reveal`). `'scroll'` (the default, also `true`) reveals on scroll-into-view; `'load'` plays a pure-CSS mount animation at first paint (no observer, no blank flash — use for above-the-fold sections like the hero); `false` is static.
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none) — Optional decorative backdrop (composes SectionBackground).
   - frameClassName?: string — Class on the preview Frame (e.g. "nav-frame", "ph--neutral").
+  - frameData?: Record<`data-${string}`, string> — `data-*` attributes on the preview Frame — enumerated section axes ride data attributes (e.g. ImageFocus `data-size` / `data-place`).
   - frameMaxWidth?: string — Constrain the Frame width.
   - image?: string — Image URL backdrop (overrides gradient).
   - nav?: ReactNode — A transparent nav rendered above the content, floating over the shared background (the "hero bleed" effect). Pass a nav with no background.

@@ -82,7 +82,7 @@ export function NavBar({
     return () => ro.disconnect();
   }, [measure]);
 
-  const cls = cx('rdz-navbar', `rdz-navbar--${variant}`, `rdz-navbar--${orientation}`, className);
+  const cls = cx('rdz-navbar', className);
   // No inline real properties — the measured geometry travels as --rdz-navind-*
   // custom properties, consumed by NavBar.scss (same pattern as the sections
   // Navbar pill's --rdz-nav-* vars).
@@ -105,7 +105,7 @@ export function NavBar({
   };
 
   return (
-    <nav className={cls} ref={listRef} role="tablist" aria-orientation={orientation} onKeyDown={onKeyDown} {...rest}>
+    <nav className={cls} data-variant={variant} data-orientation={orientation} ref={listRef} role="tablist" aria-orientation={orientation} onKeyDown={onKeyDown} {...rest}>
       <span className="rdz-navbar__indicator" style={indStyle} aria-hidden="true" />
       {items.map((it) => {
         const isActive = it.key === val;

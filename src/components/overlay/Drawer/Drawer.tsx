@@ -56,7 +56,8 @@ export function Drawer({
       role="dialog"
       aria-labelledby={labelledby}
       aria-describedby={describedby}
-      className={cx('rdz-drawer', `rdz-drawer--${side}`, className)}
+      className={cx('rdz-drawer', className)}
+      data-side={side}
       style={style}
       {...rest}
     >

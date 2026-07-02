@@ -58,7 +58,8 @@ export function AlertDialog({
       role="alertdialog"
       aria-labelledby={labelledby}
       aria-describedby={describedby}
-      className={cx('rdz-dialog', 'rdz-dialog--sm', className)}
+      className={cx('rdz-dialog', className)}
+      data-size="sm"
       {...rest}
     >
       {title || description ? (

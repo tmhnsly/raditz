@@ -181,9 +181,22 @@ Cta/Newsletter email captures are real `<Input>`s (were hand-written `rdz-badge`
   ContextMenu/Menubar gained the controlled side; Tooltip's hover state is
   deliberately internal). Closing must return focus to the trigger (DropdownMenu/
   Menubar were stranding it — fixed with tests).
+- **Variant wiring** (decided 2026-07-02): an ENUMERATED one-of-N axis rides a
+  data attribute (`data-variant`/`data-size`/`data-color` for the status-tone
+  axis/`data-side`/`data-orientation`/`data-tone`/`data-anim`/`data-bg`/
+  `data-axis`/`data-layout`/`data-density`/`data-place`/`data-position`), styled
+  as `.rdz-x[data-variant='primary']` — same specificity as a class, but an
+  attribute holds exactly ONE value (conflicting modifiers unrepresentable),
+  reads as semantics in devtools, and doubles as a consumer styling hook.
+  Always set the resolved value (defaults included); omit only a "none" sentinel
+  (Toast's `default`). BOOLEAN modifiers stay classes (`is-in`, `is-collapsed`,
+  `rdz-card--col`, `rdz-secbg--scrim`); block/element names stay classes (BEM);
+  `cx` merges block + booleans + consumer className, nothing else.
 - Style rules are gated by `scripts/style-contract.test.mjs`: no inline styles
   setting real properties (custom `--rdz-*` props only; allowlisted SVG paint-server
-  refs), no z-index outside the ladder/0-2, README counts match `sourceSurface()`.
+  refs), no z-index outside the ladder/0-2, README counts match `sourceSurface()`,
+  and no `` `x--${…}` `` template class modifiers in shipped tsx (an enum template
+  = the data-attribute rule regressed).
 _Avoid_: hand-written `rdz-btn`/`rdz-check`/`rdz-badge`/`rdz-input` class strings;
 copying a sibling component's markup because its interface is one prop too narrow —
 widen the interface.

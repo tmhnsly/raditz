@@ -18,32 +18,32 @@
 .rdz-btn svg { width: 1.15em; height: 1.15em; }
 
 
-.rdz-btn--sm { height: var(--control-h-sm); padding: var(--pad-control-sm); font-size: var(--fs-label); }
+.rdz-btn[data-size='sm'] { height: var(--control-h-sm); padding: var(--pad-control-sm); font-size: var(--fs-label); }
 
-.rdz-btn--lg { height: var(--control-h-lg); padding: 0.8125rem 1.375rem; font-size: var(--fs-body); }
+.rdz-btn[data-size='lg'] { height: var(--control-h-lg); padding: 0.8125rem 1.375rem; font-size: var(--fs-body); }
 
 
-.rdz-btn--primary { background: var(--accent); color: var(--on-accent); box-shadow: var(--shadow-accent); }
+.rdz-btn[data-variant='primary'] { background: var(--accent); color: var(--on-accent); box-shadow: var(--shadow-accent); }
 
-.rdz-btn--primary:hover { background: var(--accent-hover); }
+.rdz-btn[data-variant='primary']:hover { background: var(--accent-hover); }
 
-.rdz-btn--secondary { background: var(--text); color: var(--bg); }
+.rdz-btn[data-variant='secondary'] { background: var(--text); color: var(--bg); }
 
 /* Shift the fill (transitioned via --transition-control) rather than snapping
    opacity, so it animates in step with every other variant's hover. */
-.rdz-btn--secondary:hover { background: color-mix(in srgb, var(--text) 88%, var(--bg)); }
+.rdz-btn[data-variant='secondary']:hover { background: color-mix(in srgb, var(--text) 88%, var(--bg)); }
 
-.rdz-btn--soft { background: var(--accent-surface); color: var(--accent-ink); }
+.rdz-btn[data-variant='soft'] { background: var(--accent-surface); color: var(--accent-ink); }
 
-.rdz-btn--soft:hover { background: color-mix(in srgb, var(--accent-surface) 70%, var(--accent)); }
+.rdz-btn[data-variant='soft']:hover { background: color-mix(in srgb, var(--accent-surface) 70%, var(--accent)); }
 
-.rdz-btn--outline { background: transparent; color: var(--text); border-color: var(--rule); }
+.rdz-btn[data-variant='outline'] { background: transparent; color: var(--text); border-color: var(--rule); }
 
-.rdz-btn--outline:hover { background: var(--surface); border-color: var(--rule-strong); }
+.rdz-btn[data-variant='outline']:hover { background: var(--surface); border-color: var(--rule-strong); }
 
-.rdz-btn--ghost { background: transparent; color: var(--text); }
+.rdz-btn[data-variant='ghost'] { background: transparent; color: var(--text); }
 
-.rdz-btn--ghost:hover { background: var(--surface); }
+.rdz-btn[data-variant='ghost']:hover { background: var(--surface); }
 
 
 /* Over media (the .rdz-on-dark scrim context), a neutral "solid" secondary button
@@ -52,15 +52,15 @@
    pill with dark ink instead — the classic white-button-on-hero, legible in both
    themes (the backdrop is always dark under a scrim). primary/soft/outline/glass
    already survive; this closes the one gap so no button vanishes over an image. */
-.rdz-on-dark .rdz-btn--secondary {
+.rdz-on-dark .rdz-btn[data-variant='secondary'] {
   background: var(--on-media);
   color: var(--black-a12);
   box-shadow: none;
   border-color: transparent;
 }
-.rdz-on-dark .rdz-btn--secondary:hover { background: color-mix(in srgb, var(--on-media) 86%, transparent); }
+.rdz-on-dark .rdz-btn[data-variant='secondary']:hover { background: color-mix(in srgb, var(--on-media) 86%, transparent); }
 /* Keep the transparent variants' hover legible over media too (not a light flash). */
-.rdz-on-dark :is(.rdz-btn--outline, .rdz-btn--ghost):hover { background: var(--white-a4); }
+.rdz-on-dark :is(.rdz-btn[data-variant='outline'], .rdz-btn[data-variant='ghost']):hover { background: var(--white-a4); }
 
 /* Frosted glass — translucent + blurred, for buttons over media/gradients
    (e.g. the Hero "Live demo" CTA, Lightbox controls). Shares the --glass* tokens
@@ -70,15 +70,15 @@
    scheme), and OVER MEDIA (.rdz-on-dark, where text is forced white) it's a LIGHT
    frost with dark ink in the light scheme and a DARK frost with light ink in the
    dark scheme. Either way it reads on a hero image AND reflects the active theme. */
-.rdz-btn--glass {
+.rdz-btn[data-variant='glass'] {
   background: var(--glass); color: var(--text); border-color: var(--glass-sheen);
   -webkit-backdrop-filter: blur(var(--glass-blur));
   backdrop-filter: blur(var(--glass-blur));
 }
-.rdz-btn--glass:hover { border-color: var(--rule-strong); }
+.rdz-btn[data-variant='glass']:hover { border-color: var(--rule-strong); }
 /* over media — light scheme: light frost, dark ink */
-.rdz-on-dark .rdz-btn--glass { background: var(--white-a9); color: var(--black-a12); border-color: var(--white-a7); }
-.rdz-on-dark .rdz-btn--glass:hover { background: var(--white-a11); border-color: var(--white-a8); }
+.rdz-on-dark .rdz-btn[data-variant='glass'] { background: var(--white-a9); color: var(--black-a12); border-color: var(--white-a7); }
+.rdz-on-dark .rdz-btn[data-variant='glass']:hover { background: var(--white-a11); border-color: var(--white-a8); }
 /* over media — dark scheme: dark frost, light ink */
-.dark .rdz-on-dark .rdz-btn--glass { background: var(--black-a7); color: var(--on-media); border-color: var(--on-media-border); }
-.dark .rdz-on-dark .rdz-btn--glass:hover { background: var(--black-a8); border-color: var(--on-media-soft); }
+.dark .rdz-on-dark .rdz-btn[data-variant='glass'] { background: var(--black-a7); color: var(--on-media); border-color: var(--on-media-border); }
+.dark .rdz-on-dark .rdz-btn[data-variant='glass']:hover { background: var(--black-a8); border-color: var(--on-media-soft); }

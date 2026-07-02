@@ -44,6 +44,9 @@ export interface SectionShellProps {
   nav?: ReactNode;
   /** Class on the preview Frame (e.g. "nav-frame", "ph--neutral"). */
   frameClassName?: string;
+  /** `data-*` attributes on the preview Frame — enumerated section axes ride
+   * data attributes (e.g. ImageFocus `data-size` / `data-place`). */
+  frameData?: Record<`data-${string}`, string | undefined>;
   /** Constrain the Frame width. */
   frameMaxWidth?: string;
   /** Content entrance choreography — the section's content blocks cascade in (staggered)
@@ -73,6 +76,7 @@ export function SectionShell({
   scrim = false,
   nav,
   frameClassName,
+  frameData,
   frameMaxWidth,
   animate = 'scroll',
   children,
@@ -99,7 +103,7 @@ export function SectionShell({
   );
   const hasBg = background !== 'none' || !!image || !!video;
   return (
-    <Frame className={frameClassName} maxWidth={frameMaxWidth}>
+    <Frame className={frameClassName} data={frameData} maxWidth={frameMaxWidth}>
       {hasBg ? (
         <SectionBackground background={background} parallax={parallax} image={image} video={video} scrim={scrim}>{inner}</SectionBackground>
       ) : (

@@ -35,12 +35,9 @@ export const Search = forwardRef<HTMLInputElement, SearchProps>(function Search(
 ) {
   return (
     <div
-      className={cx(
-        "rdz-search",
-        `rdz-search--${variant}`,
-        size !== "md" && `rdz-search--${size}`,
-        className,
-      )}
+      className={cx("rdz-search", className)}
+      data-variant={variant}
+      data-size={size}
     >
       <Icon name="search" size="1em" className="rdz-search__icon" />
       <input

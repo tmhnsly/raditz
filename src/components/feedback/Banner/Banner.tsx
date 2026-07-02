@@ -35,7 +35,8 @@ export function Banner({
 }: BannerProps): React.ReactElement {
   return (
     <div
-      className={cx('rdz-banner', `rdz-banner--${tone}`, className)}
+      className={cx('rdz-banner', className)}
+      data-color={tone}
       role={statusToneRole(tone)}
       {...rest}
     >

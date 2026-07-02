@@ -54,7 +54,7 @@ export function Rating({
   const [hover, setHover] = useState(0);
   const hitRefs = useRef(new Map<number, HTMLButtonElement>());
   const shown = hover || val;
-  const cls = cx('rdz-rating', `rdz-rating--${size}`, readOnly && 'is-readonly', disabled && 'is-disabled');
+  const cls = cx('rdz-rating', readOnly && 'is-readonly', disabled && 'is-disabled');
   const pick = (v: number): void => setVal(val === v ? 0 : v);
   const label = (v: number): string => `${v} star${v === 1 ? '' : 's'}`;
 
@@ -99,6 +99,7 @@ export function Rating({
   return (
     <div
       className={cx(cls, className)}
+      data-size={size}
       role={readOnly ? 'img' : 'radiogroup'}
       aria-label={`Rating: ${val} of ${count}`}
       aria-disabled={disabled || undefined}

@@ -19,7 +19,7 @@ export interface OverlayCloseProps extends ButtonHTMLAttributes<HTMLButtonElemen
 export function OverlayClose({ label = 'Close', size, large = false, className, ...rest }: OverlayCloseProps): ReactElement {
   const sz = size ?? (large ? 'lg' : 'md');
   return (
-    <button type="button" aria-label={label} className={cx('rdz-oclose', sz === 'lg' && 'rdz-oclose--lg', sz === 'sm' && 'rdz-oclose--sm', className)} {...rest}>
+    <button type="button" aria-label={label} className={cx('rdz-oclose', className)} data-size={sz} {...rest}>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
         <line x1="6" y1="6" x2="18" y2="18" />
         <line x1="18" y1="6" x2="6" y2="18" />

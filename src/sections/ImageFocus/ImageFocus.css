@@ -1,10 +1,10 @@
 /* ImageFocus — section styles (co-located with the component). */
 /* ── ImageFocus — full-bleed image hero / inline band ── */
-.rdz-imgfocus--hero > .rdz-secbg { min-height: 80vh; }
-.rdz-imgfocus--band > .rdz-secbg { min-height: 46vh; }
+.rdz-imgfocus[data-size='hero'] > .rdz-secbg { min-height: 80vh; }
+.rdz-imgfocus[data-size='band'] > .rdz-secbg { min-height: 46vh; }
 .rdz-imgfocus > .rdz-secbg { display: flex; }
 .rdz-imgfocus > .rdz-secbg > .rdz-secbg__content { flex: 1; display: flex; flex-direction: column; }
-.rdz-imgfocus--center > .rdz-secbg > .rdz-secbg__content { justify-content: center; }
-.rdz-imgfocus--bottom > .rdz-secbg > .rdz-secbg__content { justify-content: flex-end; }
+.rdz-imgfocus[data-place='center'] > .rdz-secbg > .rdz-secbg__content { justify-content: center; }
+.rdz-imgfocus[data-place='bottom'] > .rdz-secbg > .rdz-secbg__content { justify-content: flex-end; }
 .rdz-imgfocus__wrap { max-width: 56rem; }
 .rdz-imgfocus__title { text-wrap: balance; max-width: 22ch; }

@@ -38,7 +38,8 @@ export function AnimatedIcon({
   const off = reduced || paused;
   return (
     <span
-      className={cx('rdz-anim', `rdz-anim--${anim}`, off && 'is-paused', className)}
+      className={cx('rdz-anim', off && 'is-paused', className)}
+      data-anim={anim}
       style={{ '--rdz-anim-speed': SPEED[speed], ...style } as React.CSSProperties}
       {...rest}
     >

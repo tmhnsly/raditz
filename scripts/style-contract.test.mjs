@@ -216,3 +216,36 @@ describe('README counts match sourceSurface()', () => {
     expect(Number(m[1])).toBe(surface.sections.length);
   });
 });
+
+/* ── d) enumerated variant axes ride data attributes, not class templates ── */
+
+// One-of-N axes (variant/size/tone/side/…) are wired as data attributes
+// (`data-variant={variant}` styled as `.rdz-x[data-variant='primary']`) — an
+// attribute holds exactly one value, so conflicting modifiers are
+// unrepresentable. A template-literal class modifier (`rdz-x--${axis}`) is an
+// enumerated axis by construction, so its presence in shipped tsx means the
+// convention regressed. Boolean modifiers (`cond && 'is-x'`) stay classes and
+// are untouched by this rule.
+describe('no template-literal class modifiers (enumerated axes use data attributes)', () => {
+  const roots = ['src/components', 'src/sections', 'src/lib'];
+  const files = roots
+    .flatMap((r) => walk(r, ['.tsx', '.ts']))
+    .filter((f) => !/\.(stories|test)\.tsx?$/.test(f));
+
+  it('shipped tsx builds no `…--${…}` class strings', () => {
+    const violations = [];
+    for (const file of files) {
+      const rel = posix(file);
+      const src = fs.readFileSync(file, 'utf8');
+      for (const [i, line] of src.split('\n').entries()) {
+        // `x--${` inside a template literal: a word char must precede the `--`
+        // (class modifiers look like `rdz-btn--${v}`), which excludes CSS
+        // custom-property NAMES (`--${name}`) and values (`var(--${a}-9)`).
+        if (/`[^`]*\w--\$\{/.test(line)) {
+          violations.push(`${rel}:${i + 1} builds an enum class modifier: ${line.trim()}`);
+        }
+      }
+    }
+    expect(violations, violations.join('\n')).toEqual([]);
+  });
+});

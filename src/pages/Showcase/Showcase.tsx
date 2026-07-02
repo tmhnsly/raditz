@@ -30,8 +30,8 @@ export function Showcase() {
         <h1 className="h-display">Backdrops that move with you</h1>
         <p className="lede rdz-showcase__lede">A photo hero bleed, layered gradient bands and scroll-linked parallax — all token-driven, all theme-aware. Flip the switch to compare static and dynamic.</p>
         <div className="row rdz-showcase__cta">
-          <button className="rdz-btn rdz-btn--primary">Get started</button>
-          <button className="rdz-btn rdz-btn--outline">View components</button>
+          <button className="rdz-btn" data-variant="primary" data-size="md">Get started</button>
+          <button className="rdz-btn" data-variant="outline" data-size="md">View components</button>
         </div>
       </SectionShell>
 
@@ -68,7 +68,7 @@ export function Showcase() {
       <SectionShell background="gradient-mesh" parallax={parallax} scrim wrap="col rdz-showcase__band">
         <h2 className="h-section">Build the whole page from sections</h2>
         <p className="lede rdz-showcase__lede">Every band here is a SectionShell with a background choice. Compose, re-theme, ship.</p>
-        <div className="row rdz-showcase__cta"><button className="rdz-btn rdz-btn--primary">Start building</button></div>
+        <div className="row rdz-showcase__cta"><button className="rdz-btn" data-variant="primary" data-size="md">Start building</button></div>
       </SectionShell>
 
       <FooterA

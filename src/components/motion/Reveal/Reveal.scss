@@ -40,20 +40,20 @@
 /* Default style (no `data-reveal`, no explicit `anim`) = fade-rise. */
 .rdz-reveal:not([data-anim]) { --rdz-reveal-tf: translateY(calc(var(--motion-rise) * 2)); }
 
-/* Each variant pairs the explicit class with the inherited app-wide selector, so
+/* Each variant pairs the explicit per-instance attribute with the inherited app-wide selector, so
    `<Reveal anim="flip">` and a global `data-reveal="flip"` share one definition. */
-.rdz-reveal--fade,        [data-reveal="fade"]        .rdz-reveal:not([data-anim]) { --rdz-reveal-tf: none; }
-.rdz-reveal--rise,        [data-reveal="rise"]        .rdz-reveal:not([data-anim]),
-.rdz-reveal--fade-rise,   [data-reveal="fade-rise"]   .rdz-reveal:not([data-anim]) { --rdz-reveal-tf: translateY(calc(var(--motion-rise) * 2)); }
-.rdz-reveal--scale,       [data-reveal="scale"]       .rdz-reveal:not([data-anim]) { --rdz-reveal-tf: scale(var(--motion-pop)); }
-.rdz-reveal--zoom,        [data-reveal="zoom"]        .rdz-reveal:not([data-anim]) { --rdz-reveal-tf: scale(0.85); }
-.rdz-reveal--blur,        [data-reveal="blur"]        .rdz-reveal:not([data-anim]) { --rdz-reveal-filter: blur(10px); }
-.rdz-reveal--slide-left,  [data-reveal="slide-left"]  .rdz-reveal:not([data-anim]) { --rdz-reveal-tf: translateX(1.75rem); }
-.rdz-reveal--slide-right, [data-reveal="slide-right"] .rdz-reveal:not([data-anim]) { --rdz-reveal-tf: translateX(-1.75rem); }
-.rdz-reveal--flip,        [data-reveal="flip"]        .rdz-reveal:not([data-anim]) { --rdz-reveal-tf: perspective(1000px) rotateX(-78deg) translateY(var(--motion-rise)); transform-origin: center top; }
-.rdz-reveal--flip-y,      [data-reveal="flip-y"]      .rdz-reveal:not([data-anim]) { --rdz-reveal-tf: perspective(1000px) rotateY(20deg); transform-origin: left center; }
-.rdz-reveal--rotate,      [data-reveal="rotate"]      .rdz-reveal:not([data-anim]) { --rdz-reveal-tf: rotate(-5deg) scale(0.95); }
-.rdz-reveal--skew,        [data-reveal="skew"]        .rdz-reveal:not([data-anim]) { --rdz-reveal-tf: skewY(5deg) translateY(calc(var(--motion-rise) * 1.5)); }
+.rdz-reveal[data-anim='fade'],        [data-reveal="fade"]        .rdz-reveal:not([data-anim]) { --rdz-reveal-tf: none; }
+.rdz-reveal[data-anim='rise'],        [data-reveal="rise"]        .rdz-reveal:not([data-anim]),
+.rdz-reveal[data-anim='fade-rise'],   [data-reveal="fade-rise"]   .rdz-reveal:not([data-anim]) { --rdz-reveal-tf: translateY(calc(var(--motion-rise) * 2)); }
+.rdz-reveal[data-anim='scale'],       [data-reveal="scale"]       .rdz-reveal:not([data-anim]) { --rdz-reveal-tf: scale(var(--motion-pop)); }
+.rdz-reveal[data-anim='zoom'],        [data-reveal="zoom"]        .rdz-reveal:not([data-anim]) { --rdz-reveal-tf: scale(0.85); }
+.rdz-reveal[data-anim='blur'],        [data-reveal="blur"]        .rdz-reveal:not([data-anim]) { --rdz-reveal-filter: blur(10px); }
+.rdz-reveal[data-anim='slide-left'],  [data-reveal="slide-left"]  .rdz-reveal:not([data-anim]) { --rdz-reveal-tf: translateX(1.75rem); }
+.rdz-reveal[data-anim='slide-right'], [data-reveal="slide-right"] .rdz-reveal:not([data-anim]) { --rdz-reveal-tf: translateX(-1.75rem); }
+.rdz-reveal[data-anim='flip'],        [data-reveal="flip"]        .rdz-reveal:not([data-anim]) { --rdz-reveal-tf: perspective(1000px) rotateX(-78deg) translateY(var(--motion-rise)); transform-origin: center top; }
+.rdz-reveal[data-anim='flip-y'],      [data-reveal="flip-y"]      .rdz-reveal:not([data-anim]) { --rdz-reveal-tf: perspective(1000px) rotateY(20deg); transform-origin: left center; }
+.rdz-reveal[data-anim='rotate'],      [data-reveal="rotate"]      .rdz-reveal:not([data-anim]) { --rdz-reveal-tf: rotate(-5deg) scale(0.95); }
+.rdz-reveal[data-anim='skew'],        [data-reveal="skew"]        .rdz-reveal:not([data-anim]) { --rdz-reveal-tf: skewY(5deg) translateY(calc(var(--motion-rise) * 1.5)); }
 
 /* The `none` style — content just appears, no fade or travel. */
 [data-reveal="none"] .rdz-reveal:not([data-anim]) { opacity: 1; transition: none; --rdz-reveal-tf: none; --rdz-reveal-filter: none; }

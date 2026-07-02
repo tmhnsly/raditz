@@ -3,12 +3,12 @@
 /* ═══════════════════════ Skeleton ═══════════════════════ */
 .rdz-skeleton { display: block; width: var(--rdz-skeleton-w); height: var(--rdz-skeleton-h); background: linear-gradient(90deg, var(--surface) 25%, var(--surface-strong) 37%, var(--surface) 63%); background-size: 400% 100%; animation: rdzShimmer 1.4s ease infinite; border-radius: var(--rdz-skeleton-radius, var(--radius-sm)); }
 
-.rdz-skeleton--text { height: 0.75em; margin: 0.25em 0; border-radius: var(--radius-full); }
+.rdz-skeleton[data-variant='text'] { height: 0.75em; margin: 0.25em 0; border-radius: var(--radius-full); }
 
 .rdz-skeleton--last { width: 70%; }
 
-.rdz-skeleton--circle { border-radius: var(--radius-full); }
+.rdz-skeleton[data-variant='circle'] { border-radius: var(--radius-full); }
 
-.rdz-skeleton--rect { border-radius: var(--radius-md); }
+.rdz-skeleton[data-variant='rect'] { border-radius: var(--radius-md); }
 
 .rdz-skeleton-lines { display: block; }

@@ -25,7 +25,7 @@ export interface StepperProps extends HTMLAttributes<HTMLOListElement> {
  */
 export function Stepper({ steps = [], current = 0, orientation = 'horizontal', onStepClick, className, ...rest }: StepperProps): ReactElement {
   return (
-    <ol className={cx('rdz-stepper', `rdz-stepper--${orientation}`, className)} {...rest}>
+    <ol className={cx('rdz-stepper', className)} data-orientation={orientation} {...rest}>
       {steps.map((s, i) => {
         const state = i < current ? 'complete' : i === current ? 'current' : 'upcoming';
         const clickable = !!onStepClick && i <= current;

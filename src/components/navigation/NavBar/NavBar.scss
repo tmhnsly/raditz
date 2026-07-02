@@ -3,9 +3,9 @@
 /* ═══════════════════════ NavBar (flowing route indicator) ═══════════════════════ */
 .rdz-navbar { position: relative; display: inline-flex; gap: 0.125rem; }
 
-.rdz-navbar--horizontal { flex-direction: row; align-items: center; }
+.rdz-navbar[data-orientation='horizontal'] { flex-direction: row; align-items: center; }
 
-.rdz-navbar--vertical { flex-direction: column; align-items: stretch; }
+.rdz-navbar[data-orientation='vertical'] { flex-direction: column; align-items: stretch; }
 
 /* Geometry arrives as --rdz-navind-* custom properties (measured in NavBar.tsx);
    only custom props cross the JS/CSS boundary — no inline real properties. */
@@ -23,11 +23,11 @@
   pointer-events: none;
 }
 
-.rdz-navbar--pill .rdz-navbar__indicator { background: var(--accent-surface); }
+.rdz-navbar[data-variant='pill'] .rdz-navbar__indicator { background: var(--accent-surface); }
 
-.rdz-navbar--underline { gap: var(--space-2); }
+.rdz-navbar[data-variant='underline'] { gap: var(--space-2); }
 
-.rdz-navbar--underline .rdz-navbar__indicator { border-radius: var(--radius-full); height: 2px !important; top: auto; bottom: 0; background: var(--accent); }
+.rdz-navbar[data-variant='underline'] .rdz-navbar__indicator { border-radius: var(--radius-full); height: 2px !important; top: auto; bottom: 0; background: var(--accent); }
 
 .rdz-navbar__item {
   position: relative; z-index: 1; display: inline-flex; align-items: center; gap: var(--space-2);
@@ -41,6 +41,6 @@
 
 .rdz-navbar__item[data-active] { color: var(--accent-ink); }
 
-.rdz-navbar--underline .rdz-navbar__item { padding: 0.5rem 0.25rem 0.75rem; border-radius: 0; }
+.rdz-navbar[data-variant='underline'] .rdz-navbar__item { padding: 0.5rem 0.25rem 0.75rem; border-radius: 0; }
 
 .rdz-navbar__item:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }

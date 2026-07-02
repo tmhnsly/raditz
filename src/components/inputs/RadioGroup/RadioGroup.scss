@@ -3,9 +3,9 @@
 /* ═══════════════════════ RadioGroup ═══════════════════════ */
 .rdz-radio-group { display: flex; gap: var(--space-4); }
 
-.rdz-radio-group--vertical { flex-direction: column; }
+.rdz-radio-group[data-orientation='vertical'] { flex-direction: column; }
 
-.rdz-radio-group--horizontal { flex-direction: row; flex-wrap: wrap; gap: var(--space-5); }
+.rdz-radio-group[data-orientation='horizontal'] { flex-direction: row; flex-wrap: wrap; gap: var(--space-5); }
 
 .rdz-radio-group__item { display: flex; gap: var(--space-3); align-items: flex-start; cursor: pointer; }
 

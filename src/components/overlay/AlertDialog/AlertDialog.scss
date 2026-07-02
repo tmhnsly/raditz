@@ -12,9 +12,9 @@
   animation: rdzPop var(--duration-base) var(--ease-standard);
 }
 
-.rdz-dialog--sm { max-width: 25rem; }
+.rdz-dialog[data-size='sm'] { max-width: 25rem; }
 
-.rdz-dialog--lg { max-width: 40rem; }
+.rdz-dialog[data-size='lg'] { max-width: 40rem; }
 
 .rdz-dialog__header { margin-bottom: var(--space-4); padding-right: var(--space-7); }
 

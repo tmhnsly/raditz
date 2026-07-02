@@ -33,7 +33,7 @@ export function Button({
   children,
   ...rest
 }: ButtonProps): ReactElement {
-  const cls = cx('rdz-btn', `rdz-btn--${variant}`, size !== 'md' && `rdz-btn--${size}`, className);
+  const cls = cx('rdz-btn', className);
   const lead = typeof icon === 'string' ? <Icon name={icon as IconName} size="1.15em" /> : icon;
   const trail = typeof iconTrailing === 'string' ? <Icon name={iconTrailing as IconName} size="1.15em" /> : iconTrailing;
   const inner = (
@@ -45,13 +45,13 @@ export function Button({
   );
   if (href) {
     return (
-      <a href={href} className={cls} {...(rest as AnchorHTMLAttributes<HTMLAnchorElement>)}>
+      <a href={href} className={cls} data-variant={variant} data-size={size} {...(rest as AnchorHTMLAttributes<HTMLAnchorElement>)}>
         {inner}
       </a>
     );
   }
   return (
-    <button type={type} className={cls} {...rest}>
+    <button type={type} className={cls} data-variant={variant} data-size={size} {...rest}>
       {inner}
     </button>
   );

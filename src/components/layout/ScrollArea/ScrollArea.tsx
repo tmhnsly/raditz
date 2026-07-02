@@ -14,10 +14,10 @@ export interface ScrollAreaProps extends HTMLAttributes<HTMLDivElement> {
  * ScrollArea). Set `maxHeight` (vertical) or a fixed width (horizontal).
  */
 export function ScrollArea({ axis = 'vertical', maxHeight, className, style, children, ...rest }: ScrollAreaProps): ReactElement {
-  const cls = cx('rdz-scroll', `rdz-scroll--${axis}`, className);
+  const cls = cx('rdz-scroll', className);
   const maxh = typeof maxHeight === 'number' ? `${maxHeight}px` : maxHeight;
   return (
-    <div className={cls} style={{ '--rdz-scroll-maxh': maxh, ...style } as CSSProperties} {...rest}>
+    <div className={cls} data-axis={axis} style={{ '--rdz-scroll-maxh': maxh, ...style } as CSSProperties} {...rest}>
       {children}
     </div>
   );

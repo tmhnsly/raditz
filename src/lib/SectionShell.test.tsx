@@ -32,9 +32,9 @@ describe('SectionActionButton', () => {
   });
   it('applies defaultVariant only when the action omits variant', () => {
     const { rerender } = render(<SectionActionButton action={{ label: 'A' }} defaultVariant="outline" />);
-    expect(screen.getByText('A').closest('a, button')!.className).toContain('rdz-btn--outline');
+    expect(screen.getByText('A').closest('a, button')!.getAttribute('data-variant')).toBe('outline');
     rerender(<SectionActionButton action={{ label: 'A', variant: 'primary' }} defaultVariant="outline" />);
-    expect(screen.getByText('A').closest('a, button')!.className).toContain('rdz-btn--primary');
+    expect(screen.getByText('A').closest('a, button')!.getAttribute('data-variant')).toBe('primary');
   });
 });
 

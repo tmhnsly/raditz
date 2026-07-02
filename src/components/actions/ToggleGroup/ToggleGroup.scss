@@ -20,6 +20,6 @@
 
 .rdz-toggle-group__item:disabled { opacity: var(--disabled-opacity); cursor: not-allowed; }
 
-.rdz-toggle-group--sm .rdz-toggle-group__item { height: 1.625rem; min-width: 1.625rem; padding: 0 var(--space-3); font-size: var(--fs-label); }
+.rdz-toggle-group[data-size='sm'] .rdz-toggle-group__item { height: 1.625rem; min-width: 1.625rem; padding: 0 var(--space-3); font-size: var(--fs-label); }
 
-.rdz-toggle-group--lg .rdz-toggle-group__item { height: 2.5rem; min-width: 2.5rem; padding: 0 var(--space-4); }
+.rdz-toggle-group[data-size='lg'] .rdz-toggle-group__item { height: 2.5rem; min-width: 2.5rem; padding: 0 var(--space-4); }

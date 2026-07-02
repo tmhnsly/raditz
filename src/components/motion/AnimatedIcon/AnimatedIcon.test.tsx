@@ -16,11 +16,11 @@ describe('AnimatedIcon', () => {
     });
   }
 
-  it('applies the anim class and renders its child icon', () => {
+  it('applies the anim data attribute and renders its child icon', () => {
     const { container } = render(<AnimatedIcon anim="float"><Icon name="star" /></AnimatedIcon>);
     const wrap = container.querySelector('.rdz-anim');
     expect(wrap).toBeTruthy();
-    expect(wrap?.classList.contains('rdz-anim--float')).toBe(true);
+    expect(wrap?.getAttribute('data-anim')).toBe('float');
     expect(wrap?.querySelector('svg')).toBeTruthy();
   });
 });

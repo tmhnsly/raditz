@@ -14,13 +14,13 @@
 
 .rdz-toggle[data-state="on"] { background: var(--accent-surface); color: var(--accent-ink); box-shadow: inset 0 0 0 1px var(--accent-border); }
 
-.rdz-toggle--outline { background: transparent; box-shadow: inset 0 0 0 1px var(--rule); }
+.rdz-toggle[data-variant='outline'] { background: transparent; box-shadow: inset 0 0 0 1px var(--rule); }
 
-.rdz-toggle--outline:hover { background: var(--surface); }
+.rdz-toggle[data-variant='outline']:hover { background: var(--surface); }
 
-.rdz-toggle--sm { height: var(--control-h-sm); padding: 0 var(--space-3); font-size: var(--fs-label); }
+.rdz-toggle[data-size='sm'] { height: var(--control-h-sm); padding: 0 var(--space-3); font-size: var(--fs-label); }
 
-.rdz-toggle--lg { height: var(--control-h-lg); padding: 0 var(--space-5); }
+.rdz-toggle[data-size='lg'] { height: var(--control-h-lg); padding: 0 var(--space-5); }
 
 .rdz-toggle:active { transform: translateY(1px); }
 

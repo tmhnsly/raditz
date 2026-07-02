@@ -3,25 +3,25 @@
 /* ═══════════════════════ Toast ═══════════════════════ */
 .rdz-toast-viewport { position: fixed; z-index: var(--z-toast); display: flex; flex-direction: column; gap: var(--space-3); padding: var(--space-5); max-width: min(92vw, 23.75rem); pointer-events: none; }
 
-.rdz-toast-viewport--bottom-right { bottom: 0; right: 0; }
+.rdz-toast-viewport[data-position='bottom-right'] { bottom: 0; right: 0; }
 
-.rdz-toast-viewport--bottom-left { bottom: 0; left: 0; }
+.rdz-toast-viewport[data-position='bottom-left'] { bottom: 0; left: 0; }
 
-.rdz-toast-viewport--top-right { top: 0; right: 0; }
+.rdz-toast-viewport[data-position='top-right'] { top: 0; right: 0; }
 
-.rdz-toast-viewport--top-left { top: 0; left: 0; }
+.rdz-toast-viewport[data-position='top-left'] { top: 0; left: 0; }
 
-.rdz-toast-viewport--bottom-center { bottom: 0; left: 50%; transform: translateX(-50%); align-items: center; }
+.rdz-toast-viewport[data-position='bottom-center'] { bottom: 0; left: 50%; transform: translateX(-50%); align-items: center; }
 
-.rdz-toast-viewport--top-center { top: 0; left: 50%; transform: translateX(-50%); align-items: center; }
+.rdz-toast-viewport[data-position='top-center'] { top: 0; left: 50%; transform: translateX(-50%); align-items: center; }
 
 .rdz-toast { pointer-events: auto; display: flex; align-items: flex-start; gap: var(--space-3); width: 100%; background: var(--panel); border: var(--border-width) solid var(--surface-edge); border-left: var(--border-width-3) solid var(--accent); border-radius: var(--radius-overlay); box-shadow: var(--shadow-5); padding: var(--space-4); animation: rdzToastIn var(--duration-base) var(--ease-standard); }
 
-.rdz-toast--success { border-left-color: var(--success); }
+.rdz-toast[data-color='success'] { border-left-color: var(--success); }
 
-.rdz-toast--warning { border-left-color: var(--warning); }
+.rdz-toast[data-color='warning'] { border-left-color: var(--warning); }
 
-.rdz-toast--danger { border-left-color: var(--danger); }
+.rdz-toast[data-color='danger'] { border-left-color: var(--danger); }
 
 .rdz-toast__body { flex: 1; min-width: 0; }
 

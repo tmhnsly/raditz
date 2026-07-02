@@ -45,14 +45,11 @@ export function Card({
   const Tag = as;
   const cls = cx(
     'rdz-card',
-    variant === 'glass' && 'rdz-card--glass',
-    variant === 'flat' && 'rdz-card--flat',
-    tone && `rdz-card--${tone}`,
     interactive && 'rdz-card--interactive',
     className,
   );
   return (
-    <Tag className={cls} {...rest}>
+    <Tag className={cls} data-variant={variant} data-tone={tone} {...rest}>
       {children}
     </Tag>
   );

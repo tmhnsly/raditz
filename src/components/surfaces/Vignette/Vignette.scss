@@ -24,12 +24,12 @@
 
 /* ── Preset background treatments (props: plain / gradient / accent / secondary /
    mono / aurora). `color` is the scene's currentColor ink, paired to the bg. ── */
-.rdz-vignette--plain { background: var(--surface); color: var(--accent-ink); }
-.rdz-vignette--gradient { background: linear-gradient(150deg, var(--accent-surface), color-mix(in srgb, var(--accent-2-surface) 55%, var(--surface))); color: var(--accent-ink); }
-.rdz-vignette--accent { background: linear-gradient(150deg, var(--accent-surface), color-mix(in srgb, var(--accent-surface) 35%, var(--surface))); color: var(--accent-ink); }
-.rdz-vignette--secondary { background: linear-gradient(150deg, var(--accent-2-surface), color-mix(in srgb, var(--accent-2-surface) 35%, var(--surface))); color: var(--accent-2-ink); }
-.rdz-vignette--mono { background: linear-gradient(150deg, var(--surface-strong), var(--surface)); color: var(--text-soft); }
-.rdz-vignette--aurora {
+.rdz-vignette[data-bg='plain'] { background: var(--surface); color: var(--accent-ink); }
+.rdz-vignette[data-bg='gradient'] { background: linear-gradient(150deg, var(--accent-surface), color-mix(in srgb, var(--accent-2-surface) 55%, var(--surface))); color: var(--accent-ink); }
+.rdz-vignette[data-bg='accent'] { background: linear-gradient(150deg, var(--accent-surface), color-mix(in srgb, var(--accent-surface) 35%, var(--surface))); color: var(--accent-ink); }
+.rdz-vignette[data-bg='secondary'] { background: linear-gradient(150deg, var(--accent-2-surface), color-mix(in srgb, var(--accent-2-surface) 35%, var(--surface))); color: var(--accent-2-ink); }
+.rdz-vignette[data-bg='mono'] { background: linear-gradient(150deg, var(--surface-strong), var(--surface)); color: var(--text-soft); }
+.rdz-vignette[data-bg='aurora'] {
   background:
     radial-gradient(80% 80% at 12% 12%, var(--accent-surface), transparent 60%),
     radial-gradient(80% 80% at 88% 88%, var(--accent-2-surface), transparent 60%),

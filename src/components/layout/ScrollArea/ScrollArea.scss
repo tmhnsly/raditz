@@ -3,9 +3,9 @@
 /* ═══════════════════════ ScrollArea ═══════════════════════ */
 .rdz-scroll { overflow: auto; scrollbar-width: thin; scrollbar-color: var(--rule-strong) transparent; max-height: var(--rdz-scroll-maxh); }
 
-.rdz-scroll--vertical { overflow-x: hidden; }
+.rdz-scroll[data-axis='vertical'] { overflow-x: hidden; }
 
-.rdz-scroll--horizontal { overflow-y: hidden; }
+.rdz-scroll[data-axis='horizontal'] { overflow-y: hidden; }
 
 .rdz-scroll::-webkit-scrollbar { width: 0.625rem; height: 0.625rem; }
 

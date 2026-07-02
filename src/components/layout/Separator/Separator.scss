@@ -2,6 +2,6 @@
 // Uses Raditz tokens (var(--…)); re-skins/re-themes with the system.
 .rdz-separator { border: none; background: var(--rule-soft); }
 
-.rdz-separator--h { height: var(--border-width); width: 100%; }
+.rdz-separator[data-orientation='horizontal'] { height: var(--border-width); width: 100%; }
 
-.rdz-separator--v { width: var(--border-width); align-self: stretch; min-height: 1em; }
+.rdz-separator[data-orientation='vertical'] { width: var(--border-width); align-self: stretch; min-height: 1em; }

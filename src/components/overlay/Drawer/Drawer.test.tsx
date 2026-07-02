@@ -53,6 +53,13 @@ describe('Drawer (behaviour)', () => {
     expect(screen.queryByRole('dialog')).toBeNull();
   });
 
+  it('carries the side on the panel as data-side (resolved default and explicit)', () => {
+    const { rerender } = render(<Drawer open title="Panel">content</Drawer>);
+    expect(screen.getByRole('dialog').getAttribute('data-side')).toBe('right');
+    rerender(<Drawer open side="bottom" title="Panel">content</Drawer>);
+    expect(screen.getByRole('dialog').getAttribute('data-side')).toBe('bottom');
+  });
+
   it('moves focus into the panel on open (focus trap) and marks it modal', () => {
     render(<Drawer defaultOpen title="Panel"><button>inside</button></Drawer>);
     const panel = screen.getByRole('dialog');

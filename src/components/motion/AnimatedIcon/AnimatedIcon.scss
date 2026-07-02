@@ -10,16 +10,16 @@
    translate3d so each frame stays on the GPU.) */
 .rdz-anim { display: inline-grid; place-items: center; line-height: 0; will-change: transform; }
 
-.rdz-anim--float  { animation: rdzFloat  calc(3s   * var(--rdz-anim-speed, 1) * var(--motion-scale, 1)) var(--ease-in-out) infinite; }
+.rdz-anim[data-anim='float']  { animation: rdzFloat  calc(3s   * var(--rdz-anim-speed, 1) * var(--motion-scale, 1)) var(--ease-in-out) infinite; }
 /* the moon-orbit glyph reads as orbital motion when it rotates slowly */
-.rdz-anim--orbit  { animation: rdzSpin   calc(6s   * var(--rdz-anim-speed, 1) * var(--motion-scale, 1)) linear infinite; }
-.rdz-anim--pulse  { animation: rdzPulse  calc(2s   * var(--rdz-anim-speed, 1) * var(--motion-scale, 1)) var(--ease-in-out) infinite; }
-.rdz-anim--spin   { animation: rdzSpin   calc(2.4s * var(--rdz-anim-speed, 1) * var(--motion-scale, 1)) linear infinite; }
-.rdz-anim--wiggle { animation: rdzWiggle calc(1.6s * var(--rdz-anim-speed, 1) * var(--motion-scale, 1)) var(--ease-in-out) infinite; }
+.rdz-anim[data-anim='orbit']  { animation: rdzSpin   calc(6s   * var(--rdz-anim-speed, 1) * var(--motion-scale, 1)) linear infinite; }
+.rdz-anim[data-anim='pulse']  { animation: rdzPulse  calc(2s   * var(--rdz-anim-speed, 1) * var(--motion-scale, 1)) var(--ease-in-out) infinite; }
+.rdz-anim[data-anim='spin']   { animation: rdzSpin   calc(2.4s * var(--rdz-anim-speed, 1) * var(--motion-scale, 1)) linear infinite; }
+.rdz-anim[data-anim='wiggle'] { animation: rdzWiggle calc(1.6s * var(--rdz-anim-speed, 1) * var(--motion-scale, 1)) var(--ease-in-out) infinite; }
 
 /* draw-on: only meaningful for STROKED icons (Raditz <Icon/>); filled glyphs have
    no stroke to draw. A generous dasharray covers typical 24px icon path lengths. */
-.rdz-anim--draw :is(path, line, polyline, circle, rect, ellipse, polygon) {
+.rdz-anim[data-anim='draw'] :is(path, line, polyline, circle, rect, ellipse, polygon) {
   stroke-dasharray: 200;
   stroke-dashoffset: 200;
   animation: rdzDraw calc(1.6s * var(--rdz-anim-speed, 1) * var(--motion-scale, 1)) var(--ease-decel) forwards;
@@ -36,5 +36,5 @@
 @media (prefers-reduced-motion: reduce) {
   .rdz-anim, .rdz-anim * { animation: none !important; }
   /* leave the drawn icon fully drawn (not stuck hidden at offset 200) */
-  .rdz-anim--draw :is(path, line, polyline, circle, rect, ellipse, polygon) { stroke-dashoffset: 0; }
+  .rdz-anim[data-anim='draw'] :is(path, line, polyline, circle, rect, ellipse, polygon) { stroke-dashoffset: 0; }
 }

@@ -2,13 +2,13 @@
 // Uses Raditz tokens (var(--…)); re-skins/re-themes with the system.
 .rdz-drawer { position: fixed; z-index: var(--z-overlay-local); background: var(--panel); box-shadow: var(--shadow-6); display: flex; flex-direction: column; }
 
-.rdz-drawer--right { top: 0; right: 0; height: 100%; width: var(--rdz-drawer-size); max-width: 92vw; border-left: 1px solid var(--surface-edge); border-radius: var(--radius-panel) 0 0 var(--radius-panel); animation: rdzDrawerR var(--duration-base) var(--ease-standard); }
+.rdz-drawer[data-side='right'] { top: 0; right: 0; height: 100%; width: var(--rdz-drawer-size); max-width: 92vw; border-left: 1px solid var(--surface-edge); border-radius: var(--radius-panel) 0 0 var(--radius-panel); animation: rdzDrawerR var(--duration-base) var(--ease-standard); }
 
-.rdz-drawer--left { top: 0; left: 0; height: 100%; width: var(--rdz-drawer-size); max-width: 92vw; border-right: 1px solid var(--surface-edge); border-radius: 0 var(--radius-panel) var(--radius-panel) 0; animation: rdzDrawerL var(--duration-base) var(--ease-standard); }
+.rdz-drawer[data-side='left'] { top: 0; left: 0; height: 100%; width: var(--rdz-drawer-size); max-width: 92vw; border-right: 1px solid var(--surface-edge); border-radius: 0 var(--radius-panel) var(--radius-panel) 0; animation: rdzDrawerL var(--duration-base) var(--ease-standard); }
 
-.rdz-drawer--top { top: 0; left: 0; width: 100%; height: var(--rdz-drawer-size); max-height: 92vh; border-bottom: 1px solid var(--surface-edge); border-radius: 0 0 var(--radius-panel) var(--radius-panel); animation: rdzDrawerT var(--duration-base) var(--ease-standard); }
+.rdz-drawer[data-side='top'] { top: 0; left: 0; width: 100%; height: var(--rdz-drawer-size); max-height: 92vh; border-bottom: 1px solid var(--surface-edge); border-radius: 0 0 var(--radius-panel) var(--radius-panel); animation: rdzDrawerT var(--duration-base) var(--ease-standard); }
 
-.rdz-drawer--bottom { bottom: 0; left: 0; width: 100%; height: var(--rdz-drawer-size); max-height: 92vh; border-top: 1px solid var(--surface-edge); border-radius: var(--radius-panel) var(--radius-panel) 0 0; animation: rdzDrawerB var(--duration-base) var(--ease-standard); }
+.rdz-drawer[data-side='bottom'] { bottom: 0; left: 0; width: 100%; height: var(--rdz-drawer-size); max-height: 92vh; border-top: 1px solid var(--surface-edge); border-radius: var(--radius-panel) var(--radius-panel) 0 0; animation: rdzDrawerB var(--duration-base) var(--ease-standard); }
 
 .rdz-drawer__header { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-3); padding: var(--space-5); border-bottom: 1px solid var(--rule-soft); }
 

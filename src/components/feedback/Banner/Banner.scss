@@ -17,18 +17,18 @@
 
 .rdz-banner__close:hover { background: var(--surface); color: var(--text); }
 
-.rdz-banner--info { background: var(--info-surface); border-color: color-mix(in srgb, var(--info) 30%, transparent); }
+.rdz-banner[data-color='info'] { background: var(--info-surface); border-color: color-mix(in srgb, var(--info) 30%, transparent); }
 
-.rdz-banner--info .rdz-banner__icon { color: var(--info-ink); }
+.rdz-banner[data-color='info'] .rdz-banner__icon { color: var(--info-ink); }
 
-.rdz-banner--success { background: var(--success-surface); border-color: color-mix(in srgb, var(--success) 30%, transparent); }
+.rdz-banner[data-color='success'] { background: var(--success-surface); border-color: color-mix(in srgb, var(--success) 30%, transparent); }
 
-.rdz-banner--success .rdz-banner__icon { color: var(--success-ink); }
+.rdz-banner[data-color='success'] .rdz-banner__icon { color: var(--success-ink); }
 
-.rdz-banner--warning { background: var(--warning-surface); border-color: color-mix(in srgb, var(--warning) 30%, transparent); }
+.rdz-banner[data-color='warning'] { background: var(--warning-surface); border-color: color-mix(in srgb, var(--warning) 30%, transparent); }
 
-.rdz-banner--warning .rdz-banner__icon { color: var(--warning-ink); }
+.rdz-banner[data-color='warning'] .rdz-banner__icon { color: var(--warning-ink); }
 
-.rdz-banner--danger { background: var(--danger-surface); border-color: color-mix(in srgb, var(--danger) 30%, transparent); }
+.rdz-banner[data-color='danger'] { background: var(--danger-surface); border-color: color-mix(in srgb, var(--danger) 30%, transparent); }
 
-.rdz-banner--danger .rdz-banner__icon { color: var(--danger-ink); }
+.rdz-banner[data-color='danger'] .rdz-banner__icon { color: var(--danger-ink); }

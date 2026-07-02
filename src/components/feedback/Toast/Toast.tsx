@@ -72,11 +72,12 @@ export const Toast: ToastComponent = function Toast({
   const dismiss = (id: number): void => setItems((prev) => prev.filter((i) => i.id !== id));
 
   return (
-    <div className={`rdz-toast-viewport rdz-toast-viewport--${position}`} {...rest}>
+    <div className="rdz-toast-viewport" data-position={position} {...rest}>
       {items.map((it) => (
         <div
           key={it.id}
-          className={cx('rdz-toast', it.variant && it.variant !== 'default' && `rdz-toast--${it.variant}`)}
+          className="rdz-toast"
+          data-color={it.variant && it.variant !== 'default' ? it.variant : undefined}
           role="status"
           aria-live="polite"
         >

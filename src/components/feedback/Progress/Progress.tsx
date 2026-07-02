@@ -22,13 +22,13 @@ export function Progress({ value = null, max = 100, size = 'md', indeterminate =
   const pct = isInd ? null : toPercent(value as number, max);
   const cls = cx(
     'rdz-progress',
-    size !== 'md' && `rdz-progress--${size}`,
     isInd && 'rdz-progress--indeterminate',
     className,
   );
   return (
     <div
       className={cls}
+      data-size={size}
       role="progressbar"
       aria-label="Progress"
       aria-valuemin={0}

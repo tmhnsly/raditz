@@ -3,9 +3,9 @@
 /* ═══════════════════════ Progress ═══════════════════════ */
 .rdz-progress { position: relative; height: 0.5rem; width: 100%; border-radius: var(--radius-full); background: var(--surface-strong); overflow: hidden; }
 
-.rdz-progress--sm { height: 0.3125rem; }
+.rdz-progress[data-size='sm'] { height: 0.3125rem; }
 
-.rdz-progress--lg { height: 0.75rem; }
+.rdz-progress[data-size='lg'] { height: 0.75rem; }
 
 .rdz-progress__indicator { height: 100%; width: var(--rdz-progress-pct, 100%); border-radius: var(--radius-full); background: var(--accent); transition: width var(--duration-slow) var(--ease-standard); }
 

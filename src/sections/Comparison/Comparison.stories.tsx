@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { ComparisonA } from './Comparison';
+import { Button } from '../../components/actions/Button';
 
 const meta: Meta = { title: 'Sections/Feature comparison' };
 export default meta;
@@ -20,9 +21,9 @@ const demoRows = [
   {
     feature: '',
     values: [
-      <button key="start" className="rdz-btn rdz-btn--outline rdz-btn--sm">Start</button>,
-      <button key="team" className="rdz-btn rdz-btn--primary rdz-btn--sm">Choose Team</button>,
-      <button key="contact" className="rdz-btn rdz-btn--outline rdz-btn--sm">Contact</button>,
+      <Button key="start" variant="outline" size="sm">Start</Button>,
+      <Button key="team" variant="primary" size="sm">Choose Team</Button>,
+      <Button key="contact" variant="outline" size="sm">Contact</Button>,
     ],
   },
 ];

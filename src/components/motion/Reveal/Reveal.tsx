@@ -65,7 +65,7 @@ export function Reveal({
       // `data-anim` is present only for an explicit anim — the app-wide
       // `[data-reveal] .rdz-reveal:not([data-anim])` default skips those.
       'data-anim': anim,
-      className: cx('rdz-reveal', anim && `rdz-reveal--${anim}`, revealed && 'is-in', className),
+      className: cx('rdz-reveal', revealed && 'is-in', className),
       style: { '--rdz-reveal-i': index, '--rdz-reveal-delay': `${delay}ms`, ...style } as React.CSSProperties,
       ...rest,
     },

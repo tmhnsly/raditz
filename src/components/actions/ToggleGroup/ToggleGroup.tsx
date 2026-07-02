@@ -55,7 +55,7 @@ export function ToggleGroup({
       setVal(val === v ? '' : v);
     }
   };
-  const cls = cx('rdz-toggle-group', size !== 'md' && `rdz-toggle-group--${size}`, className);
+  const cls = cx('rdz-toggle-group', className);
   const itemRefs = React.useRef<(HTMLButtonElement | null)[]>([]);
   // Single-select acts as a radiogroup: arrow keys rove focus + selection.
   const singleIdx = type === 'single' ? items.findIndex((it) => it.value === val) : -1;
@@ -69,7 +69,7 @@ export function ToggleGroup({
     if (it && !it.disabled && !disabled) { setVal(it.value); itemRefs.current[next]?.focus(); }
   };
   return (
-    <div className={cls} role={type === 'single' ? 'radiogroup' : 'group'} onKeyDown={onKeyDown} {...rest}>
+    <div className={cls} data-size={size} role={type === 'single' ? 'radiogroup' : 'group'} onKeyDown={onKeyDown} {...rest}>
       {items.map((it, i) => {
         const on = isOn(it.value);
         return (

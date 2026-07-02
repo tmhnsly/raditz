@@ -37,11 +37,13 @@ export function Toggle({
     defaultValue: defaultPressed,
     onChange: onPressedChange,
   });
-  const cls = cx('rdz-toggle', `rdz-toggle--${variant}`, size !== 'md' && `rdz-toggle--${size}`, className);
+  const cls = cx('rdz-toggle', className);
   return (
     <button
       type="button"
       className={cls}
+      data-variant={variant}
+      data-size={size}
       aria-pressed={!!on}
       data-state={on ? 'on' : 'off'}
       disabled={disabled}

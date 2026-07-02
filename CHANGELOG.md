@@ -74,6 +74,15 @@ All notable changes to Raditz are recorded here. The format is based on
     plus three new machine gates: `api-contract` (className-on-root),
     `ref-contract` (refs reach controls), `style-contract` (inline styles,
     z-index ladder, README counts). README rewritten to match reality.
+- **Variant wiring: enumerated axes now ride data attributes** (`data-variant`/
+  `data-size`/`data-color`/`data-side`/`data-orientation`/`data-tone`/`data-anim`/
+  `data-bg`/…) styled as `.rdz-x[data-variant='primary']` — same specificity, one
+  value per axis by construction, semantic in devtools, and a stable consumer
+  styling hook. Boolean modifiers (`is-*`, `rdz-card--col`) and block/element
+  names stay classes; `cx` merges only those. **Breaking for CSS that targeted
+  the old enum modifier classes** (`.rdz-btn--primary` → `.rdz-btn[data-variant='primary']`,
+  ~25 components). Component APIs unchanged. Gated: shipped tsx may not build
+  `` `x--${…}` `` class strings (style-contract).
 
 ## [0.1.0] - 2026-06-29
 - Packageization foundation: consumable package (src barrel, two-build pipeline,

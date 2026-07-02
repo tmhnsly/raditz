@@ -3,13 +3,13 @@
 /* ═══════════════════════ Stepper ═══════════════════════ */
 .rdz-stepper { display: flex; list-style: none; margin: 0; padding: 0; }
 
-.rdz-stepper--horizontal { flex-direction: row; align-items: flex-start; }
+.rdz-stepper[data-orientation='horizontal'] { flex-direction: row; align-items: flex-start; }
 
-.rdz-stepper--vertical { flex-direction: column; gap: 0; }
+.rdz-stepper[data-orientation='vertical'] { flex-direction: column; gap: 0; }
 
 .rdz-stepper__step { position: relative; display: flex; flex: 1; min-width: 0; }
 
-.rdz-stepper--vertical .rdz-stepper__step { flex: none; }
+.rdz-stepper[data-orientation='vertical'] .rdz-stepper__step { flex: none; }
 
 .rdz-stepper__node { display: flex; align-items: flex-start; gap: var(--space-3); background: none; text-align: left; }
 
@@ -40,18 +40,18 @@
 /* ── Horizontal: dot + connector form one row; text centers below each dot.
       The connector spans from this dot's centre to the next dot's centre and
       sits behind the dots (which are opaque), so it reads as one rail. ── */
-.rdz-stepper--horizontal .rdz-stepper__step { justify-content: center; }
+.rdz-stepper[data-orientation='horizontal'] .rdz-stepper__step { justify-content: center; }
 
-.rdz-stepper--horizontal .rdz-stepper__node { flex-direction: column; align-items: center; text-align: center; gap: var(--space-2); }
+.rdz-stepper[data-orientation='horizontal'] .rdz-stepper__node { flex-direction: column; align-items: center; text-align: center; gap: var(--space-2); }
 
-.rdz-stepper--horizontal .rdz-stepper__dot { position: relative; z-index: 1; }
+.rdz-stepper[data-orientation='horizontal'] .rdz-stepper__dot { position: relative; z-index: 1; }
 
 /* Span only the GAP between this dot and the next (dot is 2rem → 1rem radius),
    so the rail never passes under a dot — the upcoming dots use a translucent
    fill and a line behind them would show through. */
-.rdz-stepper--horizontal .rdz-stepper__line { position: absolute; top: 1rem; left: calc(50% + 1rem); width: calc(100% - 2rem); height: 2px; transform: translateY(-50%); }
+.rdz-stepper[data-orientation='horizontal'] .rdz-stepper__line { position: absolute; top: 1rem; left: calc(50% + 1rem); width: calc(100% - 2rem); height: 2px; transform: translateY(-50%); }
 
 /* ── Vertical: dot left, text right, connector drops between dots. ── */
-.rdz-stepper--vertical .rdz-stepper__step { display: grid; grid-template-columns: auto 1fr; }
+.rdz-stepper[data-orientation='vertical'] .rdz-stepper__step { display: grid; grid-template-columns: auto 1fr; }
 
-.rdz-stepper--vertical .rdz-stepper__line { width: 2px; height: auto; min-height: 1.25rem; margin: var(--space-2) 0 var(--space-2) calc(1rem - 1px); }
+.rdz-stepper[data-orientation='vertical'] .rdz-stepper__line { width: 2px; height: auto; min-height: 1.25rem; margin: var(--space-2) 0 var(--space-2) calc(1rem - 1px); }

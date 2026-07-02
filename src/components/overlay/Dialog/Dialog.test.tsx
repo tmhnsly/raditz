@@ -49,6 +49,13 @@ describe('Dialog (behaviour)', () => {
     expect(onOpenChange).toHaveBeenCalledWith(false);
   });
 
+  it('carries the size on the panel as data-size (resolved default and explicit)', () => {
+    const { rerender } = render(<Dialog open title="Hi">body</Dialog>);
+    expect(screen.getByRole('dialog').getAttribute('data-size')).toBe('md');
+    rerender(<Dialog open size="lg" title="Hi">body</Dialog>);
+    expect(screen.getByRole('dialog').getAttribute('data-size')).toBe('lg');
+  });
+
   it('moves focus into the panel on open (focus trap) and marks it modal', () => {
     render(
       <Dialog defaultOpen title="Hi" footer={<button>OK</button>}>body</Dialog>,

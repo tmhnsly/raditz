@@ -22,8 +22,8 @@
 
 .rdz-badge[data-color="info"]    { --badge-accent: var(--info);    --badge-on: var(--on-info);    --badge-surface: var(--info-surface);    --badge-ink: var(--info-ink);    --badge-border: var(--blue-7); }
 
-.rdz-badge--solid   { background: var(--badge-accent, var(--accent)); color: var(--badge-on, var(--on-accent)); }
+.rdz-badge[data-variant='solid']   { background: var(--badge-accent, var(--accent)); color: var(--badge-on, var(--on-accent)); }
 
-.rdz-badge--soft    { background: var(--badge-surface, var(--accent-surface)); color: var(--badge-ink, var(--accent-ink)); }
+.rdz-badge[data-variant='soft']    { background: var(--badge-surface, var(--accent-surface)); color: var(--badge-ink, var(--accent-ink)); }
 
-.rdz-badge--outline { background: transparent; color: var(--badge-ink, var(--accent-ink)); box-shadow: inset 0 0 0 1px var(--badge-border, var(--accent-border)); }
+.rdz-badge[data-variant='outline'] { background: transparent; color: var(--badge-ink, var(--accent-ink)); box-shadow: inset 0 0 0 1px var(--badge-border, var(--accent-border)); }

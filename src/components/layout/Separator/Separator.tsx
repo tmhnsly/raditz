@@ -11,12 +11,12 @@ export interface SeparatorProps extends HTMLAttributes<HTMLDivElement> {
  * dividers between row items.
  */
 export function Separator({ orientation = 'horizontal', className, ...rest }: SeparatorProps): ReactElement {
-  const v = orientation === 'vertical';
   return (
     <div
       role="separator"
       aria-orientation={orientation}
-      className={cx('rdz-separator', v ? 'rdz-separator--v' : 'rdz-separator--h', className)}
+      className={cx('rdz-separator', className)}
+      data-orientation={orientation}
       {...rest}
     />
   );

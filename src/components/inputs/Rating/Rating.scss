@@ -25,11 +25,11 @@
 
 .rdz-rating__hit--r { left: 50%; width: 50%; }
 
-.rdz-rating--sm svg { width: 1rem; height: 1rem; }
+.rdz-rating[data-size='sm'] svg { width: 1rem; height: 1rem; }
 
-.rdz-rating--md svg { width: 1.375rem; height: 1.375rem; }
+.rdz-rating[data-size='md'] svg { width: 1.375rem; height: 1.375rem; }
 
-.rdz-rating--lg svg { width: 1.75rem; height: 1.75rem; }
+.rdz-rating[data-size='lg'] svg { width: 1.75rem; height: 1.75rem; }
 
 .rdz-rating:not(.is-readonly):not(.is-disabled) .rdz-rating__star:hover { transform: scale(1.12); transition: transform var(--duration-fast) var(--ease-standard); }
 

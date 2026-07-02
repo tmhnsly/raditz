@@ -53,7 +53,8 @@ export function Dialog({
       role="dialog"
       aria-labelledby={labelledby}
       aria-describedby={describedby}
-      className={cx('rdz-dialog', `rdz-dialog--${size}`, className)}
+      className={cx('rdz-dialog', className)}
+      data-size={size}
       {...rest}
     >
       {title || description ? (

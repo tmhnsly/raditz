@@ -25,26 +25,26 @@
 @media (prefers-reduced-motion: reduce) { .rdz-secbg__layer :is(img, video) { animation: none; } }
 
 /* neutral surface levels — alternate sections to differentiate them */
-.rdz-secbg--surface { background: var(--bg); }
-.rdz-secbg--surface-2 { background: var(--bg-subtle); }
+.rdz-secbg[data-bg='surface'] { background: var(--bg); }
+.rdz-secbg[data-bg='surface-2'] { background: var(--bg-subtle); }
 
 /* templated gradients (token-driven) */
-.rdz-secbg--gradient-accent .rdz-secbg__layer {
+.rdz-secbg[data-bg='gradient-accent'] .rdz-secbg__layer {
   background: linear-gradient(135deg, var(--accent-surface), color-mix(in srgb, var(--accent-surface) 30%, var(--bg)));
 }
 /* Fade each blob to a colour-matched transparent (not the `transparent` keyword,
    which interpolates through transparent-black and leaves a muddy ring/hard edge),
    then run the ramp out to ~85% so it dissolves into --bg with no seam. */
-.rdz-secbg--gradient-aurora .rdz-secbg__layer {
+.rdz-secbg[data-bg='gradient-aurora'] .rdz-secbg__layer {
   background:
     radial-gradient(65% 85% at 15% 10%, var(--accent-surface), color-mix(in srgb, var(--accent-surface) 35%, transparent) 45%, transparent 85%),
     radial-gradient(55% 75% at 85% 20%, var(--accent-2-surface), color-mix(in srgb, var(--accent-2-surface) 35%, transparent) 45%, transparent 85%),
     var(--bg);
 }
-.rdz-secbg--gradient-dusk .rdz-secbg__layer {
+.rdz-secbg[data-bg='gradient-dusk'] .rdz-secbg__layer {
   background: linear-gradient(120deg, var(--accent-surface), var(--accent-2-surface));
 }
-.rdz-secbg--gradient-mesh .rdz-secbg__layer {
+.rdz-secbg[data-bg='gradient-mesh'] .rdz-secbg__layer {
   background:
     radial-gradient(40% 60% at 20% 30%, var(--accent-surface), transparent 60%),
     radial-gradient(45% 55% at 80% 25%, var(--accent-2-surface), transparent 60%),

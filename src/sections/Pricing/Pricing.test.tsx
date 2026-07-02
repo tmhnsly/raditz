@@ -59,7 +59,7 @@ describe('PricingA — content-driven', () => {
     const { getAllByText } = render(<PricingA tiers={simpleTiers} />);
     const badges = getAllByText('Popular');
     expect(badges.length).toBe(1);
-    expect(badges[0].className).toContain('rdz-badge--solid');
+    expect(badges[0].getAttribute('data-variant')).toBe('solid');
     expect(badges[0].className).toContain('sx-price__badge');
   });
 

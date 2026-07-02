@@ -4,9 +4,9 @@
 
 .rdz-emptystate__icon { width: 3.5rem; height: 3.5rem; display: grid; place-items: center; border-radius: var(--radius-lg); background: var(--surface-strong); color: var(--text-soft); }
 
-.rdz-emptystate--accent .rdz-emptystate__icon { background: var(--accent-surface); color: var(--accent-ink); }
+.rdz-emptystate[data-color='accent'] .rdz-emptystate__icon { background: var(--accent-surface); color: var(--accent-ink); }
 
-.rdz-emptystate--danger .rdz-emptystate__icon { background: var(--danger-surface); color: var(--danger-ink); }
+.rdz-emptystate[data-color='danger'] .rdz-emptystate__icon { background: var(--danger-surface); color: var(--danger-ink); }
 
 .rdz-emptystate__title { font-size: var(--fs-body-l); font-weight: var(--fw-semibold); color: var(--text); }
 

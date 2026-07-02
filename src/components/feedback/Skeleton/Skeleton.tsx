@@ -43,7 +43,8 @@ export function Skeleton({
         {Array.from({ length: lines }, (_, i) => (
           <span
             key={i}
-            className={cx('rdz-skeleton', 'rdz-skeleton--text', i === lines - 1 && 'rdz-skeleton--last')}
+            className={cx('rdz-skeleton', i === lines - 1 && 'rdz-skeleton--last')}
+            data-variant="text"
             style={i === lines - 1 ? undefined : ({ '--rdz-skeleton-w': width || '100%' } as React.CSSProperties)}
           />
         ))}
@@ -57,5 +58,5 @@ export function Skeleton({
     '--rdz-skeleton-radius': radius,
     ...style,
   } as React.CSSProperties;
-  return <span className={cx('rdz-skeleton', `rdz-skeleton--${variant}`, className)} style={s} aria-hidden="true" {...rest} />;
+  return <span className={cx('rdz-skeleton', className)} data-variant={variant} style={s} aria-hidden="true" {...rest} />;
 }

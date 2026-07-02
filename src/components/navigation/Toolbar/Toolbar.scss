@@ -7,4 +7,4 @@
 
 .rdz-toolbar > * { align-self: center; flex: none; }
 
-.rdz-toolbar .rdz-separator--v { align-self: center; min-height: 0; height: 1.375rem; margin-inline: var(--space-1); }
+.rdz-toolbar .rdz-separator[data-orientation='vertical'] { align-self: center; min-height: 0; height: 1.375rem; margin-inline: var(--space-1); }

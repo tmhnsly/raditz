@@ -44,9 +44,9 @@ export function RadioGroup({
   const [val, setVal] = useControllableState<string | undefined>({ value, defaultValue, onChange: onValueChange as ((value: string | undefined) => void) | undefined });
   const auto = useStableId('radiogroup');
   const groupName = name || auto;
-  const cls = cx('rdz-radio-group', `rdz-radio-group--${orientation}`, className);
+  const cls = cx('rdz-radio-group', className);
   return (
-    <div className={cls} role="radiogroup" {...rest}>
+    <div className={cls} data-orientation={orientation} role="radiogroup" {...rest}>
       {items.map((it) => {
         const id = `${groupName}-${it.value}`;
         const checked = val === it.value;

@@ -31,10 +31,11 @@ export function Avatar({
   ...rest
 }: AvatarProps): ReactElement {
   const px = typeof size === 'number' ? size : SIZE[size];
-  const cls = cx('rdz-avatar', variant === 'orb' && 'rdz-avatar--orb', className);
+  const cls = cx('rdz-avatar', className);
   return (
     <span
       className={cls}
+      data-variant={variant}
       style={{ '--rdz-avatar-size': `${px}px`, '--rdz-avatar-fs': `${Math.round(px * 0.4)}px`, ...style } as CSSProperties}
       {...rest}
     >

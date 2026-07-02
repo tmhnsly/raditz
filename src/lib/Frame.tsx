@@ -11,14 +11,18 @@ export function Frame({
   className = '',
   style,
   maxWidth,
+  data,
 }: {
   children: ReactNode;
   className?: string;
   style?: React.CSSProperties;
   maxWidth?: string;
+  /** `data-*` attributes forwarded to the frame element — enumerated section
+   * axes (e.g. ImageFocus `data-size`/`data-place`) ride data attributes. */
+  data?: Record<`data-${string}`, string | undefined>;
 }) {
   return (
-    <div className={`frame ${className}`} style={{ '--rdz-frame-maxw': maxWidth, ...style } as React.CSSProperties}>
+    <div className={`frame ${className}`} style={{ '--rdz-frame-maxw': maxWidth, ...style } as React.CSSProperties} {...data}>
       {children}
     </div>
   );

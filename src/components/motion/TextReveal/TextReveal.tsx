@@ -48,7 +48,8 @@ export function TextReveal({
     Tag,
     {
       ref,
-      className: cx('rdz-textreveal', `rdz-textreveal--${anim}`, by === 'char' && 'is-char', revealed && 'is-in', className),
+      'data-anim': anim,
+      className: cx('rdz-textreveal', by === 'char' && 'is-char', revealed && 'is-in', className),
       style: { '--rdz-split-stagger': `${stagger}ms`, ...style } as React.CSSProperties,
       ...rest,
     },

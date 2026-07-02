@@ -22,11 +22,11 @@ export interface IconButtonProps extends React.ButtonHTMLAttributes<HTMLButtonEl
  * weights (solid / soft / outline / ghost).
  */
 export function IconButton({ variant = 'ghost', size = 'md', href, type = 'button', icon, className, children, ...rest }: IconButtonProps): React.ReactElement {
-  const cls = cx('rdz-icon-btn', `rdz-icon-btn--${variant}`, size !== 'md' && `rdz-icon-btn--${size}`, className);
+  const cls = cx('rdz-icon-btn', className);
   const inner = typeof icon === 'string' ? <Icon name={icon as IconName} size="1.25em" /> : (icon || children);
   if (href) {
     const anchorRest = rest as React.AnchorHTMLAttributes<HTMLAnchorElement>;
-    return <a href={href} className={cls} {...anchorRest}>{inner}</a>;
+    return <a href={href} className={cls} data-variant={variant} data-size={size} {...anchorRest}>{inner}</a>;
   }
-  return <button type={type} className={cls} {...rest}>{inner}</button>;
+  return <button type={type} className={cls} data-variant={variant} data-size={size} {...rest}>{inner}</button>;
 }

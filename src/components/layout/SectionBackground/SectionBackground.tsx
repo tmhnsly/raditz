@@ -83,7 +83,8 @@ export function SectionBackground({
   return (
     <div
       ref={rootRef}
-      className={cx('rdz-secbg', background !== 'none' && `rdz-secbg--${background}`, GRADIENTS.has(background) && 'rdz-secbg--gradient', isParallax && 'rdz-secbg--parallax', scrim && 'rdz-secbg--scrim', className)}
+      className={cx('rdz-secbg', GRADIENTS.has(background) && 'rdz-secbg--gradient', isParallax && 'rdz-secbg--parallax', scrim && 'rdz-secbg--scrim', className)}
+      data-bg={background}
       {...rest}
     >
       {hasLayer ? (

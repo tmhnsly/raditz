@@ -39,7 +39,7 @@ export function Vignette({ scene, bg = 'gradient', replay = 0, className, ...res
     setKey((k) => k + 1);
   }, [inView, replay]);
   return (
-    <span ref={ref} className={cx('rdz-vignette', `rdz-vignette--${bg}`, className)} aria-hidden="true" {...rest}>
+    <span ref={ref} className={cx('rdz-vignette', className)} data-bg={bg} aria-hidden="true" {...rest}>
       <span className="rdz-vignette__scene" key={key}>
         {scene}
       </span>

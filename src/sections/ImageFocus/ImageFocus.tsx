@@ -50,7 +50,8 @@ export function ImageFocus({
     <SectionShell
       image={image}
       scrim={scrim}
-      frameClassName={cx('rdz-imgfocus', `rdz-imgfocus--${size}`, `rdz-imgfocus--${place}`)}
+      frameClassName="rdz-imgfocus"
+      frameData={{ 'data-size': size, 'data-place': place }}
       wrap={cx('col', align === 'center' ? 'sx-center' : 'sx-align-start', 'sx-gap-4', 'rdz-imgfocus__wrap')}
       {...props}
     >

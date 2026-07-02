@@ -58,7 +58,7 @@ export function Tabs({ tabs = [], value, defaultValue, onValueChange, variant = 
   };
 
   return (
-    <div role="tablist" className={cx('rdz-tabs', variant === 'underline' && 'rdz-tabs--underline', className)} onKeyDown={onKeyDown} {...rest}>
+    <div role="tablist" className={cx('rdz-tabs', className)} data-variant={variant} onKeyDown={onKeyDown} {...rest}>
       {tabs.map((t, i) => (
         <button
           key={t.value}

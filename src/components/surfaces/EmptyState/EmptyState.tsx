@@ -16,12 +16,6 @@ export interface EmptyStateProps extends Omit<React.HTMLAttributes<HTMLDivElemen
   tone?: 'default' | Extract<StatusTone, 'accent' | 'danger'>;
 }
 
-const TONE: Record<NonNullable<EmptyStateProps['tone']>, string> = {
-  default: '',
-  accent: 'rdz-emptystate--accent',
-  danger: 'rdz-emptystate--danger',
-};
-
 /**
  * EmptyState — one component for the empty / loading / error placeholder
  * patterns. Pass `icon` + `title` + `description` (+ optional `action`) for an
@@ -39,7 +33,7 @@ export function EmptyState({
   ...rest
 }: EmptyStateProps): React.ReactElement {
   return (
-    <div className={cx('rdz-emptystate', TONE[tone], className)} role="status" {...rest}>
+    <div className={cx('rdz-emptystate', className)} data-color={tone === 'default' ? undefined : tone} role="status" {...rest}>
       <div className="rdz-emptystate__icon">
         {loading ? <Spinner size="1.6rem" /> : icon ? <Icon name={icon} size="1.6rem" /> : null}
       </div>
