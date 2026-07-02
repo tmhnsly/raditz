@@ -20,17 +20,44 @@ describe('Tree (stories)', () => {
   }
 });
 
+const folderRow = (): HTMLElement => screen.getByText('A').closest('[role="treeitem"]') as HTMLElement;
+const twist = (row: HTMLElement): HTMLElement => row.querySelector('.rdz-tree__twist') as HTMLElement;
+
 describe('Tree (behaviour)', () => {
-  it('clicking a folder toggles it open and closed (file-browser style)', () => {
-    render(<Tree aria-label="t" items={items} />);
-    const folder = screen.getByText('A').closest('[role="treeitem"]')!;
+  it('clicking a folder name selects it (onSelect fires for branches) without toggling', () => {
+    const onSelect = vi.fn();
+    render(<Tree aria-label="t" items={items} onSelect={onSelect} />);
+    const folder = folderRow();
     expect(folder.getAttribute('aria-expanded')).toBe('false');
-    expect(screen.queryByText('A1')).toBeNull();
 
     fireEvent.click(folder);
+    expect(onSelect).toHaveBeenCalledWith('a', expect.objectContaining({ id: 'a' }));
+    expect(folder.getAttribute('aria-selected')).toBe('true');
+    // The name click did NOT expand — that's the chevron's job.
+    expect(folder.getAttribute('aria-expanded')).toBe('false');
+    expect(screen.queryByText('A1')).toBeNull();
+  });
+
+  it('clicking the chevron toggles the folder open and closed without selecting', () => {
+    const onSelect = vi.fn();
+    render(<Tree aria-label="t" items={items} onSelect={onSelect} />);
+    const folder = folderRow();
+
+    fireEvent.click(twist(folder));
     expect(folder.getAttribute('aria-expanded')).toBe('true');
     expect(screen.getByText('A1')).toBeTruthy();
 
+    fireEvent.click(twist(folder));
+    expect(folder.getAttribute('aria-expanded')).toBe('false');
+    expect(screen.queryByText('A1')).toBeNull();
+    expect(onSelect).not.toHaveBeenCalled();
+  });
+
+  it('toggleOnRowClick opts back into file-browser row-click toggling', () => {
+    render(<Tree aria-label="t" items={items} toggleOnRowClick />);
+    const folder = folderRow();
+    fireEvent.click(folder);
+    expect(folder.getAttribute('aria-expanded')).toBe('true');
     fireEvent.click(folder);
     expect(folder.getAttribute('aria-expanded')).toBe('false');
   });
@@ -42,11 +69,23 @@ describe('Tree (behaviour)', () => {
     expect(onSelect).toHaveBeenCalledWith('b', expect.objectContaining({ id: 'b' }));
   });
 
-  it('ArrowRight expands a collapsed folder', () => {
+  it('ArrowRight expands and ArrowLeft collapses a folder (keyboard preserved)', () => {
     render(<Tree aria-label="t" items={items} />);
-    const folder = screen.getByText('A').closest('[role="treeitem"]') as HTMLElement;
+    const folder = folderRow();
     folder.focus();
     fireEvent.keyDown(folder, { key: 'ArrowRight' });
     expect(folder.getAttribute('aria-expanded')).toBe('true');
+    fireEvent.keyDown(folder, { key: 'ArrowLeft' });
+    expect(folder.getAttribute('aria-expanded')).toBe('false');
+  });
+
+  it('Enter selects the focused row (no toggle by default)', () => {
+    const onSelect = vi.fn();
+    render(<Tree aria-label="t" items={items} onSelect={onSelect} />);
+    const folder = folderRow();
+    folder.focus();
+    fireEvent.keyDown(folder, { key: 'Enter' });
+    expect(onSelect).toHaveBeenCalledWith('a', expect.objectContaining({ id: 'a' }));
+    expect(folder.getAttribute('aria-expanded')).toBe('false');
   });
 });

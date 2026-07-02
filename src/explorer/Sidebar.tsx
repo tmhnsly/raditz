@@ -94,16 +94,17 @@ export function Sidebar({
           items={filtered}
           selectedId={activeSlug || route || undefined}
           onSelect={(id, node) => {
-            // A folder/group row OPENS the folder (the chevron toggles it closed)
-            // and does NOT navigate — otherwise we'd scroll to the group heading and
-            // the scroll-spy would snap the selection to the first leaf under it
-            // (the "wrong section"). A leaf row navigates.
+            // The NAME always navigates (the chevron owns expand/collapse). A
+            // group name additionally opens its branch so the destination is
+            // visible in the tree. Navigating to a group heading is safe for
+            // the highlight: the active-slug machine holds a group intent until
+            // an observation under it fulfils it (descendant rule), so the
+            // scroll-spy can't snap the selection to the first leaf mid-jump.
             if (node.children?.length) {
               setUserExpanded((prev) => openBranch(prev, id));
-            } else {
-              onNavigate(id);
-              setQuery('');
             }
+            onNavigate(id);
+            setQuery('');
           }}
           expandedIds={searching ? searchExpanded : userExpanded}
           onExpandedChange={searching ? undefined : setUserExpanded}

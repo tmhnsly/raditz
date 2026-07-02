@@ -5,6 +5,7 @@ import { Popover } from '../components/overlay/Popover';
 import { IconButton } from '../components/actions/IconButton';
 import { Tooltip } from '../components/overlay/Tooltip';
 import { cx } from '../components/internal';
+import { Breadcrumb } from '../components/navigation/Breadcrumb';
 import { buildTree, findNode, ancestorsOf } from './registry';
 import { useHashRoute } from './useHashRoute';
 import { useActiveSlug } from './useActiveSlug';
@@ -81,21 +82,13 @@ export default function Explorer() {
             </button>
             <div className="rail__brand expbar__brand"><span className="mark"><GiMoonOrbit /></span>Raditz</div>
           </div>
-          <nav className="expbar__crumbs" aria-label="Breadcrumb">
-            {crumbs.map((c, i) => {
-              const last = i === crumbs.length - 1;
-              return (
-                <span className="expbar__crumb-wrap" key={c.slug || 'overview'}>
-                  {i > 0 && <span className="expbar__crumb-sep" aria-hidden="true">/</span>}
-                  {last ? (
-                    <span className="expbar__crumb expbar__crumb--current" aria-current="page">{c.name}</span>
-                  ) : (
-                    <button type="button" className="expbar__crumb" onClick={() => go(c.slug)}>{c.name}</button>
-                  )}
-                </span>
-              );
-            })}
-          </nav>
+          {/* The library's own Breadcrumb (dogfooding — one trail language across
+              the system); "/" separator keeps the bar's existing compact look. */}
+          <Breadcrumb
+            className="expbar__crumbs"
+            separator="/"
+            items={crumbs.map((c) => ({ label: c.name, onClick: () => go(c.slug) }))}
+          />
           <div className="expbar__actions">
             <Popover trigger={<Tooltip align="end" label="Theme & accent"><IconButton variant="soft" icon="paintbrush" aria-label="Theme & accent" /></Tooltip>}>
               <ThemePicker />

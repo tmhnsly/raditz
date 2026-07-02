@@ -9,7 +9,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'An accessible, file-browser-style tree view (WAI-ARIA `tree` pattern). Folders toggle open/closed on click; selection and expansion are controllable or uncontrolled. Keyboard: ↑/↓ move, →/← expand/collapse, Enter/Space select, Home/End jump.',
+          'An accessible tree view (WAI-ARIA `tree` pattern) with a split row: the name selects (`onSelect` fires for leaves and branches), the chevron toggles. Selection and expansion are controllable or uncontrolled; `toggleOnRowClick` opts into file-browser row-click toggling. Keyboard: ↑/↓ move, →/← expand/collapse, Enter/Space select, Home/End jump.',
       },
     },
   },

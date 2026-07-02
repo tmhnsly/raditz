@@ -8,17 +8,33 @@
 
 .rdz-timepicker__icon { width: 1.0625rem; height: 1.0625rem; color: var(--text-muted); flex: none; }
 
-.rdz-timemenu { z-index: var(--z-popover); background: var(--panel); border: 1px solid var(--surface-edge); border-radius: var(--radius-overlay); box-shadow: var(--shadow-5); padding: var(--space-2); animation: rdzPopover var(--duration-fast) var(--ease-standard); }
+.rdz-timemenu { z-index: var(--z-popover); max-width: calc(100dvw - var(--space-4)); background: var(--panel); border: 1px solid var(--surface-edge); border-radius: var(--radius-overlay); box-shadow: var(--shadow-5); padding: var(--space-2); animation: rdzPopover var(--duration-fast) var(--ease-standard); }
 
 .rdz-timemenu__cols { display: flex; gap: var(--space-1); }
 
 /* Compact value columns scroll, but the scrollbar is hidden — on Firefox the thin
    bars crowded the three narrow columns ("in the way"). A little end inset lets
    the last value clear the panel edge. */
-.rdz-timemenu__col { display: flex; flex-direction: column; gap: 2px; max-height: 13rem; overflow-y: auto; scrollbar-width: none; padding-block-end: var(--space-1); }
+.rdz-timemenu__col {
+  display: flex; flex-direction: column; gap: 2px; max-height: 13rem; overflow-y: auto;
+  scrollbar-width: none; padding-block: var(--space-1);
+  /* Wheel ergonomics: values snap to rest fully visible (no half-cut number at
+     the top), and the column's scroll never chains into the page behind the
+     popover — anchored overlays deliberately don't scroll-lock (a modal
+     behaviour); containment is what keeps inner scrolling polite. */
+  scroll-snap-type: y proximity;
+  scroll-padding-block: var(--space-1);
+  overscroll-behavior: contain;
+}
 .rdz-timemenu__col::-webkit-scrollbar { width: 0; height: 0; }
 
-.rdz-timemenu__opt { padding: 0.375rem 0.75rem; border-radius: var(--radius-sm); font-size: var(--fs-body-s); font-variant-numeric: tabular-nums; color: var(--text); text-align: center; transition: var(--transition-control); }
+.rdz-timemenu__opt { padding: 0.375rem 0.75rem; border-radius: var(--radius-sm); font-size: var(--fs-body-s); font-variant-numeric: tabular-nums; color: var(--text); text-align: center; transition: var(--transition-control); scroll-snap-align: start; }
+
+/* Touch ergonomics — ≥44px targets, body-size digits (closer to the native wheel). */
+@media (pointer: coarse) {
+  .rdz-timemenu__opt { font-size: var(--fs-body); min-height: 2.75rem; min-width: 2.75rem; display: inline-grid; place-items: center; }
+  .rdz-timemenu__col { max-height: 15rem; }
+}
 
 .rdz-timemenu__opt:hover { background: var(--surface); }
 

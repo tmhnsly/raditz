@@ -62,8 +62,9 @@ describe('Sidebar search / expansion mode-switch', () => {
     const user = userEvent.setup();
     render(<Harness tree={makeTree()} />);
 
-    // The user opens Components before searching (goes into userExpanded).
-    fireEvent.click(row('Components'));
+    // The user opens Components before searching (goes into userExpanded) via
+    // the chevron — expansion only, no navigation side-effects in this test.
+    fireEvent.click(row('Components').querySelector('.rdz-tree__twist') as HTMLElement);
     expect(screen.getByText('Actions')).toBeTruthy();
 
     await user.type(searchbox(), 'button');
@@ -100,26 +101,34 @@ describe('Sidebar search / expansion mode-switch', () => {
     expect(row('Button').getAttribute('aria-selected')).toBe('true');
   });
 
-  it('selecting a folder opens it without navigating — in and out of search', async () => {
+  it('selecting a folder NAME navigates to the group AND opens the branch', async () => {
     const user = userEvent.setup();
     render(<Harness tree={makeTree()} />);
 
-    // Normal mode: folder click expands, hash untouched.
+    // Normal mode: name click navigates to the group anchor and expands it.
     expect(screen.queryByText('Actions')).toBeNull();
     fireEvent.click(row('Components'));
     expect(screen.getByText('Actions')).toBeTruthy();
-    expect(window.location.hash).toBe('');
+    expect(window.location.hash).toBe('#/components');
 
-    // Search mode: folder click neither navigates nor clears the query…
+    // Search mode: a folder name still navigates and clears the query, and the
+    // branch was opened into the user set (visible with the full tree back).
     await user.type(searchbox(), 'input');
     fireEvent.click(row('Inputs'));
-    expect(window.location.hash).toBe('');
-    expect(searchbox().value).toBe('input');
-
-    // …but it DID openBranch into the user set, visible once search clears.
-    await user.clear(searchbox());
+    expect(window.location.hash).toBe('#/components/inputs');
+    expect(searchbox().value).toBe('');
     expect(row('Inputs').getAttribute('aria-expanded')).toBe('true');
     expect(screen.getByText('Input')).toBeTruthy();
+  });
+
+  it('the chevron toggles a branch without navigating', () => {
+    render(<Harness tree={makeTree()} />);
+    const twist = row('Components').querySelector('.rdz-tree__twist') as HTMLElement;
+    fireEvent.click(twist);
+    expect(screen.getByText('Actions')).toBeTruthy();
+    expect(window.location.hash).toBe('');
+    fireEvent.click(twist);
+    expect(screen.queryByText('Actions')).toBeNull();
   });
 
   it('renders the empty state instead of the tree for a no-match query', async () => {

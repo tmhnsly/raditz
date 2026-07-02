@@ -9,7 +9,7 @@
 
 .rdz-datepicker__cal { width: 1.0625rem; height: 1.0625rem; color: var(--text-muted); flex: none; }
 
-.rdz-calendar { z-index: var(--z-popover); width: 18rem; background: var(--panel); border: 1px solid var(--surface-edge); border-radius: var(--radius-overlay); box-shadow: var(--shadow-5); padding: var(--space-4); animation: rdzPopover var(--duration-fast) var(--ease-standard); }
+.rdz-calendar { z-index: var(--z-popover); width: 18rem; max-width: calc(100dvw - var(--space-4)); background: var(--panel); border: 1px solid var(--surface-edge); border-radius: var(--radius-overlay); box-shadow: var(--shadow-5); padding: var(--space-4); animation: rdzPopover var(--duration-fast) var(--ease-standard); overscroll-behavior: contain; }
 
 .rdz-calendar__head { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-3); }
 
@@ -55,3 +55,12 @@
 .rdz-calendar__cell.is-selected { background: var(--accent); color: var(--on-accent); }
 
 .rdz-calendar__cell.is-selected:hover { background: var(--accent-hover); }
+
+/* Touch ergonomics — approach iOS-native picker sizing: ≥44px targets and
+   body-size type so the panel reads like a native date wheel, not desktop-dense. */
+@media (pointer: coarse) {
+  .rdz-calendar__day { font-size: var(--fs-body); min-height: 2.75rem; }
+  .rdz-calendar__cell { font-size: var(--fs-body); padding: 0.875rem 0; }
+  .rdz-calendar__nav { width: 2.75rem; height: 2.75rem; }
+  .rdz-calendar__title { min-height: 2.75rem; }
+}

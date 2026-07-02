@@ -1484,10 +1484,11 @@ Usage:
 ### Breadcrumb
 Import: `import { Breadcrumb } from 'raditz'`
 
-Breadcrumb — hierarchical trail. `items` is `[{ label, href? }]`; the last is the current page. Separators are chevrons.
+Breadcrumb — hierarchical trail. `items` is `[{ label, href?, onClick? }]`; the last is the current page. Separators are chevrons by default (`separator` overrides).
 
 Props:
   - items?: BreadcrumbItem[] (default: []) — Trail steps, root first; the last is the current page.
+  - separator?: ReactNode — Separator between steps. Defaults to a chevron; pass e.g. "/" for a slash trail. Rendered aria-hidden either way.
 
 Examples (Storybook stories): Default
 
@@ -1625,7 +1626,7 @@ Usage:
 ### Tree
 Import: `import { Tree } from 'raditz'`
 
-Tree — an accessible, file-browser-style tree view (WAI-ARIA `tree` pattern). Folders toggle open/closed on click; selection and expansion are each controllable or uncontrolled. Full keyboard support: Up/Down move between visible rows, Right/Left expand/collapse (or step in/out), Enter/Space select, Home/End jump to ends. Roving tabindex keeps a single tab stop.
+Tree — an accessible tree view (WAI-ARIA `tree` pattern) with a split row: clicking a row's NAME selects it (`onSelect` fires for leaves and branches), while the chevron toggles a branch open/closed without selecting. Selection and expansion are each controllable or uncontrolled. Full keyboard support: Up/Down move between visible rows, Right/Left expand/collapse (or step in/out), Enter/Space select, Home/End jump to ends. Roving tabindex keeps a single tab stop. `toggleOnRowClick` opts back into file-browser behaviour (row click also toggles).
 
 Props:
   - defaultExpandedIds?: string[] — Initially expanded ids (uncontrolled).
@@ -1635,7 +1636,7 @@ Props:
   - onExpandedChange?: ((ids: string[]) => void) — Fires when the expanded set changes.
   - onSelect?: ((id: string, node: TreeNode) => void) — Fires when a row is activated.
   - selectedId?: string — Controlled selected id.
-  - toggleOnRowClick?: boolean (default: true) — Whether clicking a folder row toggles it (the chevron always toggles). Set false when the row should only select/navigate.
+  - toggleOnRowClick?: boolean (default: false) — Opt-in file-browser behaviour: clicking a folder row ALSO toggles it. By default the row (name) only selects — `onSelect` fires for leaves and branches alike — and expansion is the chevron's (and ←/→'s) job.
 
 Examples (Storybook stories): Default, Controlled
 

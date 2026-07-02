@@ -7,4 +7,15 @@
 
 .rdz-toolbar > * { align-self: center; flex: none; }
 
+/* One shared control height: mixed default-size children (segmented ToggleGroup
+   tracks, Icon/Buttons, inputs) all meet --control-h instead of rendering ragged
+   — the ToggleGroup track is otherwise a touch shorter than the icon buttons
+   beside it. An explicit data-size="sm"/"lg" on a child is a deliberate choice
+   and is left alone. */
+.rdz-toolbar > :is(button, a[href], input, select, .rdz-toggle-group):not([data-size='sm']):not([data-size='lg']) { min-height: var(--control-h); }
+
+/* Let the stretched track's segments fill it: their fixed default height would
+   otherwise leave a hollow ring inside the taller track. */
+.rdz-toolbar > .rdz-toggle-group:not([data-size='sm']):not([data-size='lg']) .rdz-toggle-group__item { height: auto; }
+
 .rdz-toolbar .rdz-separator[data-orientation='vertical'] { align-self: center; min-height: 0; height: 1.375rem; margin-inline: var(--space-1); }

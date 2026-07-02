@@ -31,6 +31,11 @@ export const SERVER_SAFE = {
   // "Prefer href (Server-Component-safe) over onClick").
   'src/lib/SectionShell.tsx':
     'onClick hit is consumer-handler forwarding (SectionActionButton); shell itself is a Server Component',
+  // Same pattern: `onClick={it.onClick}` forwards a CONSUMER-supplied handler
+  // (router-driven trails); the breadcrumb itself has no hooks/state and must
+  // stay server-renderable (it's static nav chrome in most apps).
+  'src/components/navigation/Breadcrumb/Breadcrumb.tsx':
+    'onClick hit is consumer-handler forwarding (BreadcrumbItem.onClick); no hooks/state of its own',
 };
 
 // A module must run on the client if it uses hooks, JSX event handlers, or browser globals.

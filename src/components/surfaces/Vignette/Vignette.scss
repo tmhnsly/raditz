@@ -4,6 +4,13 @@
   aspect-ratio: var(--rdz-vignette-ratio, 16 / 9);
   container-type: inline-size;
   isolation: isolate;
+  /* Block + shrinkable: as a flex/grid child it must flex DOWN with the card
+     (an intrinsically wide scene SVG must never widen the page — the iOS
+     right-edge overflow). */
+  display: block;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
 }
 /* the scene fills the area; the scene SVG centres + sizes itself */
 .rdz-vignette__scene {

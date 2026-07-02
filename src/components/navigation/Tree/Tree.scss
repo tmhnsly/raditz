@@ -18,6 +18,11 @@
 .rdz-tree__item--disabled { opacity: var(--disabled-opacity); cursor: not-allowed; }
 
 .rdz-tree__twist { flex: none; width: 1rem; height: 1rem; display: inline-grid; place-items: center; color: var(--text-faint); }
+/* On branches the twist is a dedicated toggle target (name = select, chevron =
+   expand/collapse): give it an affordance and pad its hit area outward without
+   shifting the row's layout. */
+.rdz-tree__item--branch .rdz-tree__twist { cursor: pointer; box-sizing: content-box; padding: var(--space-1); margin: calc(-1 * var(--space-1)); }
+.rdz-tree__item--branch .rdz-tree__twist:hover { color: var(--text); }
 .rdz-tree__chevron { transition: transform var(--duration-fast) var(--ease-standard); }
 .rdz-tree__chevron.is-open { transform: rotate(90deg); }
 

@@ -31,8 +31,9 @@ export interface TreeProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onSelec
   defaultExpandedIds?: string[];
   /** Fires when the expanded set changes. */
   onExpandedChange?: (ids: string[]) => void;
-  /** Whether clicking a folder row toggles it (the chevron always toggles).
-   * Set false when the row should only select/navigate. @default true */
+  /** Opt-in file-browser behaviour: clicking a folder row ALSO toggles it.
+   * By default the row (name) only selects — `onSelect` fires for leaves and
+   * branches alike — and expansion is the chevron's (and ←/→'s) job. @default false */
   toggleOnRowClick?: boolean;
 }
 
@@ -65,11 +66,14 @@ const firstEnabledId = (items: TreeNode[]): string | undefined =>
   items.find((n) => !n.disabled)?.id ?? items[0]?.id;
 
 /**
- * Tree — an accessible, file-browser-style tree view (WAI-ARIA `tree` pattern).
- * Folders toggle open/closed on click; selection and expansion are each
- * controllable or uncontrolled. Full keyboard support: Up/Down move between
- * visible rows, Right/Left expand/collapse (or step in/out), Enter/Space select,
- * Home/End jump to ends. Roving tabindex keeps a single tab stop.
+ * Tree — an accessible tree view (WAI-ARIA `tree` pattern) with a split row:
+ * clicking a row's NAME selects it (`onSelect` fires for leaves and branches),
+ * while the chevron toggles a branch open/closed without selecting. Selection
+ * and expansion are each controllable or uncontrolled. Full keyboard support:
+ * Up/Down move between visible rows, Right/Left expand/collapse (or step
+ * in/out), Enter/Space select, Home/End jump to ends. Roving tabindex keeps a
+ * single tab stop. `toggleOnRowClick` opts back into file-browser behaviour
+ * (row click also toggles).
  */
 export function Tree({
   items,
@@ -79,7 +83,7 @@ export function Tree({
   expandedIds,
   defaultExpandedIds,
   onExpandedChange,
-  toggleOnRowClick = true,
+  toggleOnRowClick = false,
   className,
   ...rest
 }: TreeProps): ReactElement {
@@ -146,7 +150,10 @@ export function Tree({
     setExpanded([...next]);
   };
 
-  // File-browser behaviour: clicking a folder selects AND toggles it; a file just selects.
+  // Split interaction: activating a row (click on the name, Enter/Space)
+  // SELECTS it — branches included — while expansion belongs to the chevron
+  // and ArrowLeft/ArrowRight. `toggleOnRowClick` opts back into file-browser
+  // behaviour where activating a folder also toggles it.
   const activate = (f: Flat) => {
     if (f.node.disabled) return;
     setSelected(f.node.id);
@@ -219,10 +226,15 @@ export function Tree({
             onClick={() => activate({ node, level, hasChildren, expanded: isExpanded })}
             onFocus={() => setActiveId(node.id)}
           >
+            {/* Dedicated toggle target. Kept PRESENTATIONAL (aria-hidden, no
+                button) on purpose: the treeitem itself carries aria-expanded
+                and ←/→ already toggle from the keyboard, so a nested button
+                would be a redundant announcement and a nested-interactive
+                violation inside the focusable treeitem. */}
             <span
               className="rdz-tree__twist"
               aria-hidden
-              onClick={hasChildren ? (e) => { e.stopPropagation(); toggle(node.id); } : undefined}
+              onClick={hasChildren ? (e) => { e.stopPropagation(); if (!node.disabled) toggle(node.id); } : undefined}
             >
               {hasChildren && (
                 <svg viewBox="0 0 16 16" width="1em" height="1em" className={cx('rdz-tree__chevron', isExpanded && 'is-open')}>
