@@ -15,8 +15,6 @@ export interface AnimatedIconProps extends React.HTMLAttributes<HTMLSpanElement>
   children: React.ReactNode;
 }
 
-const SPEED: Record<'slow' | 'base' | 'fast', string> = { slow: '1.8', base: '1', fast: '0.55' };
-
 /**
  * AnimatedIcon — wraps any icon in a tasteful idle animation: `float`, `orbit`,
  * `pulse`, `spin`, `wiggle`, or a one-shot `draw` (stroked icons only, e.g. the
@@ -40,7 +38,8 @@ export function AnimatedIcon({
     <span
       className={cx('rdz-anim', off && 'is-paused', className)}
       data-anim={anim}
-      style={{ '--rdz-anim-speed': SPEED[speed], ...style } as React.CSSProperties}
+      data-speed={speed}
+      style={style}
       {...rest}
     >
       {children}

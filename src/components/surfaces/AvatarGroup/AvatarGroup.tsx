@@ -4,8 +4,6 @@ import { Avatar } from '../Avatar/Avatar';
 import { HoverCard } from '../../overlay/HoverCard/HoverCard';
 import { Popover } from '../../overlay/Popover/Popover';
 
-const SIZES: Record<'sm' | 'md' | 'lg', string> = { sm: '1.75rem', md: '2.25rem', lg: '2.75rem' };
-
 export interface AvatarGroupItem {
   initials?: string;
   src?: string;
@@ -69,11 +67,10 @@ function ProfileRow({ it }: { it: AvatarGroupItem }): ReactElement {
  * listing everyone.
  */
 export function AvatarGroup({ items = [], max = 4, size = 'md', className, ...rest }: AvatarGroupProps): ReactElement {
-  const dim = SIZES[size] || SIZES.md;
   const shown = items.slice(0, max);
   const extra = items.length - shown.length;
   return (
-    <div className={cx('rdz-avatar-group', className)} style={{ '--rdz-avatar-group-dim': dim } as CSSProperties} {...rest}>
+    <div className={cx('rdz-avatar-group', className)} data-size={size} {...rest}>
       {shown.map((it, i) => (
         <span className="rdz-avatar-group__slot" key={i} style={{ '--rdz-avatar-z': i + 1 } as CSSProperties}>
           {hasProfile(it) ? <HoverCard side="top" trigger={<Chip it={it} focusable />}><ProfileRow it={it} /></HoverCard> : <Chip it={it} />}

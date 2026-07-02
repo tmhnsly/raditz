@@ -35,10 +35,10 @@ export function Marquee({
   return (
     <div
       className={cx('rdz-marquee', pauseOnHover && 'rdz-marquee--pause', fade && 'rdz-marquee--fade', className)}
+      data-direction={direction}
       style={{
         '--rdz-marquee-duration': `${duration}s`,
         '--rdz-marquee-gap': gap,
-        '--rdz-marquee-dir': direction === 'right' ? 'reverse' : 'normal',
       } as React.CSSProperties}
       {...rest}
     >

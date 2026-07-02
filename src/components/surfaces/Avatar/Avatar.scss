@@ -4,8 +4,16 @@
   display: inline-flex; align-items: center; justify-content: center; overflow: hidden;
   border-radius: var(--radius-full); background: var(--accent-surface); color: var(--accent-ink);
   font-family: var(--font-display); font-weight: var(--fw-semibold); flex: none; user-select: none;
-  width: var(--rdz-avatar-size); height: var(--rdz-avatar-size); font-size: var(--rdz-avatar-fs);
+  width: var(--rdz-avatar-size); height: var(--rdz-avatar-size);
+  /* Monogram scales with the disc — one ratio, owned here. */
+  font-size: calc(var(--rdz-avatar-size) * 0.4);
 }
+
+/* Preset sizes (a numeric `size` prop overrides the same property inline). */
+.rdz-avatar[data-size='sm'] { --rdz-avatar-size: 1.75rem; }
+.rdz-avatar[data-size='md'] { --rdz-avatar-size: 2.5rem; }
+.rdz-avatar[data-size='lg'] { --rdz-avatar-size: 3.5rem; }
+.rdz-avatar[data-size='xl'] { --rdz-avatar-size: 5rem; }
 
 .rdz-avatar img { width: 100%; height: 100%; object-fit: cover; }
 

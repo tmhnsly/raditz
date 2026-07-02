@@ -17,10 +17,10 @@ describe('Marquee', () => {
     expect(getAllByText('Northwind')).toHaveLength(2);
   });
 
-  it('exposes duration/gap/direction as custom properties', () => {
+  it('exposes duration as a custom property and direction as a data attribute', () => {
     const { container } = render(<Marquee duration={10} direction="right">x</Marquee>);
     const el = container.querySelector('.rdz-marquee') as HTMLElement;
     expect(el.style.getPropertyValue('--rdz-marquee-duration')).toBe('10s');
-    expect(el.style.getPropertyValue('--rdz-marquee-dir')).toBe('reverse');
+    expect(el.getAttribute('data-direction')).toBe('right');
   });
 });

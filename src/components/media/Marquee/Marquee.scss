@@ -10,8 +10,9 @@
   display: flex;
   width: max-content;
   animation: rdz-marquee var(--rdz-marquee-duration, 26s) linear infinite;
-  animation-direction: var(--rdz-marquee-dir, normal);
 }
+
+.rdz-marquee[data-direction='right'] .rdz-marquee__track { animation-direction: reverse; }
 
 .rdz-marquee--pause:hover .rdz-marquee__track { animation-play-state: paused; }
 

@@ -2,6 +2,11 @@
 /* ═══════════════════════ AvatarGroup ═══════════════════════ */
 .rdz-avatar-group { display: inline-flex; }
 
+/* Chip size presets — the dimensions live here, not in the component. */
+.rdz-avatar-group[data-size='sm'] { --rdz-avatar-group-dim: 1.75rem; }
+.rdz-avatar-group[data-size='md'] { --rdz-avatar-group-dim: 2.25rem; }
+.rdz-avatar-group[data-size='lg'] { --rdz-avatar-group-dim: 2.75rem; }
+
 /* Each avatar lives in a positioned "slot" carrying the overlap + z-index, so the
    stacking works whether the chip is wrapped in a HoverCard or not. Ascending
    z-index = right-on-top cascade; the "+N" slot gets the highest z (always on top). */

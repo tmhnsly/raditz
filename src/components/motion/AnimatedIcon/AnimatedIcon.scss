@@ -10,6 +10,11 @@
    translate3d so each frame stays on the GPU.) */
 .rdz-anim { display: inline-grid; place-items: center; line-height: 0; will-change: transform; }
 
+/* Speed presets — the multiplier lives here, not in the component. */
+.rdz-anim[data-speed='slow'] { --rdz-anim-speed: 1.8; }
+.rdz-anim[data-speed='base'] { --rdz-anim-speed: 1; }
+.rdz-anim[data-speed='fast'] { --rdz-anim-speed: 0.55; }
+
 .rdz-anim[data-anim='float']  { animation: rdzFloat  calc(3s   * var(--rdz-anim-speed, 1) * var(--motion-scale, 1)) var(--ease-in-out) infinite; }
 /* the moon-orbit glyph reads as orbital motion when it rotates slowly */
 .rdz-anim[data-anim='orbit']  { animation: rdzSpin   calc(6s   * var(--rdz-anim-speed, 1) * var(--motion-scale, 1)) linear infinite; }
