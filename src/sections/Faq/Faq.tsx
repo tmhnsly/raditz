@@ -7,15 +7,17 @@ export interface FaqProps extends SectionBaseProps {
   items: { question: ReactNode; answer: ReactNode }[];
   /** Optional section heading rendered above the content. */
   heading?: ReactNode;
+  /** Align the heading block: 'center' or 'start' (left). @default 'start' */
+  align?: 'start' | 'center';
 }
 
 /** Faq A — accordion-style disclosure. */
-export function FaqA({ items, heading, background = 'surface-2', children, ...props }: FaqProps) {
+export function FaqA({ items, heading, align, background = 'surface-2', children, ...props }: FaqProps) {
   return (
     <SectionShell wrap="sx-faq__wrap" background={background} {...props}>
       {children ?? (
         <>
-          <SectionHeader heading={heading} />
+          <SectionHeader heading={heading} align={align} />
           <Accordion
             id="faqAcc"
             type="single"
@@ -34,12 +36,12 @@ export function FaqA({ items, heading, background = 'surface-2', children, ...pr
 }
 
 /** Faq B — plain two-column grid of Q&A pairs. */
-export function FaqB({ items, heading, background = 'none', children, ...props }: FaqProps) {
+export function FaqB({ items, heading, align, background = 'none', children, ...props }: FaqProps) {
   return (
     <SectionShell wrap="sx-faq2 sx-gap-6" background={background} {...props}>
       {children ?? (
         <>
-          <SectionHeader heading={heading} />
+          <SectionHeader heading={heading} align={align} />
           {items.map((item, i) => (
             <div key={i} className="col sx-faq__item">
               <strong>{item.question}</strong>

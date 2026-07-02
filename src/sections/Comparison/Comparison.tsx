@@ -10,6 +10,8 @@ export interface ComparisonProps extends SectionBaseProps {
   rows: { feature: ReactNode; values: (boolean | ReactNode)[] }[];
   /** Section heading. */
   heading?: ReactNode;
+  /** Align the heading block: 'center' or 'start' (left). @default 'start' */
+  align?: 'start' | 'center';
 }
 
 function CellValue({ value }: { value: boolean | ReactNode }) {
@@ -19,12 +21,12 @@ function CellValue({ value }: { value: boolean | ReactNode }) {
 }
 
 /** Comparison A — plans × features table, highlighted column for the popular tier. */
-export function ComparisonA({ columns, rows, heading, background = 'surface-2', children, ...props }: ComparisonProps) {
+export function ComparisonA({ columns, rows, heading, align, background = 'surface-2', children, ...props }: ComparisonProps) {
   return (
     <SectionShell background={background} {...props}>
       {children ?? (
         <>
-          <SectionHeader heading={heading} />
+          <SectionHeader heading={heading} align={align} />
           <div className="cmp-scroll">
             <table className="cmp">
               <thead>

@@ -6,6 +6,12 @@ component that exists here, and never edit `node_modules/raditz`.
 - Import components/sections from the package root: `import { Button, HeroA } from 'raditz'`.
 - Import the stylesheet ONCE at the app root: `import 'raditz/styles.css'`.
 - Props below are the component-specific API; standard HTML attributes also pass through.
+- **Style through the interface, not the DOM.** Customise via props (`align`, `background`,
+  `scrim`, tones), theme tokens (`--accent-*` in your `theme.css`), or the `children`
+  override slot — never with CSS selectors that reach into a component's internal
+  markup (`.sx-* > .h-section`, descendant chains on `rdz-`/`sx-` internals). Internal
+  DOM structure is not a stable interface and WILL change between releases; if the knob
+  you need is missing, add it to the library instead of styling around it.
 
 ## Composing a page
 
@@ -2007,6 +2013,7 @@ Import: `import { BlogA } from 'raditz'`
 Blog A — card grid with cover image.
 
 Props:
+  - align?: "start" | "center" (default: 'start') — Align the heading block: 'center' or 'start' (left).
   - animate?: boolean | "scroll" | "load" (default: 'scroll') — Content entrance choreography, forwarded to {@link SectionShell}: `'scroll'` (default) reveals on scroll, `'load'` animates on mount (above-the-fold heroes), `false` is static.
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
@@ -2030,6 +2037,7 @@ Import: `import { BlogB } from 'raditz'`
 Blog B — editorial list rows.
 
 Props:
+  - align?: "start" | "center" (default: 'start') — Align the heading block: 'center' or 'start' (left).
   - animate?: boolean | "scroll" | "load" (default: 'scroll') — Content entrance choreography, forwarded to {@link SectionShell}: `'scroll'` (default) reveals on scroll, `'load'` animates on mount (above-the-fold heroes), `false` is static.
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: surface-2)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
@@ -2053,6 +2061,7 @@ Import: `import { ComparisonA } from 'raditz'`
 Comparison A — plans × features table, highlighted column for the popular tier.
 
 Props:
+  - align?: "start" | "center" (default: 'start') — Align the heading block: 'center' or 'start' (left).
   - animate?: boolean | "scroll" | "load" (default: 'scroll') — Content entrance choreography, forwarded to {@link SectionShell}: `'scroll'` (default) reveals on scroll, `'load'` animates on mount (above-the-fold heroes), `false` is static.
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: surface-2)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
@@ -2129,6 +2138,7 @@ Import: `import { FaqA } from 'raditz'`
 Faq A — accordion-style disclosure.
 
 Props:
+  - align?: "start" | "center" (default: 'start') — Align the heading block: 'center' or 'start' (left).
   - animate?: boolean | "scroll" | "load" (default: 'scroll') — Content entrance choreography, forwarded to {@link SectionShell}: `'scroll'` (default) reveals on scroll, `'load'` animates on mount (above-the-fold heroes), `false` is static.
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: surface-2)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
@@ -2152,6 +2162,7 @@ Import: `import { FaqB } from 'raditz'`
 Faq B — plain two-column grid of Q&A pairs.
 
 Props:
+  - align?: "start" | "center" (default: 'start') — Align the heading block: 'center' or 'start' (left).
   - animate?: boolean | "scroll" | "load" (default: 'scroll') — Content entrance choreography, forwarded to {@link SectionShell}: `'scroll'` (default) reveals on scroll, `'load'` animates on mount (above-the-fold heroes), `false` is static.
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
@@ -2757,6 +2768,7 @@ Import: `import { TeamA } from 'raditz'`
 Team A — 4-up member grid.
 
 Props:
+  - align?: "start" | "center" (default: 'start') — Align the heading block: 'center' or 'start' (left).
   - animate?: boolean | "scroll" | "load" (default: 'scroll') — Content entrance choreography, forwarded to {@link SectionShell}: `'scroll'` (default) reveals on scroll, `'load'` animates on mount (above-the-fold heroes), `false` is static.
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
@@ -2780,6 +2792,7 @@ Import: `import { TestimonialCarouselA } from 'raditz'`
 TestimonialCarousel A — scroll-snap carousel of quote cards.
 
 Props:
+  - align?: "start" | "center" (default: 'start') — Align the heading block: 'center' or 'start' (left).
   - animate?: boolean | "scroll" | "load" (default: 'scroll') — Content entrance choreography, forwarded to {@link SectionShell}: `'scroll'` (default) reveals on scroll, `'load'` animates on mount (above-the-fold heroes), `false` is static.
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
@@ -2803,6 +2816,7 @@ Import: `import { TestimonialsA } from 'raditz'`
 Testimonials A — three-column quote cards.
 
 Props:
+  - align?: "start" | "center" (default: 'start') — Align the heading block: 'center' or 'start' (left).
   - animate?: boolean | "scroll" | "load" (default: 'scroll') — Content entrance choreography, forwarded to {@link SectionShell}: `'scroll'` (default) reveals on scroll, `'load'` animates on mount (above-the-fold heroes), `false` is static.
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: gradient-dusk)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
@@ -2826,6 +2840,7 @@ Import: `import { TestimonialsB } from 'raditz'`
 Testimonials B — single large pull-quote with centered attribution.
 
 Props:
+  - align?: "start" | "center" (default: 'start') — Align the heading block: 'center' or 'start' (left).
   - animate?: boolean | "scroll" | "load" (default: 'scroll') — Content entrance choreography, forwarded to {@link SectionShell}: `'scroll'` (default) reveals on scroll, `'load'` animates on mount (above-the-fold heroes), `false` is static.
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: gradient-dusk)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.

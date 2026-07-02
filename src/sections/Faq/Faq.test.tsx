@@ -64,4 +64,12 @@ describe('Faq (section)', () => {
     getByText('override content');
     expect(queryByText('Q')).toBeNull();
   });
+
+  it('FaqA align="center" centres the heading block (the sanctioned knob — products must not target internal DOM)', () => {
+    const { container } = render(
+      <FaqA heading="FAQs" align="center" items={[{ question: 'Q', answer: 'A' }]} />,
+    );
+    const head = container.querySelector('.sx-sec__head');
+    expect(head?.className).toContain('sx-center');
+  });
 });

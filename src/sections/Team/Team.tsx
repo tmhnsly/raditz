@@ -6,15 +6,17 @@ export interface TeamProps extends SectionBaseProps {
   members: { name: ReactNode; role?: ReactNode; avatar?: ReactNode; bio?: ReactNode }[];
   /** Section heading. */
   heading?: ReactNode;
+  /** Align the heading block: 'center' or 'start' (left). @default 'start' */
+  align?: 'start' | 'center';
 }
 
 /** Team A — 4-up member grid. */
-export function TeamA({ members, heading, background = 'none', children, ...props }: TeamProps) {
+export function TeamA({ members, heading, align, background = 'none', children, ...props }: TeamProps) {
   return (
     <SectionShell wrap="col sx-gap-6" background={background} {...props}>
       {children ?? (
         <>
-          <SectionHeader heading={heading} className="col sx-team__head" />
+          <SectionHeader heading={heading} align={align} className="col sx-team__head" />
           <div className="sx-g4 sx-gap-5">
             {members.map((m, i) => (
               <div key={i} className="col sx-team__member">

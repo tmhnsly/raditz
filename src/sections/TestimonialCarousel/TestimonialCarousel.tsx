@@ -10,15 +10,17 @@ export interface TestimonialCarouselProps extends SectionBaseProps {
   quotes: Testimonial[];
   /** Optional section heading. */
   heading?: ReactNode;
+  /** Align the heading block: 'center' or 'start' (left). @default 'start' */
+  align?: 'start' | 'center';
 }
 
 /** TestimonialCarousel A — scroll-snap carousel of quote cards. */
-export function TestimonialCarouselA({ quotes, heading, background = 'none', children, ...props }: TestimonialCarouselProps) {
+export function TestimonialCarouselA({ quotes, heading, align, background = 'none', children, ...props }: TestimonialCarouselProps) {
   return (
     <SectionShell background={background} {...props}>
       {children ?? (
         <>
-          <SectionHeader heading={heading} />
+          <SectionHeader heading={heading} align={align} />
           <Carousel perView={1.15} arrows dots bleed>
             {quotes.map((q, i) => (
               <figure key={i} className="tcar__card">

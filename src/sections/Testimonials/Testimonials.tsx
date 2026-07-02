@@ -18,15 +18,17 @@ export interface TestimonialsProps extends SectionBaseProps {
   quotes: Testimonial[];
   /** Optional section heading. */
   heading?: ReactNode;
+  /** Align the heading block: 'center' or 'start' (left). @default 'start' */
+  align?: 'start' | 'center';
 }
 
 /** Testimonials A — three-column quote cards. */
-export function TestimonialsA({ quotes, heading, background = 'gradient-dusk', children, ...props }: TestimonialsProps) {
+export function TestimonialsA({ quotes, heading, align, background = 'gradient-dusk', children, ...props }: TestimonialsProps) {
   return (
     <SectionShell wrap="sx-g3 sx-gap-4" background={background} {...props}>
       {children ?? (
         <>
-          <SectionHeader heading={heading} />
+          <SectionHeader heading={heading} align={align} />
           {quotes.map((q, i) => (
             <div key={i} className="rdz-card col sx-tst__card">
               <p className="sx-tst__quote">{q.quote}</p>

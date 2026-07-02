@@ -14,15 +14,17 @@ export interface BlogProps extends SectionBaseProps {
   }[];
   /** Section heading. */
   heading?: ReactNode;
+  /** Align the heading block: 'center' or 'start' (left). @default 'start' */
+  align?: 'start' | 'center';
 }
 
 /** Blog A — card grid with cover image. */
-export function BlogA({ posts, heading, background = 'none', children, ...props }: BlogProps) {
+export function BlogA({ posts, heading, align, background = 'none', children, ...props }: BlogProps) {
   return (
     <SectionShell wrap="sx-g3 sx-gap-5" background={background} {...props}>
       {children ?? (
         <>
-          <SectionHeader heading={heading} className="col sx-sec__head s-wrap__full" />
+          <SectionHeader heading={heading} align={align} className="col sx-sec__head s-wrap__full" />
           {posts.map((post, i) => (
             <article key={i} className="rdz-card sx-blog__card">
               {post.image && <div className="ph sx-blog__cover sx-media-reveal">{post.image}</div>}
@@ -40,12 +42,12 @@ export function BlogA({ posts, heading, background = 'none', children, ...props 
 }
 
 /** Blog B — editorial list rows. */
-export function BlogB({ posts, heading, background = 'surface-2', children, ...props }: BlogProps) {
+export function BlogB({ posts, heading, align, background = 'surface-2', children, ...props }: BlogProps) {
   return (
     <SectionShell wrap="col sx-blog__list" background={background} {...props}>
       {children ?? (
         <>
-          <SectionHeader heading={heading} />
+          <SectionHeader heading={heading} align={align} />
           {posts.map((post, i) => (
             <a key={i} href={post.href ?? '#'} className="blogrow rdz-card-arrow-host">
               <div className="col sx-blog__row-body">
