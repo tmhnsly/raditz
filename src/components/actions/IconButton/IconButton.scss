@@ -13,6 +13,9 @@
 
 .rdz-icon-btn--sm { width: var(--control-h-sm); height: var(--control-h-sm); }
 
+/* lg — matches Button's lg control height. */
+.rdz-icon-btn--lg { width: var(--control-h-lg); height: var(--control-h-lg); }
+
 .rdz-icon-btn--solid { background: var(--accent); color: var(--on-accent); }
 
 .rdz-icon-btn--soft { background: var(--surface); }

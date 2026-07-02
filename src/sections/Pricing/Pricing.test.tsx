@@ -30,6 +30,7 @@ const simpleTiers: PricingTier[] = [
     features: ['Unlimited projects', 'Priority support'],
     action: { label: 'Start trial', variant: 'primary' },
     popular: true,
+    badge: 'Popular',
   },
 ];
 
@@ -54,15 +55,21 @@ describe('PricingA — content-driven', () => {
     getByText('No hidden fees');
   });
 
-  it('shows Popular badge for popular tier', () => {
+  it('shows the badge for a tier with `badge`', () => {
     const { getAllByText } = render(<PricingA tiers={simpleTiers} />);
-    expect(getAllByText('Popular').length).toBe(1);
+    const badges = getAllByText('Popular');
+    expect(badges.length).toBe(1);
+    expect(badges[0].className).toContain('rdz-badge--solid');
+    expect(badges[0].className).toContain('sx-price__badge');
   });
 
-  it('does not show Popular badge for non-popular tier', () => {
-    const nonPopularTiers: PricingTier[] = [{ name: 'Basic', price: '$0' }];
-    const { queryByText } = render(<PricingA tiers={nonPopularTiers} />);
+  it('does not show a badge for a tier without `badge` (popular alone adds no copy)', () => {
+    const noBadgeTiers: PricingTier[] = [{ name: 'Basic', price: '$0', popular: true }];
+    const { queryByText, container } = render(<PricingA tiers={noBadgeTiers} />);
     expect(queryByText('Popular')).toBeNull();
+    expect(container.querySelector('.sx-price__badge')).toBeNull();
+    // `popular` still emphasizes the card.
+    expect(container.querySelector('.sx-price__card-pop')).toBeTruthy();
   });
 
   it('renders action buttons with correct labels', () => {
@@ -148,5 +155,15 @@ describe('PricingB — period toggle', () => {
     );
     getByText('custom override');
     expect(queryByText('Pro')).toBeNull();
+  });
+
+  it('honours the documented align default (center) on the header', () => {
+    const { container } = render(<PricingB tiers={toggleTiers} heading="Plans" />);
+    expect(container.querySelector('.sx-sec__head')?.className).toContain('sx-center');
+  });
+
+  it('passes align="start" through to the header', () => {
+    const { container } = render(<PricingB tiers={toggleTiers} heading="Plans" align="start" />);
+    expect(container.querySelector('.sx-sec__head')?.className).toContain('sx-align-start');
   });
 });

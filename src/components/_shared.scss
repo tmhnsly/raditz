@@ -87,9 +87,16 @@
 
 @media (min-width: 769px)  { .rdz-only-mobile { display: none !important; } }
 
-@media (max-width: 768px) { .rdz-gallery { grid-template-columns: repeat(2, 1fr) !important; } .rdz-gallery--masonry { column-count: 2 !important; } }
+/* Gallery column collapse — container queries, not viewport MQs, so a gallery in
+   a narrow frame (explorer preview, sidebar) collapses too (same approach as
+   Carousel's --rdz-per-view steps). Gallery.tsx always renders the .rdz-gallery-wrap
+   parent, which is the queried container. The `.rdz-gallery-wrap .rdz-gallery`
+   compound outranks Gallery.scss's base column rules by specificity — no !important. */
+.rdz-gallery-wrap { container-type: inline-size; }
 
-@media (max-width: 460px) { .rdz-gallery { grid-template-columns: 1fr !important; } .rdz-gallery--masonry { column-count: 1 !important; } }
+@container (max-width: 48rem) { .rdz-gallery-wrap .rdz-gallery { grid-template-columns: repeat(2, 1fr); } .rdz-gallery-wrap .rdz-gallery--masonry { column-count: 2; } }
+
+@container (max-width: 28.75rem) { .rdz-gallery-wrap .rdz-gallery { grid-template-columns: 1fr; } .rdz-gallery-wrap .rdz-gallery--masonry { column-count: 1; } }
 
 
 @keyframes rdzDrawerR { from { transform: translateX(100%); } to { transform: none; } }
@@ -107,7 +114,7 @@
 /* notification dot/count — wrap a trigger in .rdz-indicator and add .rdz-indicator__dot */
 .rdz-indicator { position: relative; display: inline-flex; }
 
-.rdz-indicator__dot { position: absolute; top: -0.125rem; right: -0.125rem; min-width: 1.05rem; height: 1.05rem; padding: 0 0.3125rem; display: inline-grid; place-items: center; border-radius: var(--radius-full); background: var(--danger); color: var(--white-a12); font-family: var(--font-mono); font-size: 0.625rem; font-weight: 700; line-height: 1; border: 2px solid var(--bg); }
+.rdz-indicator__dot { position: absolute; top: -0.125rem; right: -0.125rem; min-width: 1.05rem; height: 1.05rem; padding: 0 0.3125rem; display: inline-grid; place-items: center; border-radius: var(--radius-full); background: var(--danger); color: var(--white-a12); font-family: var(--font-mono); font-size: 0.625rem; font-weight: var(--fw-bold); line-height: 1; border: 2px solid var(--bg); }
 
 .rdz-indicator__dot--bare { min-width: 0; width: 0.625rem; height: 0.625rem; padding: 0; top: 0; right: 0; }
 

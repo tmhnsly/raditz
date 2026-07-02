@@ -7,19 +7,26 @@ import { Search } from '../Search/Search';
 
 export interface ComboboxOption { value: string; label: string; }
 export interface ComboboxProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange' | 'defaultValue'> {
+  /** Selectable options — `{ value, label }` objects or plain strings. @default [] */
   options?: Array<ComboboxOption | string>;
+  /** Controlled selected value. */
   value?: string;
+  /** Initial selected value (uncontrolled). @default "" */
   defaultValue?: string;
-  onChange?: (value: string) => void;
+  /** Fires with the newly selected value. */
+  onValueChange?: (value: string) => void;
+  /** Trigger text when nothing is selected. @default "Select…" */
   placeholder?: string;
+  /** Message shown when the filter matches nothing. @default "No results" */
   emptyText?: string;
+  /** Disable the trigger. @default false */
   disabled?: boolean;
 }
 
 /**
  * Combobox — a searchable single-select. `options` is `[{ value, label }]` (or
- * plain strings). Controlled with `value` / `onChange`, or uncontrolled with
- * `defaultValue`. Type to filter; Arrow/Enter/Escape navigate.
+ * plain strings). Controlled with `value` / `onValueChange`, or uncontrolled
+ * with `defaultValue`. Type to filter; Arrow/Enter/Escape navigate.
  *
  * Renders its listbox directly into an {@link Overlay} (`anchored`, matchWidth,
  * focus the search input on open).
@@ -28,14 +35,14 @@ export function Combobox({
   options = [],
   value,
   defaultValue = '',
-  onChange,
+  onValueChange,
   placeholder = 'Select…',
   emptyText = 'No results',
   disabled = false,
   className,
   ...rest
 }: ComboboxProps): ReactElement {
-  const [val, setVal] = useControllableState<string>({ value, defaultValue, onChange });
+  const [val, setVal] = useControllableState<string>({ value, defaultValue, onChange: onValueChange });
   const [open, setOpen] = useState(false);
   const anchorRef = useRef<HTMLButtonElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);

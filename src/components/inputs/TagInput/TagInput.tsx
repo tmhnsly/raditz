@@ -9,7 +9,9 @@ export interface TagInputProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onC
   value?: string[];
   /** Initial tags (uncontrolled). @default [] */
   defaultValue?: string[];
-  onChange?: (tags: string[]) => void;
+  /** Fires with the new tags array. */
+  onValueChange?: (tags: string[]) => void;
+  /** Field placeholder shown while there are no tags. @default "Add tag…" */
   placeholder?: string;
   /** Quick-add suggestion chips. */
   suggestions?: string[];
@@ -21,13 +23,13 @@ export interface TagInputProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onC
 /**
  * TagInput — a multi-value text input. Type and press Enter or comma to add a
  * tag; Backspace on an empty field removes the last. Controlled with `value`
- * (string[]) / `onChange`, or uncontrolled with `defaultValue`. `suggestions`
+ * (string[]) / `onValueChange`, or uncontrolled with `defaultValue`. `suggestions`
  * offers quick-add chips; `max` caps the count.
  */
 export function TagInput({
   value,
   defaultValue = [],
-  onChange,
+  onValueChange,
   placeholder = 'Add tag…',
   suggestions = [],
   max,
@@ -37,7 +39,7 @@ export function TagInput({
   'aria-labelledby': ariaLabelledby,
   ...rest
 }: TagInputProps): ReactElement {
-  const [tags, setTags] = useControllableState<string[]>({ value, defaultValue, onChange });
+  const [tags, setTags] = useControllableState<string[]>({ value, defaultValue, onChange: onValueChange });
   const [draft, setDraft] = useState('');
 
   const add = (raw: string): void => {

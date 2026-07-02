@@ -18,7 +18,9 @@ export interface TestimonialsProps extends SectionBaseProps {
   quotes: Testimonial[];
   /** Optional section heading. */
   heading?: ReactNode;
-  /** Align the heading block: 'center' or 'start' (left). @default 'start' */
+  /** Align the heading block: 'center' or 'start' (left). Applies to variant A —
+   * TestimonialsB renders `heading` as a centered eyebrow and ignores `align`.
+   * @default 'start' */
   align?: 'start' | 'center';
 }
 

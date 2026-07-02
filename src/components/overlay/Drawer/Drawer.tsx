@@ -1,10 +1,13 @@
 'use client';
 import type { CSSProperties, HTMLAttributes, ReactNode, ReactElement } from 'react';
-import { cx, Overlay, OverlayClose, useOverlayLabels } from '../../internal';
+import { cx, Overlay, OverlayClose, useControllableState, useOverlayLabels } from '../../internal';
 
 export interface DrawerProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
   /** Open state (controlled). */
   open?: boolean;
+  /** Initial open state (uncontrolled) — the drawer then owns open/close
+   *  itself (Escape, scrim, close button). @default false */
+  defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
   /** Edge it slides from. @default "right" */
   side?: 'left' | 'right' | 'top' | 'bottom';
@@ -18,7 +21,8 @@ export interface DrawerProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title
 
 /**
  * Drawer — a panel that slides in from an edge (Radix-style sheet). Controlled
- * with `open` / `onOpenChange`. `side` picks the edge; `size` sets width (left/
+ * with `open` / `onOpenChange`, or uncontrolled via `defaultOpen`. `side` picks
+ * the edge; `size` sets width (left/
  * right) or height (top/bottom). Closes on Escape, scrim click or the close
  * button; focus is trapped and body scroll locked while open.
  *
@@ -26,6 +30,7 @@ export interface DrawerProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title
  */
 export function Drawer({
   open,
+  defaultOpen = false,
   onOpenChange,
   side = 'right',
   size = '22rem',
@@ -36,14 +41,15 @@ export function Drawer({
   className,
   ...rest
 }: DrawerProps): ReactElement | null {
-  const close = (): void => { if (onOpenChange) onOpenChange(false); };
+  const [isOpen, setOpen] = useControllableState<boolean>({ value: open, defaultValue: defaultOpen, onChange: onOpenChange });
+  const close = (): void => setOpen(false);
   const { titleId, descId, labelledby, describedby } = useOverlayLabels(title, description);
   // Dynamic size flows through a CSS custom property (data, not inline styling);
   // the side class decides whether it drives width or height.
   const style = { '--rdz-drawer-size': size } as CSSProperties;
   return (
     <Overlay
-      open={!!open}
+      open={isOpen}
       onDismiss={close}
       position={{ kind: 'side', side }}
       focus="trap"

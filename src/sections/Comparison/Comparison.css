@@ -7,11 +7,11 @@
 .cmp-scroll::-webkit-scrollbar-track { background: transparent; }
 .cmp { width: 100%; min-width: 34rem; border-collapse: collapse; font-size: var(--fs-body-s); }
 .cmp th, .cmp td { padding: var(--space-3) var(--space-4); text-align: center; border-bottom: 1px solid var(--rule-soft); }
-.cmp thead th { font-weight: 700; font-size: var(--fs-body); }
+.cmp thead th { font-weight: var(--fw-bold); font-size: var(--fs-body); }
 .cmp tbody th { text-align: left; font-weight: 500; color: var(--text-soft); }
 .cmp td { color: var(--text); }
 .cmp__no { color: var(--text-faint); }
-.cmp__yes { color: var(--accent-ink); font-weight: 700; }
+.cmp__yes { color: var(--accent-ink); font-weight: var(--fw-bold); }
 .cmp__pop { background: var(--accent-surface); }
 .cmp thead .cmp__pop { border-radius: var(--radius-md) var(--radius-md) 0 0; color: var(--accent-ink); }
 .cmp tbody tr:last-child .cmp__pop { border-radius: 0 0 var(--radius-md) var(--radius-md); }

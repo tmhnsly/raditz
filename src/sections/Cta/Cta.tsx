@@ -1,6 +1,7 @@
 'use client';
 import type { ReactNode } from 'react';
 import { SectionShell, SectionActions, SectionActionButton, SectionHeader, type SectionBaseProps, type SectionAction } from '../../lib/SectionShell';
+import { Input } from '../../components/inputs/Input';
 
 export interface CtaProps extends SectionBaseProps {
   /** Headline (required). */
@@ -43,7 +44,7 @@ export function CtaB({ title, sub, emailCapture, background = 'none', children, 
           </div>
           {emailCapture && (
             <div className="row">
-              <div className="rdz-input sx-cta__input">{emailCapture.placeholder ?? ''}</div>
+              <Input type="email" className="sx-cta__input" placeholder={emailCapture.placeholder} aria-label="Email address" />
               <SectionActionButton action={emailCapture.action} size="lg" />
             </div>
           )}

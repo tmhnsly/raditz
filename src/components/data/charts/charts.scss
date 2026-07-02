@@ -1,7 +1,11 @@
 // Uses Raditz tokens (var(--…)); SVG fills/strokes read CSS vars so charts
 // re-theme with the accent + neutral scales like every other component.
 /* ═══════════════════════ Charts (visx) ═══════════════════════ */
-.rdz-chart { position: relative; width: 100%; min-width: 0; }
+/* Height rides a custom property (set by ChartFrame's `height` prop) — no real
+   inline properties. `isolation: isolate` makes the chart its own stacking
+   context so the tooltip's rung below stays local and can't leak into the
+   global ladder. */
+.rdz-chart { position: relative; width: 100%; min-width: 0; height: var(--rdz-chart-h, 240px); isolation: isolate; }
 
 .rdz-chart__svg { display: block; overflow: visible; }
 
@@ -32,9 +36,12 @@
 /* Scatter */
 .rdz-chart__bubble { fill: var(--accent); fill-opacity: 0.55; stroke: var(--accent); stroke-opacity: 0.9; }
 
-/* Tooltip card (HTML overlay) */
+/* Tooltip card (HTML overlay). The tip floats above SVG content INSIDE the
+   chart's own stacking context (`.rdz-chart` is isolated), so this is local
+   stacking — the named `--z-overlay-local` rung, not a raw number and not a
+   global-ladder rung like `--z-popover`. */
 .rdz-chart__tip {
-  position: absolute; z-index: 10; pointer-events: none; left: var(--rdz-tip-x, 0); top: var(--rdz-tip-y, 0); transform: translate(-50%, calc(-100% - 0.625rem));
+  position: absolute; z-index: var(--z-overlay-local); pointer-events: none; left: var(--rdz-tip-x, 0); top: var(--rdz-tip-y, 0); transform: translate(-50%, calc(-100% - 0.625rem));
   background: var(--panel); border: 1px solid var(--surface-edge); border-radius: var(--radius-md);
   box-shadow: var(--shadow-5); padding: var(--space-2) var(--space-3); min-width: 8rem; max-width: 16rem;
   font-size: var(--fs-body-s); color: var(--text);

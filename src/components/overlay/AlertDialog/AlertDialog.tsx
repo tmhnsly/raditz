@@ -1,12 +1,15 @@
 'use client';
 import type { HTMLAttributes, ReactNode, ReactElement } from 'react';
-import { cx, Overlay, useOverlayLabels } from '../../internal';
+import { cx, Overlay, useControllableState, useOverlayLabels } from '../../internal';
 import type { StatusTone } from '../../internal';
 import { Button } from '../../actions/Button/Button';
 
 export interface AlertDialogProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
   /** Open state (controlled). */
   open?: boolean;
+  /** Initial open state (uncontrolled) — the dialog then owns open/close
+   *  itself (Escape, cancel, confirm). @default false */
+  defaultOpen?: boolean;
   /** Fires to request open/close. */
   onOpenChange?: (open: boolean) => void;
   title?: ReactNode;
@@ -31,6 +34,7 @@ export interface AlertDialogProps extends Omit<HTMLAttributes<HTMLDivElement>, '
  */
 export function AlertDialog({
   open,
+  defaultOpen = false,
   onOpenChange,
   title,
   description,
@@ -41,11 +45,12 @@ export function AlertDialog({
   className,
   ...rest
 }: AlertDialogProps): ReactElement | null {
-  const cancel = (): void => { if (onOpenChange) onOpenChange(false); };
+  const [isOpen, setOpen] = useControllableState<boolean>({ value: open, defaultValue: defaultOpen, onChange: onOpenChange });
+  const cancel = (): void => setOpen(false);
   const { titleId, descId, labelledby, describedby } = useOverlayLabels(title, description);
   return (
     <Overlay
-      open={!!open}
+      open={isOpen}
       onDismiss={cancel}
       position={{ kind: 'centered' }}
       focus="trap"

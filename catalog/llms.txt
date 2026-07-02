@@ -79,7 +79,7 @@ Props:
   - aria-label: string — Required for accessibility.
   - href?: string
   - icon?: ReactNode — Icon registry name or node.
-  - size?: "sm" | "md" (default: md)
+  - size?: "sm" | "md" | "lg" (default: md)
   - variant?: "solid" | "soft" | "outline" | "ghost" | "glass" (default: ghost)
 
 Examples (Storybook stories): Default, Variants, Glass
@@ -202,7 +202,6 @@ LineChart — a responsive line/area chart (visx) with an optional value-mapped 
 
 Props:
   - area?: boolean (default: false) — Fill the area under the line.
-  - ariaLabel?: string (default: Line chart)
   - data: LinePoint[]
   - formatY?: ((y: number) => string) (default: (y) => String(y)) — Y tick formatter.
   - gradient?: boolean (default: false) — Value-mapped gradient stroke (accent → warning → danger).
@@ -224,7 +223,6 @@ Import: `import { ScatterChart } from 'raditz'`
 ScatterChart — a responsive scatter / bubble plot (visx). Pass `[{ x, y, size?, label? }]`; `size` drives the bubble radius. Hovering a point shows a tooltip.
 
 Props:
-  - ariaLabel?: string (default: Scatter chart)
   - data: ScatterPoint[]
   - formatX?: ((x: number) => string) (default: (v) => String(v))
   - formatY?: ((y: number) => string) (default: (v) => String(v))
@@ -339,7 +337,6 @@ Import: `import { CountUp } from 'raditz'`
 CountUp — rolls a number from 0 to its target the first time it scrolls into view. Accessible & SSR-safe: the FINAL value is what renders on the server, on no-JS, and under `prefers-reduced-motion` (the tween only changes the on-screen display, never the announced value). Any surrounding text is preserved (prefix/suffix); a non-numeric value renders verbatim. Pairs with the Stats section.
 
 Props:
-  - className?: string
   - duration?: number (default: 1400) — Roll duration (ms).
   - value: string | number — Target value — a number, or a string the number is pulled from with its surrounding text preserved (e.g. "$2.5M", "10k+", "99.9%"). A non-numeric string renders verbatim.
 
@@ -370,7 +367,6 @@ Import: `import { Icon } from 'raditz'`
 Icon — renders a named icon from the Raditz set, backed by react-icons (Lucide), so every icon shares one consistent look and is sized by the single `size` prop. Inherits color via `currentColor` and sizes to `1em` by default. <Icon name="search" /> <Icon name="instagram" size="1.25rem" />
 
 Props:
-  - className?: string
   - color?: string — Icon color (defaults to `currentColor`, so it tints with the parent).
   - name: enum — Registry icon name (see icons.ts).
   - size?: string | number (default: 1em) — Width/height — a single size variable for consistency. Defaults to `1em` so it scales with surrounding text.
@@ -496,7 +492,7 @@ Usage:
 ### Checkbox
 Import: `import { Checkbox } from 'raditz'`
 
-A checkbox with the accent fill + animated check. Controlled or uncontrolled like a native input. Renders as a `<label>` so clicking the box — or the optional `label` text — reliably toggles it. Pass `aria-label` when you omit `label` so the control still has an accessible name. `indeterminate` gives the tri-state "some selected" look (e.g. a table's select-all header).
+A checkbox with the accent fill + animated check. Controlled or uncontrolled like a native input. Renders as a `<label>` so clicking the box — or the optional `label` text — reliably toggles it. Pass `aria-label` when you omit `label` so the control still has an accessible name. `indeterminate` gives the tri-state "some selected" look (e.g. a table's select-all header). Forwards its ref to the native <input type="checkbox">.
 
 Props:
   - checked?: boolean
@@ -515,16 +511,16 @@ Usage:
 ### Combobox
 Import: `import { Combobox } from 'raditz'`
 
-Combobox — a searchable single-select. `options` is `[{ value, label }]` (or plain strings). Controlled with `value` / `onChange`, or uncontrolled with `defaultValue`. Type to filter; Arrow/Enter/Escape navigate. Renders its listbox directly into an {@link Overlay} (`anchored`, matchWidth, focus the search input on open).
+Combobox — a searchable single-select. `options` is `[{ value, label }]` (or plain strings). Controlled with `value` / `onValueChange`, or uncontrolled with `defaultValue`. Type to filter; Arrow/Enter/Escape navigate. Renders its listbox directly into an {@link Overlay} (`anchored`, matchWidth, focus the search input on open).
 
 Props:
-  - defaultValue?: string
-  - disabled?: boolean (default: false)
-  - emptyText?: string (default: No results)
-  - onChange?: ((value: string) => void)
-  - options?: (string | ComboboxOption)[] (default: [])
-  - placeholder?: string (default: Select…)
-  - value?: string
+  - defaultValue?: string — Initial selected value (uncontrolled).
+  - disabled?: boolean (default: false) — Disable the trigger.
+  - emptyText?: string (default: No results) — Message shown when the filter matches nothing.
+  - onValueChange?: ((value: string) => void) — Fires with the newly selected value.
+  - options?: (string | ComboboxOption)[] (default: []) — Selectable options — `{ value, label }` objects or plain strings.
+  - placeholder?: string (default: Select…) — Trigger text when nothing is selected.
+  - value?: string — Controlled selected value.
 
 Examples (Storybook stories): Default
 
@@ -536,15 +532,15 @@ Usage:
 ### DatePicker
 Import: `import { DatePicker } from 'raditz'`
 
-DatePicker — a text trigger that opens a calendar popover with drill-up navigation: the title steps day → month → year (click "June 2026" to pick a month, "2026" to pick a year), and the arrows page the current view. Value is an ISO `YYYY-MM-DD` string (controlled `value`/`onChange` or `defaultValue`); `min`/`max` bound the range. Built on date-fns; renders into an {@link Overlay}.
+DatePicker — a text trigger that opens a calendar popover with drill-up navigation: the title steps day → month → year (click "June 2026" to pick a month, "2026" to pick a year), and the arrows page the current view. Value is an ISO `YYYY-MM-DD` string (controlled `value`/`onValueChange` or `defaultValue`); `min`/`max` bound the range. Built on date-fns; renders into an {@link Overlay}.
 
 Props:
   - defaultValue?: string — Initial ISO date (uncontrolled).
   - disabled?: boolean (default: false)
   - max?: string — Latest selectable ISO date.
   - min?: string — Earliest selectable ISO date.
-  - onChange?: ((value: string) => void)
-  - placeholder?: string (default: Select date)
+  - onValueChange?: ((value: string) => void) — Fires with the new ISO date string.
+  - placeholder?: string (default: Select date) — Trigger text when no date is chosen.
   - value?: string — ISO YYYY-MM-DD (controlled).
 
 Examples (Storybook stories): Default
@@ -563,7 +559,7 @@ Props:
   - defaultValue?: string — Initial combined value (uncontrolled).
   - disabled?: boolean (default: false)
   - hour12?: boolean (default: true) — 12-hour time display.
-  - onChange?: ((value: string) => void)
+  - onValueChange?: ((value: string) => void) — Fires with the new combined `YYYY-MM-DDTHH:mm` string.
   - value?: string — Combined value `YYYY-MM-DDTHH:mm` (controlled).
 
 Examples (Storybook stories): Default
@@ -610,7 +606,7 @@ const result = useField();
 ### FileDropzone
 Import: `import { FileDropzone } from 'raditz'`
 
-FileDropzone — a drag-and-drop file input with click-to-browse and a file list. Uncontrolled by default; pass `value` / `onChange` (File[]) to control. `accept` (input accept string), `multiple`, and `maxSize` (bytes) filter what's accepted. This is UI only — it does not upload; read the files in `onChange`.
+FileDropzone — a drag-and-drop file input with click-to-browse and a file list. Uncontrolled by default; pass `value` / `onValueChange` (File[]) to control. `accept` (input accept string), `multiple`, and `maxSize` (bytes) filter what's accepted. This is UI only — it does not upload; read the files in `onValueChange`.
 
 Props:
   - accept?: string — Input accept string, e.g. "image/*,.pdf".
@@ -619,7 +615,7 @@ Props:
   - hint?: ReactNode — Helper line under the prompt (e.g. "PNG, JPG up to 5MB").
   - maxSize?: number — Max bytes per file (larger are ignored).
   - multiple?: boolean (default: true) — Allow multiple files.
-  - onChange?: ((files: File[]) => void)
+  - onValueChange?: ((files: File[]) => void) — Fires with the new file list.
   - value?: File[] — Controlled file list.
 
 Examples (Storybook stories): Default
@@ -650,7 +646,7 @@ Usage:
 ### Input
 Import: `import { Input } from 'raditz'`
 
-A text input. `invalid` switches to the danger ring. Spread any native input attribute (type, placeholder, value, onChange…).
+A text input. `invalid` switches to the danger ring. Spread any native input attribute (type, placeholder, value, onChange…). Forwards its ref to the native <input> so form libraries can register it.
 
 Props:
   - invalid?: boolean (default: false) — Show the danger ring + aria-invalid.
@@ -671,8 +667,8 @@ Props:
   - defaultValue?: string — Initial value (uncontrolled).
   - disabled?: boolean (default: false)
   - length?: number (default: 6) — Number of boxes.
-  - onChange?: ((value: string) => void)
   - onComplete?: ((value: string) => void) — Fires when every box is filled.
+  - onValueChange?: ((value: string) => void) — Fires with the concatenated code on every edit.
   - type?: "text" | "password" (default: text) — 'text' (visible) or 'password' (masked).
   - value?: string — Controlled value (the concatenated code).
 
@@ -693,7 +689,7 @@ Props:
   - defaultVisible?: boolean (default: false) — Start with the password revealed.
   - disabled?: boolean (default: false)
   - invalid?: boolean (default: false) — Render the invalid (danger) state.
-  - onChange?: ((value: string) => void)
+  - onValueChange?: ((value: string) => void) — Fires with the new string value on every edit.
   - placeholder?: string
   - value?: string — Controlled value.
 
@@ -707,7 +703,7 @@ Usage:
 ### Radio
 Import: `import { Radio } from 'raditz'`
 
-A single radio control. Give every radio in a group the same `name`.
+A single radio control. Give every radio in a group the same `name`. Forwards its ref to the native <input type="radio">.
 
 Props:
   - checked?: boolean
@@ -745,13 +741,13 @@ Usage:
 ### Rating
 Import: `import { Rating } from 'raditz'`
 
-Rating — a star rating input (or read-only display). Controlled with `value` / `onChange`, or uncontrolled with `defaultValue`. `count` sets the number of stars. Read-only mode renders any fractional value with an accurate CSS percentage fill (e.g. 3.2 → the 4th star is 20% filled). For input, `precision` selects whole (`full`) or `half` stars.
+Rating — a star rating input (or read-only display). Controlled with `value` / `onValueChange`, or uncontrolled with `defaultValue`. `count` sets the number of stars. Read-only mode renders any fractional value with an accurate CSS percentage fill (e.g. 3.2 → the 4th star is 20% filled). For input, `precision` selects whole (`full`) or `half` stars. Keyboard follows the radiogroup pattern: the checked radio is the single tab stop, ArrowRight/ArrowUp increase and ArrowLeft/ArrowDown decrease by one step, Home/End jump to min/max.
 
 Props:
   - count?: number (default: 5) — Number of stars.
   - defaultValue?: number (default: 0) — Initial value (uncontrolled).
   - disabled?: boolean (default: false) — Disable interaction — dimmed and non-interactive.
-  - onChange?: ((value: number) => void)
+  - onValueChange?: ((value: number) => void) — Fires when the value changes.
   - precision?: "full" | "half" (default: full) — Input granularity: whole or half stars. (Read-only display is always exact.)
   - readOnly?: boolean (default: false) — Display only (renders any fractional value, e.g. 3.2).
   - size?: "sm" | "md" | "lg" (default: md)
@@ -771,7 +767,7 @@ Search — the one search input used everywhere search appears (Combobox, Comman
 
 Props:
   - hint?: ReactNode — Trailing hint, e.g. a `<kbd>esc</kbd>`.
-  - size?: "sm" | "md" (default: md)
+  - size?: "sm" | "md" | "lg" (default: md)
   - variant?: "field" | "plain" (default: field) — Bordered standalone box, or a plain header row (inside popovers/menus).
 
 Examples (Storybook stories): Field, Plain
@@ -800,7 +796,7 @@ Usage:
 ### Slider
 Import: `import { Slider } from 'raditz'`
 
-Slider — a single-thumb range input (Radix Slider). Drag the track/thumb or use arrow / Home / End keys. Controlled with `value`, uncontrolled with `defaultValue`. Emits numbers in `[min, max]` snapped to `step`.
+Slider — a single-thumb range input (Radix Slider). Drag the track/thumb or use arrow / Home / End keys. Controlled with `value`, uncontrolled with `defaultValue`. Emits numbers in `[min, max]` snapped to `step`. Forwards its ref to the focusable thumb (role="slider") for focus management.
 
 Props:
   - defaultValue?: number (default: 0) — Initial value (uncontrolled).
@@ -822,12 +818,12 @@ Usage:
 ### Switch
 Import: `import { Switch } from 'raditz'`
 
-An on/off toggle. Controlled via `checked` + `onChange`, or uncontrolled with `defaultChecked`. Wrap with a <label> (or pass `aria-label`) for a hit target.
+An on/off toggle. Controlled via `checked` + `onChange`, or uncontrolled with `defaultChecked`. Wrap with a <label> (or pass `aria-label`) for a hit target. Forwards its ref to the native checkbox input (role="switch").
 
 Props:
-  - checked?: boolean
-  - defaultChecked?: boolean
-  - onChange?: ChangeEventHandler<HTMLInputElement>
+  - checked?: boolean — Controlled on/off state.
+  - defaultChecked?: boolean — Initial state (uncontrolled).
+  - onChange?: ChangeEventHandler<HTMLInputElement> — Native change handler — fires with the checkbox change event.
 
 Examples (Storybook stories): Default, States
 
@@ -839,14 +835,14 @@ Usage:
 ### TagInput
 Import: `import { TagInput } from 'raditz'`
 
-TagInput — a multi-value text input. Type and press Enter or comma to add a tag; Backspace on an empty field removes the last. Controlled with `value` (string[]) / `onChange`, or uncontrolled with `defaultValue`. `suggestions` offers quick-add chips; `max` caps the count.
+TagInput — a multi-value text input. Type and press Enter or comma to add a tag; Backspace on an empty field removes the last. Controlled with `value` (string[]) / `onValueChange`, or uncontrolled with `defaultValue`. `suggestions` offers quick-add chips; `max` caps the count.
 
 Props:
   - defaultValue?: string[] (default: []) — Initial tags (uncontrolled).
   - disabled?: boolean (default: false)
   - max?: number — Max number of tags.
-  - onChange?: ((tags: string[]) => void)
-  - placeholder?: string (default: Add tag…)
+  - onValueChange?: ((tags: string[]) => void) — Fires with the new tags array.
+  - placeholder?: string (default: Add tag…) — Field placeholder shown while there are no tags.
   - suggestions?: string[] (default: []) — Quick-add suggestion chips.
   - value?: string[] — Controlled tags.
 
@@ -860,11 +856,11 @@ Usage:
 ### Textarea
 Import: `import { Textarea } from 'raditz'`
 
-A multi-line text input. Vertically resizable; shares the Input styling.
+A multi-line text input. Vertically resizable; shares the Input styling. Forwards its ref to the native <textarea>.
 
 Props:
-  - invalid?: boolean (default: false)
-  - rows?: number (default: 4)
+  - invalid?: boolean (default: false) — Show the danger ring + aria-invalid.
+  - rows?: number (default: 4) — Visible text rows.
 
 Examples (Storybook stories): Default
 
@@ -876,15 +872,15 @@ Usage:
 ### TimePicker
 Import: `import { TimePicker } from 'raditz'`
 
-TimePicker — a trigger that opens hour / minute (/ AM-PM) columns. The value is a canonical 24-hour `HH:mm` string; the display follows `hour12`. Controlled with `value`/`onChange` or uncontrolled with `defaultValue`. Built on the pure `time` helpers (see time.test.ts); renders into an {@link Overlay}.
+TimePicker — a trigger that opens hour / minute (/ AM-PM) columns. The value is a canonical 24-hour `HH:mm` string; the display follows `hour12`. Controlled with `value`/`onValueChange` or uncontrolled with `defaultValue`. Built on the pure `time` helpers (see time.test.ts); renders into an {@link Overlay}.
 
 Props:
   - defaultValue?: string — Initial "HH:mm" (uncontrolled).
   - disabled?: boolean (default: false)
   - hour12?: boolean (default: true) — 12-hour display with AM/PM.
   - minuteStep?: number (default: 5) — Minute increment in the list.
-  - onChange?: ((value: string) => void)
-  - placeholder?: string (default: Select time)
+  - onValueChange?: ((value: string) => void) — Fires with the new 24-hour "HH:mm" string.
+  - placeholder?: string (default: Select time) — Trigger text when no time is chosen.
   - value?: string — 24-hour "HH:mm" (controlled).
 
 Examples (Storybook stories): Default, TwentyFourHour, Disabled
@@ -1199,7 +1195,7 @@ Exports:
 ### Frame
 Import: `import { Frame } from 'raditz'`
 
-Frame — previews a section inside a bordered, rounded card (matching the original catalog). Use `bleed` for sections that paint their own full-bleed background (accent bands, announcement strips) so the frame just clips them.
+Frame — previews a section inside a bordered, rounded card (matching the original catalog). Sections that paint their own full-bleed background (accent bands, announcement strips) pass a `className` that flattens the frame chrome so it just clips them.
 
 Props:
   - className?: string
@@ -1493,7 +1489,7 @@ Import: `import { Breadcrumb } from 'raditz'`
 Breadcrumb — hierarchical trail. `items` is `[{ label, href? }]`; the last is the current page. Separators are chevrons.
 
 Props:
-  - items?: BreadcrumbItem[] (default: [])
+  - items?: BreadcrumbItem[] (default: []) — Trail steps, root first; the last is the current page.
 
 Examples (Storybook stories): Default
 
@@ -1596,7 +1592,7 @@ Usage:
 ### Tabs
 Import: `import { Tabs } from 'raditz'`
 
-A tab switcher. Pass `tabs` as { value, label } items. Controlled via `value` + `onValueChange`, or uncontrolled with `defaultValue`. `variant` is the segmented control (default) or an underline bar.
+A tab switcher. Pass `tabs` as { value, label } items. Controlled via `value` + `onValueChange`, or uncontrolled with `defaultValue`. `variant` is the segmented control (default) or an underline bar. Implements the WAI-ARIA tabs pattern with automatic activation: the selected tab is the single tab stop and ArrowLeft/ArrowRight/Home/End move focus AND selection together.
 
 Props:
   - className?: string
@@ -1616,7 +1612,7 @@ Usage:
 ### Toolbar
 Import: `import { Toolbar } from 'raditz'`
 
-Toolbar — a horizontal container that groups actions (Radix Toolbar). Put IconButtons, Buttons, Toggles and ToggleGroups inside; separate groups with `<Separator orientation="vertical" />`.
+Toolbar — a horizontal container that groups actions (Radix Toolbar). Put IconButtons, Buttons, Toggles and ToggleGroups inside; separate groups with `<Separator orientation="vertical" />`. The toolbar is a single tab stop: arrow keys (orientation from `aria-orientation`, horizontal by default) and Home/End move focus between the controls inside it. Composite children that handle their own arrow keys (e.g. a single-select ToggleGroup) call preventDefault, so the toolbar leaves those events alone.
 
 Props:
   - as?: ElementType (default: div)
@@ -1660,6 +1656,7 @@ AlertDialog — a modal confirmation (Radix AlertDialog). Like Dialog but requir
 Props:
   - actionText?: string (default: Confirm) — Confirm button label.
   - cancelText?: string (default: Cancel) — Cancel button label.
+  - defaultOpen?: boolean (default: false) — Initial open state (uncontrolled) — the dialog then owns open/close itself (Escape, cancel, confirm).
   - description?: ReactNode
   - onAction?: (() => void) — Fires when the confirm action is chosen (dialog then closes).
   - onOpenChange?: ((open: boolean) => void) — Fires to request open/close.
@@ -1677,13 +1674,14 @@ Usage:
 ### CommandPalette
 Import: `import { CommandPalette } from 'raditz'`
 
-CommandPalette — a ⌘K / Ctrl-K command launcher. `groups` is `[{ heading, items: [{ id, label, icon?, shortcut?, keywords?, onSelect }] }]`. Controlled with `open` / `onOpenChange`. With `hotkey` (default true) it binds ⌘K/Ctrl-K globally to toggle. Type to fuzzy-filter; Arrow/Enter run. An adapter face over {@link Overlay} (`centered` modal, focus trap).
+CommandPalette — a ⌘K / Ctrl-K command launcher. `groups` is `[{ heading, items: [{ id, label, icon?, shortcut?, keywords?, onSelect }] }]`. Controlled with `open` / `onOpenChange`, or uncontrolled via `defaultOpen`. With `hotkey` (default true) it binds ⌘K/Ctrl-K globally to toggle. Type to fuzzy-filter; Arrow/Enter run. An adapter face over {@link Overlay} (`centered` modal, focus trap).
 
 Props:
+  - defaultOpen?: boolean (default: false) — Initial open state (uncontrolled) — the palette then owns open/close itself (hotkey, Escape, scrim, running a command).
   - groups?: CommandGroup[] (default: [])
   - hotkey?: boolean (default: true) — Bind ⌘K / Ctrl-K globally to toggle.
   - onOpenChange?: ((open: boolean) => void)
-  - open?: boolean
+  - open?: boolean — Open state (controlled).
   - placeholder?: string (default: Type a command or search…)
 
 Examples (Storybook stories): Default
@@ -1696,12 +1694,15 @@ Usage:
 ### ContextMenu
 Import: `import { ContextMenu } from 'raditz'`
 
-ContextMenu — a right-click (desktop) / long-press (touch) menu over an area (Radix ContextMenu). Wrap the target; right-click or press-and-hold opens the same menu model as DropdownMenu at the pointer. Items: `{ label, icon?, shortcut?, onSelect?, disabled?, danger? }`, plus `{ separator: true }` and `{ heading: true, label }`. An adapter face over {@link MenuSurface} (`point` topology) — so it shares keyboard roving with the other menus.
+ContextMenu — a right-click (desktop) / long-press (touch) menu over an area (Radix ContextMenu). Wrap the target; right-click or press-and-hold opens the same menu model as DropdownMenu at the pointer. Items: `{ label, icon?, shortcut?, onSelect?, disabled?, danger? }`, plus `{ separator: true }` and `{ heading: true, label }`. Open state may be controlled (`open` / `onOpenChange`) or uncontrolled (`defaultOpen`), like its menu peers. An adapter face over {@link MenuSurface} (`point` topology) — so it shares keyboard roving with the other menus.
 
 Props:
   - children?: ReactNode — The area that responds to right-click / long-press.
+  - defaultOpen?: boolean (default: false) — Initial open state (uncontrolled).
   - items?: MenuItem[] (default: []) — Menu rows — same model as DropdownMenu.
   - longPressMs?: number (default: 480) — Touch press-and-hold duration (ms) that opens the menu.
+  - onOpenChange?: ((open: boolean) => void) — Fires to request open/close (right-click/long-press → true; select/dismiss → false).
+  - open?: boolean — Open state (controlled). The menu opens at the last pointer position.
 
 Examples (Storybook stories): Default
 
@@ -1713,9 +1714,10 @@ Usage:
 ### Dialog
 Import: `import { Dialog } from 'raditz'`
 
-Dialog — a modal overlay (Radix Dialog). Controlled with `open` / `onOpenChange`; render your own trigger. Closes on Escape, scrim click, or the close button. Focus is trapped while open and restored on close. An adapter face over {@link Overlay} (`centered` topology, focus trap).
+Dialog — a modal overlay (Radix Dialog). Controlled with `open` / `onOpenChange`, or uncontrolled via `defaultOpen`; render your own trigger. Closes on Escape, scrim click, or the close button. Focus is trapped while open and restored on close. An adapter face over {@link Overlay} (`centered` topology, focus trap).
 
 Props:
+  - defaultOpen?: boolean (default: false) — Initial open state (uncontrolled) — the dialog then owns open/close itself (Escape, scrim, close button).
   - description?: ReactNode — Sub-heading / description text.
   - footer?: ReactNode — Footer node (usually action buttons).
   - onOpenChange?: ((open: boolean) => void) — Fires to request open/close.
@@ -1733,9 +1735,10 @@ Usage:
 ### Drawer
 Import: `import { Drawer } from 'raditz'`
 
-Drawer — a panel that slides in from an edge (Radix-style sheet). Controlled with `open` / `onOpenChange`. `side` picks the edge; `size` sets width (left/ right) or height (top/bottom). Closes on Escape, scrim click or the close button; focus is trapped and body scroll locked while open. An adapter face over {@link Overlay} (`side` topology, focus trap).
+Drawer — a panel that slides in from an edge (Radix-style sheet). Controlled with `open` / `onOpenChange`, or uncontrolled via `defaultOpen`. `side` picks the edge; `size` sets width (left/ right) or height (top/bottom). Closes on Escape, scrim click or the close button; focus is trapped and body scroll locked while open. An adapter face over {@link Overlay} (`side` topology, focus trap).
 
 Props:
+  - defaultOpen?: boolean (default: false) — Initial open state (uncontrolled) — the drawer then owns open/close itself (Escape, scrim, close button).
   - description?: ReactNode
   - footer?: ReactNode
   - onOpenChange?: ((open: boolean) => void)
@@ -1819,10 +1822,13 @@ Usage:
 ### Menubar
 Import: `import { Menubar } from 'raditz'`
 
-Menubar — a horizontal row of menus (Radix Menubar), like an app menu bar. `menus` is `[{ label, items }]` where `items` use the DropdownMenu model (`{ label, icon?, shortcut?, onSelect?, disabled?, danger? }`, `{ separator }`, `{ heading, label }`). Once a menu is open, hovering siblings switches to them.
+Menubar — a horizontal row of menus (Radix Menubar), like an app menu bar. `menus` is `[{ label, items }]` where `items` use the DropdownMenu model (`{ label, icon?, shortcut?, onSelect?, disabled?, danger? }`, `{ separator }`, `{ heading, label }`). Once a menu is open, hovering siblings switches to them, and ArrowLeft/ArrowRight move between menus. Open state may be controlled (`open` / `onOpenChange`, the open menu's index) or uncontrolled (`defaultOpen`).
 
 Props:
+  - defaultOpen?: number (default: -1) — Initially open menu index (uncontrolled).
   - menus?: MenubarMenu[] (default: []) — Top-level menus, each with its own item list.
+  - onOpenChange?: ((openIndex: number) => void) — Fires with the newly open menu's index (-1 when closing).
+  - open?: number — Index of the open menu (controlled); -1 = all closed.
 
 Examples (Storybook stories): Default
 
@@ -1967,7 +1973,7 @@ Announcement A — accent strip banner. The dismiss affordance is functional: cl
 Props:
   - action?: SectionAction — Optional CTA link/button.
   - animate?: boolean | "scroll" | "load" (default: 'scroll') — Content entrance choreography, forwarded to {@link SectionShell}: `'scroll'` (default) reveals on scroll, `'load'` animates on mount (above-the-fold heroes), `false` is static.
-  - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh"
+  - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
   - dismissible?: boolean — Show a dismiss (×) affordance.
   - image?: string
@@ -2099,7 +2105,7 @@ Props:
   - title: ReactNode — Headline (required).
   - video?: string
 
-Examples (Storybook stories): A_Centered, B_Split
+Examples (Storybook stories): A_Centered, A_OverImageScrim, B_Split
 
 Usage:
 ```tsx
@@ -2125,7 +2131,7 @@ Props:
   - title: ReactNode — Headline (required).
   - video?: string
 
-Examples (Storybook stories): A_Centered, B_Split
+Examples (Storybook stories): A_Centered, A_OverImageScrim, B_Split
 
 Usage:
 ```tsx
@@ -2149,7 +2155,7 @@ Props:
   - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
   - video?: string
 
-Examples (Storybook stories): A_Accordion, B_TwoColumn
+Examples (Storybook stories): A_Accordion, A_CenteredHeading, B_TwoColumn
 
 Usage:
 ```tsx
@@ -2173,7 +2179,7 @@ Props:
   - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
   - video?: string
 
-Examples (Storybook stories): A_Accordion, B_TwoColumn
+Examples (Storybook stories): A_Accordion, A_CenteredHeading, B_TwoColumn
 
 Usage:
 ```tsx
@@ -2509,12 +2515,15 @@ Usage:
 ### NavbarC
 Import: `import { NavbarC } from 'raditz'`
 
+C — narrow-frame nav; links collapse into the burger dropdown. `footnote` renders a muted caption under the bar (e.g. usage hints in a demo).
+
 Props:
   - actions?: SectionAction[] — Call-to-action buttons.
   - animate?: boolean | "scroll" | "load" (default: 'scroll') — Content entrance choreography, forwarded to {@link SectionShell}: `'scroll'` (default) reveals on scroll, `'load'` animates on mount (above-the-fold heroes), `false` is static.
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh"
   - brand: NavbarBrand — Brand lockup (required).
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - footnote?: ReactNode
   - image?: string
   - links?: NavbarLink[] — Primary nav links.
   - parallax?: boolean
@@ -2536,6 +2545,7 @@ D — an iOS/Android-style bottom tab bar: pinned to the bottom, icon+label tabs
 Props:
   - activeId?: string — Controlled active tab id (pair with `onTabChange`).
   - onTabChange?: ((id: string) => void) — Called with the new tab id when a tab is selected.
+  - preview?: ReactNode — Placeholder content shown in the frame body above the tab bar.
   - tabs: NavbarTab[] — Tabs to render (required).
 
 Examples (Storybook stories): A_LogoLinksCTAs, A_NoLogoFallback, B_GlassCentered, C_MobileDropdown, D_BottomTabBar
@@ -2625,7 +2635,7 @@ Import: `import { PricingB } from 'raditz'`
 PricingB — interactive monthly/yearly toggle (requires a client boundary).
 
 Props:
-  - align?: "start" | "center" (default: 'center') — Align the heading block: 'center' or 'start' (left).
+  - align?: "start" | "center" (default: center) — Align the heading block: 'center' or 'start' (left).
   - animate?: boolean | "scroll" | "load" (default: 'scroll') — Content entrance choreography, forwarded to {@link SectionShell}: `'scroll'` (default) reveals on scroll, `'load'` animates on mount (above-the-fold heroes), `false` is static.
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: gradient-accent)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
@@ -2696,6 +2706,7 @@ Import: `import { SpotlightA } from 'raditz'`
 Spotlight — a grid of "thumbnail cards": each pairs an animated {@link Vignette} scene (plays on scroll-reveal, replays on hover, never loops) with a title, a line of copy, a preset background and a top-right link arrow. The grid reveals staggered on scroll. The scenes are product-supplied so each tells its own story.
 
 Props:
+  - align?: "start" | "center" (default: center) — Align the eyebrow + heading block: 'center' or 'start' (left).
   - animate?: boolean | "scroll" | "load" (default: 'scroll') — Content entrance choreography, forwarded to {@link SectionShell}: `'scroll'` (default) reveals on scroll, `'load'` animates on mount (above-the-fold heroes), `false` is static.
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh"
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
@@ -2731,7 +2742,7 @@ Props:
   - stats: StatItem[] — Stat cells (required).
   - video?: string
 
-Examples (Storybook stories): A_FourAcross, B_AccentBand
+Examples (Storybook stories): A_FourAcross, A_CenteredHeading, B_AccentBand
 
 Usage:
 ```tsx
@@ -2755,7 +2766,7 @@ Props:
   - stats: StatItem[] — Stat cells (required).
   - video?: string
 
-Examples (Storybook stories): A_FourAcross, B_AccentBand
+Examples (Storybook stories): A_FourAcross, A_CenteredHeading, B_AccentBand
 
 Usage:
 ```tsx
@@ -2816,7 +2827,7 @@ Import: `import { TestimonialsA } from 'raditz'`
 Testimonials A — three-column quote cards.
 
 Props:
-  - align?: "start" | "center" (default: 'start') — Align the heading block: 'center' or 'start' (left).
+  - align?: "start" | "center" (default: 'start') — Align the heading block: 'center' or 'start' (left). Applies to variant A — TestimonialsB renders `heading` as a centered eyebrow and ignores `align`.
   - animate?: boolean | "scroll" | "load" (default: 'scroll') — Content entrance choreography, forwarded to {@link SectionShell}: `'scroll'` (default) reveals on scroll, `'load'` animates on mount (above-the-fold heroes), `false` is static.
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: gradient-dusk)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
@@ -2840,7 +2851,7 @@ Import: `import { TestimonialsB } from 'raditz'`
 Testimonials B — single large pull-quote with centered attribution.
 
 Props:
-  - align?: "start" | "center" (default: 'start') — Align the heading block: 'center' or 'start' (left).
+  - align?: "start" | "center" (default: 'start') — Align the heading block: 'center' or 'start' (left). Applies to variant A — TestimonialsB renders `heading` as a centered eyebrow and ignores `align`.
   - animate?: boolean | "scroll" | "load" (default: 'scroll') — Content entrance choreography, forwarded to {@link SectionShell}: `'scroll'` (default) reveals on scroll, `'load'` animates on mount (above-the-fold heroes), `false` is static.
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: gradient-dusk)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
@@ -2976,7 +2987,6 @@ Vignette — a styled visual area that plays its `scene` ONCE when it scrolls in
 
 Props:
   - bg?: "plain" | "gradient" | "accent" | "secondary" | "mono" | "aurora" (default: gradient) — Background treatment, from the system palette.
-  - className?: string
   - replay?: number (default: 0) — Bump this number to replay the scene (the host card raises it on hover).
   - scene: ReactNode — The animated scene — a BESPOKE SVG / illustration authored for THIS card's subject (don't reuse one scene across cards). Its CSS animations should be ONE-SHOT (`animation-iteration-count: 1`) and timed with the motion tokens (`var(--duration-*)`, `var(--ease-*)`) so they ride `data-motion` and match the system's feel. They restart whenever the scene is (re)mounted — how reveal/hover replay works. Reduced motion is handled by the Vignette; the scene needs no off-switch.
 
@@ -2995,7 +3005,6 @@ Import: `import { CheckList } from 'raditz'`
 CheckList — a ticked feature list. The recurring "what's included" pattern: a list of points, each led by an accent check (or dot), optionally in two columns. A deep module so products stop hand-rolling `ul + icon + grid` CSS.
 
 Props:
-  - className?: string
   - columns?: 1 | 2 (default: 1) — Lay out across this many columns (collapses to 1 on a narrow container).
   - items: ReactNode[] — The items to list (strings or nodes).
   - marker?: "check" | "dot" (default: check) — Marker style.

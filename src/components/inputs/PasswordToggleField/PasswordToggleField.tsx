@@ -3,12 +3,13 @@ import { useState } from 'react';
 import type { ChangeEvent, InputHTMLAttributes, ReactElement } from 'react';
 import { cx, useControllableState } from '../../internal';
 
-export interface PasswordToggleFieldProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange' | 'defaultValue' | 'type'> {
+export interface PasswordToggleFieldProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'defaultValue' | 'type'> {
   /** Controlled value. */
   value?: string;
   /** Initial value (uncontrolled). @default "" */
   defaultValue?: string;
-  onChange?: (value: string) => void;
+  /** Fires with the new string value on every edit. */
+  onValueChange?: (value: string) => void;
   placeholder?: string;
   disabled?: boolean;
   /** Start with the password revealed. @default false */
@@ -37,6 +38,7 @@ const EYE_OFF = (
 export function PasswordToggleField({
   value,
   defaultValue = '',
+  onValueChange,
   onChange,
   placeholder,
   disabled = false,
@@ -45,7 +47,7 @@ export function PasswordToggleField({
   className,
   ...rest
 }: PasswordToggleFieldProps): ReactElement {
-  const [val, setVal] = useControllableState<string>({ value, defaultValue, onChange });
+  const [val, setVal] = useControllableState<string>({ value, defaultValue, onChange: onValueChange });
   const [visible, setVisible] = useState(defaultVisible);
   return (
     <div className={cx('rdz-password', className)}>
@@ -56,7 +58,8 @@ export function PasswordToggleField({
         placeholder={placeholder}
         disabled={disabled}
         aria-invalid={invalid ? 'true' : undefined}
-        onChange={(e: ChangeEvent<HTMLInputElement>) => setVal(e.target.value)}
+        // Native onChange (event) passes through alongside the value callback.
+        onChange={(e: ChangeEvent<HTMLInputElement>) => { setVal(e.target.value); onChange?.(e); }}
         {...rest}
       />
       <button

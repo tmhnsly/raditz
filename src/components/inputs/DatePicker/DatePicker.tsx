@@ -9,7 +9,9 @@ export interface DatePickerProps extends Omit<HTMLAttributes<HTMLSpanElement>, '
   value?: string;
   /** Initial ISO date (uncontrolled). @default "" */
   defaultValue?: string;
-  onChange?: (value: string) => void;
+  /** Fires with the new ISO date string. */
+  onValueChange?: (value: string) => void;
+  /** Trigger text when no date is chosen. @default "Select date" */
   placeholder?: string;
   /** Earliest selectable ISO date. */
   min?: string;
@@ -32,13 +34,13 @@ type Mode = 'day' | 'month' | 'year';
  * DatePicker — a text trigger that opens a calendar popover with drill-up
  * navigation: the title steps day → month → year (click "June 2026" to pick a
  * month, "2026" to pick a year), and the arrows page the current view. Value is
- * an ISO `YYYY-MM-DD` string (controlled `value`/`onChange` or `defaultValue`);
+ * an ISO `YYYY-MM-DD` string (controlled `value`/`onValueChange` or `defaultValue`);
  * `min`/`max` bound the range. Built on date-fns; renders into an {@link Overlay}.
  */
 export function DatePicker({
   value,
   defaultValue = '',
-  onChange,
+  onValueChange,
   placeholder = 'Select date',
   min,
   max,
@@ -46,7 +48,7 @@ export function DatePicker({
   className,
   ...rest
 }: DatePickerProps): ReactElement {
-  const [val, setVal] = useControllableState<string>({ value, defaultValue, onChange });
+  const [val, setVal] = useControllableState<string>({ value, defaultValue, onChange: onValueChange });
   const { open, toggle, close, anchorRef } = useTrigger<HTMLButtonElement>({});
   const selected = parseISO(val);
   const [view, setView] = useState<Date>(() => selected || new Date());

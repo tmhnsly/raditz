@@ -1,14 +1,15 @@
 'use client';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import type { HTMLAttributes, ReactElement, CSSProperties } from 'react';
-import { cx, useControllableState, clamp } from '../../internal';
+import { cx, useControllableState, clamp, onKeys, KEYS } from '../../internal';
 
 export interface RatingProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange' | 'defaultValue'> {
   /** Controlled value. */
   value?: number;
   /** Initial value (uncontrolled). @default 0 */
   defaultValue?: number;
-  onChange?: (value: number) => void;
+  /** Fires when the value changes. */
+  onValueChange?: (value: number) => void;
   /** Number of stars. @default 5 */
   count?: number;
   /** Display only (renders any fractional value, e.g. 3.2). @default false */
@@ -30,15 +31,17 @@ const STAR = (
 
 /**
  * Rating — a star rating input (or read-only display). Controlled with `value`
- * / `onChange`, or uncontrolled with `defaultValue`. `count` sets the number of
- * stars. Read-only mode renders any fractional value with an accurate CSS
+ * / `onValueChange`, or uncontrolled with `defaultValue`. `count` sets the number
+ * of stars. Read-only mode renders any fractional value with an accurate CSS
  * percentage fill (e.g. 3.2 → the 4th star is 20% filled). For input, `precision`
- * selects whole (`full`) or `half` stars.
+ * selects whole (`full`) or `half` stars. Keyboard follows the radiogroup pattern:
+ * the checked radio is the single tab stop, ArrowRight/ArrowUp increase and
+ * ArrowLeft/ArrowDown decrease by one step, Home/End jump to min/max.
  */
 export function Rating({
   value,
   defaultValue = 0,
-  onChange,
+  onValueChange,
   count = 5,
   readOnly = false,
   disabled = false,
@@ -47,12 +50,51 @@ export function Rating({
   className,
   ...rest
 }: RatingProps): ReactElement {
-  const [val, setVal] = useControllableState<number>({ value, defaultValue, onChange });
+  const [val, setVal] = useControllableState<number>({ value, defaultValue, onChange: onValueChange });
   const [hover, setHover] = useState(0);
+  const hitRefs = useRef(new Map<number, HTMLButtonElement>());
   const shown = hover || val;
   const cls = cx('rdz-rating', `rdz-rating--${size}`, readOnly && 'is-readonly', disabled && 'is-disabled');
   const pick = (v: number): void => setVal(val === v ? 0 : v);
   const label = (v: number): string => `${v} star${v === 1 ? '' : 's'}`;
+
+  const step = precision === 'half' ? 0.5 : 1;
+  // The radiogroup's single tab stop: the checked radio (snapped up to the step
+  // grid for off-grid controlled values), or the first radio when unrated.
+  const stopValue = val > 0 ? clamp(Math.ceil(val / step) * step, step, count) : step;
+  const setAndFocus = (v: number): void => {
+    setVal(v);
+    setHover(0);
+    hitRefs.current.get(v)?.focus();
+  };
+  const move = (delta: number): void => setAndFocus(clamp((val || 0) + delta, step, count));
+  const handleKeys = onKeys({
+    [KEYS.ArrowRight]: () => move(step),
+    [KEYS.ArrowUp]: () => move(step),
+    [KEYS.ArrowLeft]: () => move(-step),
+    [KEYS.ArrowDown]: () => move(-step),
+    [KEYS.Home]: () => setAndFocus(step),
+    [KEYS.End]: () => setAndFocus(count),
+  });
+
+  const hitRef = (v: number) => (el: HTMLButtonElement | null): void => {
+    if (el) hitRefs.current.set(v, el);
+    else hitRefs.current.delete(v);
+  };
+  const hit = (v: number, extra?: string): ReactElement => (
+    <button
+      type="button"
+      disabled={disabled}
+      className={cx('rdz-rating__hit', extra)}
+      role="radio"
+      aria-checked={val === v}
+      tabIndex={v === stopValue ? 0 : -1}
+      aria-label={label(v)}
+      ref={hitRef(v)}
+      onMouseEnter={() => setHover(v)}
+      onClick={() => pick(v)}
+    />
+  );
 
   return (
     <div
@@ -61,6 +103,7 @@ export function Rating({
       aria-label={`Rating: ${val} of ${count}`}
       aria-disabled={disabled || undefined}
       onMouseLeave={() => setHover(0)}
+      onKeyDown={readOnly || disabled ? undefined : handleKeys}
       {...rest}
     >
       {Array.from({ length: count }, (_, i) => {
@@ -72,11 +115,11 @@ export function Rating({
             <span className="rdz-rating__fg" style={{ '--rdz-rating-fill': `${fill * 100}%` } as CSSProperties}>{STAR}</span>
             {readOnly ? null : precision === 'half' ? (
               <>
-                <button type="button" disabled={disabled} className="rdz-rating__hit rdz-rating__hit--l" role="radio" aria-checked={val === n - 0.5} aria-label={label(n - 0.5)} onMouseEnter={() => setHover(n - 0.5)} onClick={() => pick(n - 0.5)} />
-                <button type="button" disabled={disabled} className="rdz-rating__hit rdz-rating__hit--r" role="radio" aria-checked={val === n} aria-label={label(n)} onMouseEnter={() => setHover(n)} onClick={() => pick(n)} />
+                {hit(n - 0.5, 'rdz-rating__hit--l')}
+                {hit(n, 'rdz-rating__hit--r')}
               </>
             ) : (
-              <button type="button" disabled={disabled} className="rdz-rating__hit" role="radio" aria-checked={val === n} aria-label={label(n)} onMouseEnter={() => setHover(n)} onClick={() => pick(n)} />
+              hit(n)
             )}
           </span>
         );

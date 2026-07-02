@@ -3,6 +3,7 @@ import { useState } from 'react';
 import type { ReactNode } from 'react';
 import { SectionShell, SectionActionButton, SectionHeader, type SectionBaseProps, type SectionAction } from '../../lib/SectionShell';
 import { Tabs } from '../../components/navigation/Tabs';
+import { Badge } from '../../components/display/Badge';
 
 export interface PricingTier {
   name: ReactNode;
@@ -14,7 +15,10 @@ export interface PricingTier {
   blurb?: ReactNode;
   features?: ReactNode[];
   action?: SectionAction;
+  /** Emphasize this tier: elevated card, accent border, primary CTA. */
   popular?: boolean;
+  /** Floating badge label on the card (e.g. "Popular") — rendered when present. */
+  badge?: ReactNode;
 }
 
 export interface PricingProps extends SectionBaseProps {
@@ -40,8 +44,8 @@ function TierCard({
 }) {
   return (
     <div className={`rdz-card col ${tier.popular ? 'sx-price__card-pop' : 'sx-price__card'}`}>
-      {tier.popular && (
-        <span className="rdz-badge rdz-badge--solid sx-price__badge">Popular</span>
+      {tier.badge != null && (
+        <Badge variant="solid" className="sx-price__badge">{tier.badge}</Badge>
       )}
       {wrapPlan ? (
         <div className="col sx-price__plan">
@@ -110,6 +114,7 @@ export function PricingB({
   tiers,
   heading,
   sub,
+  align = 'center',
   background = 'gradient-accent',
   children,
   ...props
@@ -122,7 +127,7 @@ export function PricingB({
       {children ?? (
         <>
           <div className="sx-price__toggle-head">
-            <SectionHeader heading={heading} />
+            <SectionHeader heading={heading} align={align} />
             {sub && <p className="muted">{sub}</p>}
             {hasYearly && (
               <Tabs

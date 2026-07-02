@@ -30,6 +30,8 @@ export interface SpotlightProps extends SectionBaseProps {
   items: SpotlightItem[];
   eyebrow?: ReactNode;
   heading?: ReactNode;
+  /** Align the eyebrow + heading block: 'center' or 'start' (left). @default 'center' */
+  align?: 'start' | 'center';
 }
 
 /** One spotlight card. Owns a hover token passed to the Vignette so the scene
@@ -65,19 +67,23 @@ function SpotlightCard({ title, text, href, external, scene, bg = 'gradient', to
  * line of copy, a preset background and a top-right link arrow. The grid reveals
  * staggered on scroll. The scenes are product-supplied so each tells its own story.
  */
-export function SpotlightA({ items, eyebrow, heading, ...props }: SpotlightProps) {
+export function SpotlightA({ items, eyebrow, heading, align = 'center', children, ...props }: SpotlightProps) {
   return (
     <SectionShell wrap="col sx-gap-6" {...props} animate={false}>
-      {(eyebrow || heading) && (
-        <SectionHeader eyebrow={eyebrow} heading={heading} align="center" className="col sx-feat__head" />
+      {children ?? (
+        <>
+          {(eyebrow || heading) && (
+            <SectionHeader eyebrow={eyebrow} heading={heading} align={align} className="col sx-feat__head" />
+          )}
+          <RevealGroup className="rdz-spotlight__grid">
+            {items.map((item, i) => (
+              <Reveal key={i}>
+                <SpotlightCard {...item} />
+              </Reveal>
+            ))}
+          </RevealGroup>
+        </>
       )}
-      <RevealGroup className="rdz-spotlight__grid">
-        {items.map((item, i) => (
-          <Reveal key={i}>
-            <SpotlightCard {...item} />
-          </Reveal>
-        ))}
-      </RevealGroup>
     </SectionShell>
   );
 }

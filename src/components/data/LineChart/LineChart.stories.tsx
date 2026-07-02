@@ -51,7 +51,7 @@ export const Engagement: Story = {
         markers={[{ index: peak, label: 'Peak' }]}
         references={[{ index: 15, label: 'Stop' }]}
         formatY={(v) => `${v}`}
-        ariaLabel="Audience engagement by episode"
+        aria-label="Audience engagement by episode"
         renderTooltip={(_p, i) => {
           const e = episodes[i];
           return (

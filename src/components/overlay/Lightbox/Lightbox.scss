@@ -3,17 +3,25 @@
 // reads white-on-dark and the shared .rdz-oclose / .rdz-ovbtn discs follow suit.
 /* ═══════════════════════ Media · Lightbox ═══════════════════════ */
 .rdz-overlay--lightbox { padding: 0; }
-.rdz-lightbox { position: absolute; inset: 0; display: flex; flex-direction: column; }
+/* isolation: the lightbox is its own stacking context, so the LOCAL z rungs below
+   (0/1/2 — see the z ladder note in tokens/layout.css) can never leak out and
+   fight app chrome; the global rung comes from the overlay host. */
+.rdz-lightbox { position: absolute; inset: 0; display: flex; flex-direction: column; isolation: isolate; }
 
 /* Always-dark, theme-independent scrim so the viewer looks the same in both modes. */
 /* Scrim blur is intentionally light (≈⅓ the panel blur) and, like every frosted
    surface, derives from --glass-blur so setting it to 0 disables blur project-wide. */
 .rdz-lightbox__scrim { position: absolute; inset: 0; background: color-mix(in srgb, black 92%, transparent); -webkit-backdrop-filter: blur(calc(var(--glass-blur) / 3)); backdrop-filter: blur(calc(var(--glass-blur) / 3)); animation: rdzFade var(--duration-base) var(--ease-standard); }
 
-/* Close: position only — the disc visual comes from the shared .rdz-oclose. */
-.rdz-lightbox__close { position: absolute; top: var(--space-4); right: var(--space-4); z-index: 3; }
+/* Close: position only — the disc visual comes from the shared .rdz-oclose.
+   --z-overlay-local (2): the close disc is the topmost LOCAL layer — it sits early
+   in the DOM, so it needs a rung above the content layer (stage/film/footer at
+   --z-content) rather than relying on source order. */
+.rdz-lightbox__close { position: absolute; top: var(--space-4); right: var(--space-4); z-index: var(--z-overlay-local); }
 
-.rdz-lightbox__stage { position: absolute; inset: 0; z-index: 1; margin: 0; display: grid; place-items: center; padding: 4.5rem clamp(0.75rem, 3vw, 2rem) 5rem; touch-action: none; }
+/* Stage, film and footer all share --z-content (above the scrim); among equals,
+   DOM order stacks them: stage < film < footer — same relationships as before. */
+.rdz-lightbox__stage { position: absolute; inset: 0; z-index: var(--z-content); margin: 0; display: grid; place-items: center; padding: 4.5rem clamp(0.75rem, 3vw, 2rem) 5rem; touch-action: none; }
 
 .rdz-lightbox__img {
   max-width: calc(100vw - 2rem); max-height: calc(100dvh - 9.5rem); object-fit: contain;
@@ -35,7 +43,7 @@
 
 @keyframes rdzLbIn { from { opacity: 0; transform: translateX(var(--rdz-lb-from, 7%)); } to { opacity: 1; } }
 
-.rdz-lightbox__footer { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-4); padding: var(--space-4) var(--space-5); pointer-events: none; }
+.rdz-lightbox__footer { position: absolute; left: 0; right: 0; bottom: 0; z-index: var(--z-content); display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-4); padding: var(--space-4) var(--space-5); pointer-events: none; }
 
 .rdz-lightbox__meta, .rdz-lightbox__controls { pointer-events: auto; }
 
@@ -53,7 +61,7 @@
 
 .rdz-lightbox__nav--next svg { transform: rotate(180deg); }
 
-.rdz-lightbox__film { position: relative; z-index: 2; display: flex; gap: var(--space-2); padding: var(--space-4) var(--space-5); overflow-x: auto; justify-content: center; scrollbar-width: none; }
+.rdz-lightbox__film { position: relative; z-index: var(--z-content); display: flex; gap: var(--space-2); padding: var(--space-4) var(--space-5); overflow-x: auto; justify-content: center; scrollbar-width: none; }
 
 .rdz-lightbox__film::-webkit-scrollbar { display: none; }
 

@@ -18,7 +18,7 @@ type Story = StoryObj;
 export const Default: Story = {
   render: (args) => {
     const [v, setV] = useState('09:30');
-    return <TimePicker {...args} value={v} onChange={setV} />;
+    return <TimePicker {...args} value={v} onValueChange={setV} />;
   },
 };
 
@@ -26,7 +26,7 @@ export const TwentyFourHour: Story = {
   name: '24-hour',
   render: () => {
     const [v, setV] = useState('14:45');
-    return <TimePicker hour12={false} value={v} onChange={setV} />;
+    return <TimePicker hour12={false} value={v} onValueChange={setV} />;
   },
 };
 

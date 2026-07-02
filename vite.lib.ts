@@ -3,7 +3,9 @@ import dts from 'vite-plugin-dts';
 import preserveDirectives from 'rollup-preserve-directives';
 
 // Empty-module loader: keeps the JS bundle CSS-free (styles ship via dist/raditz.css).
-// Component index.ts files do `import './X.scss'`; here those resolve to nothing.
+// Component modules don't import their .scss (the src/styles/components.ts glob
+// aggregates every stylesheet for the app/Storybook/CSS builds); this plugin is a
+// safety net so any stray style import in the lib graph resolves to nothing.
 function ignoreStyles() {
   return {
     name: 'raditz-ignore-styles',

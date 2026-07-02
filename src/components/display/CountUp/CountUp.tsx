@@ -1,15 +1,15 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
+import type { HTMLAttributes } from 'react';
 import { cx, useRevealState } from '../../internal';
 
-export interface CountUpProps {
+export interface CountUpProps extends HTMLAttributes<HTMLSpanElement> {
   /** Target value — a number, or a string the number is pulled from with its
    *  surrounding text preserved (e.g. "$2.5M", "10k+", "99.9%"). A non-numeric string
    *  renders verbatim. */
   value: number | string;
   /** Roll duration (ms). @default 1400 */
   duration?: number;
-  className?: string;
 }
 
 /** Split "abc12,345.6xyz" → { pre:'abc', num:12345.6, post:'xyz', decimals:1 }. */
@@ -31,7 +31,7 @@ const fmt = (n: number, decimals: number): string =>
  * announced value). Any surrounding text is preserved (prefix/suffix); a non-numeric value
  * renders verbatim. Pairs with the Stats section.
  */
-export function CountUp({ value, duration = 1400, className }: CountUpProps) {
+export function CountUp({ value, duration = 1400, className, ...rest }: CountUpProps) {
   const { pre, num, post, decimals } = parseCountUp(value);
   // Shared scroll-reveal gate (in-view + reduced-motion folded into one) — the same
   // primitive Reveal/TextReveal use, so "when does an on-view animation run?" lives in
@@ -56,9 +56,9 @@ export function CountUp({ value, duration = 1400, className }: CountUpProps) {
     return () => cancelAnimationFrame(raf);
   }, [num, reduced, revealed, duration]);
 
-  if (num === null) return <span className={className}>{value}</span>;
+  if (num === null) return <span className={className} {...rest}>{value}</span>;
   return (
-    <span ref={reduced ? undefined : ref} className={cx('rdz-countup', className)}>
+    <span ref={reduced ? undefined : ref} className={cx('rdz-countup', className)} {...rest}>
       {pre}{fmt(display ?? num, decimals)}{post}
     </span>
   );

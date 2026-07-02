@@ -18,16 +18,24 @@ export interface CheckboxProps extends React.InputHTMLAttributes<HTMLInputElemen
  * optional `label` text — reliably toggles it. Pass `aria-label` when you omit
  * `label` so the control still has an accessible name. `indeterminate` gives
  * the tri-state "some selected" look (e.g. a table's select-all header).
+ * Forwards its ref to the native <input type="checkbox">.
  */
-export function Checkbox({ className, style, label, indeterminate, ...rest }: CheckboxProps): React.ReactElement {
+export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(function Checkbox(
+  { className, style, label, indeterminate, ...rest },
+  ref,
+) {
   return (
     <label className={cx('rdz-check', className)} style={style}>
       <input
         type="checkbox"
         // `indeterminate` only exists as a DOM property; the inline callback ref
         // re-runs every render, so it tracks the prop without needing an effect.
+        // The forwarded ref is composed in (not clobbered) so consumers reach
+        // the native input too.
         ref={(el) => {
           if (el) el.indeterminate = !!indeterminate;
+          if (typeof ref === 'function') ref(el);
+          else if (ref) ref.current = el;
         }}
         {...rest}
       />
@@ -39,4 +47,4 @@ export function Checkbox({ className, style, label, indeterminate, ...rest }: Ch
       {label != null && <span className="rdz-check__label">{label}</span>}
     </label>
   );
-}
+});

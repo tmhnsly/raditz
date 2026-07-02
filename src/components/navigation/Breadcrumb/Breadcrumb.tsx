@@ -3,11 +3,14 @@ import { Icon } from '../../display/Icon/Icon';
 import { cx } from '../../internal';
 
 export interface BreadcrumbItem {
+  /** Visible text (or node) for this trail step. */
   label: ReactNode;
+  /** Link target — omit on the last (current-page) item; it renders as plain text. */
   href?: string;
 }
 
 export interface BreadcrumbProps extends HTMLAttributes<HTMLElement> {
+  /** Trail steps, root first; the last is the current page. @default [] */
   items?: BreadcrumbItem[];
 }
 

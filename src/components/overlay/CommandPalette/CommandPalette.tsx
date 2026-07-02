@@ -1,7 +1,7 @@
 'use client';
 import { Fragment, useEffect, useMemo } from 'react';
 import type { HTMLAttributes, ReactNode, ReactElement } from 'react';
-import { cx, Overlay, useSearchableList } from '../../internal';
+import { cx, Overlay, useControllableState, useSearchableList } from '../../internal';
 import { Icon } from '../../display/Icon/Icon';
 import { Search } from '../../inputs/Search/Search';
 import type { IconName } from '../../display/Icon/Icon';
@@ -17,7 +17,11 @@ export interface CommandItem {
 }
 export interface CommandGroup { heading?: ReactNode; items: CommandItem[]; }
 export interface CommandPaletteProps extends HTMLAttributes<HTMLDivElement> {
+  /** Open state (controlled). */
   open?: boolean;
+  /** Initial open state (uncontrolled) — the palette then owns open/close
+   *  itself (hotkey, Escape, scrim, running a command). @default false */
+  defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
   groups?: CommandGroup[];
   placeholder?: string;
@@ -30,13 +34,15 @@ type FlatItem = CommandItem & { heading?: ReactNode };
 /**
  * CommandPalette — a ⌘K / Ctrl-K command launcher. `groups` is
  * `[{ heading, items: [{ id, label, icon?, shortcut?, keywords?, onSelect }] }]`.
- * Controlled with `open` / `onOpenChange`. With `hotkey` (default true) it binds
- * ⌘K/Ctrl-K globally to toggle. Type to fuzzy-filter; Arrow/Enter run.
+ * Controlled with `open` / `onOpenChange`, or uncontrolled via `defaultOpen`.
+ * With `hotkey` (default true) it binds ⌘K/Ctrl-K globally to toggle. Type to
+ * fuzzy-filter; Arrow/Enter run.
  *
  * An adapter face over {@link Overlay} (`centered` modal, focus trap).
  */
-export function CommandPalette({ open, onOpenChange, groups = [], placeholder = 'Type a command or search…', hotkey = true, className, ...rest }: CommandPaletteProps): ReactElement | null {
-  const close = (): void => { if (onOpenChange) onOpenChange(false); };
+export function CommandPalette({ open, defaultOpen = false, onOpenChange, groups = [], placeholder = 'Type a command or search…', hotkey = true, className, ...rest }: CommandPaletteProps): ReactElement | null {
+  const [isOpen, setOpen] = useControllableState<boolean>({ value: open, defaultValue: defaultOpen, onChange: onOpenChange });
+  const close = (): void => setOpen(false);
 
   const flat = useMemo<FlatItem[]>(() => {
     const out: FlatItem[] = [];
@@ -52,19 +58,19 @@ export function CommandPalette({ open, onOpenChange, groups = [], placeholder = 
   useEffect(() => {
     if (!hotkey) return undefined;
     const h = (e: KeyboardEvent): void => {
-      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); if (onOpenChange) onOpenChange(!open); }
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); setOpen((o) => !o); }
     };
     document.addEventListener('keydown', h);
     return () => document.removeEventListener('keydown', h);
-  }, [hotkey, open, onOpenChange]);
+  }, [hotkey, setOpen]);
 
   const { reset } = list;
-  useEffect(() => { if (open) reset(); }, [open, reset]);
+  useEffect(() => { if (isOpen) reset(); }, [isOpen, reset]);
 
   let lastHeading: ReactNode = null;
   return (
     <Overlay
-      open={!!open}
+      open={isOpen}
       onDismiss={close}
       position={{ kind: 'centered' }}
       containerClassName="rdz-overlay--cmd"

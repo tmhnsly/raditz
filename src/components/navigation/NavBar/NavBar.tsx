@@ -27,7 +27,8 @@ export interface NavBarProps extends Omit<HTMLAttributes<HTMLElement>, 'onChange
 
 interface Indicator {
   ready: boolean;
-  transform?: string;
+  x?: number;
+  y?: number;
   width?: number;
   height?: number;
   left?: number;
@@ -66,9 +67,9 @@ export function NavBar({
     const list = listRef.current;
     if (!el || !list) return;
     if (orientation === 'vertical') {
-      setInd({ ready: true, transform: `translateY(${el.offsetTop}px)`, height: el.offsetHeight, width: el.offsetWidth, left: el.offsetLeft });
+      setInd({ ready: true, y: el.offsetTop, height: el.offsetHeight, width: el.offsetWidth, left: el.offsetLeft });
     } else {
-      setInd({ ready: true, transform: `translateX(${el.offsetLeft}px)`, width: el.offsetWidth, height: el.offsetHeight, top: el.offsetTop });
+      setInd({ ready: true, x: el.offsetLeft, width: el.offsetWidth, height: el.offsetHeight, top: el.offsetTop });
     }
   }, [val, orientation]);
 
@@ -82,9 +83,20 @@ export function NavBar({
   }, [measure]);
 
   const cls = cx('rdz-navbar', `rdz-navbar--${variant}`, `rdz-navbar--${orientation}`, className);
+  // No inline real properties — the measured geometry travels as --rdz-navind-*
+  // custom properties, consumed by NavBar.scss (same pattern as the sections
+  // Navbar pill's --rdz-nav-* vars).
   const indStyle: CSSProperties = ind.ready
-    ? { transform: ind.transform, width: ind.width, height: ind.height, left: ind.left, top: ind.top, opacity: 1 }
-    : { opacity: 0 };
+    ? ({
+        '--rdz-navind-x': `${ind.x ?? 0}px`,
+        '--rdz-navind-y': `${ind.y ?? 0}px`,
+        '--rdz-navind-w': `${ind.width}px`,
+        '--rdz-navind-h': `${ind.height}px`,
+        ...(ind.left != null ? { '--rdz-navind-left': `${ind.left}px` } : null),
+        ...(ind.top != null ? { '--rdz-navind-top': `${ind.top}px` } : null),
+        '--rdz-navind-opacity': 1,
+      } as CSSProperties)
+    : ({ '--rdz-navind-opacity': 0 } as CSSProperties);
 
   const onKeyDown = (e: ReactKeyboardEvent): void => {
     const i = items.findIndex((it) => it.key === val);

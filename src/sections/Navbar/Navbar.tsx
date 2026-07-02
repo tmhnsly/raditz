@@ -158,7 +158,7 @@ function NavLinks({ links, activeHref }: { links: NavbarLink[]; activeHref?: str
         <span
           className="rdz-nav__pill"
           aria-hidden="true"
-          style={{ '--nav-x': `${box.x}px`, '--nav-w': `${box.w}px`, '--nav-h': `${box.h}px` } as CSSProperties}
+          style={{ '--rdz-nav-x': `${box.x}px`, '--rdz-nav-w': `${box.w}px`, '--rdz-nav-h': `${box.h}px` } as CSSProperties}
         />
       )}
       {links.map((link, i) => (
@@ -317,7 +317,9 @@ export function NavbarB({ brand, links, actions, children }: NavbarProps) {
   );
 }
 
-export function NavbarC({ brand, links, actions, children }: NavbarProps) {
+/** C — narrow-frame nav; links collapse into the burger dropdown. `footnote`
+ * renders a muted caption under the bar (e.g. usage hints in a demo). */
+export function NavbarC({ brand, links, actions, children, footnote }: NavbarProps & { footnote?: ReactNode }) {
   return (
     <NavCore
       brand={brand}
@@ -330,11 +332,7 @@ export function NavbarC({ brand, links, actions, children }: NavbarProps) {
       brandRowClassName="sx-nav__brand-row-sm"
       logoClassName="sx-nav__logo-md"
       glyphClassName="sx-nav__logo-glyph-md"
-      footer={
-        <div className="muted sx-nav__note">
-          Frame ≈ 360px — links collapse into the burger dropdown. Tap the menu icon to toggle.
-        </div>
-      }
+      footer={footnote != null ? <div className="muted sx-nav__note">{footnote}</div> : undefined}
     >
       {children}
     </NavCore>
@@ -363,11 +361,13 @@ export interface NavbarDProps {
   activeId?: string;
   /** Called with the new tab id when a tab is selected. */
   onTabChange?: (id: string) => void;
+  /** Placeholder content shown in the frame body above the tab bar. */
+  preview?: ReactNode;
 }
 
 /** D — an iOS/Android-style bottom tab bar: pinned to the bottom, icon+label
  * tabs with an accent active state. All Raditz tokens, so it re-themes. */
-export function NavbarD({ tabs, activeId, onTabChange }: NavbarDProps) {
+export function NavbarD({ tabs, activeId, onTabChange, preview }: NavbarDProps) {
   const isControlled = activeId !== undefined;
   const [internalActive, setInternalActive] = useState(tabs[0]?.id);
   const active = isControlled ? activeId : internalActive;
@@ -379,7 +379,7 @@ export function NavbarD({ tabs, activeId, onTabChange }: NavbarDProps) {
     <Frame maxWidth="22.5rem" className="nav-section">
       <div className="nav-tabframe">
         <div className="nav-tabframe__body">
-          <div className="ph nav-tabframe__ph">app content</div>
+          <div className="ph nav-tabframe__ph">{preview}</div>
         </div>
         <nav className="nav-tabbar" aria-label="Primary">
           {tabs.map((t) => (

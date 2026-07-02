@@ -27,6 +27,8 @@ export interface TooltipProps extends HTMLAttributes<HTMLSpanElement> {
 export function Tooltip({ label, side = 'top', align = 'center', delay = 200, className, children, ...rest }: TooltipProps): ReactElement {
   const anchorRef = useRef<HTMLSpanElement>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // Open state is deliberately internal (hover/focus + delay only) — a controlled
+  // tooltip is rarely honest, so no open/defaultOpen/onOpenChange API here.
   const [open, setOpen] = useState(false);
   const tipId = useId();
 

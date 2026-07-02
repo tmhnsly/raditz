@@ -25,6 +25,11 @@ export const A_FourAcross: Story = {
   render: () => <StatsA stats={fourStats} />,
 };
 
+export const A_CenteredHeading: Story = {
+  name: 'A · Centered heading',
+  render: () => <StatsA stats={fourStats} heading="The system in numbers" align="center" />,
+};
+
 export const B_AccentBand: Story = {
   name: 'B · Accent band',
   render: () => <StatsB stats={bandStats} />,

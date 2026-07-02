@@ -2,8 +2,9 @@ import type { ReactNode } from 'react';
 
 /**
  * Frame — previews a section inside a bordered, rounded card (matching the
- * original catalog). Use `bleed` for sections that paint their own full-bleed
- * background (accent bands, announcement strips) so the frame just clips them.
+ * original catalog). Sections that paint their own full-bleed background
+ * (accent bands, announcement strips) pass a `className` that flattens the
+ * frame chrome so it just clips them.
  */
 export function Frame({
   children,

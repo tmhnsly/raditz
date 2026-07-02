@@ -18,6 +18,24 @@ export const A_Centered: Story = {
   ),
 };
 
+const IMG = 'https://images.unsplash.com/photo-1571266028243-e4733b0f0bb0?auto=format&fit=crop&w=1920&q=70';
+
+export const A_OverImageScrim: Story = {
+  name: 'A · Over image (scrim)',
+  render: () => (
+    <CtaA
+      title="Ready when you are"
+      sub="The scrim darkens the photo and flips the copy to on-dark tokens, so the band stays legible over any image."
+      image={IMG}
+      scrim
+      actions={[
+        { label: 'Book a session', href: '#' },
+        { label: 'View rates', href: '#', variant: 'glass' },
+      ]}
+    />
+  ),
+};
+
 export const B_Split: Story = {
   name: 'B · Split, accent surface',
   render: () => (

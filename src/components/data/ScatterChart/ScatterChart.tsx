@@ -1,12 +1,11 @@
 'use client';
 import { useState } from 'react';
+import type { HTMLAttributes } from 'react';
 import { scaleLinear } from '@visx/scale';
 import { Circle } from '@visx/shape';
 import { GridRows, GridColumns } from '@visx/grid';
 import { ChartFrame } from '../charts/ChartFrame';
-import { paddedDomain } from '../../internal/scale';
-import { ChartTip } from '../../internal/ChartTip';
-import { ChartAxis } from '../../internal/ChartAxis';
+import { paddedDomain, ChartTip, ChartAxis } from '../../internal';
 
 export interface ScatterPoint {
   x: number;
@@ -16,12 +15,11 @@ export interface ScatterPoint {
   label?: string;
 }
 
-export interface ScatterChartProps {
+export interface ScatterChartProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
   data: ScatterPoint[];
   height?: number;
   formatX?: (x: number) => string;
   formatY?: (y: number) => string;
-  ariaLabel?: string;
 }
 
 
@@ -34,10 +32,11 @@ export function ScatterChart({
   height = 260,
   formatX = (v) => String(v),
   formatY = (v) => String(v),
-  ariaLabel = 'Scatter chart',
+  ...rest
 }: ScatterChartProps) {
   const [active, setActive] = useState<number | null>(null);
-  if (data.length === 0) return <ChartFrame height={height} ariaLabel={ariaLabel}>{() => null}</ChartFrame>;
+  // Default accessible name; a consumer `aria-label` in `rest` overrides it.
+  if (data.length === 0) return <ChartFrame height={height} aria-label="Scatter chart" {...rest}>{() => null}</ChartFrame>;
   const xDomain = paddedDomain(data.map((d) => d.x), 0.08);
   const yDomain = paddedDomain(data.map((d) => d.y), 0.08);
   const rMax = Math.max(1, ...data.map((d) => d.size ?? 1));
@@ -49,8 +48,9 @@ export function ScatterChart({
   return (
     <ChartFrame
       height={height}
-      ariaLabel={ariaLabel}
+      aria-label="Scatter chart"
       margin={{ left: 40, right: 18, top: 14, bottom: 28 }}
+      {...rest}
       overlay={({ margin, innerWidth, innerHeight }) => {
         if (active == null || active >= data.length) return null;
         const x = xFor(innerWidth);

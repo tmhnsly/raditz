@@ -1,7 +1,6 @@
 'use client';
 import * as React from 'react';
-import { cx, useRevealState } from '../../internal';
-import { splitText, type SplitBy } from '../../internal/splitText';
+import { cx, useRevealState, splitText, type SplitBy } from '../../internal';
 
 export type TextRevealAnim = 'flip' | 'rise' | 'fade' | 'blur' | 'mask';
 

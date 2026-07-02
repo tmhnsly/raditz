@@ -38,7 +38,42 @@ All notable changes to Raditz are recorded here. The format is based on
 - Templates: the product `prebuild` hook is now link-aware (`rdz-prebuild.mjs`) —
   it rebuilds the sibling raditz checkout ONLY while the rdz-link override is
   active; tag-pinned builds use the packaged dist and never depend on (or silently
-  absorb) a local checkout.
+  absorb) a local checkout. The Next template widens `turbopack.root` when a
+  sibling checkout exists (Turbopack can't resolve a package symlinked outside its
+  inferred root).
+- **Consistency pass (library-wide audit + fixes):**
+  - Keyboard a11y: Tabs, Rating and Toolbar implemented their ARIA-role keyboard
+    contracts (arrow roving, Home/End) — previously the roles shipped with no
+    keyboard support at all. DropdownMenu/Menubar now return focus to the trigger
+    on close; Menubar gained ArrowLeft/Right between menus.
+  - API conventions unified: the value callback is `onValueChange(value)`
+    everywhere (**breaking**: Rating, Combobox, DatePicker, TimePicker,
+    DateTimePicker, OneTimePasswordField, PasswordToggleField, TagInput,
+    FileDropzone renamed from value-first `onChange`); charts' bespoke `ariaLabel`
+    prop removed in favour of native `aria-label`; every component accepts
+    `className` + rest props (BarChart was dropping it; LineChart/ScatterChart/
+    Tabs/CheckList/CountUp/Icon/Vignette accepted none); input primitives
+    (Input, Textarea, Checkbox, Radio, Switch, Slider) forward refs to their
+    native control; IconButton and Search gained `size="lg"`.
+  - Overlay faces: Dialog, Drawer, AlertDialog and CommandPalette gained
+    uncontrolled `defaultOpen`; ContextMenu and Menubar gained controlled
+    `open`/`onOpenChange`.
+  - Sections: PricingB honours `align`; FeaturesTabbed and Spotlight's `children`
+    override slot actually works; AnnouncementA supports the full background/scrim
+    surface; PricingTier's popular badge is content-driven (`badge?: ReactNode` —
+    **breaking**: `popular: true` no longer auto-renders "Popular" text); sections
+    render real Badge/Input components instead of hand-written class strings;
+    NavbarC `footnote` and NavbarD `preview` replace baked-in filler copy.
+  - Styling: NavBar's indicator rides custom properties (fixing the underline
+    variant's anchoring); the nav pill's timing uses motion tokens (reduced-motion
+    now free); Gallery breakpoints are container queries; chart tooltip and
+    Lightbox z-indexes moved onto the `--z-*` ladder; `font-weight: 700` literals
+    tokenised.
+  - ~300 new behaviour tests (keyboard, timers via the repo's first fake-timer
+    infra, overlay wiring, carousel/pagination/accordion/toggle-group contracts)
+    plus three new machine gates: `api-contract` (className-on-root),
+    `ref-contract` (refs reach controls), `style-contract` (inline styles,
+    z-index ladder, README counts). README rewritten to match reality.
 
 ## [0.1.0] - 2026-06-29
 - Packageization foundation: consumable package (src barrel, two-build pipeline,

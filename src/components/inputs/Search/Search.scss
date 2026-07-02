@@ -1,33 +1,95 @@
 // The shared Search input — one consistent look/feel for every search field.
 /* ═══════════════════════ Search ═══════════════════════ */
-.rdz-search { display: flex; align-items: center; gap: var(--space-2); color: var(--text-muted); }
+.rdz-search {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--text-muted);
+}
 
-.rdz-search__icon { flex: none; color: var(--text-muted); }
+.rdz-search__icon {
+  flex: none;
+  color: var(--text-muted);
+}
 
-.rdz-search__input { flex: 1; min-width: 0; border: none; outline: none; background: none; font-family: var(--font-display); font-size: var(--fs-body); color: var(--text); padding: 0.5rem 0; }
+.rdz-search__input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: none;
+  font-family: var(--font-display);
+  font-size: var(--fs-body);
+  color: var(--text);
+  padding: 0.5rem 0;
+}
 
-.rdz-search__input::placeholder { color: var(--text-faint); }
+.rdz-search__input::placeholder {
+  color: var(--text-faint);
+}
 
 /* hide the browser's native clear affordance — we keep the look consistent */
-.rdz-search__input::-webkit-search-cancel-button { -webkit-appearance: none; appearance: none; }
+.rdz-search__input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+}
 
-.rdz-search__hint { flex: none; }
+.rdz-search__hint {
+  flex: none;
+}
 
 /* field — a bordered standalone box */
-.rdz-search--field { padding: 0 var(--space-3); background: var(--panel); border: var(--border-width) solid var(--rule); border-radius: var(--radius-control); }
+.rdz-search--field {
+  padding: 0 var(--space-3);
+  background: var(--panel);
+  border: var(--border-width) solid var(--rule);
+  border-radius: var(--radius-control);
+}
 
-.rdz-search--field:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+.rdz-search--field:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
 
 /* plain — a header row inside a popover/menu (md = command-palette scale) */
-.rdz-search--plain { padding: var(--space-3) var(--space-4); gap: var(--space-2); border-bottom: var(--border-width) solid var(--rule-soft); }
+.rdz-search--plain {
+  padding: var(--space-3) var(--space-4);
+  gap: var(--space-2);
+  border-bottom: var(--border-width) solid var(--rule-soft);
+}
 
 /* sm — compact (combobox) */
-.rdz-search--sm .rdz-search__input { font-size: var(--fs-body-s); padding: 0.375rem 0; }
+.rdz-search--sm .rdz-search__input {
+  font-size: var(--fs-body-s);
+  padding: 0.375rem 0;
+}
 /* …but keep it at 16px on touch so iOS Safari doesn't zoom the page on focus. */
-@media (pointer: coarse) { .rdz-search--sm .rdz-search__input { font-size: 1rem; } }
+@media (pointer: coarse) {
+  .rdz-search--sm .rdz-search__input {
+    font-size: 1rem;
+  }
+}
 
-.rdz-search--sm.rdz-search--plain { padding: 0 var(--space-2) var(--space-2); gap: var(--space-2); margin-bottom: var(--space-2); }
+.rdz-search--sm.rdz-search--plain {
+  padding: 0 var(--space-2) var(--space-2);
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+}
+
+/* lg — matches Button's lg scale (control-h-lg height, body font). */
+.rdz-search--lg .rdz-search__input {
+  font-size: var(--fs-body);
+  padding: 0.8125rem 0;
+}
+.rdz-search--lg.rdz-search--field {
+  min-height: var(--control-h-lg);
+  padding: 0 var(--space-4);
+}
 
 /* Disabled — `disabled` forwards to the input; dim the field and block the cursor. */
-.rdz-search:has(input:disabled) { opacity: var(--disabled-opacity); }
-.rdz-search:has(input:disabled) .rdz-search__input { cursor: not-allowed; }
+.rdz-search:has(input:disabled) {
+  opacity: var(--disabled-opacity);
+}
+.rdz-search:has(input:disabled) .rdz-search__input {
+  cursor: not-allowed;
+}

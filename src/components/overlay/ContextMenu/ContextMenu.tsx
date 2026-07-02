@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 import type { HTMLAttributes, MouseEvent as ReactMouseEvent, PointerEvent as ReactPointerEvent, ReactNode, ReactElement } from 'react';
+import { useControllableState } from '../../internal';
 import { MenuSurface } from '../../internal/MenuSurface/MenuSurface';
 import type { MenuItem } from '../../internal/MenuSurface/MenuSurface';
 
@@ -11,6 +12,12 @@ export interface ContextMenuProps extends HTMLAttributes<HTMLDivElement> {
   children?: ReactNode;
   /** Touch press-and-hold duration (ms) that opens the menu. @default 480 */
   longPressMs?: number;
+  /** Open state (controlled). The menu opens at the last pointer position. */
+  open?: boolean;
+  /** Initial open state (uncontrolled). @default false */
+  defaultOpen?: boolean;
+  /** Fires to request open/close (right-click/long-press → true; select/dismiss → false). */
+  onOpenChange?: (open: boolean) => void;
 }
 
 /**
@@ -18,13 +25,14 @@ export interface ContextMenuProps extends HTMLAttributes<HTMLDivElement> {
  * (Radix ContextMenu). Wrap the target; right-click or press-and-hold opens the
  * same menu model as DropdownMenu at the pointer. Items: `{ label, icon?,
  * shortcut?, onSelect?, disabled?, danger? }`, plus `{ separator: true }` and
- * `{ heading: true, label }`.
+ * `{ heading: true, label }`. Open state may be controlled (`open` /
+ * `onOpenChange`) or uncontrolled (`defaultOpen`), like its menu peers.
  *
  * An adapter face over {@link MenuSurface} (`point` topology) — so it shares
  * keyboard roving with the other menus.
  */
-export function ContextMenu({ items = [], children, className, longPressMs = 480, ...rest }: ContextMenuProps): ReactElement {
-  const [open, setOpen] = useState(false);
+export function ContextMenu({ items = [], children, className, longPressMs = 480, open: openProp, defaultOpen = false, onOpenChange, ...rest }: ContextMenuProps): ReactElement {
+  const [open, setOpen] = useControllableState<boolean>({ value: openProp, defaultValue: defaultOpen, onChange: onOpenChange });
   const [pt, setPt] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const start = useRef<{ x: number; y: number } | null>(null);

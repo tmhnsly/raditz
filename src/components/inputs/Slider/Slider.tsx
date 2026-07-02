@@ -24,22 +24,26 @@ export interface SliderProps extends Omit<React.HTMLAttributes<HTMLSpanElement>,
 /**
  * Slider — a single-thumb range input (Radix Slider). Drag the track/thumb or
  * use arrow / Home / End keys. Controlled with `value`, uncontrolled with
- * `defaultValue`. Emits numbers in `[min, max]` snapped to `step`.
+ * `defaultValue`. Emits numbers in `[min, max]` snapped to `step`. Forwards its
+ * ref to the focusable thumb (role="slider") for focus management.
  */
-export function Slider({
-  value,
-  defaultValue = 0,
-  onValueChange,
-  min = 0,
-  max = 100,
-  step = 1,
-  ticks = false,
-  disabled = false,
-  className,
-  'aria-label': ariaLabel = 'Value',
-  'aria-labelledby': ariaLabelledby,
-  ...rest
-}: SliderProps): React.ReactElement {
+export const Slider = React.forwardRef<HTMLSpanElement, SliderProps>(function Slider(
+  {
+    value,
+    defaultValue = 0,
+    onValueChange,
+    min = 0,
+    max = 100,
+    step = 1,
+    ticks = false,
+    disabled = false,
+    className,
+    'aria-label': ariaLabel = 'Value',
+    'aria-labelledby': ariaLabelledby,
+    ...rest
+  },
+  ref,
+) {
   const [val, setVal] = useControllableState<number>({ value, defaultValue, onChange: onValueChange });
   const trackRef = useRef<HTMLSpanElement>(null);
   const current = clamp(val, min, max);
@@ -93,6 +97,7 @@ export function Slider({
         ))}
       </span>
       <span
+        ref={ref}
         className="rdz-slider__thumb"
         style={{ '--rdz-slider-pct': `${pct}%` } as React.CSSProperties}
         role="slider"
@@ -107,4 +112,4 @@ export function Slider({
       />
     </span>
   );
-}
+});

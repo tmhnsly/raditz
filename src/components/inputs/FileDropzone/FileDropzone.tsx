@@ -8,7 +8,8 @@ export interface FileDropzoneProps extends Omit<HTMLAttributes<HTMLDivElement>, 
   value?: File[];
   /** Initial files (uncontrolled). @default [] */
   defaultValue?: File[];
-  onChange?: (files: File[]) => void;
+  /** Fires with the new file list. */
+  onValueChange?: (files: File[]) => void;
   /** Input accept string, e.g. "image/*,.pdf". */
   accept?: string;
   /** Allow multiple files. @default true */
@@ -22,14 +23,15 @@ export interface FileDropzoneProps extends Omit<HTMLAttributes<HTMLDivElement>, 
 
 /**
  * FileDropzone — a drag-and-drop file input with click-to-browse and a file
- * list. Uncontrolled by default; pass `value` / `onChange` (File[]) to control.
- * `accept` (input accept string), `multiple`, and `maxSize` (bytes) filter what's
- * accepted. This is UI only — it does not upload; read the files in `onChange`.
+ * list. Uncontrolled by default; pass `value` / `onValueChange` (File[]) to
+ * control. `accept` (input accept string), `multiple`, and `maxSize` (bytes)
+ * filter what's accepted. This is UI only — it does not upload; read the files
+ * in `onValueChange`.
  */
 export function FileDropzone({
   value,
   defaultValue = [],
-  onChange,
+  onValueChange,
   accept,
   multiple = true,
   maxSize,
@@ -38,7 +40,7 @@ export function FileDropzone({
   className,
   ...rest
 }: FileDropzoneProps): ReactElement {
-  const [files, setFiles] = useControllableState<File[]>({ value, defaultValue, onChange });
+  const [files, setFiles] = useControllableState<File[]>({ value, defaultValue, onChange: onValueChange });
   const [over, setOver] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 

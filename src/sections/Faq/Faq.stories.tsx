@@ -32,6 +32,11 @@ export const A_Accordion: Story = {
   render: () => <FaqA items={FAQ_ITEMS} />,
 };
 
+export const A_CenteredHeading: Story = {
+  name: 'A · Centered heading',
+  render: () => <FaqA items={FAQ_ITEMS} heading="Frequently asked questions" align="center" />,
+};
+
 export const B_TwoColumn: Story = {
   name: 'B · 2-column list',
   render: () => <FaqB items={FAQ_ITEMS_B} />,

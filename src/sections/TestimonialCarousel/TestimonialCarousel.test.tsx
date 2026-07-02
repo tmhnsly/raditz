@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { render } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import { composeStories } from '@storybook/react';
 import * as stories from './TestimonialCarousel.stories';
 import { TestimonialCarouselA } from './TestimonialCarousel';
@@ -54,5 +54,42 @@ describe('TestimonialCarousel (section)', () => {
     );
     getByText('custom carousel');
     expect(queryByText('Carousel quote one')).toBeNull();
+  });
+
+  it('arrow click advances the active slide (dots + count reflect it)', () => {
+    const { getAllByRole, getByLabelText, container } = render(
+      <TestimonialCarouselA quotes={SAMPLE_QUOTES} />,
+    );
+    const dots = getAllByRole('tab');
+    expect(dots).toHaveLength(SAMPLE_QUOTES.length);
+    expect(dots[0].getAttribute('aria-selected')).toBe('true');
+    expect(container.querySelector('.rdz-carousel__count')?.textContent).toBe('1 / 2');
+
+    fireEvent.click(getByLabelText('Next'));
+    expect(dots[1].getAttribute('aria-selected')).toBe('true');
+    expect(dots[0].getAttribute('aria-selected')).toBe('false');
+    expect(container.querySelector('.rdz-carousel__count')?.textContent).toBe('2 / 2');
+  });
+
+  it('previous arrow wraps back from the first slide (loop default)', () => {
+    const { getAllByRole, getByLabelText } = render(
+      <TestimonialCarouselA quotes={SAMPLE_QUOTES} />,
+    );
+    fireEvent.click(getByLabelText('Previous'));
+    const dots = getAllByRole('tab');
+    expect(dots[dots.length - 1].getAttribute('aria-selected')).toBe('true');
+  });
+
+  it('dot click jumps directly to that slide', () => {
+    const { getAllByRole, getByLabelText } = render(
+      <TestimonialCarouselA quotes={SAMPLE_QUOTES} />,
+    );
+    fireEvent.click(getByLabelText('Go to slide 2'));
+    const dots = getAllByRole('tab');
+    expect(dots[1].getAttribute('aria-selected')).toBe('true');
+    expect(dots[0].getAttribute('aria-selected')).toBe('false');
+
+    fireEvent.click(getByLabelText('Go to slide 1'));
+    expect(dots[0].getAttribute('aria-selected')).toBe('true');
   });
 });

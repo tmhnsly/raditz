@@ -24,7 +24,7 @@
   border-right: var(--border-width) solid var(--surface-edge);
 }
 .rdz-appshell__rail-head { flex: none; display: flex; flex-direction: column; gap: var(--space-3); padding: var(--space-5) var(--space-4) var(--space-3); border-bottom: var(--border-width) solid var(--surface-edge); }
-.rdz-appshell__brand { display: flex; align-items: center; gap: 0.625rem; font-weight: 700; letter-spacing: -0.02em; }
+.rdz-appshell__brand { display: flex; align-items: center; gap: 0.625rem; font-weight: var(--fw-bold); letter-spacing: -0.02em; }
 .rdz-appshell__nav { flex: 1; min-height: 0; overflow-y: auto; padding: var(--space-3) var(--space-3) var(--space-5); }
 
 .rdz-appshell__main {
@@ -89,6 +89,10 @@
 .rdz-appshell--topbar .rdz-appshell__topfooter { flex: none; padding: var(--space-4) var(--rdz-appshell-pad); border-top: var(--border-width) solid var(--surface-edge); color: var(--text-soft); font-size: var(--fs-body-s); }
 .rdz-appshell--topbar.rdz-appshell--compact { --rdz-appshell-pad: clamp(var(--space-3), 2.5vw, var(--space-5)); }
 
+/* Viewport media query, INTENTIONALLY not a container query — mirrors the NavCore
+   exception: the rail becomes a position:fixed drawer whose containing block is the
+   viewport, so viewport width is the honest trigger (a container query could be
+   confused by the fixed element's containing block / a narrow preview frame). */
 @media (max-width: 860px) {
   .rdz-appshell { display: block; }
   .rdz-appshell__burger { display: inline-grid; }

@@ -22,6 +22,7 @@ const tiersA: PricingTier[] = [
     action: { label: 'Start trial', href: '#', variant: 'primary' },
     features: ['Unlimited projects', 'Priority support', 'All components', 'Dark mode + themes'],
     popular: true,
+    badge: 'Popular',
   },
   {
     name: 'Enterprise',

@@ -1,11 +1,11 @@
 'use client';
 import { useEffect, useState } from 'react';
-import type { ReactNode } from 'react';
+import type { HTMLAttributes, ReactNode } from 'react';
 import { cx, useInView } from '../../internal';
 
 export type VignetteBg = 'plain' | 'gradient' | 'accent' | 'secondary' | 'mono' | 'aurora';
 
-export interface VignetteProps {
+export interface VignetteProps extends HTMLAttributes<HTMLSpanElement> {
   /** The animated scene — a BESPOKE SVG / illustration authored for THIS card's
    *  subject (don't reuse one scene across cards). Its CSS animations should be
    *  ONE-SHOT (`animation-iteration-count: 1`) and timed with the motion tokens
@@ -18,7 +18,6 @@ export interface VignetteProps {
   bg?: VignetteBg;
   /** Bump this number to replay the scene (the host card raises it on hover). */
   replay?: number;
-  className?: string;
 }
 
 /**
@@ -30,7 +29,7 @@ export interface VignetteProps {
  * stays tied to the global system while the scene CONTENT is bespoke to each card.
  * The `bg` is a preset, token-driven background treatment.
  */
-export function Vignette({ scene, bg = 'gradient', replay = 0, className }: VignetteProps) {
+export function Vignette({ scene, bg = 'gradient', replay = 0, className, ...rest }: VignetteProps) {
   const [key, setKey] = useState(0);
   const { ref, inView } = useInView<HTMLSpanElement>({ once: true });
   // Replay the one-shot scene when it (re)enters view or the host bumps `replay` — but
@@ -40,7 +39,7 @@ export function Vignette({ scene, bg = 'gradient', replay = 0, className }: Vign
     setKey((k) => k + 1);
   }, [inView, replay]);
   return (
-    <span ref={ref} className={cx('rdz-vignette', `rdz-vignette--${bg}`, className)} aria-hidden="true">
+    <span ref={ref} className={cx('rdz-vignette', `rdz-vignette--${bg}`, className)} aria-hidden="true" {...rest}>
       <span className="rdz-vignette__scene" key={key}>
         {scene}
       </span>

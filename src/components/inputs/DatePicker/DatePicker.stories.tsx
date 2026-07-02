@@ -23,6 +23,6 @@ export const Default: Story = {
   args: { placeholder: 'Select date' },
   render: (args) => {
     const [value, setValue] = useState('');
-    return <DatePicker {...args} value={value} onChange={setValue} />;
+    return <DatePicker {...args} value={value} onValueChange={setValue} />;
   },
 };

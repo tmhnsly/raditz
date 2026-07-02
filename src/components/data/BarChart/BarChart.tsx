@@ -34,7 +34,7 @@ export function BarChart({
   const max = Math.max(minMax(data.map((d) => d.value)).max, 1);
   return (
     <div
-      className={cx('rdz-barchart', horizontal && 'rdz-barchart--h')}
+      className={cx('rdz-barchart', horizontal && 'rdz-barchart--h', className)}
       style={horizontal ? style : ({ '--rdz-barchart-h': height, ...style } as React.CSSProperties)}
       role="img"
       aria-label="Bar chart"

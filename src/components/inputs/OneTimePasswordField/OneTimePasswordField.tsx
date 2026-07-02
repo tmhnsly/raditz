@@ -11,7 +11,8 @@ export interface OneTimePasswordFieldProps extends Omit<HTMLAttributes<HTMLDivEl
   value?: string;
   /** Initial value (uncontrolled). @default "" */
   defaultValue?: string;
-  onChange?: (value: string) => void;
+  /** Fires with the concatenated code on every edit. */
+  onValueChange?: (value: string) => void;
   /** Fires when every box is filled. */
   onComplete?: (value: string) => void;
   /** 'text' (visible) or 'password' (masked). @default "text" */
@@ -29,14 +30,14 @@ export function OneTimePasswordField({
   length = 6,
   value,
   defaultValue = '',
-  onChange,
+  onValueChange,
   onComplete,
   type = 'text',
   disabled = false,
   className,
   ...rest
 }: OneTimePasswordFieldProps): ReactElement {
-  const [val, setVal] = useControllableState<string>({ value, defaultValue, onChange });
+  const [val, setVal] = useControllableState<string>({ value, defaultValue, onChange: onValueChange });
   const refs = useRef<Array<HTMLInputElement | null>>([]);
   const chars = otpDigits(val, length);
 

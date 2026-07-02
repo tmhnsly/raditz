@@ -1,7 +1,6 @@
 'use client';
 import { useState } from 'react';
 import type { ReactNode } from 'react';
-import { Frame } from '../../lib/Frame';
 import { SectionShell, SectionActionButton, type SectionBaseProps, type SectionAction } from '../../lib/SectionShell';
 
 export interface AnnouncementProps extends SectionBaseProps {
@@ -15,40 +14,38 @@ export interface AnnouncementProps extends SectionBaseProps {
 
 /** Announcement A — accent strip banner. The dismiss affordance is functional:
  * clicking it hides the banner for the rest of the session. */
-export function AnnouncementA({ text, action, dismissible, children }: AnnouncementProps) {
+export function AnnouncementA({ text, action, dismissible, background = 'none', children, ...props }: AnnouncementProps) {
   const [hidden, setHidden] = useState(false);
   if (hidden) return null;
   return (
-    <Frame>
+    <SectionShell pad="none" padClassName="sx-ann__strip" wrap="row sx-ann__strip-inner" background={background} {...props} animate={false}>
       {children ?? (
-        <div className="sx-ann__strip">
-          <div className="s-wrap row sx-ann__strip-inner">
-            {text}
-            {/* Deliberate exception: the strip CTA keeps its text-link LOOK (not a
-                SectionActionButton). A handler-only action still needs real button
-                semantics — an `<a>` without `href` isn't focusable — so the element
-                follows the action shape; `.sx-ann__link` styles both. */}
-            {action && (
-              action.href ? (
-                <a href={action.href} onClick={action.onClick} className="sx-ann__link">{action.label}</a>
-              ) : (
-                <button type="button" onClick={action.onClick} className="sx-ann__link">{action.label}</button>
-              )
-            )}
-            {dismissible && (
-              <button
-                type="button"
-                className="sx-ann__dismiss"
-                aria-label="Dismiss"
-                onClick={() => setHidden(true)}
-              >
-                ×
-              </button>
-            )}
-          </div>
-        </div>
+        <>
+          {text}
+          {/* Deliberate exception: the strip CTA keeps its text-link LOOK (not a
+              SectionActionButton). A handler-only action still needs real button
+              semantics — an `<a>` without `href` isn't focusable — so the element
+              follows the action shape; `.sx-ann__link` styles both. */}
+          {action && (
+            action.href ? (
+              <a href={action.href} onClick={action.onClick} className="sx-ann__link">{action.label}</a>
+            ) : (
+              <button type="button" onClick={action.onClick} className="sx-ann__link">{action.label}</button>
+            )
+          )}
+          {dismissible && (
+            <button
+              type="button"
+              className="sx-ann__dismiss"
+              aria-label="Dismiss"
+              onClick={() => setHidden(true)}
+            >
+              ×
+            </button>
+          )}
+        </>
       )}
-    </Frame>
+    </SectionShell>
   );
 }
 

@@ -1,15 +1,18 @@
-import { forwardRef } from 'react';
-import type { InputHTMLAttributes, ReactNode } from 'react';
-import { cx } from '../../internal';
-import { Icon } from '../../display/Icon/Icon';
+import { forwardRef } from "react";
+import type { InputHTMLAttributes, ReactNode } from "react";
+import { cx } from "../../internal";
+import { Icon } from "../../display/Icon/Icon";
 
-export interface SearchProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> {
+export interface SearchProps extends Omit<
+  InputHTMLAttributes<HTMLInputElement>,
+  "size"
+> {
   /** Trailing hint, e.g. a `<kbd>esc</kbd>`. */
   hint?: ReactNode;
   /** Bordered standalone box, or a plain header row (inside popovers/menus). @default "field" */
-  variant?: 'field' | 'plain';
+  variant?: "field" | "plain";
   /** @default "md" */
-  size?: 'sm' | 'md';
+  size?: "sm" | "md" | "lg";
 }
 
 /**
@@ -20,13 +23,34 @@ export interface SearchProps extends Omit<InputHTMLAttributes<HTMLInputElement>,
  * Forwards its ref so callers can autofocus it. Pair with `fuzzyFilter`.
  */
 export const Search = forwardRef<HTMLInputElement, SearchProps>(function Search(
-  { hint, variant = 'field', size = 'md', className, placeholder = 'Search…', ...rest },
+  {
+    hint,
+    variant = "field",
+    size = "md",
+    className,
+    placeholder = "Search…",
+    ...rest
+  },
   ref,
 ) {
   return (
-    <div className={cx('rdz-search', `rdz-search--${variant}`, size === 'sm' && 'rdz-search--sm', className)}>
+    <div
+      className={cx(
+        "rdz-search",
+        `rdz-search--${variant}`,
+        size !== "md" && `rdz-search--${size}`,
+        className,
+      )}
+    >
       <Icon name="search" size="1em" className="rdz-search__icon" />
-      <input ref={ref} type="search" className="rdz-search__input" placeholder={placeholder} aria-label={placeholder} {...rest} />
+      <input
+        ref={ref}
+        type="search"
+        className="rdz-search__input"
+        placeholder={placeholder}
+        aria-label={placeholder}
+        {...rest}
+      />
       {hint ? <span className="rdz-search__hint">{hint}</span> : null}
     </div>
   );

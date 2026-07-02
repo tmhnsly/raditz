@@ -28,6 +28,6 @@ export const Default: Story = {
   },
   render: (args) => {
     const [files, setFiles] = useState<File[]>([]);
-    return <FileDropzone {...args} value={files} onChange={setFiles} />;
+    return <FileDropzone {...args} value={files} onValueChange={setFiles} />;
   },
 };

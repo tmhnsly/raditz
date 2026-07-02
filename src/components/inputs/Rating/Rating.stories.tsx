@@ -22,7 +22,7 @@ export const Default: Story = {
   args: { count: 5, size: 'md' },
   render: (args) => {
     const [value, setValue] = useState(0);
-    return <Rating {...args} value={value} onChange={setValue} />;
+    return <Rating {...args} value={value} onValueChange={setValue} />;
   },
 };
 
@@ -30,7 +30,7 @@ export const HalfStars: Story = {
   args: { count: 5, size: 'md', precision: 'half' },
   render: (args) => {
     const [value, setValue] = useState(2.5);
-    return <Rating {...args} value={value} onChange={setValue} />;
+    return <Rating {...args} value={value} onValueChange={setValue} />;
   },
 };
 

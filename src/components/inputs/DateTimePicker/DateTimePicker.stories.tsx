@@ -14,6 +14,6 @@ type Story = StoryObj;
 export const Default: Story = {
   render: (args) => {
     const [v, setV] = useState('2026-06-20T09:30');
-    return <DateTimePicker {...args} value={v} onChange={setV} />;
+    return <DateTimePicker {...args} value={v} onValueChange={setV} />;
   },
 };

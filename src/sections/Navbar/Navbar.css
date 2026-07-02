@@ -64,16 +64,17 @@
 /* SELECTED — the active label inverts over the pill. */
 .rdz-nav__links > a[data-active="true"] { color: var(--bg); }
 .rdz-nav__label { position: relative; z-index: 1; }
-/* the sliding selected pill — a single element sprung between items, behind labels. */
+/* the sliding selected pill — a single element sprung between items, behind labels.
+   Token-driven timing (--duration-slow scales with --motion-scale), so the shared
+   reduced-motion token collapse in _shared.scss zeroes it — no bespoke block needed. */
 .rdz-nav__pill {
   position: absolute; left: 0; top: 50%; z-index: 0;
-  width: var(--nav-w, 0); height: var(--nav-h, 2.25rem);
-  transform: translate(var(--nav-x, 0), -50%);
+  width: var(--rdz-nav-w, 0); height: var(--rdz-nav-h, 2.25rem);
+  transform: translate(var(--rdz-nav-x, 0), -50%);
   border-radius: var(--radius-lg); background: var(--text);
-  transition: transform 0.4s cubic-bezier(0.34, 1.3, 0.5, 1), width 0.4s cubic-bezier(0.34, 1.3, 0.5, 1);
+  transition: transform var(--duration-slow) var(--ease-spring), width var(--duration-slow) var(--ease-spring);
   pointer-events: none;
 }
-@media (prefers-reduced-motion: reduce) { .rdz-nav__pill { transition: none; } }
 
 /* Collapse the pill nav into the burger on narrow widths. AFTER the base rules so
    display:none wins; the CTA moves to the burger sheet (toggle + burger stay).
@@ -123,7 +124,7 @@
 /* ── Navbar ── */
 .sx-nav__brand-row { gap: var(--space-3); }
 .sx-nav__logo { width: 1.875rem; height: 1.875rem; border-radius: var(--radius-md); }
-.sx-nav__logo-glyph { font-family: var(--font-mono); font-size: 0.9375rem; font-weight: 700; }
+.sx-nav__logo-glyph { font-family: var(--font-mono); font-size: 0.9375rem; font-weight: var(--fw-bold); }
 .sx-nav__brand { letter-spacing: -0.02em; }
 /* The sticky nav is only a backdrop for the floating glass bar — it has no fill
    or border of its own, otherwise a seam appears where it meets the hero. */
@@ -131,6 +132,6 @@
 .sx-nav__bar-glass { padding: 0.625rem var(--space-5); background: var(--glass); backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur)); border: 1px solid var(--glass-sheen); border-radius: var(--radius-panel); box-shadow: var(--shadow-3); }
 .sx-nav__brand-row-sm { gap: 10px; }
 .sx-nav__logo-md { width: 1.75rem; height: 1.75rem; border-radius: var(--radius-md); }
-.sx-nav__logo-glyph-md { font-family: var(--font-mono); font-size: 0.875rem; font-weight: 700; }
+.sx-nav__logo-glyph-md { font-family: var(--font-mono); font-size: 0.875rem; font-weight: var(--fw-bold); }
 .sx-nav__pad { padding: var(--space-4); }
 .sx-nav__note { padding: 0 var(--space-4) var(--space-4); font-size: var(--fs-caption); }

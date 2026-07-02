@@ -22,6 +22,6 @@ export const Default: Story = {
   args: { length: 6, type: 'text' },
   render: (args) => {
     const [value, setValue] = useState('');
-    return <OneTimePasswordField {...args} value={value} onChange={setValue} />;
+    return <OneTimePasswordField {...args} value={value} onValueChange={setValue} />;
   },
 };

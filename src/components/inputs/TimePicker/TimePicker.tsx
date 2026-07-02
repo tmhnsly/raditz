@@ -7,7 +7,9 @@ export interface TimePickerProps extends Omit<HTMLAttributes<HTMLSpanElement>, '
   value?: string;
   /** Initial "HH:mm" (uncontrolled). @default "" */
   defaultValue?: string;
-  onChange?: (value: string) => void;
+  /** Fires with the new 24-hour "HH:mm" string. */
+  onValueChange?: (value: string) => void;
+  /** Trigger text when no time is chosen. @default "Select time" */
   placeholder?: string;
   /** 12-hour display with AM/PM. @default true */
   hour12?: boolean;
@@ -19,13 +21,13 @@ export interface TimePickerProps extends Omit<HTMLAttributes<HTMLSpanElement>, '
 /**
  * TimePicker — a trigger that opens hour / minute (/ AM-PM) columns. The value is
  * a canonical 24-hour `HH:mm` string; the display follows `hour12`. Controlled
- * with `value`/`onChange` or uncontrolled with `defaultValue`. Built on the pure
+ * with `value`/`onValueChange` or uncontrolled with `defaultValue`. Built on the pure
  * `time` helpers (see time.test.ts); renders into an {@link Overlay}.
  */
 export function TimePicker({
   value,
   defaultValue = '',
-  onChange,
+  onValueChange,
   placeholder = 'Select time',
   hour12 = true,
   minuteStep = 5,
@@ -33,7 +35,7 @@ export function TimePicker({
   className,
   ...rest
 }: TimePickerProps): ReactElement {
-  const [val, setVal] = useControllableState<string>({ value, defaultValue, onChange });
+  const [val, setVal] = useControllableState<string>({ value, defaultValue, onChange: onValueChange });
   const { open, toggle, close, anchorRef } = useTrigger<HTMLButtonElement>({});
   const t = parseTime(val);
   const h = t?.h ?? 0;

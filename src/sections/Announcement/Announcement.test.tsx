@@ -52,6 +52,19 @@ describe('Announcement (section)', () => {
     expect(onClick).toHaveBeenCalled();
   });
 
+  it('AnnouncementA keeps its compact strip DOM (own pad class + .s-wrap row)', () => {
+    const { container } = render(<AnnouncementA text="strip" />);
+    const strip = container.querySelector('.sx-ann__strip');
+    expect(strip).toBeTruthy();
+    expect(strip?.querySelector('.s-wrap.row.sx-ann__strip-inner')).toBeTruthy();
+  });
+
+  it('AnnouncementA honours SectionBaseProps (image + scrim backdrop)', () => {
+    const { container } = render(<AnnouncementA text="strip" image="/x.jpg" scrim />);
+    expect(container.querySelector('.rdz-secbg--scrim')).toBeTruthy();
+    expect(container.querySelector('.rdz-secbg__content .sx-ann__strip')).toBeTruthy();
+  });
+
   it('AnnouncementA children override the body', () => {
     render(
       <AnnouncementA text="unused">

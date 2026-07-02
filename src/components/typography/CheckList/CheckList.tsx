@@ -1,14 +1,13 @@
-import type { ReactNode } from 'react';
+import type { HTMLAttributes, ReactNode } from 'react';
 import { cx } from '../../internal';
 
-export interface CheckListProps {
+export interface CheckListProps extends HTMLAttributes<HTMLUListElement> {
   /** The items to list (strings or nodes). */
   items: ReactNode[];
   /** Lay out across this many columns (collapses to 1 on a narrow container). @default 1 */
   columns?: 1 | 2;
   /** Marker style. @default 'check' */
   marker?: 'check' | 'dot';
-  className?: string;
 }
 
 /**
@@ -16,9 +15,9 @@ export interface CheckListProps {
  * a list of points, each led by an accent check (or dot), optionally in two
  * columns. A deep module so products stop hand-rolling `ul + icon + grid` CSS.
  */
-export function CheckList({ items, columns = 1, marker = 'check', className }: CheckListProps) {
+export function CheckList({ items, columns = 1, marker = 'check', className, ...rest }: CheckListProps) {
   return (
-    <ul className={cx('rdz-checklist', columns === 2 && 'rdz-checklist--2col', className)}>
+    <ul className={cx('rdz-checklist', columns === 2 && 'rdz-checklist--2col', className)} {...rest}>
       {items.map((item, i) => (
         <li key={i} className="rdz-checklist__item">
           {marker === 'dot' ? (

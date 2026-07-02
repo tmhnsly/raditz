@@ -78,6 +78,7 @@ export const C_MobileDropdown: Story = {
         { label: 'Sign in', href: '#', variant: 'ghost' },
         { label: 'Get started', href: '#', variant: 'primary' },
       ]}
+      footnote="Frame ≈ 360px — links collapse into the burger dropdown. Tap the menu icon to toggle."
     />
   ),
 };
@@ -86,6 +87,7 @@ export const D_BottomTabBar: Story = {
   name: 'D · Bottom tab bar (iOS-style)',
   render: () => (
     <NavbarD
+      preview="app content"
       tabs={[
         { id: 'home', label: 'Home', icon: <TabIcon><path d="M3 11.5 12 4l9 7.5M5 10v9h5v-5h4v5h5v-9" /></TabIcon> },
         { id: 'search', label: 'Search', icon: <TabIcon><circle cx="11" cy="11" r="7" /><path d="m21 21-4.3-4.3" /></TabIcon> },

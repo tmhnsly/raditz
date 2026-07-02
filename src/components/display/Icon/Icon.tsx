@@ -1,11 +1,11 @@
-import type { ReactElement } from 'react';
+import type { ReactElement, SVGAttributes } from 'react';
 import { ICONS } from './icons';
 import type { IconName } from './icons';
 import { cx } from '../../internal';
 
 export type { IconName };
 
-export interface IconProps {
+export interface IconProps extends SVGAttributes<SVGElement> {
   /** Registry icon name (see icons.ts). */
   name: IconName;
   /** Width/height — a single size variable for consistency. Defaults to `1em`
@@ -17,7 +17,6 @@ export interface IconProps {
   color?: string;
   /** When set, the icon is a labelled image for screen readers; otherwise aria-hidden. */
   title?: string;
-  className?: string;
 }
 
 /**
@@ -28,11 +27,12 @@ export interface IconProps {
  *   <Icon name="search" />
  *   <Icon name="instagram" size="1.25rem" />
  */
-export function Icon({ name, size = '1em', strokeWidth = 2, color, title, className }: IconProps): ReactElement | null {
+export function Icon({ name, size = '1em', strokeWidth = 2, color, title, className, ...rest }: IconProps): ReactElement | null {
   const Glyph = ICONS[name];
   if (!Glyph) return null;
   // No event handlers / hooks here on purpose — Icon stays a pure, server-
-  // renderable glyph. A *clickable* icon belongs in an interactive control
+  // renderable glyph (spreading CONSUMER props through is fine; Icon itself
+  // adds none). A *clickable* icon belongs in an interactive control
   // (IconButton / Button), so the react-icons graph never forces a client
   // boundary onto otherwise-static consumers.
   return (
@@ -44,6 +44,7 @@ export function Icon({ name, size = '1em', strokeWidth = 2, color, title, classN
       title={title}
       role={title ? 'img' : undefined}
       aria-hidden={title ? undefined : true}
+      {...rest}
     />
   );
 }

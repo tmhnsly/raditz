@@ -25,6 +25,6 @@ export const Default: Story = {
   },
   render: (args) => {
     const [tags, setTags] = useState<string[]>(['react']);
-    return <TagInput {...args} value={tags} onChange={setTags} />;
+    return <TagInput {...args} value={tags} onValueChange={setTags} />;
   },
 };

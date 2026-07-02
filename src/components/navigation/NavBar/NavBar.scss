@@ -7,7 +7,21 @@
 
 .rdz-navbar--vertical { flex-direction: column; align-items: stretch; }
 
-.rdz-navbar__indicator { position: absolute; left: 0; top: 0; z-index: 0; border-radius: var(--radius-control); transition: transform var(--duration-base) var(--ease-spring), width var(--duration-base) var(--ease-standard), height var(--duration-base) var(--ease-standard), opacity var(--duration-fast) var(--ease-standard); pointer-events: none; }
+/* Geometry arrives as --rdz-navind-* custom properties (measured in NavBar.tsx);
+   only custom props cross the JS/CSS boundary — no inline real properties. */
+.rdz-navbar__indicator {
+  position: absolute;
+  left: var(--rdz-navind-left, 0);
+  top: var(--rdz-navind-top, 0);
+  width: var(--rdz-navind-w, auto);
+  height: var(--rdz-navind-h, auto);
+  transform: translate(var(--rdz-navind-x, 0), var(--rdz-navind-y, 0));
+  opacity: var(--rdz-navind-opacity, 0);
+  z-index: 0;
+  border-radius: var(--radius-control);
+  transition: transform var(--duration-base) var(--ease-spring), width var(--duration-base) var(--ease-standard), height var(--duration-base) var(--ease-standard), opacity var(--duration-fast) var(--ease-standard);
+  pointer-events: none;
+}
 
 .rdz-navbar--pill .rdz-navbar__indicator { background: var(--accent-surface); }
 

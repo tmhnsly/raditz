@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { SectionShell, SectionActions, type SectionBaseProps, type SectionAction } from '../../lib/SectionShell';
+import { Badge } from '../../components/display/Badge';
 
 export interface HeroProps extends SectionBaseProps {
   /** Headline (required). */
@@ -23,7 +24,7 @@ export function HeroA({ title, eyebrow, lede, actions, background = 'none', anim
     <SectionShell wrap="col sx-center sx-gap-5" background={background} animate={animate} {...props}>
       {children ?? (
         <>
-          {eyebrow && <span className="rdz-badge rdz-badge--soft">{eyebrow}</span>}
+          {eyebrow && <Badge>{eyebrow}</Badge>}
           <h2 className="h-display sx-hero__title">{title}</h2>
           {lede && <p className="lede sx-hero__lede">{lede}</p>}
           <SectionActions actions={actions} size="lg" />

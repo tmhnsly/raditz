@@ -9,7 +9,8 @@ export interface DateTimePickerProps extends Omit<HTMLAttributes<HTMLSpanElement
   value?: string;
   /** Initial combined value (uncontrolled). @default "" */
   defaultValue?: string;
-  onChange?: (value: string) => void;
+  /** Fires with the new combined `YYYY-MM-DDTHH:mm` string. */
+  onValueChange?: (value: string) => void;
   /** 12-hour time display. @default true */
   hour12?: boolean;
   disabled?: boolean;
@@ -27,19 +28,19 @@ const combine = (d: string, t: string): string => (d && t ? `${d}T${t}` : d ? d 
 export function DateTimePicker({
   value,
   defaultValue = '',
-  onChange,
+  onValueChange,
   hour12 = true,
   disabled = false,
   className,
   ...rest
 }: DateTimePickerProps): ReactElement {
-  const [val, setVal] = useControllableState<string>({ value, defaultValue, onChange });
+  const [val, setVal] = useControllableState<string>({ value, defaultValue, onChange: onValueChange });
   const datePart = val.includes('T') ? val.split('T')[0] : val;
   const timePart = val.includes('T') ? val.split('T')[1] ?? '' : '';
   return (
     <span className={cx('rdz-datetimepicker', className)} {...rest}>
-      <DatePicker value={datePart} onChange={(d) => setVal(combine(d, timePart))} disabled={disabled} />
-      <TimePicker value={timePart} onChange={(t) => setVal(combine(datePart, t))} hour12={hour12} disabled={disabled} />
+      <DatePicker value={datePart} onValueChange={(d) => setVal(combine(d, timePart))} disabled={disabled} />
+      <TimePicker value={timePart} onValueChange={(t) => setVal(combine(datePart, t))} hour12={hour12} disabled={disabled} />
     </span>
   );
 }

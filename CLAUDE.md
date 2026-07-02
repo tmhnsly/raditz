@@ -31,7 +31,8 @@ A story's `meta.title` MUST be `Components/<TitleCase(category)>/<Name>` (e.g.
 `Components/Actions/Button`). Don't add a new top-level category or a free-form title —
 `scripts/validate-taxonomy.mjs` rejects both. (One curated showroom override exists:
 `layout/AppShell → Pages/App shell`, declared in `TITLE_EXCEPTIONS`.) Shared, non-public
-helpers go in `src/components/internal/` (never exported).
+helpers go in `src/components/internal/` (not exported directly — a curated set of
+primitives is re-exported via `src/lib/hooks.ts`).
 
 ## After adding / moving / renaming a component
 

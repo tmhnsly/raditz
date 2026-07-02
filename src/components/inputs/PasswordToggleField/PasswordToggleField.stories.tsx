@@ -23,6 +23,6 @@ export const Default: Story = {
   args: { placeholder: 'Enter your password' },
   render: (args) => {
     const [value, setValue] = useState('');
-    return <PasswordToggleField {...args} value={value} onChange={setValue} />;
+    return <PasswordToggleField {...args} value={value} onValueChange={setValue} />;
   },
 };

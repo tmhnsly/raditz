@@ -1,8 +1,16 @@
 // jsdom polyfills for APIs some components use (overlays, charts, media).
-import { afterEach } from 'vitest';
+import { afterEach, vi } from 'vitest';
 import { cleanup } from '@testing-library/react';
 
 afterEach(() => cleanup());
+
+// @testing-library/react's asyncWrapper drains the microtask queue with a
+// `setTimeout(0)` and only auto-advances fake timers via a `jest` global. Under
+// `vi.useFakeTimers()` (no `jest` global) every awaited userEvent call would
+// hang forever. Shim the one API RTL calls; it's a no-op with real timers.
+(globalThis as { jest?: unknown }).jest = {
+  advanceTimersByTime: (ms: number) => vi.advanceTimersByTime(ms),
+};
 
 if (!('ResizeObserver' in globalThis)) {
   (globalThis as any).ResizeObserver = class {

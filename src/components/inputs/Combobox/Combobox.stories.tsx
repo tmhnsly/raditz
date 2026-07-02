@@ -30,6 +30,6 @@ export const Default: Story = {
   args: { placeholder: 'Select a fruit…' },
   render: (args) => {
     const [value, setValue] = useState('');
-    return <Combobox {...args} options={fruits} value={value} onChange={setValue} />;
+    return <Combobox {...args} options={fruits} value={value} onValueChange={setValue} />;
   },
 };

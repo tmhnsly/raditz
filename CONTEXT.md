@@ -73,7 +73,13 @@ that stops arrows scrolling the page while a picker is open (a 2D column/grid
 that `useRoving`'s single index can't model; both pickers used to hand-roll it).
 Its `strategy` is `{ kind: 'grid' }` (live `grid-template-columns` row jumps —
 DatePicker) or `{ kind: 'columns' }` (sibling-column hops — TimePicker).
-_Avoid_: per-component arrow handlers; a second DOM-focus rover.
+An ARIA role that implies keyboard is a CONTRACT: the 2026-07-02 consistency pass
+found Tabs (`tablist`), Rating (`radiogroup`) and Toolbar (`toolbar`) shipping the
+role with no arrows at all (axe can't see this) — all three now implement the
+pattern (Tabs/Rating via `rovingIndex`/`onKeys`; Toolbar as a thin live-queried
+DOM-focus rover because its children are arbitrary) with behaviour tests.
+_Avoid_: per-component arrow handlers; a second DOM-focus rover; a roving-pattern
+role without its keyboard.
 
 **Searchable-list** (deepened 2026-07-02):
 `useSearchableList` (`internal/`) — the one owner of the filter-and-rove listbox
@@ -152,8 +158,35 @@ import it, never re-express it. `Checkbox` gained `indeterminate` so DataTable's
 header tri-state uses the real component instead of an inlined copy of its markup;
 the `rdz-btn rdz-btn--*` literals in AlertDialog/Form/DataTable's pager were
 replaced with `<Button>` (which owns that class scheme and carries no `'use client'`).
-_Avoid_: hand-written `rdz-btn`/`rdz-check` class strings; copying a sibling
-component's markup because its interface is one prop too narrow — widen the interface.
+Sections obey the same rule: Hero/Pricing badges are real `<Badge>`s and the
+Cta/Newsletter email captures are real `<Input>`s (were hand-written `rdz-badge`/
+`rdz-input` class strings).
+
+**API conventions** (pinned 2026-07-02, machine-gated):
+- The value callback is **`onValueChange(value)`** everywhere (Slider, RadioGroup,
+  Tabs, ToggleGroup, Accordion, Rating, Combobox, the pickers, TagInput,
+  FileDropzone, OTP/PasswordToggle…). Never re-declare native `onChange` with a
+  non-event signature — wrapper-rooted inputs `Omit` it; native-rooted inputs pass
+  the real event `onChange` through.
+- Every public component accepts `className` (merged onto the root) and spreads
+  rest props; input primitives forward refs to their native control. Gated by
+  `src/api-contract.test.tsx` (className-lands-on-root, 103 components; sections
+  are the documented skip — SectionBaseProps has no className by design) and
+  `src/ref-contract.test.tsx`.
+- Accessible names ride native `aria-label` through the rest spread — never a
+  bespoke `ariaLabel` prop (the charts' one was removed).
+- `size` is `'sm' | 'md' | 'lg'`.
+- Overlay faces support BOTH modes: controlled `open`/`onOpenChange` and
+  uncontrolled `defaultOpen` (Dialog/Drawer/AlertDialog/CommandPalette gained it;
+  ContextMenu/Menubar gained the controlled side; Tooltip's hover state is
+  deliberately internal). Closing must return focus to the trigger (DropdownMenu/
+  Menubar were stranding it — fixed with tests).
+- Style rules are gated by `scripts/style-contract.test.mjs`: no inline styles
+  setting real properties (custom `--rdz-*` props only; allowlisted SVG paint-server
+  refs), no z-index outside the ladder/0-2, README counts match `sourceSurface()`.
+_Avoid_: hand-written `rdz-btn`/`rdz-check`/`rdz-badge`/`rdz-input` class strings;
+copying a sibling component's markup because its interface is one prop too narrow —
+widen the interface.
 
 **Overlay internals** (split 2026-06-19):
 `overlayHooks.ts` is now a thin re-export barrel over one file per concern —
@@ -188,7 +221,7 @@ basename≠dirname fragility. The walk is unit-tested (sanity bounds, file-exist
 The **a11y gate** (`src/a11y.test.tsx`) is the browser-side adapter of this surface
 (deepened 2026-07-02): it globs components AND sections stories and axe-checks EVERY
 composed story (197 at last count — it used to check only components' first stories,
-so all 23 sections were invisible to it). It can't import the Node-only walk, so
+so all 22 sections were invisible to it). It can't import the Node-only walk, so
 `scripts/a11y-surface.test.mjs` asserts its glob patterns cover every story file
 `sourceSurface()` reports — the mirror can't silently shrink. Skips are per-story,
 per-rule, commented (`SKIPPED_RULES` — only SectionBackground's `<video>` autoplay

@@ -1,15 +1,13 @@
 'use client';
 import { useId, useState } from 'react';
-import type { MouseEvent, ReactNode } from 'react';
+import type { HTMLAttributes, MouseEvent, ReactNode } from 'react';
 import { scaleLinear } from '@visx/scale';
 import { LinePath, AreaClosed, Circle, Line } from '@visx/shape';
 import { GridRows } from '@visx/grid';
 import { Group } from '@visx/group';
 import { curveMonotoneX } from '@visx/curve';
 import { ChartFrame } from '../charts/ChartFrame';
-import { paddedDomain } from '../../internal/scale';
-import { ChartTip } from '../../internal/ChartTip';
-import { ChartAxis } from '../../internal/ChartAxis';
+import { paddedDomain, ChartTip, ChartAxis } from '../../internal';
 
 export interface LinePoint {
   /** The plotted value. */
@@ -25,7 +23,7 @@ export interface LineAnnotation {
   label?: string;
 }
 
-export interface LineChartProps {
+export interface LineChartProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
   data: LinePoint[];
   /** Chart height in px. @default 240 */
   height?: number;
@@ -41,7 +39,6 @@ export interface LineChartProps {
   formatY?: (y: number) => string;
   /** Custom hover tooltip content; omit for a simple value tooltip. */
   renderTooltip?: (point: LinePoint, index: number) => ReactNode;
-  ariaLabel?: string;
 }
 
 /**
@@ -59,12 +56,13 @@ export function LineChart({
   references = [],
   formatY = (y) => String(y),
   renderTooltip,
-  ariaLabel = 'Line chart',
+  ...rest
 }: LineChartProps) {
   const [active, setActive] = useState<number | null>(null);
   const uid = useId().replace(/:/g, ''); // unique gradient ids per instance
   const n = data.length;
-  if (n === 0) return <ChartFrame height={height} ariaLabel={ariaLabel}>{() => null}</ChartFrame>;
+  // Default accessible name; a consumer `aria-label` in `rest` overrides it.
+  if (n === 0) return <ChartFrame height={height} aria-label="Line chart" {...rest}>{() => null}</ChartFrame>;
   const ys = data.map((d) => d.y);
   const yDomain = paddedDomain(ys, 0.12);
 
@@ -74,8 +72,9 @@ export function LineChart({
   return (
     <ChartFrame
       height={height}
-      ariaLabel={ariaLabel}
+      aria-label="Line chart"
       margin={{ left: 40, right: 18, top: 18, bottom: 16 }}
+      {...rest}
       defs={
         <>
           <linearGradient id={`${uid}-line`} x1="0" y1="0" x2="1" y2="0">
@@ -115,6 +114,10 @@ export function LineChart({
             <GridRows scale={y} width={innerWidth} numTicks={4} className="rdz-chart__grid" />
             <ChartAxis y={y} formatY={formatY} />
 
+            {/* The `fill`/`stroke: url(#id)` inline styles below are sanctioned:
+                they reference per-instance SVG gradient defs by generated id —
+                a paint-server URL can't be expressed via a class or custom
+                property (the id is unique per mount). */}
             {area ? (
               <AreaClosed data={data} x={(_d, i) => x(i) ?? 0} y={(d) => y(d.y) ?? 0} yScale={y} curve={curveMonotoneX} className="rdz-chart__area" style={{ fill: `url(#${uid}-area)` }} />
             ) : null}

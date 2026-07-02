@@ -1,6 +1,6 @@
 /* Pricing — section styles (co-located with the component). */
 /* ── Pricing ── */
-.sx-price__num { font-size: 2.25rem; font-weight: 700; letter-spacing: -0.03em; }
+.sx-price__num { font-size: 2.25rem; font-weight: var(--fw-bold); letter-spacing: -0.03em; }
 .sx-price__list { gap: 0.5rem; list-style: none; padding: 0; margin: 0; font-size: var(--fs-body-s); color: var(--text-soft); }
 /* Cards flex-GROW to fill the row so they use the available width (no capped
    islands with empty gutters), and stay a row until the container is genuinely
@@ -33,3 +33,7 @@
 /* Heading + period toggle share a row while there's room (flex-wrap), stacking
    only when genuinely tight — not at an arbitrary early breakpoint. */
 .sx-price__toggle-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: var(--space-3) var(--space-6); width: 100%; text-align: center; }
+/* The header shares this row with the sub + period toggle: sx-center's
+   `margin-inline: auto` would swallow the row's free space and shove its
+   siblings to the edge, so `align` here affects text alignment only. */
+.sx-price__toggle-head > .sx-sec__head { margin-inline: 0; }
