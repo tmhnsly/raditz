@@ -59,8 +59,9 @@
 /* Touch ergonomics — approach iOS-native picker sizing: ≥44px targets and
    body-size type so the panel reads like a native date wheel, not desktop-dense. */
 @media (pointer: coarse) {
-  .rdz-calendar__day { font-size: var(--fs-body); min-height: 2.75rem; }
-  .rdz-calendar__cell { font-size: var(--fs-body); padding: 0.875rem 0; }
-  .rdz-calendar__nav { width: 2.75rem; height: 2.75rem; }
-  .rdz-calendar__title { min-height: 2.75rem; }
+  .rdz-calendar { width: 19.5rem; }
+  .rdz-calendar__day { font-size: var(--fs-body); min-height: 2.75rem; border-radius: var(--radius-md); }
+  .rdz-calendar__cell { font-size: var(--fs-body); padding: 0.75rem 0; border-radius: var(--radius-md); }
+  .rdz-calendar__nav { width: 2.75rem; height: 2.75rem; border-radius: var(--radius-md); }
+  .rdz-calendar__title { min-height: 2.75rem; font-size: var(--fs-body); }
 }

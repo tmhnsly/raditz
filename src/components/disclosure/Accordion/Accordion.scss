@@ -30,6 +30,12 @@
 
 .rdz-accordion__item[data-state="open"] .rdz-accordion__panel { grid-template-rows: 1fr; visibility: visible; }
 
+/* grid-template-rows animation reflows the document every frame — cheap on
+   desktop, visible on iOS. A shorter run on touch halves the frames paid. */
+@media (pointer: coarse) {
+  .rdz-accordion__panel { transition-duration: var(--duration-fast); }
+}
+
 /* visibility lives on the PANEL (not the content) so the whole role="region" —
    not just its text — leaves the a11y tree + tab order when collapsed. */
 .rdz-accordion__content { min-height: 0; overflow: hidden; }
