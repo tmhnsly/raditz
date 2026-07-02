@@ -31,7 +31,13 @@ Popover, hover timers for HoverCard, external control for Dialog). A *separate
 concern* from the Overlay surface — it stays in each component, not in **Overlay**.
 Now a real module (realized 2026-06-19): `useTrigger` (`internal/trigger.ts`) owns the
 controlled/uncontrolled open state + the anchor ref + `toggle`/`close`, so faces stop
-copy-pasting it. Faces drive it their own way — Popover/DropdownMenu/DatePicker
+copy-pasting it. Its open-state core is **`useOpenState`** (`internal/`, extracted
+2026-07-02) — the one place the DS naming convention (`open`/`defaultOpen`/`onOpenChange`
+→ `useControllableState`) is pinned; the anchorless modal faces (Dialog, Drawer,
+AlertDialog, CommandPalette, Lightbox, ContextMenu) consume it directly since
+`useTrigger`'s anchor/toggle baggage doesn't fit them. (Menubar stays hand-wired:
+its open state is the open menu's INDEX, not a boolean — a generic shim would
+re-create what the shim exists to hide.) Faces drive it their own way — Popover/DropdownMenu/DatePicker
 click→`toggle`, HoverCard hover-timers→`setOpen` (which restored HoverCard's lost
 controllability). Deliberately NOT folded into Overlay (the surface stays separate from
 what opens it — this honours the decision below, it just kills the duplication).
@@ -169,10 +175,20 @@ Cta/Newsletter email captures are real `<Input>`s (were hand-written `rdz-badge`
   non-event signature — wrapper-rooted inputs `Omit` it; native-rooted inputs pass
   the real event `onChange` through.
 - Every public component accepts `className` (merged onto the root) and spreads
-  rest props; input primitives forward refs to their native control. Gated by
-  `src/api-contract.test.tsx` (className-lands-on-root, 103 components; sections
-  are the documented skip — SectionBaseProps has no className by design) and
-  `src/ref-contract.test.tsx`.
+  rest props; input primitives forward refs to their native control. SECTIONS TOO
+  (2026-07-02): `SectionShell` forwards `className`/`id`/`data-*`/rest to its root
+  Frame (this subsumed the short-lived `frameData` prop), and `SectionBaseProps`
+  carries them explicitly (not full HTMLAttributes — its `title: string` would
+  collide with sections' `title: ReactNode` content props), so every variant takes
+  an anchor `id`/`data-testid`/one-off class. Gated by `src/api-contract.test.tsx`
+  — two passes: composed STORIES with a sentinel-className override (args-blind
+  `render: () =>` stories auto-skip by function arity, a mechanical fact) + a
+  component FLOOR over every barrel export; all skips are named per-component
+  facts with staleness guards, not surface bookkeeping — and `src/ref-contract.test.tsx`.
+- The release spine is ONE command: `pnpm release:gate` = preflight (taxonomy,
+  barrel/catalog drift, use-client no-op) → `build:pkg` → `check-consumer` (dist
+  RSC/styles/tree-shaking) → full test suite. The `/release` skill calls it; only
+  version/changelog/tag remain human steps.
 - Accessible names ride native `aria-label` through the rest spread — never a
   bespoke `ariaLabel` prop (the charts' one was removed).
 - `size` is `'sm' | 'md' | 'lg'`.
@@ -231,6 +247,14 @@ shared utils; deletion test passes (the logic reappears in the consumer if remov
 `sourceSurface()` walk with fully-resolved paths. `gen-barrel`, `gen-catalog`, and
 `gen-tests` are thin **adapters** over it. Killed 4 duplicated tree-walks and the
 basename≠dirname fragility. The walk is unit-tested (sanity bounds, file-existence, and barrel-agreement); byte-identical generated output is gated by `release:preflight`.
+**`shippedSourceFiles()`** (added 2026-07-02) is its flat-file face — the shipped
+.ts/.tsx surface (components + sections + **lib**, minus stories/tests/d.ts). The
+`add-use-client` codemod walks it (no more hand EXTRA list — the lib strays
+ColorSchemeToggle/InView are covered by construction) and `check-consumer` verifies
+directives in dist over the SAME list; `add-use-client.test.mjs` gates the
+missing-directive class (every CLIENT_RE-matching shipped file carries the directive
+or sits on the reasoned, staleness-guarded `SERVER_SAFE` allowlist — colorScheme.ts
+and SectionShell.tsx, both server-safe by design).
 The **a11y gate** (`src/a11y.test.tsx`) is the browser-side adapter of this surface
 (deepened 2026-07-02): it globs components AND sections stories and axe-checks EVERY
 composed story (197 at last count — it used to check only components' first stories,

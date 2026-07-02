@@ -1,7 +1,7 @@
 'use client';
 import { Fragment, useEffect, useMemo } from 'react';
 import type { HTMLAttributes, ReactNode, ReactElement } from 'react';
-import { cx, Overlay, useControllableState, useSearchableList } from '../../internal';
+import { cx, Overlay, useOpenState, useSearchableList } from '../../internal';
 import { Icon } from '../../display/Icon/Icon';
 import { Search } from '../../inputs/Search/Search';
 import type { IconName } from '../../display/Icon/Icon';
@@ -41,8 +41,7 @@ type FlatItem = CommandItem & { heading?: ReactNode };
  * An adapter face over {@link Overlay} (`centered` modal, focus trap).
  */
 export function CommandPalette({ open, defaultOpen = false, onOpenChange, groups = [], placeholder = 'Type a command or search…', hotkey = true, className, ...rest }: CommandPaletteProps): ReactElement | null {
-  const [isOpen, setOpen] = useControllableState<boolean>({ value: open, defaultValue: defaultOpen, onChange: onOpenChange });
-  const close = (): void => setOpen(false);
+  const { open: isOpen, setOpen, close } = useOpenState({ open, defaultOpen, onOpenChange });
 
   const flat = useMemo<FlatItem[]>(() => {
     const out: FlatItem[] = [];

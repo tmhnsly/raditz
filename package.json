@@ -37,6 +37,7 @@
     "build:pkg": "pnpm build:lib && pnpm build:css && node scripts/wrap-css-layer.mjs",
     "prepare": "pnpm build:pkg",
     "release:preflight": "node scripts/release-preflight.mjs",
+    "release:gate": "pnpm release:preflight && pnpm build:pkg && node scripts/check-consumer.mjs && pnpm test",
     "codemod:use-client": "node scripts/add-use-client.mjs",
     "rdz:install-skills": "node scripts/install-global-skills.mjs"
   },

@@ -4,6 +4,22 @@ All notable changes to Raditz are recorded here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/); versions are git tags `vX.Y.Z`.
 
 ## [Unreleased]
+- Sections accept `className`/`id`/`data-*` (forwarded to the section's root):
+  anchor links and test ids no longer need the `children` override. SectionShell's
+  bespoke `frameData` prop is gone (subsumed by the passthrough); NavbarA/B/C now
+  honour the passthrough they declared.
+- Preset values moved out of JS constant maps into component stylesheets
+  (Avatar/AvatarGroup sizes, AnimatedIcon speeds, Marquee direction).
+- One internal `useOpenState` owner for the modal faces' open-state convention;
+  `useTrigger` composes it.
+- Gates deepened: the `'use client'` codemod + dist verifier share one
+  `shippedSourceFiles()` surface (the hand-list blind spot over lib is closed, and
+  a missing source directive now fails the suite); `api-contract` rides composed
+  stories (hand-maintained props/skip tables gone, coverage widened to every
+  args-accepting story); `pnpm release:gate` is the one-command release spine so
+  the dist RSC check can't be skipped; fake-timer shim smoke test; catalog header
+  classes gated. New wiring tests for the explorer Sidebar's search mode-switch
+  and Form's live-validation state machine.
 
 ## [0.2.0] - 2026-07-02
 - **Section heading markup changed (consumer-visible):** every section heading now

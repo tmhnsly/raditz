@@ -1,6 +1,6 @@
 'use client';
 import type { CSSProperties, HTMLAttributes, ReactNode, ReactElement } from 'react';
-import { cx, Overlay, OverlayClose, useControllableState, useOverlayLabels } from '../../internal';
+import { cx, Overlay, OverlayClose, useOpenState, useOverlayLabels } from '../../internal';
 
 export interface DrawerProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
   /** Open state (controlled). */
@@ -41,8 +41,7 @@ export function Drawer({
   className,
   ...rest
 }: DrawerProps): ReactElement | null {
-  const [isOpen, setOpen] = useControllableState<boolean>({ value: open, defaultValue: defaultOpen, onChange: onOpenChange });
-  const close = (): void => setOpen(false);
+  const { open: isOpen, close } = useOpenState({ open, defaultOpen, onOpenChange });
   const { titleId, descId, labelledby, describedby } = useOverlayLabels(title, description);
   // Dynamic size flows through a CSS custom property (data, not inline styling);
   // the side class decides whether it drives width or height.

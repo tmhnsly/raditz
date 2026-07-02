@@ -1,6 +1,6 @@
 'use client';
 import type { HTMLAttributes, ReactNode, ReactElement } from 'react';
-import { cx, Overlay, useControllableState, useOverlayLabels } from '../../internal';
+import { cx, Overlay, useOpenState, useOverlayLabels } from '../../internal';
 import type { StatusTone } from '../../internal';
 import { Button } from '../../actions/Button/Button';
 
@@ -45,8 +45,7 @@ export function AlertDialog({
   className,
   ...rest
 }: AlertDialogProps): ReactElement | null {
-  const [isOpen, setOpen] = useControllableState<boolean>({ value: open, defaultValue: defaultOpen, onChange: onOpenChange });
-  const cancel = (): void => setOpen(false);
+  const { open: isOpen, close: cancel } = useOpenState({ open, defaultOpen, onOpenChange });
   const { titleId, descId, labelledby, describedby } = useOverlayLabels(title, description);
   return (
     <Overlay

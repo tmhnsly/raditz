@@ -2,6 +2,9 @@
 // LIB: curated lib allowlist shared by gen-barrel and gen-catalog.
 // sourceSurface(): walks src/components and src/sections, returning every public
 // entry (has a *.stories.tsx, internal excluded) with resolved file paths.
+// shippedSourceFiles(): the flat shipped .ts/.tsx surface (components + sections
+// + lib, minus stories/tests/d.ts) — the single seam the client-boundary tooling
+// (add-use-client codemod, check-consumer dist gate) walks.
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -40,6 +43,30 @@ function entry(category, name, dir) {
     storyFile: path.join(dir, `${name}.stories.tsx`),
     testFile: path.join(dir, `${name}.test.tsx`),
   };
+}
+
+// Everything that ends up in dist (preserveModules keeps the layout 1:1): every
+// .ts/.tsx under the three shipped roots, minus stories, tests and declarations.
+// src/lib is included in full — hand-authored 'use client' files there
+// (ColorSchemeToggle, InView) were invisible to the codemod when it walked only
+// components + sections plus a hand list.
+const SHIPPED_ROOTS = ['src/components', 'src/sections', 'src/lib'];
+
+function walkShipped(dir, out) {
+  for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+    const p = path.join(dir, e.name);
+    if (e.isDirectory()) walkShipped(p, out);
+    else if (/\.tsx?$/.test(e.name) && !/\.(stories|test)\.tsx?$/.test(e.name) && !e.name.endsWith('.d.ts')) {
+      out.push(p);
+    }
+  }
+  return out;
+}
+
+export function shippedSourceFiles() {
+  const out = [];
+  for (const root of SHIPPED_ROOTS) walkShipped(root, out);
+  return out.sort();
 }
 
 export function sourceSurface() {

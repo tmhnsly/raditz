@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import fs from 'node:fs';
-import { sourceSurface, LIB } from './public-surface.mjs';
+import { sourceSurface, shippedSourceFiles, LIB } from './public-surface.mjs';
 
 describe('sourceSurface', () => {
   const s = sourceSurface();
@@ -28,6 +28,16 @@ describe('sourceSurface', () => {
       expect(LIB, `${m} missing from LIB allowlist`).toContain(m);
       expect(barrel, `${m} missing from generated barrel`).toContain(`from '${m}'`);
     }
+  });
+  it('shippedSourceFiles: flat shipped surface covers all three roots, no test artifacts', () => {
+    const files = shippedSourceFiles();
+    // Sanity floor: ~140 component/section/lib sources at time of writing.
+    expect(files.length).toBeGreaterThan(100);
+    expect(files.some((f) => /\.(stories|test)\.tsx?$/.test(f) || f.endsWith('.d.ts'))).toBe(false);
+    // The two hand-authored 'use client' lib strays the old ROOTS+EXTRA walk missed:
+    expect(files).toContain('src/lib/ColorSchemeToggle.tsx');
+    expect(files).toContain('src/lib/InView.tsx');
+    for (const f of files) expect(fs.existsSync(f), f).toBe(true);
   });
   it('agrees with the committed barrel (every surface entry has a barrel export)', () => {
     const barrel = fs.readFileSync('src/index.ts', 'utf8');

@@ -1,4 +1,4 @@
-import type { ReactElement, ReactNode } from 'react';
+import type { HTMLAttributes, ReactElement, ReactNode } from 'react';
 import { Frame } from './Frame';
 import { InView } from './InView';
 import { cx } from '../components/internal';
@@ -22,7 +22,7 @@ export interface SectionVariantProps {
   scrim?: boolean;
 }
 
-export interface SectionShellProps {
+export interface SectionShellProps extends HTMLAttributes<HTMLDivElement> {
   /** Extra classes on the inner `.s-wrap` (grid + gap, e.g. "sx-g3 sx-gap-5"). */
   wrap?: string;
   /** Section padding. @default "default" */
@@ -42,11 +42,10 @@ export interface SectionShellProps {
   /** A transparent nav rendered above the content, floating over the shared
    * background (the "hero bleed" effect). Pass a nav with no background. */
   nav?: ReactNode;
-  /** Class on the preview Frame (e.g. "nav-frame", "ph--neutral"). */
+  /** The shell's OWN class on the preview Frame (e.g. "nav-frame", "ph--neutral").
+   * Distinct from `className`, which is the consumer's class — both merge onto
+   * the Frame root. */
   frameClassName?: string;
-  /** `data-*` attributes on the preview Frame — enumerated section axes ride
-   * data attributes (e.g. ImageFocus `data-size` / `data-place`). */
-  frameData?: Record<`data-${string}`, string | undefined>;
   /** Constrain the Frame width. */
   frameMaxWidth?: string;
   /** Content entrance choreography — the section's content blocks cascade in (staggered)
@@ -64,6 +63,11 @@ export interface SectionShellProps {
  * max-width wrapper (where the responsive container-query lives), with an
  * optional SectionBackground. Sections become content + a shell choice instead
  * of re-typing the triple-nested wrapper ~50 times.
+ *
+ * The root is the Frame: `className`, `id` and any other div attributes
+ * (`data-*`, aria, handlers) land there, so every section variant that spreads
+ * its rest props into the shell supports anchoring (`id`), testing
+ * (`data-testid`) and consumer classes for free.
  */
 export function SectionShell({
   wrap,
@@ -76,10 +80,11 @@ export function SectionShell({
   scrim = false,
   nav,
   frameClassName,
-  frameData,
   frameMaxWidth,
   animate = 'scroll',
+  className,
   children,
+  ...rest
 }: SectionShellProps) {
   const padClass = pad === 'sm' ? 's-pad-sm' : pad === 'none' ? undefined : 's-pad';
   // `scroll` routes content through InView (a client boundary that toggles `is-in` on
@@ -103,7 +108,7 @@ export function SectionShell({
   );
   const hasBg = background !== 'none' || !!image || !!video;
   return (
-    <Frame className={frameClassName} data={frameData} maxWidth={frameMaxWidth}>
+    <Frame className={cx(frameClassName, className)} maxWidth={frameMaxWidth} {...rest}>
       {hasBg ? (
         <SectionBackground background={background} parallax={parallax} image={image} video={video} scrim={scrim}>{inner}</SectionBackground>
       ) : (
@@ -208,17 +213,27 @@ export type SectionAction = {
 
 /**
  * The props every content-driven section variant accepts: the decorative
- * backdrop options ({@link SectionVariantProps}) plus a `children` escape hatch
+ * backdrop options ({@link SectionVariantProps}), the root passthrough
+ * (`className` / `id` / `data-*`, carried by the variants' `{...props}` spread
+ * to {@link SectionShell}'s root Frame), plus a `children` escape hatch
  * that, when provided, replaces the section's auto-rendered body. Section prop
  * interfaces (e.g. `HeroProps`) extend this and add their content fields.
+ * (Deliberately NOT the full `HTMLAttributes` — its `title?: string` etc. would
+ * collide with sections' own `title?: ReactNode` content props.)
  */
 export type SectionBaseProps = SectionVariantProps & {
+  /** Consumer class merged onto the section's root element. */
+  className?: string;
+  /** Anchor id on the section's root element (in-page nav targets). */
+  id?: string;
   /** Content entrance choreography, forwarded to {@link SectionShell}: `'scroll'`
    *  (default) reveals on scroll, `'load'` animates on mount (above-the-fold heroes),
    *  `false` is static. @default 'scroll' */
   animate?: boolean | 'scroll' | 'load';
   /** Replaces the auto-rendered body inside the themed shell when provided. */
   children?: ReactNode;
+  /** `data-*` attributes forwarded to the section root (e.g. `data-testid`). */
+  [dataAttr: `data-${string}`]: string | undefined;
 };
 
 /**

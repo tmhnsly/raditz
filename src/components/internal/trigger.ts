@@ -1,7 +1,7 @@
 'use client';
 import { useCallback, useRef } from 'react';
 import type { RefObject } from 'react';
-import { useControllableState } from './primitiveUtils';
+import { useOpenState } from './useOpenState';
 
 // The Trigger — the open-state driver + anchor wiring every Overlay Adapter face
 // needs, factored out of the faces so the controlled/uncontrolled open, the anchor
@@ -34,9 +34,8 @@ export function useTrigger<E extends HTMLElement = HTMLElement>({
   defaultOpen = false,
   onOpenChange,
 }: TriggerOptions): Trigger<E> {
-  const [isOpen, setOpen] = useControllableState<boolean>({ value: open, defaultValue: defaultOpen, onChange: onOpenChange });
+  const { open: isOpen, setOpen, close } = useOpenState({ open, defaultOpen, onOpenChange });
   const anchorRef = useRef<E>(null);
   const toggle = useCallback(() => setOpen((o) => !o), [setOpen]);
-  const close = useCallback(() => setOpen(false), [setOpen]);
   return { open: isOpen, setOpen, toggle, close, anchorRef };
 }

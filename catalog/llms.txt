@@ -1195,13 +1195,10 @@ Exports:
 ### Frame
 Import: `import { Frame } from 'raditz'`
 
-Frame — previews a section inside a bordered, rounded card (matching the original catalog). Sections that paint their own full-bleed background (accent bands, announcement strips) pass a `className` that flattens the frame chrome so it just clips them.
+Frame — previews a section inside a bordered, rounded card (matching the original catalog). Sections that paint their own full-bleed background (accent bands, announcement strips) pass a `className` that flattens the frame chrome so it just clips them. All other div attributes (`id`, `data-*`, aria, handlers) spread onto the frame element, so callers can anchor/test/style the section root directly.
 
 Props:
-  - className?: string
-  - data?: Record<`data-${string}`, string> — `data-*` attributes forwarded to the frame element — enumerated section axes (e.g. ImageFocus `data-size`/`data-place`) ride data attributes.
-  - maxWidth?: string
-  - style?: CSSProperties
+  - maxWidth?: string — Constrain the frame width (rides the `--rdz-frame-maxw` custom property).
 
 Usage:
 ```tsx
@@ -1272,13 +1269,12 @@ Usage:
 ### SectionShell
 Import: `import { SectionShell } from 'raditz'`
 
-SectionShell — the one home for the section layout boilerplate every section variant used to repeat: the preview Frame + `.s-pad` padding + `.s-wrap` max-width wrapper (where the responsive container-query lives), with an optional SectionBackground. Sections become content + a shell choice instead of re-typing the triple-nested wrapper ~50 times.
+SectionShell — the one home for the section layout boilerplate every section variant used to repeat: the preview Frame + `.s-pad` padding + `.s-wrap` max-width wrapper (where the responsive container-query lives), with an optional SectionBackground. Sections become content + a shell choice instead of re-typing the triple-nested wrapper ~50 times. The root is the Frame: `className`, `id` and any other div attributes (`data-*`, aria, handlers) land there, so every section variant that spreads its rest props into the shell supports anchoring (`id`), testing (`data-testid`) and consumer classes for free.
 
 Props:
   - animate?: boolean | "scroll" | "load" (default: scroll) — Content entrance choreography — the section's content blocks cascade in (staggered) in the app-wide entrance style (`data-reveal`). `'scroll'` (the default, also `true`) reveals on scroll-into-view; `'load'` plays a pure-CSS mount animation at first paint (no observer, no blank flash — use for above-the-fold sections like the hero); `false` is static.
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none) — Optional decorative backdrop (composes SectionBackground).
-  - frameClassName?: string — Class on the preview Frame (e.g. "nav-frame", "ph--neutral").
-  - frameData?: Record<`data-${string}`, string> — `data-*` attributes on the preview Frame — enumerated section axes ride data attributes (e.g. ImageFocus `data-size` / `data-place`).
+  - frameClassName?: string — The shell's OWN class on the preview Frame (e.g. "nav-frame", "ph--neutral"). Distinct from `className`, which is the consumer's class — both merge onto the Frame root.
   - frameMaxWidth?: string — Constrain the Frame width.
   - image?: string — Image URL backdrop (overrides gradient).
   - nav?: ReactNode — A transparent nav rendered above the content, floating over the shared background (the "hero bleed" effect). Pass a nav with no background.
@@ -1888,7 +1884,9 @@ Props:
   - animate?: boolean | "scroll" | "load" (default: 'scroll') — Content entrance choreography, forwarded to {@link SectionShell}: `'scroll'` (default) reveals on scroll, `'load'` animates on mount (above-the-fold heroes), `false` is static.
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - className?: string — Consumer class merged onto the section's root element.
   - heading?: ReactNode (default: Scroll-reveal entrances) — Section heading.
+  - id?: string — Anchor id on the section's root element (in-page nav targets).
   - image?: string
   - parallax?: boolean
   - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
@@ -1910,7 +1908,9 @@ Props:
   - animate?: boolean | "scroll" | "load" (default: 'scroll') — Content entrance choreography, forwarded to {@link SectionShell}: `'scroll'` (default) reveals on scroll, `'load'` animates on mount (above-the-fold heroes), `false` is static.
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: surface-2)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - className?: string — Consumer class merged onto the section's root element.
   - heading?: ReactNode (default: Title & text animations) — Section heading.
+  - id?: string — Anchor id on the section's root element (in-page nav targets).
   - image?: string
   - parallax?: boolean
   - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
@@ -1932,7 +1932,9 @@ Props:
   - animate?: boolean | "scroll" | "load" (default: 'scroll') — Content entrance choreography, forwarded to {@link SectionShell}: `'scroll'` (default) reveals on scroll, `'load'` animates on mount (above-the-fold heroes), `false` is static.
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - className?: string — Consumer class merged onto the section's root element.
   - heading?: ReactNode (default: Animated icons) — Section heading.
+  - id?: string — Anchor id on the section's root element (in-page nav targets).
   - image?: string
   - parallax?: boolean
   - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
@@ -1954,7 +1956,9 @@ Props:
   - animate?: boolean | "scroll" | "load" (default: 'scroll') — Content entrance choreography, forwarded to {@link SectionShell}: `'scroll'` (default) reveals on scroll, `'load'` animates on mount (above-the-fold heroes), `false` is static.
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: surface-2)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - className?: string — Consumer class merged onto the section's root element.
   - heading?: ReactNode (default: Preset cards) — Section heading.
+  - id?: string — Anchor id on the section's root element (in-page nav targets).
   - image?: string
   - parallax?: boolean
   - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
@@ -1977,7 +1981,9 @@ Props:
   - animate?: boolean | "scroll" | "load" (default: 'scroll') — Content entrance choreography, forwarded to {@link SectionShell}: `'scroll'` (default) reveals on scroll, `'load'` animates on mount (above-the-fold heroes), `false` is static.
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - className?: string — Consumer class merged onto the section's root element.
   - dismissible?: boolean — Show a dismiss (×) affordance.
+  - id?: string — Anchor id on the section's root element (in-page nav targets).
   - image?: string
   - parallax?: boolean
   - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
@@ -2001,7 +2007,9 @@ Props:
   - animate?: boolean | "scroll" | "load" (default: 'scroll') — Content entrance choreography, forwarded to {@link SectionShell}: `'scroll'` (default) reveals on scroll, `'load'` animates on mount (above-the-fold heroes), `false` is static.
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - className?: string — Consumer class merged onto the section's root element.
   - dismissible?: boolean — Show a dismiss (×) affordance.
+  - id?: string — Anchor id on the section's root element (in-page nav targets).
   - image?: string
   - parallax?: boolean
   - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
@@ -2025,7 +2033,9 @@ Props:
   - animate?: boolean | "scroll" | "load" (default: 'scroll') — Content entrance choreography, forwarded to {@link SectionShell}: `'scroll'` (default) reveals on scroll, `'load'` animates on mount (above-the-fold heroes), `false` is static.
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - className?: string — Consumer class merged onto the section's root element.
   - heading?: ReactNode — Section heading.
+  - id?: string — Anchor id on the section's root element (in-page nav targets).
   - image?: string
   - parallax?: boolean
   - posts: { title: ReactNode; href?: string | undefined; excerpt?: ReactNode; image?: ReactNode; date?: ReactNode; tag?: ReactNode; }[] — Blog posts to render (required).
@@ -2049,7 +2059,9 @@ Props:
   - animate?: boolean | "scroll" | "load" (default: 'scroll') — Content entrance choreography, forwarded to {@link SectionShell}: `'scroll'` (default) reveals on scroll, `'load'` animates on mount (above-the-fold heroes), `false` is static.
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: surface-2)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - className?: string — Consumer class merged onto the section's root element.
   - heading?: ReactNode — Section heading.
+  - id?: string — Anchor id on the section's root element (in-page nav targets).
   - image?: string
   - parallax?: boolean
   - posts: { title: ReactNode; href?: string | undefined; excerpt?: ReactNode; image?: ReactNode; date?: ReactNode; tag?: ReactNode; }[] — Blog posts to render (required).
@@ -2073,8 +2085,10 @@ Props:
   - animate?: boolean | "scroll" | "load" (default: 'scroll') — Content entrance choreography, forwarded to {@link SectionShell}: `'scroll'` (default) reveals on scroll, `'load'` animates on mount (above-the-fold heroes), `false` is static.
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: surface-2)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - className?: string — Consumer class merged onto the section's root element.
   - columns: { name: ReactNode; highlight?: boolean | undefined; }[] — Table columns (plans/tiers), in order (required).
   - heading?: ReactNode — Section heading.
+  - id?: string — Anchor id on the section's root element (in-page nav targets).
   - image?: string
   - parallax?: boolean
   - rows: { feature: ReactNode; values: ReactNode[]; }[] — Feature rows (required). `values` aligns positionally 1:1 with `columns`: `row.values[i]` is the cell for `columns[i]` (same length, same order). `true` → check glyph; `false` → cross/em-dash; any ReactNode → rendered as-is.
@@ -2099,7 +2113,9 @@ Props:
   - animate?: boolean | "scroll" | "load" (default: 'scroll') — Content entrance choreography, forwarded to {@link SectionShell}: `'scroll'` (default) reveals on scroll, `'load'` animates on mount (above-the-fold heroes), `false` is static.
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: gradient-dusk)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - className?: string — Consumer class merged onto the section's root element.
   - emailCapture?: { placeholder?: string; action: SectionAction; } — Inline email-capture form (CtaB).
+  - id?: string — Anchor id on the section's root element (in-page nav targets).
   - image?: string
   - parallax?: boolean
   - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
@@ -2125,7 +2141,9 @@ Props:
   - animate?: boolean | "scroll" | "load" (default: 'scroll') — Content entrance choreography, forwarded to {@link SectionShell}: `'scroll'` (default) reveals on scroll, `'load'` animates on mount (above-the-fold heroes), `false` is static.
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - className?: string — Consumer class merged onto the section's root element.
   - emailCapture?: { placeholder?: string; action: SectionAction; } — Inline email-capture form (CtaB).
+  - id?: string — Anchor id on the section's root element (in-page nav targets).
   - image?: string
   - parallax?: boolean
   - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
@@ -2150,7 +2168,9 @@ Props:
   - animate?: boolean | "scroll" | "load" (default: 'scroll') — Content entrance choreography, forwarded to {@link SectionShell}: `'scroll'` (default) reveals on scroll, `'load'` animates on mount (above-the-fold heroes), `false` is static.
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: surface-2)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - className?: string — Consumer class merged onto the section's root element.
   - heading?: ReactNode — Optional section heading rendered above the content.
+  - id?: string — Anchor id on the section's root element (in-page nav targets).
   - image?: string
   - items: { question: ReactNode; answer: ReactNode; }[] — FAQ items (required).
   - parallax?: boolean
@@ -2174,7 +2194,9 @@ Props:
   - animate?: boolean | "scroll" | "load" (default: 'scroll') — Content entrance choreography, forwarded to {@link SectionShell}: `'scroll'` (default) reveals on scroll, `'load'` animates on mount (above-the-fold heroes), `false` is static.
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - className?: string — Consumer class merged onto the section's root element.
   - heading?: ReactNode — Optional section heading rendered above the content.
+  - id?: string — Anchor id on the section's root element (in-page nav targets).
   - image?: string
   - items: { question: ReactNode; answer: ReactNode; }[] — FAQ items (required).
   - parallax?: boolean
@@ -2198,8 +2220,10 @@ Props:
   - animate?: boolean (default: false) — Reveal the cards on scroll-in (opt-in entrance animation).
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - className?: string — Consumer class merged onto the section's root element.
   - eyebrow?: ReactNode — Small label above the heading.
   - heading?: ReactNode — Section heading.
+  - id?: string — Anchor id on the section's root element (in-page nav targets).
   - image?: string
   - items: FeaturesItem[] — Feature cards (required).
   - parallax?: boolean
@@ -2223,8 +2247,10 @@ Props:
   - animate?: boolean (default: false) — Reveal the cards on scroll-in (opt-in entrance animation).
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: gradient-mesh)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - className?: string — Consumer class merged onto the section's root element.
   - eyebrow?: ReactNode — Small label above the heading.
   - heading?: ReactNode — Section heading.
+  - id?: string — Anchor id on the section's root element (in-page nav targets).
   - image?: string
   - items: FeaturesItem[] — Feature cards (required).
   - parallax?: boolean
@@ -2248,8 +2274,10 @@ Props:
   - animate?: boolean (default: false) — Reveal the cards on scroll-in (opt-in entrance animation).
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: surface-2)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - className?: string — Consumer class merged onto the section's root element.
   - eyebrow?: ReactNode — Small label above the heading.
   - heading?: ReactNode — Section heading.
+  - id?: string — Anchor id on the section's root element (in-page nav targets).
   - image?: string
   - items: FeaturesItem[] — Feature cards (required).
   - parallax?: boolean
@@ -2274,8 +2302,10 @@ Props:
   - aside?: ReactNode — Extra node pinned under the tab rail (e.g. opening hours, terms).
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh"
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - className?: string — Consumer class merged onto the section's root element.
   - eyebrow?: ReactNode
   - heading?: ReactNode
+  - id?: string — Anchor id on the section's root element (in-page nav targets).
   - image?: string
   - items: FeaturesTabbedItem[] — One entry per tab (required).
   - parallax?: boolean
@@ -2299,8 +2329,10 @@ Props:
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
   - brand?: FooterBrand — Brand block (logo + name) rendered by FooterA, and the brand glyph in FooterB.
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - className?: string — Consumer class merged onto the section's root element.
   - columns?: { heading: ReactNode; links: { label: ReactNode; href?: string; }[]; }[] — Link columns rendered by FooterA.
   - copyright?: ReactNode — Copyright text rendered by FooterB.
+  - id?: string — Anchor id on the section's root element (in-page nav targets).
   - image?: string
   - parallax?: boolean
   - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
@@ -2323,8 +2355,10 @@ Props:
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
   - brand?: FooterBrand — Brand block (logo + name) rendered by FooterA, and the brand glyph in FooterB.
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - className?: string — Consumer class merged onto the section's root element.
   - columns?: { heading: ReactNode; links: { label: ReactNode; href?: string; }[]; }[] — Link columns rendered by FooterA.
   - copyright?: ReactNode — Copyright text rendered by FooterB.
+  - id?: string — Anchor id on the section's root element (in-page nav targets).
   - image?: string
   - parallax?: boolean
   - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
@@ -2347,7 +2381,9 @@ Props:
   - animate?: boolean | "scroll" | "load" (default: load) — Content entrance choreography, forwarded to {@link SectionShell}: `'scroll'` (default) reveals on scroll, `'load'` animates on mount (above-the-fold heroes), `false` is static.
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - className?: string — Consumer class merged onto the section's root element.
   - eyebrow?: ReactNode — Small label/badge above the title.
+  - id?: string — Anchor id on the section's root element (in-page nav targets).
   - image?: string
   - lede?: ReactNode — Lead paragraph under the title.
   - media?: ReactNode — Media slot (used by the split/full-bleed variants).
@@ -2373,7 +2409,9 @@ Props:
   - animate?: boolean | "scroll" | "load" (default: load) — Content entrance choreography, forwarded to {@link SectionShell}: `'scroll'` (default) reveals on scroll, `'load'` animates on mount (above-the-fold heroes), `false` is static.
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: surface-2)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - className?: string — Consumer class merged onto the section's root element.
   - eyebrow?: ReactNode — Small label/badge above the title.
+  - id?: string — Anchor id on the section's root element (in-page nav targets).
   - image?: string
   - lede?: ReactNode — Lead paragraph under the title.
   - media?: ReactNode — Media slot (used by the split/full-bleed variants).
@@ -2399,7 +2437,9 @@ Props:
   - animate?: boolean | "scroll" | "load" (default: load) — Content entrance choreography, forwarded to {@link SectionShell}: `'scroll'` (default) reveals on scroll, `'load'` animates on mount (above-the-fold heroes), `false` is static.
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: gradient-aurora)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - className?: string — Consumer class merged onto the section's root element.
   - eyebrow?: ReactNode — Small label/badge above the title.
+  - id?: string — Anchor id on the section's root element (in-page nav targets).
   - image?: string
   - lede?: ReactNode — Lead paragraph under the title.
   - media?: ReactNode — Media slot (used by the split/full-bleed variants).
@@ -2426,7 +2466,9 @@ Props:
   - animate?: boolean | "scroll" | "load" (default: 'scroll') — Content entrance choreography, forwarded to {@link SectionShell}: `'scroll'` (default) reveals on scroll, `'load'` animates on mount (above-the-fold heroes), `false` is static.
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh"
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - className?: string — Consumer class merged onto the section's root element.
   - eyebrow?: ReactNode — Eyebrow / kicker above the title.
+  - id?: string — Anchor id on the section's root element (in-page nav targets).
   - image: string — Full-bleed background image URL (required).
   - parallax?: boolean
   - place?: "center" | "bottom" (default: center) — Vertical placement of the text.
@@ -2453,6 +2495,8 @@ Props:
   - animate?: boolean | "scroll" | "load" (default: 'scroll') — Content entrance choreography, forwarded to {@link SectionShell}: `'scroll'` (default) reveals on scroll, `'load'` animates on mount (above-the-fold heroes), `false` is static.
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - className?: string — Consumer class merged onto the section's root element.
+  - id?: string — Anchor id on the section's root element (in-page nav targets).
   - image?: string
   - items: ReactNode[] — Scrolling items (logos, chips, etc.).
   - label?: ReactNode — Optional caption above the strip (e.g. a "trusted by" line).
@@ -2479,6 +2523,8 @@ Props:
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh"
   - brand: NavbarBrand — Brand lockup (required).
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - className?: string — Consumer class merged onto the section's root element.
+  - id?: string — Anchor id on the section's root element (in-page nav targets).
   - image?: string
   - links?: NavbarLink[] — Primary nav links.
   - parallax?: boolean
@@ -2501,6 +2547,8 @@ Props:
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh"
   - brand: NavbarBrand — Brand lockup (required).
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - className?: string — Consumer class merged onto the section's root element.
+  - id?: string — Anchor id on the section's root element (in-page nav targets).
   - image?: string
   - links?: NavbarLink[] — Primary nav links.
   - parallax?: boolean
@@ -2525,7 +2573,9 @@ Props:
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh"
   - brand: NavbarBrand — Brand lockup (required).
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - className?: string — Consumer class merged onto the section's root element.
   - footnote?: ReactNode
+  - id?: string — Anchor id on the section's root element (in-page nav targets).
   - image?: string
   - links?: NavbarLink[] — Primary nav links.
   - parallax?: boolean
@@ -2567,6 +2617,8 @@ Props:
   - animate?: boolean | "scroll" | "load" (default: 'scroll') — Content entrance choreography, forwarded to {@link SectionShell}: `'scroll'` (default) reveals on scroll, `'load'` animates on mount (above-the-fold heroes), `false` is static.
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: gradient-aurora)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - className?: string — Consumer class merged onto the section's root element.
+  - id?: string — Anchor id on the section's root element (in-page nav targets).
   - image?: string
   - parallax?: boolean
   - placeholder?: string — Input placeholder text.
@@ -2592,6 +2644,8 @@ Props:
   - animate?: boolean | "scroll" | "load" (default: 'scroll') — Content entrance choreography, forwarded to {@link SectionShell}: `'scroll'` (default) reveals on scroll, `'load'` animates on mount (above-the-fold heroes), `false` is static.
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - className?: string — Consumer class merged onto the section's root element.
+  - id?: string — Anchor id on the section's root element (in-page nav targets).
   - image?: string
   - message?: ReactNode — Body copy.
   - parallax?: boolean
@@ -2616,7 +2670,9 @@ Props:
   - animate?: boolean | "scroll" | "load" (default: 'scroll') — Content entrance choreography, forwarded to {@link SectionShell}: `'scroll'` (default) reveals on scroll, `'load'` animates on mount (above-the-fold heroes), `false` is static.
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: surface-2)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - className?: string — Consumer class merged onto the section's root element.
   - heading?: ReactNode
+  - id?: string — Anchor id on the section's root element (in-page nav targets).
   - image?: string
   - parallax?: boolean
   - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
@@ -2641,7 +2697,9 @@ Props:
   - animate?: boolean | "scroll" | "load" (default: 'scroll') — Content entrance choreography, forwarded to {@link SectionShell}: `'scroll'` (default) reveals on scroll, `'load'` animates on mount (above-the-fold heroes), `false` is static.
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: gradient-accent)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - className?: string — Consumer class merged onto the section's root element.
   - heading?: ReactNode
+  - id?: string — Anchor id on the section's root element (in-page nav targets).
   - image?: string
   - parallax?: boolean
   - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
@@ -2665,6 +2723,8 @@ Props:
   - animate?: boolean | "scroll" | "load" (default: 'scroll') — Content entrance choreography, forwarded to {@link SectionShell}: `'scroll'` (default) reveals on scroll, `'load'` animates on mount (above-the-fold heroes), `false` is static.
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - className?: string — Consumer class merged onto the section's root element.
+  - id?: string — Anchor id on the section's root element (in-page nav targets).
   - image?: string
   - label?: ReactNode — Caption label (e.g. "Trusted by teams at").
   - logos: { name: ReactNode; src?: string | undefined; node?: ReactNode; }[] — Logos/brand names to display (required).
@@ -2688,6 +2748,8 @@ Props:
   - animate?: boolean | "scroll" | "load" (default: 'scroll') — Content entrance choreography, forwarded to {@link SectionShell}: `'scroll'` (default) reveals on scroll, `'load'` animates on mount (above-the-fold heroes), `false` is static.
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - className?: string — Consumer class merged onto the section's root element.
+  - id?: string — Anchor id on the section's root element (in-page nav targets).
   - image?: string
   - label?: ReactNode — Caption label (e.g. "Trusted by teams at").
   - logos: { name: ReactNode; src?: string | undefined; node?: ReactNode; }[] — Logos/brand names to display (required).
@@ -2712,8 +2774,10 @@ Props:
   - animate?: boolean | "scroll" | "load" (default: 'scroll') — Content entrance choreography, forwarded to {@link SectionShell}: `'scroll'` (default) reveals on scroll, `'load'` animates on mount (above-the-fold heroes), `false` is static.
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh"
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - className?: string — Consumer class merged onto the section's root element.
   - eyebrow?: ReactNode
   - heading?: ReactNode
+  - id?: string — Anchor id on the section's root element (in-page nav targets).
   - image?: string
   - items: SpotlightItem[] — Cards to render (required).
   - parallax?: boolean
@@ -2737,7 +2801,9 @@ Props:
   - animate?: boolean | "scroll" | "load" (default: 'scroll') — Content entrance choreography, forwarded to {@link SectionShell}: `'scroll'` (default) reveals on scroll, `'load'` animates on mount (above-the-fold heroes), `false` is static.
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - className?: string — Consumer class merged onto the section's root element.
   - heading?: ReactNode — Optional section heading.
+  - id?: string — Anchor id on the section's root element (in-page nav targets).
   - image?: string
   - parallax?: boolean
   - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
@@ -2761,7 +2827,9 @@ Props:
   - animate?: boolean | "scroll" | "load" (default: 'scroll') — Content entrance choreography, forwarded to {@link SectionShell}: `'scroll'` (default) reveals on scroll, `'load'` animates on mount (above-the-fold heroes), `false` is static.
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - className?: string — Consumer class merged onto the section's root element.
   - heading?: ReactNode — Optional section heading.
+  - id?: string — Anchor id on the section's root element (in-page nav targets).
   - image?: string
   - parallax?: boolean
   - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
@@ -2785,7 +2853,9 @@ Props:
   - animate?: boolean | "scroll" | "load" (default: 'scroll') — Content entrance choreography, forwarded to {@link SectionShell}: `'scroll'` (default) reveals on scroll, `'load'` animates on mount (above-the-fold heroes), `false` is static.
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - className?: string — Consumer class merged onto the section's root element.
   - heading?: ReactNode — Section heading.
+  - id?: string — Anchor id on the section's root element (in-page nav targets).
   - image?: string
   - members: { name: ReactNode; role?: ReactNode; avatar?: ReactNode; bio?: ReactNode; }[] — Team members to render (required).
   - parallax?: boolean
@@ -2809,7 +2879,9 @@ Props:
   - animate?: boolean | "scroll" | "load" (default: 'scroll') — Content entrance choreography, forwarded to {@link SectionShell}: `'scroll'` (default) reveals on scroll, `'load'` animates on mount (above-the-fold heroes), `false` is static.
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - className?: string — Consumer class merged onto the section's root element.
   - heading?: ReactNode — Optional section heading.
+  - id?: string — Anchor id on the section's root element (in-page nav targets).
   - image?: string
   - parallax?: boolean
   - quotes: Testimonial[] — Testimonial entries (required).
@@ -2833,7 +2905,9 @@ Props:
   - animate?: boolean | "scroll" | "load" (default: 'scroll') — Content entrance choreography, forwarded to {@link SectionShell}: `'scroll'` (default) reveals on scroll, `'load'` animates on mount (above-the-fold heroes), `false` is static.
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: gradient-dusk)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - className?: string — Consumer class merged onto the section's root element.
   - heading?: ReactNode — Optional section heading.
+  - id?: string — Anchor id on the section's root element (in-page nav targets).
   - image?: string
   - parallax?: boolean
   - quotes: Testimonial[] — Testimonial entries (required).
@@ -2857,7 +2931,9 @@ Props:
   - animate?: boolean | "scroll" | "load" (default: 'scroll') — Content entrance choreography, forwarded to {@link SectionShell}: `'scroll'` (default) reveals on scroll, `'load'` animates on mount (above-the-fold heroes), `false` is static.
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: gradient-dusk)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - className?: string — Consumer class merged onto the section's root element.
   - heading?: ReactNode — Optional section heading.
+  - id?: string — Anchor id on the section's root element (in-page nav targets).
   - image?: string
   - parallax?: boolean
   - quotes: Testimonial[] — Testimonial entries (required).

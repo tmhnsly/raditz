@@ -22,6 +22,35 @@ describe('SectionShell choreography', () => {
   });
 });
 
+describe('SectionShell root passthrough', () => {
+  it('forwards className, id and data-* to the root Frame', () => {
+    const { container } = render(
+      <SectionShell className="consumer-cls" id="pricing" data-testid="shell-root" frameClassName="nav-frame">
+        <p>body</p>
+      </SectionShell>,
+    );
+    const root = container.firstElementChild as HTMLElement;
+    expect(root.classList.contains('frame')).toBe(true); // still the Frame root
+    expect(root.classList.contains('nav-frame')).toBe(true); // shell's own class kept
+    expect(root.classList.contains('consumer-cls')).toBe(true); // consumer class merged
+    expect(root.id).toBe('pricing');
+    expect(root.getAttribute('data-testid')).toBe('shell-root');
+  });
+
+  it('a section variant (FaqA) carries className/id/data-* end-to-end to its root', () => {
+    const { container } = render(
+      <FaqA items={[{ question: 'q', answer: 'a' }]} heading="H" className="anchor-cls" id="faq" data-testid="faq-root" />,
+    );
+    const root = container.firstElementChild as HTMLElement;
+    expect(root.classList.contains('frame')).toBe(true);
+    expect(root.classList.contains('anchor-cls')).toBe(true);
+    expect(root.id).toBe('faq');
+    expect(root.getAttribute('data-testid')).toBe('faq-root');
+    // The section still renders its content inside the shell.
+    expect(screen.getByText('q')).toBeTruthy();
+  });
+});
+
 describe('SectionActionButton', () => {
   it('forwards every SectionAction field (href, onClick, icon, variant, size)', () => {
     const onClick = vi.fn();

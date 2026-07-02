@@ -4,6 +4,7 @@
 export * from './cx';
 export * from './keyboard';
 export * from './primitiveUtils';
+export * from './useOpenState';
 export * from './trigger';
 export * from './overlayHooks';
 export * from './Overlay';

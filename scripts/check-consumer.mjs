@@ -1,6 +1,7 @@
 // Verifies the built package is consumable: artifacts exist, exports resolve,
 // and leaf component chunks don't inline externalized heavy deps.
 import fs from 'node:fs';
+import { shippedSourceFiles } from './public-surface.mjs';
 
 const must = (cond, msg) => { if (!cond) { console.error('FAIL:', msg); process.exit(1); } };
 
@@ -31,22 +32,15 @@ must(!/@visx|date-fns/.test(fs.readFileSync(btn, 'utf8')), 'Button.js inlined an
 
 // RSC guard: EVERY source module marked 'use client' must keep its directive in
 // dist (preserveModules keeps the layout 1:1). A build regression that strips
-// directives would silently break every Next consumer. Only the lib surface is
-// walked (same roots the codemod marks); a marked module absent from dist is
-// tolerated per-file (unreachable from the entry), but the checked count must
-// stay high or the layout has changed under us.
+// directives would silently break every Next consumer. The file set is the SAME
+// shipped surface the add-use-client codemod walks (scripts/public-surface.mjs)
+// — one seam, no drift between what gets marked and what gets verified. A marked
+// module absent from dist is tolerated per-file (unreachable from the entry),
+// but the checked count must stay high or the layout has changed under us.
 const DIRECTIVE_RE = /^["']use client["']/;
-const clientSources = [];
-const walkForDirective = (dir) => {
-  for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
-    const p = `${dir}/${e.name}`;
-    if (e.isDirectory()) walkForDirective(p);
-    else if (/\.tsx?$/.test(e.name) && !/\.(stories|test)\.tsx?$/.test(e.name) && !e.name.endsWith('.d.ts')) {
-      if (DIRECTIVE_RE.test(fs.readFileSync(p, 'utf8').trimStart())) clientSources.push(p);
-    }
-  }
-};
-for (const root of ['src/components', 'src/sections', 'src/lib']) walkForDirective(root);
+const clientSources = shippedSourceFiles().filter((p) =>
+  DIRECTIVE_RE.test(fs.readFileSync(p, 'utf8').trimStart()),
+);
 let checkedDirectives = 0;
 for (const srcFile of clientSources) {
   const distFile = srcFile.replace(/^src\//, 'dist/').replace(/\.tsx?$/, '.js');

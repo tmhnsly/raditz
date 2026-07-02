@@ -10,6 +10,7 @@ import {
   extractLeadingDesc,
   renderUtilityEntry,
   UTILITIES,
+  HEADER_CLASSES,
 } from './gen-catalog.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -191,11 +192,21 @@ describe('UTILITIES ↔ shipped CSS', () => {
 
   const css = collectStyleSource();
   // '.row / .col' advertises two classes — split each entry into its class tokens.
-  const advertised = UTILITIES.flatMap(([cls]) => cls.split(' / '));
+  // HEADER_CLASSES are the page-level classes the header prose names (rdz-page /
+  // rdz-bleed) — same contract: advertised ⇒ shipped.
+  const advertised = [...UTILITIES.flatMap(([cls]) => cls.split(' / ')), ...HEADER_CLASSES];
 
   it.each(advertised)('%s is defined in the shipped styles', (cls) => {
     // Match the exact class selector; `(?![\w-])` stops `.eyebrow` matching `.eyebrow2`.
     const selector = new RegExp(`\\${cls}(?![\\w-])`);
     expect(css).toMatch(selector);
+  });
+
+  it.each(HEADER_CLASSES)('%s is still named by the catalog header prose (staleness guard)', (cls) => {
+    const gen = fs.readFileSync(path.join(ROOT, 'scripts/gen-catalog.mjs'), 'utf8');
+    // The bare name must appear AFTER the HEADER_CLASSES declaration — i.e. in
+    // main()'s header template strings, not just in the list (or its comment).
+    const afterDecl = gen.split('export const HEADER_CLASSES')[1]?.split('];').slice(1).join('];') ?? '';
+    expect(afterDecl, `${cls} left the header prose — drop it from HEADER_CLASSES`).toContain(cls.slice(1));
   });
 });

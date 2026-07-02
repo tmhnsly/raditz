@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 import type { HTMLAttributes, MouseEvent as ReactMouseEvent, PointerEvent as ReactPointerEvent, ReactNode, ReactElement } from 'react';
-import { useControllableState } from '../../internal';
+import { useOpenState } from '../../internal';
 import { MenuSurface } from '../../internal/MenuSurface/MenuSurface';
 import type { MenuItem } from '../../internal/MenuSurface/MenuSurface';
 
@@ -32,7 +32,7 @@ export interface ContextMenuProps extends HTMLAttributes<HTMLDivElement> {
  * keyboard roving with the other menus.
  */
 export function ContextMenu({ items = [], children, className, longPressMs = 480, open: openProp, defaultOpen = false, onOpenChange, ...rest }: ContextMenuProps): ReactElement {
-  const [open, setOpen] = useControllableState<boolean>({ value: openProp, defaultValue: defaultOpen, onChange: onOpenChange });
+  const { open, setOpen, close } = useOpenState({ open: openProp, defaultOpen, onOpenChange });
   const [pt, setPt] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const start = useRef<{ x: number; y: number } | null>(null);
@@ -84,7 +84,7 @@ export function ContextMenu({ items = [], children, className, longPressMs = 480
       {children}
       <MenuSurface
         open={open}
-        onDismiss={() => setOpen(false)}
+        onDismiss={close}
         items={items}
         point={pt}
         className={className}

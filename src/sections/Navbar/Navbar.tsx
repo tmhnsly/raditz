@@ -3,7 +3,7 @@ import { useState, useRef, useEffect } from 'react';
 import type { CSSProperties, ReactNode } from 'react';
 import { Frame } from '../../lib/Frame';
 import { ColorSchemeToggle } from '../../lib/ColorSchemeToggle';
-import { Overlay } from '../../components/internal';
+import { Overlay, cx } from '../../components/internal';
 import { SectionActions, SectionActionButton, type SectionBaseProps, type SectionAction } from '../../lib/SectionShell';
 
 /** A brand lockup: a name plus an optional logo node, optionally a link. */
@@ -181,12 +181,13 @@ function NavLinks({ links, activeHref }: { links: NavbarLink[]; activeHref?: str
  * indicator and a built-in light/dark toggle switched on. Collapses links into a
  * burger sheet on narrow widths. `activeHref` overrides route auto-detection.
  */
-export function NavbarA({ brand, links, actions, children, activeHref }: NavbarProps & { activeHref?: string }) {
+export function NavbarA({ brand, links, actions, children, activeHref, ...rest }: NavbarProps & { activeHref?: string }) {
   return (
     <NavCore
       brand={brand}
       links={links}
       actions={actions}
+      rootProps={navRootProps(rest)}
       activeHref={activeHref}
       animatedLinks
       showToggle
@@ -203,6 +204,17 @@ export function NavbarA({ brand, links, actions, children, activeHref }: NavbarP
     </NavCore>
   );
 }
+
+/** The SectionBaseProps root passthrough (className / id / data-*) a nav variant
+ * must honor, split off its rest props. Navs keep SectionBaseProps for API
+ * symmetry but render no SectionShell backdrop, so the backdrop fields are
+ * discarded here instead of leaking onto the root DOM element. */
+function navRootProps(rest: Omit<SectionBaseProps, 'children'>) {
+  const { background, parallax, image, video, scrim, animate, ...root } = rest;
+  void background; void parallax; void image; void video; void scrim; void animate;
+  return root;
+}
+type NavRootProps = ReturnType<typeof navRootProps>;
 
 /** Shared bar + burger + NavSheet wiring, parameterized by the per-variant
  * classes, action size, and two behavioural toggles (animated active links, a
@@ -226,6 +238,7 @@ function NavCore({
   animatedLinks = false,
   showToggle = false,
   activeHref,
+  rootProps,
 }: {
   brand: NavbarBrand;
   links?: NavbarLink[];
@@ -248,11 +261,14 @@ function NavCore({
   showToggle?: boolean;
   /** Explicit active route for the indicator (else auto-detected). */
   activeHref?: string;
+  /** Consumer root passthrough (className / id / data-*) from the variant's
+   * SectionBaseProps — merged onto the root Frame like SectionShell does. */
+  rootProps?: NavRootProps;
 }) {
   const [open, setOpen] = useState(false);
   const burgerRef = useRef<HTMLButtonElement>(null);
   return (
-    <Frame maxWidth={frameMaxWidth} className={frameClassName}>
+    <Frame maxWidth={frameMaxWidth} {...rootProps} className={cx(frameClassName, rootProps?.className)}>
       <div className={padClassName}>
         <div className="s-wrap navcq">
           {children ?? (
@@ -298,12 +314,13 @@ function NavCore({
   );
 }
 
-export function NavbarB({ brand, links, actions, children }: NavbarProps) {
+export function NavbarB({ brand, links, actions, children, ...rest }: NavbarProps) {
   return (
     <NavCore
       brand={brand}
       links={links}
       actions={actions}
+      rootProps={navRootProps(rest)}
       frameClassName="ph--neutral sx-nav__frame-b nav-section"
       padClassName="s-pad-sm"
       barClassName="nav-bar sx-nav__bar-glass"
@@ -319,12 +336,13 @@ export function NavbarB({ brand, links, actions, children }: NavbarProps) {
 
 /** C — narrow-frame nav; links collapse into the burger dropdown. `footnote`
  * renders a muted caption under the bar (e.g. usage hints in a demo). */
-export function NavbarC({ brand, links, actions, children, footnote }: NavbarProps & { footnote?: ReactNode }) {
+export function NavbarC({ brand, links, actions, children, footnote, ...rest }: NavbarProps & { footnote?: ReactNode }) {
   return (
     <NavCore
       brand={brand}
       links={links}
       actions={actions}
+      rootProps={navRootProps(rest)}
       frameClassName="nav-section"
       frameMaxWidth="22.5rem"
       padClassName="sx-nav__pad"

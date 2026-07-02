@@ -1,17 +1,37 @@
-// Prepends 'use client'; to component/section sources that use client-only React
-// features, so the built package works under React Server Components (Next App
-// Router). Vite + vitest treat the directive as an inert string. Idempotent.
+// Prepends 'use client'; to shipped sources that use client-only React features,
+// so the built package works under React Server Components (Next App Router).
+// Vite + vitest treat the directive as an inert string. Idempotent.
+//
+// The file set is the shared shipped surface (scripts/public-surface.mjs):
+// src/components + src/sections + src/lib, minus stories/tests/d.ts — the same
+// seam check-consumer.mjs verifies in dist. No hand EXTRA list: lib files that
+// carry 'use client' (ColorSchemeToggle, InView, ThemePicker, useColorScheme,
+// theme) are covered because the whole lib dir is walked.
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { shippedSourceFiles } from './public-surface.mjs';
 
-const ROOTS = ['src/components', 'src/sections'];
-// Public lib modules that are hook-bearing client code. They're re-exported from
-// the barrel, so a consumer's Server Component pulls them into the RSC graph —
-// without "use client" the Next build fails. theme.ts also exports server-safe
-// values (ACCENTS, applyTheme); marking it client binds those to the client too
-// (acceptable — they're consumed via the client theme runtime / CSS in practice).
-const EXTRA = ['src/lib/ThemePicker.tsx', 'src/lib/useColorScheme.ts', 'src/lib/theme.ts'];
+// Shipped files that trip CLIENT_RE but are server-safe BY DESIGN — the codemod
+// must never mark them, and the boundary gate (add-use-client.test.mjs) accepts
+// them without a directive. Each entry carries its reason; the gate also fails
+// if an entry stops existing or stops matching CLIENT_RE (staleness guard).
+export const SERVER_SAFE = {
+  // Header contract: "Server-safe core of the Color-scheme module (NO 'use client')".
+  // It exports the pre-paint no-flash script as a STRING for an SSR <head> plus a
+  // guarded client-render init — localStorage/window/document appear only inside
+  // that string builder and a try/typeof-guarded function. Marking it client would
+  // pull the no-flash core out of Server Components, defeating its purpose.
+  'src/lib/colorScheme.ts':
+    'server-safe by design (file header): SSR no-flash script builder + guarded init',
+  // Its only CLIENT_RE hit is `onClick={action.onClick}` in SectionActionButton —
+  // forwarding a CONSUMER-supplied handler, exactly like the unmarked Button it
+  // renders. No hooks/handlers of its own; its client-ness lives in the imported
+  // InView boundary. Sections must stay server-renderable (SectionAction docs:
+  // "Prefer href (Server-Component-safe) over onClick").
+  'src/lib/SectionShell.tsx':
+    'onClick hit is consumer-handler forwarding (SectionActionButton); shell itself is a Server Component',
+};
 
 // A module must run on the client if it uses hooks, JSX event handlers, or browser globals.
 // This is a heuristic, not a parser: it can over-mark (e.g. a local var named `document`)
@@ -21,19 +41,6 @@ export const CLIENT_RE =
   /\b(useState|useEffect|useLayoutEffect|useReducer|useRef|useContext|useId|useImperativeHandle|useSyncExternalStore|useTransition|useDeferredValue|useMemo|useCallback|useInsertionEffect)\b|\bon[A-Z][A-Za-z]*=|\b(document|window|localStorage|sessionStorage|navigator|matchMedia|requestAnimationFrame|IntersectionObserver|ResizeObserver)\b/;
 
 const DIRECTIVE = "'use client';";
-
-function walk(dir, out = []) {
-  for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
-    const p = path.join(dir, e.name);
-    if (e.isDirectory()) walk(p, out);
-    // .ts and .tsx both: hook-bearing internals (e.g. primitiveUtils.ts exporting
-    // useControllableState) are plain .ts but get re-exported through the barrel,
-    // so a consumer's Server Component pulls them into the RSC graph. The CLIENT_RE
-    // gate leaves pure-util .ts (format.ts, scale.ts) as server components.
-    else if (/\.tsx?$/.test(e.name) && !/\.(stories|test)\.tsx?$/.test(e.name) && !e.name.endsWith('.d.ts')) out.push(p);
-  }
-  return out;
-}
 
 export function alreadyDirective(src) {
   const firstCode = src.replace(/^﻿/, '').trimStart();
@@ -53,7 +60,11 @@ export function needsDirective(src) {
 }
 
 function main() {
-  const files = [...ROOTS.flatMap((r) => walk(r)), ...EXTRA.filter((f) => fs.existsSync(f))];
+  // .ts and .tsx both: hook-bearing internals (e.g. primitiveUtils.ts exporting
+  // useControllableState) are plain .ts but get re-exported through the barrel,
+  // so a consumer's Server Component pulls them into the RSC graph. The CLIENT_RE
+  // gate leaves pure-util .ts (format.ts, scale.ts) as server components.
+  const files = shippedSourceFiles().filter((f) => !(f in SERVER_SAFE));
   let added = 0;
   const changed = [];
   for (const file of files) {

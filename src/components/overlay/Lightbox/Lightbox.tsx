@@ -1,6 +1,6 @@
 'use client';
 import * as React from 'react';
-import { useControllableState, Overlay, onKeys, KEYS, cx, OverlayClose } from '../../internal';
+import { useControllableState, useOpenState, Overlay, onKeys, KEYS, cx, OverlayClose } from '../../internal';
 import {
   MAX_SCALE, dist, pinch, clampPan, zoomScale, resolveDrag, swipePage, dismissShouldClose, dismissView,
 } from './gestures';
@@ -86,7 +86,7 @@ export function Lightbox({
   className,
   ...rest
 }: LightboxProps): React.ReactElement | null {
-  const [isOpen, setOpen] = useControllableState<boolean>({ value: open, defaultValue: defaultOpen, onChange: onOpenChange });
+  const { open: isOpen, close } = useOpenState({ open, defaultOpen, onOpenChange });
   const [idx, setIdx] = useControllableState<number>({ value: index, defaultValue: defaultIndex, onChange: onIndexChange });
   const [scale, setScale] = useState(1);
   const count = images.length;
@@ -139,7 +139,6 @@ export function Lightbox({
     [count, setIdx],
   );
   const jumpTo = useCallback((i: number) => { dirRef.current = i < idx ? -1 : 1; setIdx(i); }, [setIdx, idx]);
-  const close = useCallback(() => setOpen(false), [setOpen]);
 
   // Clamp a pan offset so the (target-scale) image can't be dragged off the stage.
   const clampPanFor = useCallback((x: number, y: number, s: number): { x: number; y: number } => {

@@ -3,7 +3,9 @@
 // including the KNOWN limitations, pinned as current behaviour so a change to the
 // heuristic is a deliberate, visible decision rather than an accident.
 import { describe, it, expect } from 'vitest';
-import { CLIENT_RE, stripComments, alreadyDirective, needsDirective } from './add-use-client.mjs';
+import fs from 'node:fs';
+import { CLIENT_RE, stripComments, alreadyDirective, needsDirective, SERVER_SAFE } from './add-use-client.mjs';
+import { shippedSourceFiles } from './public-surface.mjs';
 
 describe('needsDirective', () => {
   it('marks hook usage', () => {
@@ -62,6 +64,35 @@ describe('alreadyDirective', () => {
 
   it('rejects a directive that is not the first statement', () => {
     expect(alreadyDirective(`import x from 'y';\n'use client';`)).toBe(false);
+  });
+});
+
+describe('client-boundary gate over the shipped surface', () => {
+  // The missing-directive class nothing could catch before: a shipped file with
+  // client signals but no 'use client' and no SERVER_SAFE entry. (The preflight
+  // codemod run only catches files it WALKS — this asserts the walk itself,
+  // over the same shippedSourceFiles() seam, leaves no client file unmarked.)
+  it('every client-signal file carries the directive or is on SERVER_SAFE', () => {
+    const missing = shippedSourceFiles().filter((f) => {
+      if (f in SERVER_SAFE) return false;
+      const src = fs.readFileSync(f, 'utf8');
+      return CLIENT_RE.test(stripComments(src)) && !alreadyDirective(src);
+    });
+    expect(missing, `missing 'use client' (or a SERVER_SAFE entry): ${missing.join(', ')}`).toEqual([]);
+  });
+
+  // Staleness guard (style-contract pattern): a SERVER_SAFE entry must still
+  // exist, still trip CLIENT_RE (else the exemption is dead weight), and must
+  // not have grown a directive (else the exemption contradicts the source).
+  it('SERVER_SAFE entries are alive, reasoned, and still exempt something real', () => {
+    expect(Object.keys(SERVER_SAFE).length).toBeGreaterThan(0);
+    for (const [file, reason] of Object.entries(SERVER_SAFE)) {
+      expect(typeof reason === 'string' && reason.length > 10, `${file}: needs a real reason`).toBe(true);
+      expect(fs.existsSync(file), `${file} no longer exists — drop it from SERVER_SAFE`).toBe(true);
+      const src = fs.readFileSync(file, 'utf8');
+      expect(CLIENT_RE.test(stripComments(src)), `${file} no longer matches CLIENT_RE — drop it from SERVER_SAFE`).toBe(true);
+      expect(alreadyDirective(src), `${file} carries 'use client' yet sits on SERVER_SAFE — resolve the contradiction`).toBe(false);
+    }
   });
 });
 

@@ -41,6 +41,7 @@ function MenubarPanel({ items, onClose }: { items: MenuItem[]; onClose: () => vo
  * (`open` / `onOpenChange`, the open menu's index) or uncontrolled (`defaultOpen`).
  */
 export function Menubar({ menus = [], className, open, defaultOpen = -1, onOpenChange, ...rest }: MenubarProps): ReactElement {
+  // Open state is the open menu's INDEX (-1 = closed), not a boolean — deliberately hand-wired, not useOpenState.
   const [openIdx, setOpenIdx] = useControllableState<number>({ value: open, defaultValue: defaultOpen, onChange: onOpenChange });
   const barRef = useRef<HTMLDivElement>(null);
   const triggerRefs = useRef<(HTMLButtonElement | null)[]>([]);

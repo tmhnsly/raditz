@@ -1,6 +1,6 @@
 'use client';
 import type { HTMLAttributes, ReactNode, ReactElement } from 'react';
-import { cx, Overlay, OverlayClose, useControllableState, useOverlayLabels } from '../../internal';
+import { cx, Overlay, OverlayClose, useOpenState, useOverlayLabels } from '../../internal';
 
 export interface DialogProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
   /** Open state (controlled). */
@@ -41,8 +41,7 @@ export function Dialog({
   className,
   ...rest
 }: DialogProps): ReactElement | null {
-  const [isOpen, setOpen] = useControllableState<boolean>({ value: open, defaultValue: defaultOpen, onChange: onOpenChange });
-  const close = (): void => setOpen(false);
+  const { open: isOpen, close } = useOpenState({ open, defaultOpen, onOpenChange });
   const { titleId, descId, labelledby, describedby } = useOverlayLabels(title, description);
   return (
     <Overlay

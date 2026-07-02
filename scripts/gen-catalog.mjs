@@ -127,6 +127,12 @@ export const UTILITIES = [
   ['.row / .col', 'Flex row / column with token gaps.'],
 ];
 
+// Load-bearing page-level classes the catalog header PROSE names ("Composing a
+// page" wraps the app in `rdz-page`; "HERO BLEED" adds `rdz-bleed`). They must
+// exist in the shipped styles just like UTILITIES — scripts/gen-catalog.test.mjs
+// gates both lists against the style sources.
+export const HEADER_CLASSES = ['.rdz-page', '.rdz-bleed'];
+
 function main() {
   // One parser/TS program, reused across files (faster than per-file default config).
   // Deviation from brief: using withCustomConfig('./tsconfig.json', ...) instead of
