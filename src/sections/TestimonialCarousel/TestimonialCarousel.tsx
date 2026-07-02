@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { SectionShell, type SectionBaseProps } from '../../lib/SectionShell';
+import { SectionShell, SectionHeader, TestimonialFigure, type SectionBaseProps } from '../../lib/SectionShell';
 import { Carousel } from '../../components/media/Carousel';
 import type { Testimonial } from '../Testimonials/Testimonials';
 // Testimonial is re-exported from Testimonials (reaches the barrel there); a
@@ -18,18 +18,12 @@ export function TestimonialCarouselA({ quotes, heading, background = 'none', chi
     <SectionShell background={background} {...props}>
       {children ?? (
         <>
-          {heading && <h2 className="h-section">{heading}</h2>}
+          <SectionHeader heading={heading} />
           <Carousel perView={1.15} arrows dots bleed>
             {quotes.map((q, i) => (
               <figure key={i} className="tcar__card">
                 <blockquote className="sx-lh-body">{q.quote}</blockquote>
-                <figcaption className="row sx-tcar__fig">
-                  {q.avatar}
-                  <div className="col">
-                    {q.name && <strong className="sx-fs-body-s">{q.name}</strong>}
-                    {q.role && <span className="muted sx-fs-caption">{q.role}</span>}
-                  </div>
-                </figcaption>
+                <TestimonialFigure person={q} as="figcaption" className="sx-tcar__fig" />
               </figure>
             ))}
           </Carousel>

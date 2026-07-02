@@ -7,7 +7,9 @@ import { GridRows } from '@visx/grid';
 import { Group } from '@visx/group';
 import { curveMonotoneX } from '@visx/curve';
 import { ChartFrame } from '../charts/ChartFrame';
-import { paddedDomain, TOOLTIP_FLIP_PCT } from '../../internal/scale';
+import { paddedDomain } from '../../internal/scale';
+import { ChartTip } from '../../internal/ChartTip';
+import { ChartAxis } from '../../internal/ChartAxis';
 
 export interface LinePoint {
   /** The plotted value. */
@@ -96,12 +98,7 @@ export function LineChart({
             <div className="rdz-chart__tip-value">{formatY(data[active].y)}</div>
           </>
         );
-        const below = py < TOOLTIP_FLIP_PCT; // not enough room above → flip the tip below the point
-        return (
-          <div className="rdz-chart__tip" data-side={below ? 'below' : 'above'} style={{ ['--rdz-tip-x' as string]: `${px}px`, ['--rdz-tip-y' as string]: `${py}px` }}>
-            {node}
-          </div>
-        );
+        return <ChartTip x={px} y={py}>{node}</ChartTip>;
       }}
     >
       {({ innerWidth, innerHeight }) => {
@@ -116,11 +113,7 @@ export function LineChart({
         return (
           <>
             <GridRows scale={y} width={innerWidth} numTicks={4} className="rdz-chart__grid" />
-            <Group className="rdz-chart__axis">
-              {y.ticks(4).map((t) => (
-                <text key={t} x={-8} y={y(t)} textAnchor="end" dominantBaseline="middle">{formatY(t)}</text>
-              ))}
-            </Group>
+            <ChartAxis y={y} formatY={formatY} />
 
             {area ? (
               <AreaClosed data={data} x={(_d, i) => x(i) ?? 0} y={(d) => y(d.y) ?? 0} yScale={y} curve={curveMonotoneX} className="rdz-chart__area" style={{ fill: `url(#${uid}-area)` }} />

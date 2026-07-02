@@ -9,7 +9,9 @@ read-only dependency.
   `import { Button, HeroA } from 'raditz'`. The stylesheet is imported once in
   `src/main.tsx`: `import 'raditz/styles.css'`.
 - **Discover components** in `node_modules/raditz/catalog/llms.txt`.
-- Dark mode is wired in `src/ThemeRuntime.tsx` (`useColorScheme`).
+- Dark mode: `initColorScheme(DEFAULT_SCHEME)` at the top of `src/main.tsx` sets the
+  theme before first render (no flash); `src/ThemeRuntime.tsx` (`useColorScheme`)
+  keeps it in sync.
 
 ## Composing a page
 - **Sections are edge-to-edge (full-bleed) by default** — each brings its own inner
@@ -30,7 +32,8 @@ read-only dependency.
   Do not use both the picker AND a CSS accent override — the picker's inline styles win.
 - Default colour scheme: set `DEFAULT_SCHEME` in the theme runtime (`'system'` follows
   the OS — the default; `'dark'` or `'light'` opens the site in that scheme, still
-  user-toggleable). Vite has no SSR pre-paint script, so the hook applies it on mount.
+  user-toggleable). `src/main.tsx` reads it via `initColorScheme` before the first
+  render so there's no flash.
 
 ## Motion / animation
 - Scroll-reveal (`Reveal`, `RevealGroup`, and section content choreography — ON by

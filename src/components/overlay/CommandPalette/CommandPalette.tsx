@@ -1,7 +1,7 @@
 'use client';
-import { Fragment, useState, useEffect, useMemo } from 'react';
-import type { HTMLAttributes, ReactNode, ReactElement, KeyboardEvent as ReactKeyboardEvent } from 'react';
-import { cx, Overlay, useRoving, fuzzyFilter } from '../../internal';
+import { Fragment, useEffect, useMemo } from 'react';
+import type { HTMLAttributes, ReactNode, ReactElement } from 'react';
+import { cx, Overlay, useSearchableList } from '../../internal';
 import { Icon } from '../../display/Icon/Icon';
 import { Search } from '../../inputs/Search/Search';
 import type { IconName } from '../../display/Icon/Icon';
@@ -36,7 +36,6 @@ type FlatItem = CommandItem & { heading?: ReactNode };
  * An adapter face over {@link Overlay} (`centered` modal, focus trap).
  */
 export function CommandPalette({ open, onOpenChange, groups = [], placeholder = 'Type a command or search…', hotkey = true, className, ...rest }: CommandPaletteProps): ReactElement | null {
-  const [query, setQuery] = useState('');
   const close = (): void => { if (onOpenChange) onOpenChange(false); };
 
   const flat = useMemo<FlatItem[]>(() => {
@@ -44,14 +43,10 @@ export function CommandPalette({ open, onOpenChange, groups = [], placeholder = 
     groups.forEach((g) => (g.items || []).forEach((it) => out.push({ ...it, heading: g.heading })));
     return out;
   }, [groups]);
-  const filtered = fuzzyFilter(flat, query, (it) => `${it.label} ${it.keywords || ''}`);
-  const run = (it: FlatItem | undefined): void => { if (it) { if (it.onSelect) it.onSelect(); close(); } };
-
-  const { active, setActive, onKeyDown: onKey } = useRoving({
-    count: filtered.length,
-    orientation: 'vertical',
-    loop: false,
-    onSelect: (i) => run(filtered[i]),
+  const list = useSearchableList<FlatItem>({
+    items: flat,
+    itemText: (it) => `${it.label} ${it.keywords || ''}`,
+    onPick: (it) => { if (it.onSelect) it.onSelect(); close(); },
   });
 
   useEffect(() => {
@@ -63,7 +58,8 @@ export function CommandPalette({ open, onOpenChange, groups = [], placeholder = 
     return () => document.removeEventListener('keydown', h);
   }, [hotkey, open, onOpenChange]);
 
-  useEffect(() => { if (open) { setQuery(''); setActive(0); } }, [open, setActive]);
+  const { reset } = list;
+  useEffect(() => { if (open) reset(); }, [open, reset]);
 
   let lastHeading: ReactNode = null;
   return (
@@ -80,25 +76,22 @@ export function CommandPalette({ open, onOpenChange, groups = [], placeholder = 
     >
       <Search
         variant="plain"
-        value={query}
         placeholder={placeholder}
         hint={<kbd className="rdz-kbd">esc</kbd>}
-        onChange={(e) => { setQuery(e.target.value); setActive(0); }}
-        onKeyDown={onKey}
+        {...list.inputProps}
       />
-      <div className="rdz-cmdk__list rdz-scrollbar">
-        {filtered.length ? filtered.map((it, i) => {
+      <div className="rdz-cmdk__list rdz-scrollbar" {...list.listProps}>
+        {list.filtered.length ? list.filtered.map((it, i) => {
           const showHeading = it.heading && it.heading !== lastHeading;
           lastHeading = it.heading;
           return (
             <Fragment key={it.id || i}>
-              {showHeading ? <div className="rdz-cmdk__heading">{it.heading}</div> : null}
+              {showHeading ? <div className="rdz-cmdk__heading" role="presentation">{it.heading}</div> : null}
               <button
                 type="button"
                 className="rdz-cmdk__item"
-                data-active={i === active ? 'true' : undefined}
-                onMouseEnter={() => setActive(i)}
-                onClick={() => run(it)}
+                aria-selected={i === list.active}
+                {...list.optionProps(i)}
               >
                 {it.icon ? <Icon name={it.icon} size="1.05rem" className="rdz-cmdk__icon" /> : null}
                 <span className="rdz-cmdk__label">{it.label}</span>
@@ -106,7 +99,7 @@ export function CommandPalette({ open, onOpenChange, groups = [], placeholder = 
               </button>
             </Fragment>
           );
-        }) : <div className="rdz-cmdk__empty">No results for “{query}”</div>}
+        }) : <div className="rdz-cmdk__empty">No results for “{list.query}”</div>}
       </div>
     </Overlay>
   );

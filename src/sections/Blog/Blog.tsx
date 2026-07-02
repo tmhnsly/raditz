@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { SectionShell, type SectionBaseProps } from '../../lib/SectionShell';
+import { SectionShell, SectionHeader, type SectionBaseProps } from '../../lib/SectionShell';
 import { CardArrow } from '../../components/surfaces/CardArrow';
 
 export interface BlogProps extends SectionBaseProps {
@@ -22,7 +22,7 @@ export function BlogA({ posts, heading, background = 'none', children, ...props 
     <SectionShell wrap="sx-g3 sx-gap-5" background={background} {...props}>
       {children ?? (
         <>
-          {heading && <h3 className="h-section s-wrap__full">{heading}</h3>}
+          <SectionHeader heading={heading} className="col sx-sec__head s-wrap__full" />
           {posts.map((post, i) => (
             <article key={i} className="rdz-card sx-blog__card">
               {post.image && <div className="ph sx-blog__cover sx-media-reveal">{post.image}</div>}
@@ -45,7 +45,7 @@ export function BlogB({ posts, heading, background = 'surface-2', children, ...p
     <SectionShell wrap="col sx-blog__list" background={background} {...props}>
       {children ?? (
         <>
-          {heading && <h3 className="h-section">{heading}</h3>}
+          <SectionHeader heading={heading} />
           {posts.map((post, i) => (
             <a key={i} href={post.href ?? '#'} className="blogrow rdz-card-arrow-host">
               <div className="col sx-blog__row-body">

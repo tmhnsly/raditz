@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { SectionShell, SectionActions, type SectionBaseProps, type SectionAction } from '../../lib/SectionShell';
+import { SectionShell, SectionActions, SectionHeader, type SectionBaseProps, type SectionAction } from '../../lib/SectionShell';
 
 export interface NotFoundProps extends SectionBaseProps {
   /** Page heading. @default 'Page not found' */
@@ -17,7 +17,7 @@ export function NotFoundA({ title, message, actions, background = 'none', childr
       {children ?? (
         <>
           <span className="sx-nf__code">404</span>
-          <h3 className="h-section">{title ?? 'Page not found'}</h3>
+          <SectionHeader heading={title ?? 'Page not found'} />
           {message && <p className="lede sx-nf__lede">{message}</p>}
           <SectionActions actions={actions} size="lg" className="row sx-row-center" />
         </>

@@ -29,13 +29,37 @@ const btn = 'dist/components/actions/Button/Button.js';
 must(fs.existsSync(btn), `${btn} missing (preserveModules layout changed?)`);
 must(!/@visx|date-fns/.test(fs.readFileSync(btn, 'utf8')), 'Button.js inlined an externalized dep');
 
-// RSC guard: hook modules must keep their "use client" directive in dist. A build
-// regression that strips directives would silently break every Next consumer.
-const hookMod = 'dist/lib/useColorScheme.js';
-must(fs.existsSync(hookMod), `${hookMod} missing (lib layout changed?)`);
+// RSC guard: EVERY source module marked 'use client' must keep its directive in
+// dist (preserveModules keeps the layout 1:1). A build regression that strips
+// directives would silently break every Next consumer. Only the lib surface is
+// walked (same roots the codemod marks); a marked module absent from dist is
+// tolerated per-file (unreachable from the entry), but the checked count must
+// stay high or the layout has changed under us.
+const DIRECTIVE_RE = /^["']use client["']/;
+const clientSources = [];
+const walkForDirective = (dir) => {
+  for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+    const p = `${dir}/${e.name}`;
+    if (e.isDirectory()) walkForDirective(p);
+    else if (/\.tsx?$/.test(e.name) && !/\.(stories|test)\.tsx?$/.test(e.name) && !e.name.endsWith('.d.ts')) {
+      if (DIRECTIVE_RE.test(fs.readFileSync(p, 'utf8').trimStart())) clientSources.push(p);
+    }
+  }
+};
+for (const root of ['src/components', 'src/sections', 'src/lib']) walkForDirective(root);
+let checkedDirectives = 0;
+for (const srcFile of clientSources) {
+  const distFile = srcFile.replace(/^src\//, 'dist/').replace(/\.tsx?$/, '.js');
+  if (!fs.existsSync(distFile)) continue;
+  checkedDirectives++;
+  must(
+    DIRECTIVE_RE.test(fs.readFileSync(distFile, 'utf8').trimStart()),
+    `${distFile} lost its "use client" directive (RSC/Next consumers would break)`,
+  );
+}
 must(
-  /^["']use client["']/.test(fs.readFileSync(hookMod, 'utf8').trimStart()),
-  'dist lost the "use client" directive (RSC/Next consumers would break)',
+  checkedDirectives > 30,
+  `only ${checkedDirectives} of ${clientSources.length} client modules found in dist — preserveModules layout changed?`,
 );
 
 console.log('OK: package is consumable (artifacts, exports, tree-shaking, RSC all pass)');

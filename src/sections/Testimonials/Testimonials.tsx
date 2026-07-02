@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { SectionShell, type SectionBaseProps } from '../../lib/SectionShell';
+import { SectionShell, SectionHeader, TestimonialFigure, type SectionBaseProps } from '../../lib/SectionShell';
 
 /** A single testimonial entry — shared with TestimonialCarousel. */
 export interface Testimonial {
@@ -26,17 +26,11 @@ export function TestimonialsA({ quotes, heading, background = 'gradient-dusk', c
     <SectionShell wrap="sx-g3 sx-gap-4" background={background} {...props}>
       {children ?? (
         <>
-          {heading && <h2 className="h-section">{heading}</h2>}
+          <SectionHeader heading={heading} />
           {quotes.map((q, i) => (
             <div key={i} className="rdz-card col sx-tst__card">
               <p className="sx-tst__quote">{q.quote}</p>
-              <div className="row sx-tst__person">
-                {q.avatar}
-                <div className="col">
-                  {q.name && <strong className="sx-fs-body-s">{q.name}</strong>}
-                  {q.role && <span className="muted sx-fs-caption">{q.role}</span>}
-                </div>
-              </div>
+              <TestimonialFigure person={q} className="sx-tst__person" />
             </div>
           ))}
         </>
@@ -56,13 +50,7 @@ export function TestimonialsB({ quotes, heading, background = 'gradient-dusk', c
           {q && (
             <>
               <p className="sx-tst__big-quote">{q.quote}</p>
-              <div className="row sx-tst__person-center">
-                {q.avatar}
-                <div className="col sx-tst__person-meta">
-                  {q.name && <strong className="sx-fs-body-s">{q.name}</strong>}
-                  {q.role && <span className="muted sx-fs-caption">{q.role}</span>}
-                </div>
-              </div>
+              <TestimonialFigure person={q} className="sx-tst__person-center" metaClassName="sx-tst__person-meta" />
             </>
           )}
         </>

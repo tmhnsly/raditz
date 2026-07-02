@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import type { ReactNode } from 'react';
-import { SectionShell, SectionActionButton, type SectionBaseProps, type SectionAction } from '../../lib/SectionShell';
+import { SectionShell, SectionActionButton, SectionHeader, type SectionBaseProps, type SectionAction } from '../../lib/SectionShell';
 import { Tabs } from '../../components/navigation/Tabs';
 
 export interface PricingTier {
@@ -90,7 +90,7 @@ export function PricingA({
         <>
           {(heading || sub) && (
             <div className={align === 'center' ? 'col sx-center sx-gap-2' : 'col sx-align-start sx-gap-2'}>
-              {heading && <h3 className="h-section">{heading}</h3>}
+              <SectionHeader heading={heading} />
               {sub && <p className="muted">{sub}</p>}
             </div>
           )}
@@ -122,7 +122,7 @@ export function PricingB({
       {children ?? (
         <>
           <div className="sx-price__toggle-head">
-            {heading && <h3 className="h-section">{heading}</h3>}
+            <SectionHeader heading={heading} />
             {sub && <p className="muted">{sub}</p>}
             {hasYearly && (
               <Tabs

@@ -2,34 +2,24 @@ import { useEffect, useMemo } from 'react';
 import type { ComponentType } from 'react';
 import { cx, useReplay } from '../components/internal';
 import { entries, type Entry, type TreeNode } from './registry';
-import { activeSection } from './scrollSpy';
+import { activeSection, activationLine, type SectionTop } from './scrollSpy';
+import { pageRows } from './pageRows';
+import {
+  GROUP_HEADING_CLASS,
+  groupHeadingLevelClass,
+  SECTION_CLASS,
+  SECTION_FULLSCREEN_CLASS,
+  SPY_SECTION_SELECTOR,
+} from './anchors';
 import { LazyMount } from './LazyMount';
 
 const VARIANT_TOTAL = entries.reduce((n, e) => n + e.variants.length, 0);
-
-type PageRow =
-  | { kind: 'group'; slug: string; name: string; level: number }
-  | { kind: 'entry'; slug: string; entry: Entry };
-
-// Pre-order the tree into a flat list of group headings + entries, so the whole
-// system renders on one page in tree order with anchorable ids.
-function pageRows(tree: TreeNode[], level = 0, out: PageRow[] = []): PageRow[] {
-  for (const node of tree) {
-    if (node.entry) {
-      out.push({ kind: 'entry', slug: node.slug, entry: node.entry });
-    } else {
-      out.push({ kind: 'group', slug: node.slug, name: node.name, level });
-      if (node.children) pageRows(node.children, level + 1, out);
-    }
-  }
-  return out;
-}
 
 /** A group heading in the long page. Top-level (l0) sticks under the bar and
  * shares its frosted surface (see App.css) so the two read as one sticky unit. */
 function GroupHeading({ slug, name, level }: { slug: string; name: string; level: number }) {
   return (
-    <h2 id={slug} className={cx('page-group', `page-group--l${level}`)}>
+    <h2 id={slug} className={cx(GROUP_HEADING_CLASS, groupHeadingLevelClass(level))}>
       {name}
     </h2>
   );
@@ -59,7 +49,7 @@ function VariantPreview({ name, Component, showTag }: { name: string; Component:
 function EntryBlock({ entry }: { entry: Entry }) {
   const leafName = entry.segments[entry.segments.length - 1];
   return (
-    <section className={'sec' + (entry.fullscreen ? ' sec--fullscreen' : '')} id={entry.slug}>
+    <section className={cx(SECTION_CLASS, entry.fullscreen && SECTION_FULLSCREEN_CLASS)} id={entry.slug}>
       <div className="sec__head">
         <h2>{leafName}</h2>
         <span className="sec__meta">
@@ -76,27 +66,29 @@ function EntryBlock({ entry }: { entry: Entry }) {
   );
 }
 
-/** Scroll-spy: report the section the reader is on so the tree + breadcrumb track
- * the scroll position. Recomputed from live geometry every scroll frame (see
- * `activeSection`) — NOT from an IntersectionObserver's changed-entries batch,
- * which could hold a stale section under fast scroll or post-lazy-mount reflow. */
-function useScrollSpy(onActiveChange?: (slug: string) => void): void {
+/** DOM read: each spy-visible section's viewport-relative top, in document order.
+ * This is the geometry jsdom can't test (no layout) — everything downstream of it
+ * (`activeSection`, `activationLine`, the active-slug machine) is pure and tested. */
+function readSectionTops(): SectionTop[] {
+  return Array.from(document.querySelectorAll<HTMLElement>(SPY_SECTION_SELECTOR)).map((el) => ({
+    id: el.id,
+    top: el.getBoundingClientRect().top,
+  }));
+}
+
+/** Scroll-spy DOM shim: on every scroll/resize frame (rAF-coalesced), report which
+ * section the reader is on. Recomputed from live geometry (see `activeSection`) —
+ * NOT from an IntersectionObserver's changed-entries batch, which could hold a
+ * stale section under fast scroll or post-lazy-mount reflow. Observations are
+ * raw and per-frame; deduping and intent-vs-observation arbitration live in the
+ * consumer (the active-slug machine), not here. */
+function useScrollSpy(onObserve?: (slug: string) => void): void {
   useEffect(() => {
-    if (!onActiveChange) return undefined;
+    if (!onObserve) return undefined;
     let raf = 0;
-    let last: string | null = null;
     const compute = (): void => {
       raf = 0;
-      const secs = Array.from(document.querySelectorAll<HTMLElement>('.sec[id]')).map((el) => ({
-        id: el.id,
-        top: el.getBoundingClientRect().top,
-      }));
-      // Activation line a quarter down the viewport — the section crossing it is "current".
-      const id = activeSection(secs, window.innerHeight * 0.25);
-      if (id !== last) {
-        last = id;
-        onActiveChange(id);
-      }
+      onObserve(activeSection(readSectionTops(), activationLine(window.innerHeight)));
     };
     const onScroll = (): void => {
       if (!raf) raf = requestAnimationFrame(compute);
@@ -109,20 +101,21 @@ function useScrollSpy(onActiveChange?: (slug: string) => void): void {
       window.removeEventListener('resize', onScroll);
       if (raf) cancelAnimationFrame(raf);
     };
-  }, [onActiveChange]);
+  }, [onObserve]);
 }
 
 export function StoryView({
   tree,
   route,
-  onActiveChange,
+  onObserve,
 }: {
   tree: TreeNode[];
   route: string;
-  onActiveChange?: (slug: string) => void;
+  /** Raw scroll-spy observations — feed these to the active-slug machine. */
+  onObserve?: (slug: string) => void;
 }) {
   const rows = useMemo(() => pageRows(tree), [tree]);
-  useScrollSpy(onActiveChange);
+  useScrollSpy(onObserve);
 
   // Deep-link: on first load, jump to the section named in the hash.
   useEffect(() => {

@@ -46,5 +46,5 @@ If any fails, STOP and report the failure. Do not proceed to tag.
 
 ## 7. Report
 Tell the user the new tag and the consumer pin line:
-`"raditz": "github:tom/raditz#vX.Y.Z"`. Mention they still need to `git push
+`"raditz": "github:tmhnsly/raditz#vX.Y.Z"`. Mention they still need to `git push
 --follow-tags` (do NOT push automatically unless asked).

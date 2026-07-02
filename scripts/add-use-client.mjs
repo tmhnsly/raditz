@@ -3,6 +3,7 @@
 // Router). Vite + vitest treat the directive as an inert string. Idempotent.
 import fs from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const ROOTS = ['src/components', 'src/sections'];
 // Public lib modules that are hook-bearing client code. They're re-exported from
@@ -16,7 +17,7 @@ const EXTRA = ['src/lib/ThemePicker.tsx', 'src/lib/useColorScheme.ts', 'src/lib/
 // This is a heuristic, not a parser: it can over-mark (e.g. a local var named `document`)
 // — which is the safe direction (a needless client boundary, never a broken server one) —
 // and `stripComments` only crudely ignores comment prose, not `//` inside string literals.
-const CLIENT_RE =
+export const CLIENT_RE =
   /\b(useState|useEffect|useLayoutEffect|useReducer|useRef|useContext|useId|useImperativeHandle|useSyncExternalStore|useTransition|useDeferredValue|useMemo|useCallback|useInsertionEffect)\b|\bon[A-Z][A-Za-z]*=|\b(document|window|localStorage|sessionStorage|navigator|matchMedia|requestAnimationFrame|IntersectionObserver|ResizeObserver)\b/;
 
 const DIRECTIVE = "'use client';";
@@ -34,7 +35,7 @@ function walk(dir, out = []) {
   return out;
 }
 
-function alreadyDirective(src) {
+export function alreadyDirective(src) {
   const firstCode = src.replace(/^﻿/, '').trimStart();
   return /^['"]use client['"];?/.test(firstCode);
 }
@@ -42,20 +43,32 @@ function alreadyDirective(src) {
 // Strip comments before signal detection so prose like "...document flow" in a
 // JSDoc doesn't force a static component to a client boundary. (Detection only —
 // the file itself is never rewritten from this stripped copy.)
-function stripComments(src) {
+export function stripComments(src) {
   return src.replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|[^:])\/\/[^\n]*/g, '$1');
 }
 
-const files = [...ROOTS.flatMap((r) => walk(r)), ...EXTRA.filter((f) => fs.existsSync(f))];
-let added = 0;
-const changed = [];
-for (const file of files) {
-  const src = fs.readFileSync(file, 'utf8');
-  if (!CLIENT_RE.test(stripComments(src))) continue; // static → leave as a server component
-  if (alreadyDirective(src)) continue;      // idempotent
-  fs.writeFileSync(file, `${DIRECTIVE}\n${src}`);
-  added++;
-  changed.push(file);
+// The whole decision, pure: does this source need the directive prepended?
+export function needsDirective(src) {
+  return CLIENT_RE.test(stripComments(src)) && !alreadyDirective(src);
 }
-console.log(`add-use-client: marked ${added} file(s) as client (of ${files.length} scanned).`);
-for (const c of changed.sort()) console.log(`  + ${c}`);
+
+function main() {
+  const files = [...ROOTS.flatMap((r) => walk(r)), ...EXTRA.filter((f) => fs.existsSync(f))];
+  let added = 0;
+  const changed = [];
+  for (const file of files) {
+    const src = fs.readFileSync(file, 'utf8');
+    if (!needsDirective(src)) continue; // static or already marked
+    fs.writeFileSync(file, `${DIRECTIVE}\n${src}`);
+    added++;
+    changed.push(file);
+  }
+  console.log(`add-use-client: marked ${added} file(s) as client (of ${files.length} scanned).`);
+  for (const c of changed.sort()) console.log(`  + ${c}`);
+}
+
+// Only run the codemod when executed as a script — importing the exported
+// heuristics (tests, preflight) must never rewrite sources.
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  main();
+}

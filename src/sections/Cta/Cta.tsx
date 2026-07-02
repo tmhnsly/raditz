@@ -1,6 +1,6 @@
 'use client';
 import type { ReactNode } from 'react';
-import { SectionShell, SectionActions, SectionActionButton, type SectionBaseProps, type SectionAction } from '../../lib/SectionShell';
+import { SectionShell, SectionActions, SectionActionButton, SectionHeader, type SectionBaseProps, type SectionAction } from '../../lib/SectionShell';
 
 export interface CtaProps extends SectionBaseProps {
   /** Headline (required). */
@@ -22,7 +22,7 @@ export function CtaA({ title, sub, actions, align = 'center', background = 'grad
     <SectionShell wrap={centered ? 'col sx-center sx-gap-5' : 'col sx-gap-5'} background={background} {...props}>
       {children ?? (
         <>
-          <h3 className="h-section sx-cta__title">{title}</h3>
+          <SectionHeader heading={title} headingClassName="sx-cta__title" />
           {sub && <p className="muted sx-cta__sub">{sub}</p>}
           <SectionActions actions={actions} size="lg" className={centered ? 'row sx-row-center' : 'row'} />
         </>
@@ -38,7 +38,7 @@ export function CtaB({ title, sub, emailCapture, background = 'none', children, 
       {children ?? (
         <>
           <div className="col sx-cta__copy">
-            <h3 className="h-section sx-cta__title-ink">{title}</h3>
+            <SectionHeader heading={title} headingClassName="sx-cta__title-ink" />
             {sub && <p className="muted sx-cta__sub">{sub}</p>}
           </div>
           {emailCapture && (

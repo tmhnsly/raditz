@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { SectionShell, type SectionBaseProps } from '../../lib/SectionShell';
+import { SectionShell, SectionHeader, type SectionBaseProps } from '../../lib/SectionShell';
 import { Accordion } from '../../components/disclosure/Accordion';
 
 export interface FaqProps extends SectionBaseProps {
@@ -15,7 +15,7 @@ export function FaqA({ items, heading, background = 'surface-2', children, ...pr
     <SectionShell wrap="sx-faq__wrap" background={background} {...props}>
       {children ?? (
         <>
-          {heading && <h2 className="h-section">{heading}</h2>}
+          <SectionHeader heading={heading} />
           <Accordion
             id="faqAcc"
             type="single"
@@ -39,7 +39,7 @@ export function FaqB({ items, heading, background = 'none', children, ...props }
     <SectionShell wrap="sx-faq2 sx-gap-6" background={background} {...props}>
       {children ?? (
         <>
-          {heading && <h2 className="h-section">{heading}</h2>}
+          <SectionHeader heading={heading} />
           {items.map((item, i) => (
             <div key={i} className="col sx-faq__item">
               <strong>{item.question}</strong>

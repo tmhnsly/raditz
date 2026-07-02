@@ -36,4 +36,5 @@ version bump → `CHANGELOG.md` → commit → tag. Never tag on a red gate.
 
 ## 7. Report
 Give the new tag; tell the user to bump the product's `raditz` dep to
-`github:OWNER/REPO#<newTag>` to receive the component.
+`github:tmhnsly/raditz#<newTag>` (the library's `origin` slug) to receive the
+component.

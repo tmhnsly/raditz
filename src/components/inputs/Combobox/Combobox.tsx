@@ -1,7 +1,7 @@
 'use client';
-import { useId, useRef, useState } from 'react';
-import type { ChangeEvent, HTMLAttributes, KeyboardEvent, ReactElement } from 'react';
-import { cx, useControllableState, Overlay, useRoving, fuzzyFilter } from '../../internal';
+import { useRef, useState } from 'react';
+import type { HTMLAttributes, ReactElement } from 'react';
+import { cx, useControllableState, Overlay, useSearchableList } from '../../internal';
 import { Icon } from '../../display/Icon/Icon';
 import { Search } from '../Search/Search';
 
@@ -37,21 +37,15 @@ export function Combobox({
 }: ComboboxProps): ReactElement {
   const [val, setVal] = useControllableState<string>({ value, defaultValue, onChange });
   const [open, setOpen] = useState(false);
-  const [query, setQuery] = useState('');
   const anchorRef = useRef<HTMLButtonElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);
-  const listId = useId();
 
   const norm: ComboboxOption[] = options.map((o) => (typeof o === 'string' ? { value: o, label: o } : o));
   const selected = norm.find((o) => o.value === val);
-  const filtered = fuzzyFilter(norm, query, (o) => o.label);
-  const choose = (o: ComboboxOption): void => { setVal(o.value); setOpen(false); setQuery(''); };
-
-  const { active, setActive, onKeyDown: onKey } = useRoving({
-    count: filtered.length,
-    orientation: 'vertical',
-    loop: false,
-    onSelect: (i) => { if (filtered[i]) choose(filtered[i]); },
+  const list = useSearchableList<ComboboxOption>({
+    items: norm,
+    itemText: (o) => o.label,
+    onPick: (o) => { setVal(o.value); setOpen(false); },
   });
 
   return (
@@ -63,7 +57,7 @@ export function Combobox({
         disabled={disabled}
         aria-haspopup="listbox"
         aria-expanded={open}
-        onClick={() => { setOpen((o) => !o); setActive(0); }}
+        onClick={() => { setOpen((o) => !o); list.reset(); }}
       >
         <span className={selected ? undefined : 'rdz-combobox__ph'}>{selected ? selected.label : placeholder}</span>
         <Icon name="chevron-down" size="1em" className="rdz-combobox__chev" />
@@ -81,28 +75,17 @@ export function Combobox({
           ref={searchRef}
           variant="plain"
           size="sm"
-          value={query}
           placeholder="Search…"
-          role="combobox"
-          aria-expanded={open}
-          aria-controls={listId}
-          aria-autocomplete="list"
-          aria-activedescendant={filtered[active] ? `${listId}-o-${active}` : undefined}
-          onChange={(e: ChangeEvent<HTMLInputElement>) => { setQuery(e.target.value); setActive(0); }}
-          onKeyDown={onKey}
+          {...list.inputProps}
         />
-        <div className="rdz-combobox__list rdz-scrollbar" id={listId} role="listbox">
-          {filtered.length ? filtered.map((o, i) => (
+        <div className="rdz-combobox__list rdz-scrollbar" {...list.listProps}>
+          {list.filtered.length ? list.filtered.map((o, i) => (
             <button
               key={o.value}
-              id={`${listId}-o-${i}`}
               type="button"
-              role="option"
               aria-selected={o.value === val}
               className="rdz-combobox__opt"
-              data-active={i === active ? 'true' : undefined}
-              onMouseEnter={() => setActive(i)}
-              onClick={() => choose(o)}
+              {...list.optionProps(i)}
             >
               <span>{o.label}</span>
               {o.value === val ? <Icon name="check" size="1em" /> : null}

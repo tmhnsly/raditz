@@ -1,11 +1,10 @@
 import type { HTMLAttributes, ReactElement, ReactNode } from 'react';
 import { cx } from '../../internal';
-
-type Tone = 'accent' | 'info' | 'success' | 'warning' | 'danger';
+import type { StatusTone } from '../../internal';
 
 export interface CalloutProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
-  /** Tone. @default "info" */
-  color?: Tone;
+  /** Tone — every StatusTone except `neutral`. @default "info" */
+  color?: Exclude<StatusTone, 'neutral'>;
   /** Leading icon element. */
   icon?: ReactNode;
   /** Optional bold title line. */

@@ -1,6 +1,8 @@
 'use client';
 import type { HTMLAttributes, ReactNode, ReactElement } from 'react';
 import { cx, Overlay, useOverlayLabels } from '../../internal';
+import type { StatusTone } from '../../internal';
+import { Button } from '../../actions/Button/Button';
 
 export interface AlertDialogProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
   /** Open state (controlled). */
@@ -16,7 +18,7 @@ export interface AlertDialogProps extends Omit<HTMLAttributes<HTMLDivElement>, '
   /** Fires when the confirm action is chosen (dialog then closes). */
   onAction?: () => void;
   /** Confirm-button tone. @default "danger" */
-  tone?: 'danger' | 'accent';
+  tone?: Extract<StatusTone, 'danger' | 'accent'>;
 }
 
 /**
@@ -41,9 +43,6 @@ export function AlertDialog({
 }: AlertDialogProps): ReactElement | null {
   const cancel = (): void => { if (onOpenChange) onOpenChange(false); };
   const { titleId, descId, labelledby, describedby } = useOverlayLabels(title, description);
-  const actionClass = tone === 'danger'
-    ? 'rdz-btn rdz-btn--primary rdz-alert__danger'
-    : 'rdz-btn rdz-btn--primary';
   return (
     <Overlay
       open={!!open}
@@ -64,8 +63,14 @@ export function AlertDialog({
         </div>
       ) : null}
       <div className="rdz-dialog__footer">
-        <button type="button" className="rdz-btn rdz-btn--ghost" onClick={cancel}>{cancelText}</button>
-        <button type="button" className={actionClass} onClick={() => { if (onAction) onAction(); cancel(); }}>{actionText}</button>
+        <Button variant="ghost" onClick={cancel}>{cancelText}</Button>
+        <Button
+          variant="primary"
+          className={tone === 'danger' ? 'rdz-alert__danger' : undefined}
+          onClick={() => { if (onAction) onAction(); cancel(); }}
+        >
+          {actionText}
+        </Button>
       </div>
     </Overlay>
   );

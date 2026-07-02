@@ -2,20 +2,12 @@
 import * as React from 'react';
 import { Icon } from '../../display/Icon/Icon';
 import type { IconName } from '../../display/Icon/Icon';
-import { cx } from '../../internal';
-
-type BannerTone = 'info' | 'success' | 'warning' | 'danger';
-
-const TONE_ICON: Record<BannerTone, IconName> = {
-  info: 'info',
-  success: 'check-circle',
-  warning: 'alert-triangle',
-  danger: 'alert-circle',
-};
+import { cx, STATUS_TONE_ICON, statusToneRole } from '../../internal';
+import type { FeedbackTone } from '../../internal';
 
 export interface BannerProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> {
   /** @default "info" */
-  tone?: BannerTone;
+  tone?: FeedbackTone;
   title?: React.ReactNode;
   /** Override the leading icon (registry name). */
   icon?: string;
@@ -44,10 +36,10 @@ export function Banner({
   return (
     <div
       className={cx('rdz-banner', `rdz-banner--${tone}`, className)}
-      role={tone === 'danger' ? 'alert' : 'status'}
+      role={statusToneRole(tone)}
       {...rest}
     >
-      <Icon name={(icon || TONE_ICON[tone]) as IconName} size="1.15rem" className="rdz-banner__icon" />
+      <Icon name={(icon || STATUS_TONE_ICON[tone]) as IconName} size="1.15rem" className="rdz-banner__icon" />
       <div className="rdz-banner__body">
         {title ? <div className="rdz-banner__title">{title}</div> : null}
         {children ? <div className="rdz-banner__text">{children}</div> : null}

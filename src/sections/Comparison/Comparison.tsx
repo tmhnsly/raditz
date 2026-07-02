@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { SectionShell, type SectionBaseProps } from '../../lib/SectionShell';
+import { SectionShell, SectionHeader, type SectionBaseProps } from '../../lib/SectionShell';
 
 export interface ComparisonProps extends SectionBaseProps {
   /** Table columns (plans/tiers), in order (required). */
@@ -24,14 +24,15 @@ export function ComparisonA({ columns, rows, heading, background = 'surface-2', 
     <SectionShell background={background} {...props}>
       {children ?? (
         <>
-          {heading && <h3 className="h-section">{heading}</h3>}
+          <SectionHeader heading={heading} />
           <div className="cmp-scroll">
             <table className="cmp">
               <thead>
                 <tr>
-                  <th></th>
+                  {/* Corner cell: not a header (empty th fails the a11y gate). */}
+                  <td></td>
                   {columns.map((col, i) => (
-                    <th key={i} className={col.highlight ? 'cmp__pop' : undefined}>
+                    <th key={i} scope="col" className={col.highlight ? 'cmp__pop' : undefined}>
                       {col.name}
                     </th>
                   ))}
@@ -40,7 +41,8 @@ export function ComparisonA({ columns, rows, heading, background = 'surface-2', 
               <tbody>
                 {rows.map((row, ri) => (
                   <tr key={ri}>
-                    <th>{row.feature}</th>
+                    {/* A row without a feature name (e.g. a CTA row) has no row header. */}
+                    {row.feature ? <th scope="row">{row.feature}</th> : <td></td>}
                     {columns.map((col, ci) => {
                       const val = row.values[ci];
                       const isBoolFalse = val === false;

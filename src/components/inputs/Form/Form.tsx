@@ -2,6 +2,7 @@
 import { useState, useRef } from 'react';
 import type { ChangeEvent, FormEvent, ReactElement, ReactNode } from 'react';
 import { cx } from '../../internal';
+import { Button } from '../../actions/Button/Button';
 import { Field } from '../Field/Field';
 import { Select, type SelectOption } from '../Select/Select';
 import { resolveFieldError } from './validate';
@@ -136,7 +137,7 @@ export function Form({ fields = [], submitLabel = 'Submit', onSubmit, footer, cl
       })}
       <div className="rdz-form__actions">
         {footer}
-        <button type="submit" className="rdz-btn rdz-btn--primary">{submitLabel}</button>
+        <Button type="submit" variant="primary">{submitLabel}</Button>
       </div>
     </form>
   );

@@ -9,6 +9,37 @@ export interface FeaturesItem {
   media?: ReactNode;
 }
 
+/** Private: renders one feature card — the icon + title + description body that
+ * every card variant repeats (FeaturesA card, FeaturesB bento lead/cell/wide).
+ * `reveal` swaps the wrapper for a {@link Reveal} (same classes, same DOM shape)
+ * for FeaturesA's opt-in entrance. Descriptions are muted body-small by default;
+ * `descSize="caption"` is the deliberate step down for the compact bento cells.
+ * (FeaturesC's media spotlight is a different shape and stays bespoke.) */
+function FeatureCard({
+  item,
+  className,
+  titleClassName,
+  descSize = 'body',
+  reveal = false,
+}: {
+  item: FeaturesItem;
+  className: string;
+  titleClassName?: string;
+  descSize?: 'body' | 'caption';
+  reveal?: boolean;
+}) {
+  const body = (
+    <>
+      {item.icon && <span className="feat-ico">{item.icon}</span>}
+      <strong className={titleClassName}>{item.title}</strong>
+      {item.description && (
+        <span className={descSize === 'caption' ? 'muted sx-fs-caption' : 'muted sx-body-s'}>{item.description}</span>
+      )}
+    </>
+  );
+  return reveal ? <Reveal className={className}>{body}</Reveal> : <div className={className}>{body}</div>;
+}
+
 export interface FeaturesProps extends SectionBaseProps {
   /** Feature cards (required). */
   items: FeaturesItem[];
@@ -24,22 +55,12 @@ export interface FeaturesProps extends SectionBaseProps {
 
 /** Features A — 3-up icon card grid. */
 export function FeaturesA({ items, eyebrow, heading, align, animate = false, background = 'none', children, ...props }: FeaturesProps) {
-  // One card-content definition; wrap each in <Reveal> only when animating, so the
-  // non-animated path stays byte-for-byte what it was (SSR-pure, no observers).
-  const cards = items.map((item, i) => {
-    const inner = (
-      <>
-        {item.icon && <span className="feat-ico">{item.icon}</span>}
-        <strong>{item.title}</strong>
-        {item.description && <span className="muted sx-body-s">{item.description}</span>}
-      </>
-    );
-    return animate ? (
-      <Reveal key={i} className="rdz-card col sx-gap-3">{inner}</Reveal>
-    ) : (
-      <div key={i} className="rdz-card col sx-gap-3">{inner}</div>
-    );
-  });
+  // One card definition; FeatureCard swaps its wrapper for <Reveal> only when
+  // animating, so the non-animated path stays byte-for-byte what it was
+  // (SSR-pure, no observers).
+  const cards = items.map((item, i) => (
+    <FeatureCard key={i} item={item} className="rdz-card col sx-gap-3" reveal={animate} />
+  ));
   return (
     <SectionShell wrap="col sx-gap-6" background={background} {...props} animate={false}>
       {children ?? (
@@ -66,21 +87,17 @@ export function FeaturesB({ items, eyebrow, heading, align, background = 'gradie
           <SectionHeader eyebrow={eyebrow} heading={heading} align={align} className="col sx-feat__head" />
           <div className="sx-bento sx-feat__bento">
             {lead && (
-              <div className="rdz-card col sx-feat__bento-lead">
-                {lead.icon && <span className="feat-ico">{lead.icon}</span>}
-                <strong className="sx-feat__bento-title">{lead.title}</strong>
-                {lead.description && <span className="muted sx-fs-body-s">{lead.description}</span>}
-              </div>
+              <FeatureCard item={lead} className="rdz-card col sx-feat__bento-lead" titleClassName="sx-feat__bento-title" />
             )}
             {rest.map((item, i) => {
               const isLast = i === rest.length - 1;
-              const cls = isLast ? 'rdz-card col sx-feat__bento-wide' : 'rdz-card col sx-feat__bento-cell';
               return (
-                <div key={i} className={cls}>
-                  {item.icon && <span className="feat-ico">{item.icon}</span>}
-                  <strong>{item.title}</strong>
-                  {item.description && <span className={isLast ? 'muted sx-fs-body-s' : 'muted sx-fs-caption'}>{item.description}</span>}
-                </div>
+                <FeatureCard
+                  key={i}
+                  item={item}
+                  className={isLast ? 'rdz-card col sx-feat__bento-wide' : 'rdz-card col sx-feat__bento-cell'}
+                  descSize={isLast ? 'body' : 'caption'}
+                />
               );
             })}
           </div>

@@ -119,26 +119,66 @@ export function SectionHeader({
   eyebrow,
   heading,
   className,
+  headingClassName,
   align,
-  as: HeadingTag = 'h3',
+  as: HeadingTag = 'h2',
 }: {
   eyebrow?: ReactNode;
   heading?: ReactNode;
   className?: string;
+  /** Extra classes on the heading tag itself (e.g. a per-section text-measure or
+   * ink class like `"sx-cta__title"`) — layout classes belong on `className`. */
+  headingClassName?: string;
   /** Center or left-align the eyebrow + heading block. Omit to inherit the
    * section's default look. */
   align?: 'start' | 'center';
-  /** Heading level for the title, so a page keeps a correct outline (e.g. `'h2'`
-   * directly under a hero's heading). The visual size is fixed by `h-section`
-   * regardless of level. @default 'h3' */
+  /** Heading level for the title, so a page keeps a correct outline. Every
+   * section heading defaults to `h2` (sibling of the hero's `h2`; the page/app
+   * owns the `h1`), so sections composed on one page share one coherent level.
+   * The visual size is fixed by `h-section` regardless of level. @default 'h2' */
   as?: 'h2' | 'h3' | 'h4';
 }): ReactElement | null {
   if (!eyebrow && !heading) return null;
   return (
     <div className={cx(className ?? 'col sx-sec__head', align === 'center' && 'sx-center', align === 'start' && 'sx-align-start')}>
       {eyebrow && <span className="eyebrow2">{eyebrow}</span>}
-      {heading && <HeadingTag className="h-section">{heading}</HeadingTag>}
+      {heading && <HeadingTag className={cx('h-section', headingClassName)}>{heading}</HeadingTag>}
     </div>
+  );
+}
+
+/**
+ * The avatar + name/role attribution block every testimonial variant renders
+ * (Testimonials A/B, TestimonialCarousel) — extracted here, like
+ * {@link SectionActionButton}, because it crosses section families. Accepts the
+ * shared `Testimonial` shape structurally (quote is ignored); `name`/`role` are
+ * individually optional. `className` carries each variant's wrapper modifier
+ * (e.g. `"sx-tst__person"`); `as` lets a `<figure>` caller render a semantic
+ * `<figcaption>`; `metaClassName` extends the inner name/role column.
+ */
+export function TestimonialFigure({
+  person,
+  className,
+  metaClassName,
+  as: Tag = 'div',
+}: {
+  /** The attributee — structurally compatible with `Testimonial`. */
+  person: { name?: ReactNode; role?: ReactNode; avatar?: ReactNode };
+  /** Classes on the wrapping row (per-variant modifier rides here). */
+  className?: string;
+  /** Extra classes on the inner name/role column. */
+  metaClassName?: string;
+  /** Wrapper element — `'figcaption'` inside a `<figure>` quote card. @default 'div' */
+  as?: 'div' | 'figcaption';
+}): ReactElement {
+  return (
+    <Tag className={cx('row', className)}>
+      {person.avatar}
+      <div className={cx('col', metaClassName)}>
+        {person.name && <strong className="sx-fs-body-s">{person.name}</strong>}
+        {person.role && <span className="muted sx-fs-caption">{person.role}</span>}
+      </div>
+    </Tag>
   );
 }
 

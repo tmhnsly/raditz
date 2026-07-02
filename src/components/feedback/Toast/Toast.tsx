@@ -1,13 +1,14 @@
 'use client';
 import * as React from 'react';
 import { cx, OverlayClose } from '../../internal';
+import type { StatusTone } from '../../internal';
 
 const { useState, useEffect } = React;
 
 export interface ToastOptions {
   title?: React.ReactNode;
   description?: React.ReactNode;
-  variant?: 'default' | 'success' | 'warning' | 'danger';
+  variant?: 'default' | Extract<StatusTone, 'success' | 'warning' | 'danger'>;
   /** Optional action button. */
   action?: { label: React.ReactNode; onClick?: () => void };
   /** Auto-dismiss ms (Infinity to persist). Defaults to the viewport's duration. */

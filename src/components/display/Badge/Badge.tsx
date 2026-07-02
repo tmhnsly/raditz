@@ -1,13 +1,12 @@
 import * as React from 'react';
 import { cx } from '../../internal';
-
-type BadgeColor = 'accent' | 'neutral' | 'success' | 'warning' | 'danger' | 'info';
+import type { StatusTone } from '../../internal';
 
 export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
   /** Fill style. @default "soft" */
   variant?: 'solid' | 'soft' | 'outline';
   /** Semantic tone. @default "accent" */
-  color?: BadgeColor;
+  color?: StatusTone;
   /** Leading status dot. @default false */
   dot?: boolean;
   children?: React.ReactNode;

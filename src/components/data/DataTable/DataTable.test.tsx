@@ -58,6 +58,21 @@ describe('DataTable behaviour (wired to the Table-model)', () => {
     expect(onSelectedChange).toHaveBeenLastCalledWith([1, 2, 3]);
   });
 
+  it('the header Checkbox reflects the page tri-state (none / some / all)', () => {
+    const { container, rerender } = render(<DataTable columns={columns} rows={rows} selectable selected={[]} />);
+    // Rendered through the real Checkbox component, not a markup copy.
+    expect(container.querySelector('thead .rdz-check input[type="checkbox"]')).toBeTruthy();
+    const header = (): HTMLInputElement => container.querySelector('thead input[type="checkbox"]') as HTMLInputElement;
+    expect(header().checked).toBe(false);
+    expect(header().indeterminate).toBe(false);
+    rerender(<DataTable columns={columns} rows={rows} selectable selected={[1]} />);
+    expect(header().checked).toBe(false);
+    expect(header().indeterminate).toBe(true);
+    rerender(<DataTable columns={columns} rows={rows} selectable selected={[1, 2, 3]} />);
+    expect(header().checked).toBe(true);
+    expect(header().indeterminate).toBe(false);
+  });
+
   it('paginates and reports a clamped 1-based range', () => {
     const { container, getByText } = render(<DataTable columns={columns} rows={rows} pageSize={2} />);
     expect(nameOrder(container)).toHaveLength(2);

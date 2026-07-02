@@ -24,8 +24,16 @@ export function AnnouncementA({ text, action, dismissible, children }: Announcem
         <div className="sx-ann__strip">
           <div className="s-wrap row sx-ann__strip-inner">
             {text}
+            {/* Deliberate exception: the strip CTA keeps its text-link LOOK (not a
+                SectionActionButton). A handler-only action still needs real button
+                semantics — an `<a>` without `href` isn't focusable — so the element
+                follows the action shape; `.sx-ann__link` styles both. */}
             {action && (
-              <a href={action.href} onClick={action.onClick} className="sx-ann__link">{action.label}</a>
+              action.href ? (
+                <a href={action.href} onClick={action.onClick} className="sx-ann__link">{action.label}</a>
+              ) : (
+                <button type="button" onClick={action.onClick} className="sx-ann__link">{action.label}</button>
+              )
             )}
             {dismissible && (
               <button

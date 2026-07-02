@@ -3,9 +3,10 @@ import { useState } from 'react';
 import { scaleLinear } from '@visx/scale';
 import { Circle } from '@visx/shape';
 import { GridRows, GridColumns } from '@visx/grid';
-import { Group } from '@visx/group';
 import { ChartFrame } from '../charts/ChartFrame';
-import { paddedDomain, TOOLTIP_FLIP_PCT } from '../../internal/scale';
+import { paddedDomain } from '../../internal/scale';
+import { ChartTip } from '../../internal/ChartTip';
+import { ChartAxis } from '../../internal/ChartAxis';
 
 export interface ScatterPoint {
   x: number;
@@ -55,17 +56,11 @@ export function ScatterChart({
         const x = xFor(innerWidth);
         const y = yFor(innerHeight);
         const d = data[active];
-        const py = margin.top + (y(d.y) ?? 0);
-        const below = py < TOOLTIP_FLIP_PCT; // not enough room above → flip the tip below the point
         return (
-          <div
-            className="rdz-chart__tip"
-            data-side={below ? 'below' : 'above'}
-            style={{ ['--rdz-tip-x' as string]: `${margin.left + (x(d.x) ?? 0)}px`, ['--rdz-tip-y' as string]: `${py}px` }}
-          >
+          <ChartTip x={margin.left + (x(d.x) ?? 0)} y={margin.top + (y(d.y) ?? 0)}>
             {d.label ? <div className="rdz-chart__tip-title">{d.label}</div> : null}
             <div className="rdz-chart__tip-meta"><span className="rdz-chart__tip-value">{formatX(d.x)}, {formatY(d.y)}</span></div>
-          </div>
+          </ChartTip>
         );
       }}
     >
@@ -76,14 +71,7 @@ export function ScatterChart({
           <>
             <GridRows scale={y} width={innerWidth} numTicks={4} className="rdz-chart__grid" />
             <GridColumns scale={x} height={innerHeight} numTicks={5} className="rdz-chart__grid" />
-            <Group className="rdz-chart__axis">
-              {y.ticks(4).map((t) => (
-                <text key={`y${t}`} x={-8} y={y(t)} textAnchor="end" dominantBaseline="middle">{formatY(t)}</text>
-              ))}
-              {x.ticks(5).map((t) => (
-                <text key={`x${t}`} x={x(t)} y={innerHeight + 18} textAnchor="middle">{formatX(t)}</text>
-              ))}
-            </Group>
+            <ChartAxis y={y} formatY={formatY} x={x} formatX={formatX} innerHeight={innerHeight} />
             {data.map((d, i) => (
               <Circle
                 key={i}

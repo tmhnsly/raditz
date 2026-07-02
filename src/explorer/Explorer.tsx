@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useColorScheme } from '../lib/useColorScheme';
 import { ThemePicker } from '../lib/ThemePicker';
 import { Popover } from '../components/overlay/Popover';
@@ -7,6 +7,7 @@ import { Tooltip } from '../components/overlay/Tooltip';
 import { cx } from '../components/internal';
 import { buildTree, findNode, ancestorsOf } from './registry';
 import { useHashRoute } from './useHashRoute';
+import { useActiveSlug } from './useActiveSlug';
 import { GiMoonOrbit } from 'react-icons/gi';
 import { Sidebar } from './Sidebar';
 import { StoryView } from './StoryView';
@@ -33,10 +34,11 @@ const Burger = () => (
 export default function Explorer() {
   const { isDark, toggle: toggleScheme } = useColorScheme();
   const { route, navigate } = useHashRoute();
-  // The section currently in view (scroll-spy) — drives the tree highlight/expand.
-  const [activeSlug, setActiveSlug] = useState(route);
+  // What's active (drives the tree highlight/expand + breadcrumb). Single writer:
+  // the active-slug machine arbitrates route intents vs scroll-spy observations,
+  // so a mid-jump scroll frame can't overwrite a fresh navigation (activeSlug.ts).
+  const { activeSlug, observe } = useActiveSlug(route);
   const [navOpen, setNavOpen] = useState(false);
-  useEffect(() => { setActiveSlug(route); }, [route]);
 
   // Breadcrumb trail for the bar: each ancestor of the active section (clickable),
   // ending in the current entry — so the bar shows where you are, not just the
@@ -110,7 +112,7 @@ export default function Explorer() {
           </div>
         </header>
 
-        <StoryView tree={tree} route={route} onActiveChange={setActiveSlug} />
+        <StoryView tree={tree} route={route} onObserve={observe} />
       </main>
     </div>
   );

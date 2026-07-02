@@ -28,7 +28,7 @@ and the hero background reaches the very top (no nav "band"). On an `image`+`scr
 text goes on-dark (white) automatically; use the `glass` or default (accent) button — and
 `secondary` now stays legible over media too, so no CTA goes invisible on a photo.
 
-152 exported components across 15 categories.
+153 exported components across 15 categories.
 
 ## utilities (CSS classes)
 
@@ -39,10 +39,9 @@ or your own markup:
 - `.h-display` — Largest display heading (hero titles).
 - `.h-section` — Section heading.
 - `.lede` — Lead paragraph under a heading.
-- `.eyebrow / .eyebrow2` — Small label above a heading.
+- `.eyebrow2` — Small label above a heading.
 - `.muted` — De-emphasized text colour.
 - `.row / .col` — Flex row / column with token gaps.
-- `.container` — Max-width centered content wrapper.
 
 ## actions
 
@@ -317,7 +316,7 @@ Import: `import { Badge } from 'raditz'`
 A small status / category label. `variant` is the fill style, `color` the semantic tone. Pass `dot` for a leading status dot.
 
 Props:
-  - color?: "accent" | "neutral" | "success" | "warning" | "danger" | "info" (default: accent) — Semantic tone.
+  - color?: "accent" | "neutral" | "info" | "success" | "warning" | "danger" (default: accent) — Semantic tone.
   - dot?: boolean (default: false) — Leading status dot.
   - variant?: "solid" | "soft" | "outline" (default: soft) — Fill style.
 
@@ -491,11 +490,12 @@ Usage:
 ### Checkbox
 Import: `import { Checkbox } from 'raditz'`
 
-A checkbox with the accent fill + animated check. Controlled or uncontrolled like a native input. Renders as a `<label>` so clicking the box — or the optional `label` text — reliably toggles it. Pass `aria-label` when you omit `label` so the control still has an accessible name.
+A checkbox with the accent fill + animated check. Controlled or uncontrolled like a native input. Renders as a `<label>` so clicking the box — or the optional `label` text — reliably toggles it. Pass `aria-label` when you omit `label` so the control still has an accessible name. `indeterminate` gives the tri-state "some selected" look (e.g. a table's select-all header).
 
 Props:
   - checked?: boolean
   - defaultChecked?: boolean
+  - indeterminate?: boolean — Tri-state "some selected" look — sets the DOM `indeterminate` property (there is no HTML attribute for it). Announced as "mixed" by screen readers.
   - label?: ReactNode — Optional inline label rendered beside the box; clicking it toggles too.
   - onChange?: ChangeEventHandler<HTMLInputElement>
 
@@ -1094,7 +1094,7 @@ Usage:
 ## lib
 
 ### colorScheme
-Import: `import { COLOR_SCHEME_KEY, COLOR_SCHEME_QUERY, ColorPreference, ColorScheme, colorSchemeScript } from 'raditz'`
+Import: `import { COLOR_SCHEME_KEY, COLOR_SCHEME_QUERY, ColorPreference, ColorScheme, colorSchemeScript, initColorScheme } from 'raditz'`
 
 Utility module — see exports below.
 
@@ -1104,6 +1104,7 @@ Exports:
   - ColorPreference
   - ColorScheme
   - colorSchemeScript
+  - initColorScheme
 
 > Note: This is a utility/hook module, not a React component — do not render as JSX.
 
@@ -1254,10 +1255,11 @@ Renders the eyebrow + heading block shared across all content sections. Returns 
 
 Props:
   - align?: "start" | "center" — Center or left-align the eyebrow + heading block. Omit to inherit the section's default look.
-  - as?: "h2" | "h3" | "h4" (default: h3) — Heading level for the title, so a page keeps a correct outline (e.g. `'h2'` directly under a hero's heading). The visual size is fixed by `h-section` regardless of level.
+  - as?: "h2" | "h3" | "h4" (default: h2) — Heading level for the title, so a page keeps a correct outline. Every section heading defaults to `h2` (sibling of the hero's `h2`; the page/app owns the `h1`), so sections composed on one page share one coherent level. The visual size is fixed by `h-section` regardless of level.
   - className?: string
   - eyebrow?: ReactNode
   - heading?: ReactNode
+  - headingClassName?: string — Extra classes on the heading tag itself (e.g. a per-section text-measure or ink class like `"sx-cta__title"`) — layout classes belong on `className`.
 
 Usage:
 ```tsx
@@ -1286,6 +1288,22 @@ Props:
 Usage:
 ```tsx
 <SectionShell />
+```
+
+### TestimonialFigure
+Import: `import { TestimonialFigure } from 'raditz'`
+
+The avatar + name/role attribution block every testimonial variant renders (Testimonials A/B, TestimonialCarousel) — extracted here, like {@link SectionActionButton}, because it crosses section families. Accepts the shared `Testimonial` shape structurally (quote is ignored); `name`/`role` are individually optional. `className` carries each variant's wrapper modifier (e.g. `"sx-tst__person"`); `as` lets a `<figure>` caller render a semantic `<figcaption>`; `metaClassName` extends the inner name/role column.
+
+Props:
+  - as?: "div" | "figcaption" (default: div) — Wrapper element — `'figcaption'` inside a `<figure>` quote card.
+  - className?: string — Classes on the wrapping row (per-variant modifier rides here).
+  - metaClassName?: string — Extra classes on the inner name/role column.
+  - person: { name?: ReactNode; role?: ReactNode; avatar?: ReactNode; } — The attributee — structurally compatible with `Testimonial`.
+
+Usage:
+```tsx
+<TestimonialFigure />
 ```
 
 ### InView
@@ -1641,7 +1659,7 @@ Props:
   - onOpenChange?: ((open: boolean) => void) — Fires to request open/close.
   - open?: boolean — Open state (controlled).
   - title?: ReactNode
-  - tone?: "danger" | "accent" (default: danger) — Confirm-button tone.
+  - tone?: "accent" | "danger" (default: danger) — Confirm-button tone.
 
 Examples (Storybook stories): Default
 
@@ -2869,7 +2887,7 @@ Import: `import { Callout } from 'raditz'`
 A bordered, tinted message panel for inline notices. `color` sets the tone; pass an `icon` element and optional `title`.
 
 Props:
-  - color?: "accent" | "info" | "success" | "warning" | "danger" (default: info) — Tone.
+  - color?: "accent" | "info" | "success" | "warning" | "danger" (default: info) — Tone — every StatusTone except `neutral`.
   - icon?: ReactNode — Leading icon element.
   - title?: ReactNode — Optional bold title line.
 

@@ -67,10 +67,44 @@ The one stateful arrow-key navigation module — `useRoving` over the pure
 `rovingIndex` (loop/orientation/Home/End). Menu-surface, Combobox, CommandPalette
 and ToggleGroup adapt it; NavBar uses `rovingIndex` directly. Tree keeps its own
 2D expand/collapse nav; RadioGroup roves natively. TimePicker (3 columns) and
-DatePicker (calendar grid) trap arrows with a thin DOM-focus rover +
-`preventDefault` — the **freeze boundary** that stops arrows scrolling the page
-while the picker is open (a 2D column/grid that `useRoving`'s single index can't model).
-_Avoid_: per-component arrow handlers (except the picker freeze above).
+DatePicker (calendar grid) trap arrows via **`useGridFocus`** (`internal/`,
+deepened 2026-07-02) — the one DOM-focus 2D rover behind the **freeze boundary**
+that stops arrows scrolling the page while a picker is open (a 2D column/grid
+that `useRoving`'s single index can't model; both pickers used to hand-roll it).
+Its `strategy` is `{ kind: 'grid' }` (live `grid-template-columns` row jumps —
+DatePicker) or `{ kind: 'columns' }` (sibling-column hops — TimePicker).
+_Avoid_: per-component arrow handlers; a second DOM-focus rover.
+
+**Searchable-list** (deepened 2026-07-02):
+`useSearchableList` (`internal/`) — the one owner of the filter-and-rove listbox
+glue: query state + `fuzzyFilter` + the `useRoving` highlight (reset on typing/
+pick) + the full `combobox`/`aria-activedescendant` → `listbox` → `option` aria
+contract, exposed as spreadable prop bags. Combobox and CommandPalette are thin
+faces over it (extracting it gave CommandPalette the listbox semantics it had
+drifted away from). The input-shaped popover *trigger* deliberately stays
+per-component — see [ADR-0005](docs/adr/0005-popover-input-triggers-stay-per-component.md).
+_Avoid_: hand-wiring query/active/aria around `fuzzyFilter` + `useRoving`.
+
+**Status-tone** (deepened 2026-07-02):
+`internal/statusTone.ts` — the ONE semantic-status vocabulary (`StatusTone`:
+accent/neutral/info/success/warning/danger, `FeedbackTone` for the icon-bearing
+four), the tone→icon map (`STATUS_TONE_ICON`, moved out of Banner) and
+`statusToneRole()` (danger → `alert`, rest → `status`). Banner, Badge, Callout,
+Toast, AlertDialog and EmptyState keep their existing public prop NAMES
+(`tone`/`color`/`variant` — unchanged APIs) but all type them against this union
+(or an `Extract<>` subset), so the vocabulary can't fragment again. Toast keeps
+its hardcoded `role="status"` (switching danger toasts to `alert` would change
+DOM output).
+_Avoid_: a per-component tone/color/variant union; a second tone→icon map.
+
+**Chart-tip** (in *Scale*'s family, deepened 2026-07-02):
+`internal/ChartTip.tsx` + `internal/ChartAxis.tsx` — the tooltip overlay
+(`div.rdz-chart__tip`, `data-side` from the pure `chartTipSide()` flip at
+`TOOLTIP_FLIP_PCT`, positioned via `--rdz-tip-x/y` custom properties) and the
+axis tick labels, shared by LineChart and ScatterChart. The pure geometry lived
+in `internal/scale.ts` but the bug-prone *callers* (flip + pixel positioning)
+were copy-pasted per chart; now the charts are thin adapters.
+_Avoid_: per-chart tooltip/axis JSX.
 
 **Scale**:
 Pure chart geometry (`minMax`, `normalize`, `toPercent`, `sparklinePath`,
@@ -112,6 +146,15 @@ gallery from the stories — one source, no drift.
 The shared search input (`forms/Search`) + the `fuzzyFilter` matcher, used by
 Combobox, CommandPalette and the explorer so every search looks/behaves alike.
 
+**Control ownership** (deepened 2026-07-02):
+A control's markup/class contract belongs to the control — in-library consumers
+import it, never re-express it. `Checkbox` gained `indeterminate` so DataTable's
+header tri-state uses the real component instead of an inlined copy of its markup;
+the `rdz-btn rdz-btn--*` literals in AlertDialog/Form/DataTable's pager were
+replaced with `<Button>` (which owns that class scheme and carries no `'use client'`).
+_Avoid_: hand-written `rdz-btn`/`rdz-check` class strings; copying a sibling
+component's markup because its interface is one prop too narrow — widen the interface.
+
 **Overlay internals** (split 2026-06-19):
 `overlayHooks.ts` is now a thin re-export barrel over one file per concern —
 `useDismiss`, `useFocusTrap`, `useScrollLock`, `overlayPosition` (`useOverlayPosition`),
@@ -142,7 +185,16 @@ shared utils; deletion test passes (the logic reappears in the consumer if remov
 `sourceSurface()` walk with fully-resolved paths. `gen-barrel`, `gen-catalog`, and
 `gen-tests` are thin **adapters** over it. Killed 4 duplicated tree-walks and the
 basename≠dirname fragility. The walk is unit-tested (sanity bounds, file-existence, and barrel-agreement); byte-identical generated output is gated by `release:preflight`.
-_Avoid_: per-script dir scans.
+The **a11y gate** (`src/a11y.test.tsx`) is the browser-side adapter of this surface
+(deepened 2026-07-02): it globs components AND sections stories and axe-checks EVERY
+composed story (197 at last count — it used to check only components' first stories,
+so all 23 sections were invisible to it). It can't import the Node-only walk, so
+`scripts/a11y-surface.test.mjs` asserts its glob patterns cover every story file
+`sourceSurface()` reports — the mirror can't silently shrink. Skips are per-story,
+per-rule, commented (`SKIPPED_RULES` — only SectionBackground's `<video>` autoplay
+rule today, a jsdom limitation).
+_Avoid_: per-script dir scans; an a11y glob that doesn't mirror the source surface;
+globally disabled axe rules.
 (The three remaining `readdirSync` walks — `public-surface`'s structured 2-level walk,
 `add-use-client`'s all-files walk, `watch`'s per-dir watcher walk — are deliberately NOT
 unified: they differ in return shape and one is a cold fallback, so a shared walker would
@@ -186,26 +238,42 @@ control (`IconButton`/`Button`). _Avoid_: an `onClick` on `Icon` (re-adds the di
 `SectionActions` maps it over the actions array. Every section CTA crosses this seam,
 so field-forwarding is **tested once** (killed the recurring dropped-`onClick`/`icon`
 bugs). `AnnouncementA`'s banner text-link is the one deliberate non-Button — its
-exception is documented in its story.
+exception is documented in its story. (Since 2026-07-02 a handler-only action
+there renders a `<button>` with the same `sx-ann__link` styling — an `<a>`
+without `href` isn't focusable; the look is unchanged.)
 _Avoid_: per-section Button renders from a raw `SectionAction`.
 
-**Section-header** (deepened 2026-06-21):
+**Section-header** (deepened 2026-06-21; adopted catalog-wide 2026-07-02):
 `SectionHeader` (in `lib/SectionShell`) is the shared eyebrow+heading block —
-`eyebrow2` label + `h-section` heading, with the wrapper class as a prop. Used by
-Features, Stats, and Team. Bare `<h2>` and bespoke headers stay **per-section**
-(deletion test: forcing them through `SectionHeader` would worsen locality). `SectionShell`
-is now **deep** on three concerns: layout (Frame/`.s-pad`/`.s-wrap`), header
+`eyebrow2` label + `h-section` heading, with the wrapper class as a prop (and a
+`headingClassName` passthrough for heading-level visual hooks like `sx-cta__title`).
+Its default heading level is **h2** and every section heading routes through it
+(Features, Stats, Team, Spotlight, FeaturesTabbed, Animations, Testimonials,
+TestimonialCarousel, Faq, Blog, Comparison, Pricing, NotFound, Cta), so sibling
+sections on one page share one coherent outline level — a heading-coherence test
+in `SectionShell.test.tsx` renders the variants and asserts every `.h-section`
+is an H2 (per-item `h3`s, e.g. FeaturesC cards, are correctly subordinate).
+Genuinely bespoke headers may stay per-section (deletion test), but "bespoke"
+now means structure, not a hand-typed `<h2/h3 className="h-section">`. `SectionShell`
+is **deep** on three concerns: layout (Frame/`.s-pad`/`.s-wrap`), header
 (`SectionHeader`), and section-action rendering (`SectionActionButton`). The
 `children ?? body` override stays an in-variant idiom (see [ADR-0001](docs/adr/0001-section-body-override-stays-in-variant.md)).
 `SectionHeader` also takes an optional `align` (`'start' | 'center'`) so a section can
 offer a left or centred heading variant; CtaA/PricingA wire the same `align` into their
 own wrap. Defaults preserve each section's current look, so a build can mix centred/left
 sections for page rhythm.
-_Avoid_: per-section eyebrow+heading duplication.
+_Avoid_: per-section eyebrow+heading duplication; a hand-rendered `h-section` heading;
+mixed h2/h3 section headings on one page.
 
-**Section variant cores** (internal seams, deepened 2026-06-21; NavCore re-unified 2026-06-22):
+**Section variant cores** (internal seams, deepened 2026-06-21; NavCore re-unified 2026-06-22; +2 cores 2026-07-02):
 `NavCore` (shared by NavbarA/B/C; NavbarD is its own thing), `TierCard`
-(PricingA/B — reuses `SectionActionButton`), and `LogoMark` (SocialProofA/B)
+(PricingA/B — reuses `SectionActionButton`), `LogoMark` (SocialProofA/B),
+`TestimonialFigure` (in `lib/SectionShell` — the avatar+name/role attribution
+row shared by TestimonialsA/B and TestimonialCarousel's figcaption; wrapper class
++ `as` element as props), and `FeatureCard` (in `Features.tsx` — the
+icon+title+description card body behind FeaturesA and both bento shapes; its
+`descSize` prop makes the compact bento cell's caption size an explicit choice,
+ending the drifted per-copy type classes)
 collapse the variant clones: one core to fix, variants are thin **presets**.
 These are private internal seams — not exported. `NavCore`'s interface carries
 two **behavioural** toggles, not just class strings — `animatedLinks` (render the
@@ -231,6 +299,20 @@ Shared chart y-domain padding + the `TOOLTIP_FLIP_PCT` threshold, in `internal/s
 LineChart (factor 0.12) and ScatterChart (factor 0.08) consume it — each keeps its own
 factor, documented and not unified (the values differ intentionally).
 _Avoid_: per-chart domain/tooltip-flip math.
+
+**Active-slug** (in `explorer/activeSlug`, deepened 2026-07-02):
+The one owner of "which slug is active and why" in the showroom. It used to have
+two racing writers (a route-sync effect vs the scroll-spy's per-frame callback —
+a hash navigation could be overwritten by the jump's own scroll frame). Now a
+pure, clock-free state machine: a route change is a **navigation intent** that
+holds against scroll **observations** until an observation fulfils it (the target
+— or, for a group target, any entry under it) or the settle window (`SETTLE_MS`)
+passes (i.e. the user really scrolled away). `useActiveSlug` is the thin hook;
+`pageRows.ts` (the page's pre-order flatten) and `anchors.ts` (the `.sec[id]`
+/ `.page-group[id]` anchor-and-selector contract StoryView renders and the spy
+queries) are its extracted, tested siblings.
+_Avoid_: a second writer of the active slug; string-literal `.sec`/`page-group`
+class/selectors outside `anchors.ts`.
 
 **Sidebar-model** (in `explorer/registry`, deepened 2026-06-21; expansion split 2026-06-25):
 `ancestorsOf` / `filterTree` / `allBranchIds` — the "what's visible/expanded for this
@@ -307,14 +389,18 @@ concept's roles. _Avoid_: `--surface-info`, `--surface-success`.
 Light vs dark resolution — one rule (explicit stored choice wins, else follow the OS
 via `prefers-color-scheme` and **live-follow** it; toggling back to the OS's current
 value clears the override; only an override is persisted under `rdz-color-scheme`),
-behind **two faces** that share the key/query/precedence in `lib/colorScheme.ts`
-(server-safe, no `'use client'`):
+behind **three faces** that share the key/query/precedence in `lib/colorScheme.ts`:
 - the **runtime** face `useColorScheme` (`src/lib`) — a shared singleton store
   (`useSyncExternalStore`, resets on zero subscribers) so a `ThemeRuntime` default-setter
   and any nav `ColorSchemeToggle` stay in sync instead of fighting `class="dark"`.
 - the **pre-paint** face `colorSchemeScript(defaultScheme)` — the no-flash `<head>`
   string, so the SSR flash-guard can't drift from the runtime rule. Templates/products
   call it instead of hand-writing the IIFE.
+- the **pre-render** face `initColorScheme(defaultScheme)` (added 2026-07-02) — the
+  callable for apps with no server-rendered `<head>` (a Vite SPA renders nothing until
+  React mounts): call it at the top of `main.tsx` before `render()`. The vite template
+  does; `colorScheme.test.ts` runs the callable and the eval'd script string through the
+  same precedence cases so the faces can't drift.
 _Avoid_: `useDarkMode` (removed — a boolean can't express "follow system"); a second
 copy of the resolution rule as an inline script string.
 
@@ -546,8 +632,21 @@ The library ships as:
   `pnpm gen:catalog`); `pnpm gen:barrel` keeps `src/index.ts` current.
 - **Starter templates** — `templates/next/` and `templates/vite/`; scaffold a new
   product via `/raditz-new` (global skill).
-- **Release tooling** — `pnpm release:preflight` gates drift; `/release` skill cuts a
-  tagged version; `/raditz-promote` publishes to a consumer.
+- **Release tooling** — `pnpm release:preflight` gates drift (taxonomy, barrel, catalog,
+  and — since 2026-07-02 — the **RSC boundary**: it runs `codemod:use-client` and blocks
+  if any source was missing its directive, so a promoted component that gained hooks
+  can't ship server-broken; the codemod's heuristic is pinned in
+  `scripts/add-use-client.test.mjs`, incl. its known string-literal over-marking).
+  `check-consumer` asserts EVERY `'use client'` source keeps its directive in `dist/`
+  (was one hardcoded file). `/release` skill cuts a tagged version; `/raditz-promote`
+  publishes to a consumer.
+- **Template parity gate** — `scripts/templates-parity.test.mjs`: the templates' shared
+  scripts stay byte-identical, both templates wire a colour-scheme pre-paint, and the
+  raditz pin placeholder (`github:tmhnsly/raditz#REPLACE_WITH_TAG`, the ONE canonical
+  string) matches across both templates and the literal `/raditz-new` find-and-replaces.
+  The catalog's advertised utility classes are gated against the shipped CSS in
+  `scripts/gen-catalog.test.mjs` (this caught `.eyebrow`/`.container` advertising
+  classes that don't exist — it's `.eyebrow2`, and containers ship as `.rdz-container`).
 - **Product customisation** — brand via `theme.css` (override `--accent-*` tokens) or
   `useTheme({ accent })`; set `DEFAULT_SCHEME` in `app/theme-runtime.tsx`; set an
   app-wide animation style via `data-reveal` on `<html>` (fixed; `data-title-anim`

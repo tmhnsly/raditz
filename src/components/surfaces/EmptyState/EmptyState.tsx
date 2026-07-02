@@ -3,6 +3,7 @@ import { Icon } from '../../display/Icon/Icon';
 import type { IconName } from '../../display/Icon/Icon';
 import { Spinner } from '../../feedback/Spinner/Spinner';
 import { cx } from '../../internal';
+import type { StatusTone } from '../../internal';
 
 export interface EmptyStateProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> {
   icon?: IconName;
@@ -12,7 +13,7 @@ export interface EmptyStateProps extends Omit<React.HTMLAttributes<HTMLDivElemen
   /** Show a Spinner instead of the icon (loading state). @default false */
   loading?: boolean;
   /** @default "default" */
-  tone?: 'default' | 'accent' | 'danger';
+  tone?: 'default' | Extract<StatusTone, 'accent' | 'danger'>;
 }
 
 const TONE: Record<NonNullable<EmptyStateProps['tone']>, string> = {

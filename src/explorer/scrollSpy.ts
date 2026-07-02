@@ -11,6 +11,13 @@ export interface SectionTop {
   top: number;
 }
 
+/** How far down the viewport the activation line sits: the section crossing a
+ * quarter-height line is the one the reader is "on". */
+export const ACTIVATION_LINE_FRACTION = 0.25;
+
+/** The activation line's y-offset for a given viewport height. */
+export const activationLine = (viewportHeight: number): number => viewportHeight * ACTIVATION_LINE_FRACTION;
+
 /**
  * The active section id for a set of sections (in vertical/document order) and an
  * activation line (a y-offset down the viewport). It's the DEEPEST section whose

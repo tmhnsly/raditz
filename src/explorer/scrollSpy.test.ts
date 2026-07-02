@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { activeSection } from './scrollSpy';
+import { activeSection, activationLine, ACTIVATION_LINE_FRACTION } from './scrollSpy';
 
 // `activeSection` picks which section the reader is "on" from live geometry:
 // the last section (in vertical order) whose top has crossed the activation line.
@@ -25,5 +25,12 @@ describe('activeSection', () => {
 
   it('is the last section when the whole page has scrolled above the line', () => {
     expect(activeSection([{ id: 'a', top: -800 }, { id: 'b', top: -200 }], 200)).toBe('b');
+  });
+});
+
+describe('activationLine', () => {
+  it('sits a fixed fraction down the viewport', () => {
+    expect(activationLine(1000)).toBe(1000 * ACTIVATION_LINE_FRACTION);
+    expect(activationLine(0)).toBe(0);
   });
 });

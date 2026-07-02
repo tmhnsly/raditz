@@ -58,6 +58,21 @@ describe('Features (section)', () => {
     expect(screen.getByText('Wide cell')).toBeTruthy();
   });
 
+  it('FeatureCard description sizes are deliberate per slot: body-small everywhere, caption in compact bento cells', () => {
+    render(
+      <FeaturesB
+        items={[
+          { title: 'Lead', description: 'Lead desc' },
+          { title: 'Cell', description: 'Cell desc' },
+          { title: 'Wide', description: 'Wide desc' },
+        ]}
+      />,
+    );
+    expect(screen.getByText('Lead desc').className).toBe('muted sx-body-s');
+    expect(screen.getByText('Cell desc').className).toBe('muted sx-fs-caption');
+    expect(screen.getByText('Wide desc').className).toBe('muted sx-body-s');
+  });
+
   it('FeaturesB children override auto-rendered body', () => {
     render(
       <FeaturesB items={[{ title: 'hidden' }]}>

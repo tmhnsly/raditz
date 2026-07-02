@@ -15,14 +15,16 @@ describe('DatePicker', () => {
     });
   }
 
-  it('moves the day focus with arrows and preventDefaults them (no page scroll)', () => {
+  // The full freeze-boundary behaviour (move + preventDefault, row jumps,
+  // clamping) is asserted once at the hook — see internal/useGridFocus.test.tsx.
+  // This is a smoke check that the day grid is wired to it.
+  it('wires the day grid to the grid-focus rover (open focuses the selected day; arrows are captured)', () => {
     const { container } = render(<DatePicker defaultValue="2026-06-15" />);
     fireEvent.click(container.querySelector('.rdz-datepicker__trigger') as HTMLButtonElement);
-    const days = Array.from(document.querySelectorAll<HTMLButtonElement>('.rdz-calendar__day'));
-    expect(days.length).toBeGreaterThan(1);
-    const sel = (document.querySelector('.rdz-calendar__day.is-selected') as HTMLButtonElement) ?? days[0];
-    sel.focus();
+    const sel = document.querySelector('.rdz-calendar__day.is-selected') as HTMLButtonElement;
+    expect(sel).toBeTruthy();
+    expect(document.activeElement).toBe(sel); // focused on open
     const notPrevented = fireEvent.keyDown(sel, { key: 'ArrowRight' });
-    expect(notPrevented).toBe(false);
+    expect(notPrevented).toBe(false); // preventDefault ran — no page scroll
   });
 });

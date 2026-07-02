@@ -1,6 +1,16 @@
 import { describe, it, expect, vi } from 'vitest';
+import type { ReactElement } from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { SectionActionButton, SectionHeader, SectionShell } from './SectionShell';
+import { SectionActionButton, SectionHeader, SectionShell, TestimonialFigure } from './SectionShell';
+import { TestimonialsA } from '../sections/Testimonials/Testimonials';
+import { TestimonialCarouselA } from '../sections/TestimonialCarousel/TestimonialCarousel';
+import { FeaturesA } from '../sections/Features/Features';
+import { FaqA, FaqB } from '../sections/Faq/Faq';
+import { BlogA, BlogB } from '../sections/Blog/Blog';
+import { ComparisonA } from '../sections/Comparison/Comparison';
+import { PricingA, PricingB } from '../sections/Pricing/Pricing';
+import { NotFoundA } from '../sections/NotFound/NotFound';
+import { CtaA, CtaB } from '../sections/Cta/Cta';
 
 describe('SectionShell choreography', () => {
   it('wraps content in the .s-choreo cascade by default, and not when animate={false}', () => {
@@ -35,5 +45,77 @@ describe('SectionHeader', () => {
     rerender(<SectionHeader eyebrow="Why" heading="Wired" />);
     expect(screen.getByText('Why')).toBeTruthy();
     expect(screen.getByText('Wired')).toBeTruthy();
+  });
+  it('defaults the heading to h2 (the shared section level); `as` overrides', () => {
+    const { rerender } = render(<SectionHeader heading="Level" />);
+    expect(screen.getByText('Level').tagName).toBe('H2');
+    rerender(<SectionHeader heading="Level" as="h3" />);
+    expect(screen.getByText('Level').tagName).toBe('H3');
+  });
+  it('appends headingClassName to the heading tag alongside h-section', () => {
+    render(<SectionHeader heading="Inked" headingClassName="sx-cta__title-ink" />);
+    const h = screen.getByText('Inked');
+    expect(h.className).toContain('h-section');
+    expect(h.className).toContain('sx-cta__title-ink');
+  });
+});
+
+describe('TestimonialFigure', () => {
+  it('renders avatar + name + role with the wrapper/meta classes', () => {
+    const { container } = render(
+      <TestimonialFigure
+        person={{ name: 'Ada', role: 'Engineer', avatar: <span>AV</span> }}
+        className="sx-tst__person-center"
+        metaClassName="sx-tst__person-meta"
+      />,
+    );
+    expect(container.querySelector('.row.sx-tst__person-center')).toBeTruthy();
+    expect(container.querySelector('.col.sx-tst__person-meta')).toBeTruthy();
+    expect(screen.getByText('Ada').tagName).toBe('STRONG');
+    expect(screen.getByText('Engineer')).toBeTruthy();
+    expect(screen.getByText('AV')).toBeTruthy();
+  });
+  it('guards absent name/role individually', () => {
+    const { container, rerender } = render(<TestimonialFigure person={{ name: 'Solo' }} />);
+    expect(screen.getByText('Solo')).toBeTruthy();
+    expect(container.querySelector('.muted')).toBeNull();
+    rerender(<TestimonialFigure person={{ role: 'CTO' }} />);
+    expect(container.querySelector('strong')).toBeNull();
+    expect(screen.getByText('CTO')).toBeTruthy();
+    rerender(<TestimonialFigure person={{}} />);
+    expect(container.querySelector('strong, .muted')).toBeNull();
+  });
+  it('renders as <figcaption> when a figure caller asks for it', () => {
+    const { container } = render(
+      <TestimonialFigure person={{ name: 'Fig' }} as="figcaption" className="sx-tcar__fig" />,
+    );
+    expect(container.querySelector('figcaption.row.sx-tcar__fig')).toBeTruthy();
+  });
+});
+
+describe('section heading level coherence', () => {
+  // Sibling sections composed on one page must emit the same heading level for
+  // the same role — they all route through SectionHeader's default (h2).
+  const sections: [string, ReactElement][] = [
+    ['TestimonialsA', <TestimonialsA quotes={[{ quote: 'q' }]} heading="H" />],
+    ['TestimonialCarouselA', <TestimonialCarouselA quotes={[{ quote: 'q' }]} heading="H" />],
+    ['FeaturesA', <FeaturesA items={[{ title: 't' }]} heading="H" />],
+    ['FaqA', <FaqA items={[{ question: 'q', answer: 'a' }]} heading="H" />],
+    ['FaqB', <FaqB items={[{ question: 'q', answer: 'a' }]} heading="H" />],
+    ['BlogA', <BlogA posts={[{ title: 't' }]} heading="H" />],
+    ['BlogB', <BlogB posts={[{ title: 't' }]} heading="H" />],
+    ['ComparisonA', <ComparisonA columns={[{ name: 'c' }]} rows={[{ feature: 'f', values: [true] }]} heading="H" />],
+    ['PricingA', <PricingA tiers={[{ name: 'n', price: '$' }]} heading="H" />],
+    ['PricingB', <PricingB tiers={[{ name: 'n', price: '$' }]} heading="H" />],
+    ['NotFoundA', <NotFoundA />],
+    ['CtaA', <CtaA title="H" />],
+    ['CtaB', <CtaB title="H" />],
+  ];
+  it.each(sections)('%s renders its section heading as h2', (_name, el) => {
+    const { container, unmount } = render(el);
+    const headings = container.querySelectorAll('.h-section');
+    expect(headings.length).toBeGreaterThan(0);
+    for (const h of headings) expect(h.tagName).toBe('H2');
+    unmount();
   });
 });

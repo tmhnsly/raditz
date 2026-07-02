@@ -6,6 +6,8 @@ import {
   sortRows, nextSort, toggleSelected, togglePage, pageSelectionState,
 } from '../../internal';
 import type { Sort } from '../../internal';
+import { Checkbox } from '../../inputs/Checkbox/Checkbox';
+import { Button } from '../../actions/Button/Button';
 
 const { useMemo, useState } = React;
 
@@ -104,21 +106,12 @@ export function DataTable<Row = DefaultRow>({
           <tr>
             {selectable ? (
               <th className="rdz-table__check">
-                <label className="rdz-check">
-                  <input
-                    type="checkbox"
-                    checked={selState === 'all'}
-                    ref={(el) => {
-                      if (el) el.indeterminate = selState === 'some';
-                    }}
-                    onChange={toggleAll}
-                  />
-                  <span className="rdz-check__box">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                      <polyline points="20 6 9 17 4 12" />
-                    </svg>
-                  </span>
-                </label>
+                <Checkbox
+                  checked={selState === 'all'}
+                  indeterminate={selState === 'some'}
+                  onChange={toggleAll}
+                  aria-label="Select all rows"
+                />
               </th>
             ) : null}
             {columns.map((c) => (
@@ -149,14 +142,7 @@ export function DataTable<Row = DefaultRow>({
               <tr key={id} data-selected={isSel || undefined}>
                 {selectable ? (
                   <td className="rdz-table__check">
-                    <label className="rdz-check">
-                      <input type="checkbox" checked={isSel} onChange={() => toggleRow(id)} />
-                      <span className="rdz-check__box">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                          <polyline points="20 6 9 17 4 12" />
-                        </svg>
-                      </span>
-                    </label>
+                    <Checkbox checked={isSel} onChange={() => toggleRow(id)} aria-label="Select row" />
                   </td>
                 ) : null}
                 {columns.map((c) => (
@@ -175,12 +161,12 @@ export function DataTable<Row = DefaultRow>({
             {range.from}–{range.to} of {range.total}
           </span>
           <div className="rdz-table__pagebtns">
-            <button type="button" className="rdz-btn rdz-btn--soft rdz-btn--sm" disabled={safePage === 0} onClick={() => setPage((p) => clamp(p - 1, 0, pages - 1))}>
+            <Button variant="soft" size="sm" disabled={safePage === 0} onClick={() => setPage((p) => clamp(p - 1, 0, pages - 1))}>
               Prev
-            </button>
-            <button type="button" className="rdz-btn rdz-btn--soft rdz-btn--sm" disabled={safePage >= pages - 1} onClick={() => setPage((p) => clamp(p + 1, 0, pages - 1))}>
+            </Button>
+            <Button variant="soft" size="sm" disabled={safePage >= pages - 1} onClick={() => setPage((p) => clamp(p + 1, 0, pages - 1))}>
               Next
-            </button>
+            </Button>
           </div>
         </div>
       ) : null}

@@ -3,7 +3,9 @@
 .sx-ann__strip { background: var(--accent); color: var(--on-accent); padding: 10px var(--space-5); }
 .sx-ann__strip-inner { justify-content: center; gap: var(--space-3); font-size: var(--fs-body-s); }
 .sx-ann__dim { opacity: 0.85; }
-.sx-ann__link { color: var(--on-accent); font-weight: 600; text-decoration: underline; }
+/* The strip CTA renders as <a> (href) or <button> (handler-only action) — the
+   button-chrome resets make both read as the same text link. */
+.sx-ann__link { background: none; border: 0; padding: 0; font: inherit; cursor: pointer; color: var(--on-accent); font-weight: 600; text-decoration: underline; }
 .sx-ann__banner { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); flex-wrap: wrap; padding: var(--space-4); background: var(--panel); border: 1px solid var(--surface-edge); border-radius: var(--radius-card); box-shadow: var(--shadow-3); }
 .sx-ann__banner-text { font-size: var(--fs-body-s); flex: 1; min-width: min(16rem, 100%); }
 .sx-ann__banner-link { color: var(--accent-ink); }

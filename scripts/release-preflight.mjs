@@ -23,6 +23,18 @@ run('pnpm validate:taxonomy');
 run('pnpm gen:barrel');
 run('pnpm gen:catalog');
 
+// RSC boundary: the codemod must be a no-op on a releasable tree. A component
+// that gained hooks/handlers but never got its 'use client' directive isn't a
+// generated-artifact drift (the barrel/catalog diff can't see it), so it gets
+// its own gate: run the codemod and block if it had to mark anything.
+const codemod = run('pnpm codemod:use-client');
+if (!/marked 0 file/.test(codemod)) {
+  console.error("BLOCKED: sources were missing their 'use client' directive (the codemod just added them):");
+  console.error(codemod.trim());
+  console.error('Review and commit the added directives (pnpm codemod:use-client) before releasing.');
+  process.exit(1);
+}
+
 const tracked = ['src/index.ts', 'catalog/llms.txt'];
 const dirty = run(`git status --porcelain ${tracked.join(' ')}`).trim();
 
@@ -33,4 +45,4 @@ if (dirty) {
   process.exit(1);
 }
 
-console.log('OK: barrel + catalog are up to date.');
+console.log('OK: barrel + catalog are up to date; client boundaries are marked.');
