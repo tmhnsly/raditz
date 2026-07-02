@@ -14,10 +14,21 @@ const read = (rel) => fs.readFileSync(path.join(ROOT, rel), 'utf8');
 const PIN_PLACEHOLDER = 'github:tmhnsly/raditz#REPLACE_WITH_TAG';
 
 describe('templates parity', () => {
-  it('rdz-link.mjs is byte-identical across templates (hand-synced copies)', () => {
-    const next = fs.readFileSync(path.join(ROOT, 'templates/next/scripts/rdz-link.mjs'));
-    const vite = fs.readFileSync(path.join(ROOT, 'templates/vite/scripts/rdz-link.mjs'));
-    expect(next.equals(vite)).toBe(true);
+  it.each(['rdz-link.mjs', 'rdz-prebuild.mjs'])(
+    '%s is byte-identical across templates (hand-synced copies)',
+    (script) => {
+      const next = fs.readFileSync(path.join(ROOT, `templates/next/scripts/${script}`));
+      const vite = fs.readFileSync(path.join(ROOT, `templates/vite/scripts/${script}`));
+      expect(next.equals(vite)).toBe(true);
+    },
+  );
+
+  it('both templates gate the library prebuild on the link override (never rebuild a sibling checkout when tag-pinned)', () => {
+    for (const t of ['next', 'vite']) {
+      expect(JSON.parse(read(`templates/${t}/package.json`)).scripts.prebuild).toBe(
+        'node scripts/rdz-prebuild.mjs',
+      );
+    }
   });
 
   it('both templates wire a colour-scheme pre-paint (no light→dark flash)', () => {

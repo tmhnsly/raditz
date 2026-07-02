@@ -35,6 +35,10 @@ All notable changes to Raditz are recorded here. The format is based on
   stories); release preflight blocks unmarked `'use client'` sources; the consumer
   check verifies every client module's directive in dist; template-parity and
   catalog-utilities tests catch template/catalog drift.
+- Templates: the product `prebuild` hook is now link-aware (`rdz-prebuild.mjs`) —
+  it rebuilds the sibling raditz checkout ONLY while the rdz-link override is
+  active; tag-pinned builds use the packaged dist and never depend on (or silently
+  absorb) a local checkout.
 
 ## [0.1.0] - 2026-06-29
 - Packageization foundation: consumable package (src barrel, two-build pipeline,

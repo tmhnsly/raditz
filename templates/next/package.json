@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "node scripts/dev.mjs",
     "dev:lib": "RADITZ_DEV=1 node scripts/dev.mjs",
-    "prebuild": "[ ! -d ../raditz ] || pnpm -C ../raditz build:pkg",
+    "prebuild": "node scripts/rdz-prebuild.mjs",
     "build": "next build",
     "start": "next start",
     "rdz:link": "node scripts/rdz-link.mjs link",
