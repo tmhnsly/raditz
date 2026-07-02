@@ -5,6 +5,37 @@ All notable changes to Raditz are recorded here. The format is based on
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-07-02
+- **Section heading markup changed (consumer-visible):** every section heading now
+  renders through `SectionHeader` — an `h2.h-section` inside a `div.col.sx-sec__head`
+  wrapper — so pages get one coherent heading outline (previously sections mixed
+  bare `h2`/`h3`). Product CSS that targeted section-internal structure (e.g.
+  `.sx-faq__wrap > .h-section`) no longer matches; use the new `align` prop instead.
+- Every headed section now takes `align?: 'start' | 'center'` (Faq, Testimonials,
+  TestimonialCarousel, Blog, Comparison and Team join Features/Stats/Cta/Pricing) —
+  the sanctioned knob for heading alignment. The catalog now documents the styling
+  contract: customise via props/tokens/`children`, never via selectors on internal DOM.
+- Checkbox gained `indeterminate`; DataTable's header tri-state uses it (and its
+  checkboxes gained accessible names). AlertDialog/Form/DataTable buttons render
+  through `Button`.
+- CommandPalette adopted full listbox semantics (`role="combobox"` input,
+  `aria-activedescendant`, `role="option"` items), matching Combobox.
+- One semantic-status vocabulary behind Banner/Badge/Callout/Toast/AlertDialog/
+  EmptyState (public prop names and values unchanged).
+- New `initColorScheme(defaultScheme)` — the pre-render colour-scheme face for apps
+  with no server-rendered head (Vite SPAs); the Vite template wires it, fixing a
+  light→dark first-paint flash in Vite-scaffolded products.
+- Comparison table a11y: the corner and CTA-row cells are no longer empty `<th>`s.
+- AnnouncementA: a handler-only action now renders a real `<button>` (same
+  text-link look) instead of an `<a>` without `href`.
+- Internal deepening: shared chart tooltip/axis modules, one picker grid-focus
+  rover, a searchable-listbox core, explorer active-slug state machine (fixes a
+  breadcrumb race), and extracted pure cores with tests throughout.
+- Gates: the axe a11y gate now covers sections and every story variant (197
+  stories); release preflight blocks unmarked `'use client'` sources; the consumer
+  check verifies every client module's directive in dist; template-parity and
+  catalog-utilities tests catch template/catalog drift.
+
 ## [0.1.0] - 2026-06-29
 - Packageization foundation: consumable package (src barrel, two-build pipeline,
   vendored Radix colours + self-hosted fonts), generated `catalog/llms.txt`,
