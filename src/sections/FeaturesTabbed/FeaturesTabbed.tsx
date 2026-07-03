@@ -22,7 +22,9 @@ export interface FeaturesTabbedProps extends SectionBaseProps {
   items: FeaturesTabbedItem[];
   eyebrow?: ReactNode;
   heading?: ReactNode;
-  /** Header alignment. @default 'center' */
+  /** Header alignment. Defaults to 'start' so the heading shares the rail's
+   *  left edge — a centered heading floats awkwardly over the asymmetric
+   *  rail + panel grid. @default 'start' */
   align?: 'start' | 'center';
   /** Extra node pinned under the tab rail (e.g. opening hours, terms). */
   aside?: ReactNode;
@@ -35,7 +37,7 @@ export interface FeaturesTabbedProps extends SectionBaseProps {
  * detail. The panel holds a steady min-height so switching tabs never makes the
  * page jump. Uncontrolled (first tab open) — a deep section, no wiring required.
  */
-export function FeaturesTabbed({ items, eyebrow, heading, align = 'center', aside, children, ...props }: FeaturesTabbedProps) {
+export function FeaturesTabbed({ items, eyebrow, heading, align = 'start', aside, children, ...props }: FeaturesTabbedProps) {
   const [active, setActive] = useState(0);
   const item = items[active] ?? items[0];
   return (

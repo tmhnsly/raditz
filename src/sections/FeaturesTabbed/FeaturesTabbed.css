@@ -2,12 +2,13 @@
 /* ── FeaturesTabbed — vertical tab rail + detail panel ── */
 .rdz-ftabs { display: grid; grid-template-columns: minmax(0, 14rem) minmax(0, 1fr); gap: var(--space-8); align-items: start; }
 .rdz-ftabs__rail { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-3); border-inline-start: 1px solid var(--rule); padding-inline-start: var(--space-5); }
-.rdz-ftabs__tab { appearance: none; border: 0; background: none; padding: 0 0 var(--space-1); margin-inline-start: calc(-1 * var(--space-5) - 1px); padding-inline-start: var(--space-5); border-inline-start: 2px solid transparent; color: var(--text-soft); font: inherit; font-size: var(--fs-h6); font-weight: var(--fw-semibold); line-height: 1.2; text-align: start; cursor: pointer; transition: color var(--duration-fast) var(--ease-standard), border-color var(--duration-fast) var(--ease-standard); }
+.rdz-ftabs__tab { appearance: none; border: 0; background: none; padding-block: var(--space-0-5); margin-inline-start: calc(-1 * var(--space-5) - 1px); padding-inline-start: var(--space-5); border-inline-start: 2px solid transparent; color: var(--text-soft); font: inherit; font-size: var(--fs-h6); font-weight: var(--fw-semibold); line-height: 1.2; text-align: start; cursor: pointer; transition: color var(--duration-fast) var(--ease-standard), border-color var(--duration-fast) var(--ease-standard); }
 .rdz-ftabs__tab:hover { color: var(--text); }
 .rdz-ftabs__tab--active { color: var(--text); border-inline-start-color: var(--accent); }
-.rdz-ftabs__aside { margin-top: var(--space-5); color: var(--text-muted); font-size: var(--fs-body-s); max-width: 20ch; }
-/* the panel holds a steady min-height so switching tabs never makes the page jump */
-.rdz-ftabs__panel { display: flex; flex-direction: column; gap: var(--space-5); min-height: 22rem; }
+.rdz-ftabs__aside { margin-top: var(--space-4); color: var(--text-muted); font-size: var(--fs-body-s); max-width: 26ch; }
+/* Steady min-height so switching tabs never makes the page jump — sized for a
+   typical lead + description + 3-row checklist, not a sea of dead space below. */
+.rdz-ftabs__panel { display: flex; flex-direction: column; gap: var(--space-5); min-height: 16rem; }
 .rdz-ftabs__lead { font-size: var(--fs-h4); font-weight: var(--fw-bold); line-height: 1.35; letter-spacing: -0.01em; }
 .rdz-ftabs__lead ul { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-1); }
 .rdz-ftabs__lead em { font-style: italic; font-weight: var(--fw-medium); font-size: 0.8em; color: var(--text-soft); }

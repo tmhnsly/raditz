@@ -12,7 +12,7 @@
    z-index = right-on-top cascade; the "+N" slot gets the highest z (always on top). */
 .rdz-avatar-group__slot { position: relative; z-index: var(--rdz-avatar-z, 0); display: inline-flex; }
 
-.rdz-avatar-group__slot + .rdz-avatar-group__slot { margin-left: -0.625rem; }
+.rdz-avatar-group__slot + .rdz-avatar-group__slot { margin-left: calc(-1 * var(--space-2-5)); }
 
 .rdz-avatar-group__item { border: 2px solid var(--bg); width: var(--rdz-avatar-group-dim); height: var(--rdz-avatar-group-dim); }
 

@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { CtaA, CtaB } from './Cta';
+import { demoWide } from '../../demos/images';
 
 const meta: Meta = { title: 'Sections/CTA band' };
 export default meta;
@@ -18,7 +19,7 @@ export const A_Centered: Story = {
   ),
 };
 
-const IMG = 'https://images.unsplash.com/photo-1571266028243-e4733b0f0bb0?auto=format&fit=crop&w=1920&q=70';
+const IMG = demoWide;
 
 export const A_OverImageScrim: Story = {
   name: 'A · Over image (scrim)',

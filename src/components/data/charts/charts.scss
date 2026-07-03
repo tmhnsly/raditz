@@ -41,7 +41,7 @@
    stacking — the named `--z-overlay-local` rung, not a raw number and not a
    global-ladder rung like `--z-popover`. */
 .rdz-chart__tip {
-  position: absolute; z-index: var(--z-overlay-local); pointer-events: none; left: var(--rdz-tip-x, 0); top: var(--rdz-tip-y, 0); transform: translate(-50%, calc(-100% - 0.625rem));
+  position: absolute; z-index: var(--z-overlay-local); pointer-events: none; left: var(--rdz-tip-x, 0); top: var(--rdz-tip-y, 0); transform: translate(-50%, calc(-100% - var(--space-2-5)));
   background: var(--panel); border: 1px solid var(--surface-edge); border-radius: var(--radius-md);
   box-shadow: var(--shadow-5); padding: var(--space-2) var(--space-3); min-width: 8rem; max-width: 16rem;
   font-size: var(--fs-body-s); color: var(--text);
@@ -49,12 +49,12 @@
 
 /* Flip below the point when there's no room above (point near the chart top), so
    a tall tooltip isn't clipped by the chart/card edge. */
-.rdz-chart__tip[data-side="below"] { transform: translate(-50%, 0.625rem); }
+.rdz-chart__tip[data-side="below"] { transform: translate(-50%, var(--space-2-5)); }
 .rdz-chart__tip-row { display: flex; align-items: center; gap: var(--space-3); }
 .rdz-chart__tip-thumb { width: 2.5rem; height: 2.5rem; border-radius: var(--radius-sm); object-fit: cover; flex: none; }
 .rdz-chart__tip-eyebrow { font-family: var(--font-mono); font-size: var(--fs-mono-xs); color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; }
 .rdz-chart__tip-title { font-weight: var(--fw-semibold); }
-.rdz-chart__tip-meta { display: flex; align-items: center; gap: var(--space-2); margin-top: 0.125rem; color: var(--text-soft); }
+.rdz-chart__tip-meta { display: flex; align-items: center; gap: var(--space-2); margin-top: var(--space-0-5); color: var(--text-soft); }
 .rdz-chart__tip-star { color: var(--warning); }
 .rdz-chart__tip-tag { color: var(--accent-ink); }
 .rdz-chart__tip-value { font-family: var(--font-mono); font-weight: var(--fw-semibold); }

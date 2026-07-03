@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { HeroBleed } from '../lib/HeroBleed';
+import { demoBand } from './images';
 
 const meta = {
   title: 'Demos/Hero bleed',
@@ -65,7 +66,7 @@ const mediaHero = (
 
 export const Image: Story = {
   render: () => (
-    <HeroBleed image="https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1920&q=75" parallax nav={<FloatingNav />} wrap="col sx-center sx-gap-5">
+    <HeroBleed image={demoBand} parallax nav={<FloatingNav />} wrap="col sx-center sx-gap-5">
       {mediaHero}
     </HeroBleed>
   ),

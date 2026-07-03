@@ -1,11 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { ImageFocus } from './ImageFocus';
+import { demoWide } from '../../demos/images';
 
 const meta: Meta<typeof ImageFocus> = { title: 'Sections/ImageFocus', component: ImageFocus };
 export default meta;
 type Story = StoryObj<typeof ImageFocus>;
 
-const IMG = 'https://images.unsplash.com/photo-1571266028243-e4733b0f0bb0?auto=format&fit=crop&w=1920&q=70';
+const IMG = demoWide;
 
 export const A_Hero: Story = {
   name: 'A · Media hero',

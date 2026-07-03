@@ -3,7 +3,7 @@ import { GiMoonOrbit } from 'react-icons/gi';
 import { AnimatedIcon, type IconAnim } from './AnimatedIcon';
 import { Icon } from '../../display/Icon/Icon';
 
-const meta: Meta = { title: 'Components/Motion/AnimatedIcon' };
+const meta: Meta = { title: 'Components/Motion/AnimatedIcon', parameters: { replay: true } };
 export default meta;
 type Story = StoryObj;
 

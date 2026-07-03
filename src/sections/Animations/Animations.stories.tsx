@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { AnimationsA, AnimationsB, AnimationsC, AnimationsD } from './Animations';
 
-const meta: Meta = { title: 'Sections/Animations' };
+const meta: Meta = { title: 'Sections/Animations', parameters: { replay: true } };
 export default meta;
 type Story = StoryObj;
 

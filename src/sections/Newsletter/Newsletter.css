@@ -2,7 +2,7 @@
 /* ── Newsletter ── */
 .sx-news__wrap { max-width: 35rem; margin-inline: auto; }
 .sx-news__card { gap: var(--space-4); align-items: center; text-align: center; }
-.sx-news__copy { gap: 0.25rem; }
+.sx-news__copy { gap: var(--space-1); }
 .sx-news__title { font-size: var(--fs-h4); }
 .sx-news__form { width: 100%; justify-content: center; }
 .sx-news__input { display: inline-flex; align-items: center; flex: 1; max-width: 17.5rem; }

@@ -4,6 +4,27 @@ All notable changes to Raditz are recorded here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/); versions are git tags `vX.Y.Z`.
 
 ## [Unreleased]
+- Overlay panels adopt the title-bar anatomy: Dialog is now title-bar / scrolling
+  body / footer (close disc lives in the bar; title-less dialogs float it), the
+  shared close/nav disc is an outlined circle (no backdrop blur, 2.5rem, 2.75rem
+  on touch), and Drawer's header matches the same rhythm.
+- Menubar's open panel is no longer clipped by the bar's own scroll container
+  (`overflow` yields while a menu is open); its CSS anchor gap now matches the
+  JS-positioned menus (8px).
+- Spacing scale gained `--space-1-5` (6px) and `--space-2-5` (10px); the stray
+  raw-rem paddings/gaps across menus, tables, tooltips, navs and sections now sit
+  on tokens.
+- NavigationMenu panel items follow radius Rule 1 (`overlay − pad`); the navbar
+  control cluster (scheme toggle, burger, sm CTAs) shares one height and radius.
+- FeaturesTabbed: header defaults to `align="start"`, balanced active-tab bar,
+  panel steady-height cut to 16rem (no more dead space); PricingB tiers render on
+  an explicit capped grid (2–3 columns on desktop instead of stacked cards).
+- Scrimmed *gradient* backdrops use an accent-tinted veil (flat black over the
+  light scheme's pastel gradients read as grey mud; photos keep the neutral scrim).
+- Showroom: Replay renders only for stories that opt in via `parameters.replay`
+  (motion components, animated sections); demo imagery is centralised in
+  `src/demos/images.ts` (a deleted Unsplash photo was 404-ing ImageFocus/Cta);
+  the mobile nav drawer no longer leaks its shadow down the closed left edge.
 - Sections accept `className`/`id`/`data-*` (forwarded to the section's root):
   anchor links and test ids no longer need the `children` override. SectionShell's
   bespoke `frameData` prop is gone (subsumed by the passthrough); NavbarA/B/C now

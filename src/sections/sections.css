@@ -77,8 +77,13 @@
 .sx-g4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .sx-split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
 .sx-bento { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
-.sx-price2 { display: flex; flex-wrap: wrap; align-items: stretch; justify-content: center; }
-.sx-price2 > * { flex: 1 1 14rem; min-width: 0; }
+/* Toggle-variant tier row: an explicit grid, NOT intrinsic flex sizing — a
+   centered column parent shrink-wraps a wrapping flex row to its max-content
+   (long feature lines), which used to stack full-width cards on desktop. The
+   grid keeps the compact "tablet" composition and flows 2–3 columns as cards
+   and width allow. */
+.sx-price2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); align-items: stretch; width: 100%; max-width: 56rem; margin-inline: auto; }
+.sx-price2 > * { min-width: 0; }
 .sx-faq2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
 .sx-footer { display: grid; grid-template-columns: minmax(0, 1.6fr) repeat(3, minmax(0, 1fr)); }
 @container (max-width: 1000px) {

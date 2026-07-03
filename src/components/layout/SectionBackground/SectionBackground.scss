@@ -70,6 +70,16 @@
   background: linear-gradient(180deg, var(--black-a8) 0%, var(--black-a9) 100%);
 }
 
+/* Gradient backdrops scrim differently from photos: flat black over the LIGHT
+   scheme's pastel gradients reads as grey mud (over a photo it reads as depth).
+   Tint the veil with the accent so a scrimmed gradient deepens into a branded
+   band — still dark enough for the on-dark content the scrim scopes. */
+.rdz-secbg--scrim.rdz-secbg--gradient .rdz-secbg__layer::after {
+  background: linear-gradient(180deg,
+    color-mix(in srgb, var(--accent) 28%, var(--black-a8)) 0%,
+    color-mix(in srgb, var(--accent) 16%, var(--black-a9)) 100%);
+}
+
 /* parallax — the layer is oversized and translated from a scroll-driven var */
 .rdz-secbg--parallax .rdz-secbg__layer { top: -12%; height: 124%; transform: translate3d(0, var(--rdz-parallax-y, 0), 0); will-change: transform; }
 

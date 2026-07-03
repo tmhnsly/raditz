@@ -3,4 +3,4 @@
 /* Flex column with a gap so the heading isn't flush against the accordion (and
    any custom children breathe). Was just a max-width box → cramped spacing. */
 .sx-faq__wrap { max-width: 45rem; margin-inline: auto; display: flex; flex-direction: column; gap: var(--space-6); }
-.sx-faq__item { gap: 0.375rem; }
+.sx-faq__item { gap: var(--space-1-5); }

@@ -2,5 +2,5 @@
 /* ── Animations (showcase section) ── */
 .sx-anim__card { align-items: center; text-align: center; }
 .sx-anim__icon { font-size: 2rem; color: var(--accent-ink); }
-.sx-anim__title-row { gap: 0.25rem; align-items: center; text-align: center; }
+.sx-anim__title-row { gap: var(--space-1); align-items: center; text-align: center; }
 .sx-anim__head-row { justify-content: space-between; align-items: flex-end; gap: var(--space-4); }

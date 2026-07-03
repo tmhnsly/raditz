@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { SectionBackground } from './SectionBackground';
+import { demoBackdrop } from '../../../demos/images';
 
 const meta = {
   title: 'Components/Layout/SectionBackground',
@@ -63,7 +64,7 @@ export const Parallax: Story = {
 
 export const Image: Story = {
   render: () => (
-    <SectionBackground image="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1600&q=75" parallax>
+    <SectionBackground image={demoBackdrop} parallax>
       <GlassPanel label="image backdrop" />
     </SectionBackground>
   ),

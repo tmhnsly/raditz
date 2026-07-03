@@ -15,7 +15,7 @@
 
 .rdz-callout__body { font-size: var(--fs-body-s); line-height: var(--lh-body); }
 
-.rdz-callout__title { font-weight: var(--fw-semibold); margin-bottom: 0.125rem; color: var(--text); }
+.rdz-callout__title { font-weight: var(--fw-semibold); margin-bottom: var(--space-0-5); color: var(--text); }
 
 /* Per-tone palettes — map data-color to the semantic scales. Without these the
    surface/accent/ink vars fall back to accent, so every tone reads identically. */

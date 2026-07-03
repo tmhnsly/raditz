@@ -1,7 +1,7 @@
 // Auto-split from components.css — this component's styles, co-located.
 // Uses Raditz tokens (var(--…)); re-skins/re-themes with the system.
 /* ═══════════════════════ NavBar (flowing route indicator) ═══════════════════════ */
-.rdz-navbar { position: relative; display: inline-flex; gap: 0.125rem; }
+.rdz-navbar { position: relative; display: inline-flex; gap: var(--space-0-5); }
 
 .rdz-navbar[data-orientation='horizontal'] { flex-direction: row; align-items: center; }
 

@@ -26,19 +26,21 @@ function GroupHeading({ slug, name, level }: { slug: string; name: string; level
 }
 
 /** One isolated variant preview. The Replay control remounts the preview (a key
- *  bump) so any entrance animation — Reveal / TextReveal / the title-anim heading
- *  entrance / a section's `animate` — re-fires for visual testing, on EVERY
- *  showcase (not just the few sections with a built-in Replay). `.rdz-preview` opts
- *  the preview into the bordered "card" chrome; page entries render their own flat
- *  `.rdz-page` inside. */
-function VariantPreview({ name, Component, showTag }: { name: string; Component: ComponentType; showTag: boolean }) {
+ *  bump) so an entrance animation — Reveal / TextReveal / a Vignette scene / a
+ *  section's `animate` — re-fires for visual testing. It renders ONLY for stories
+ *  that opt in via `parameters.replay` (static previews would just be noise).
+ *  `.rdz-preview` opts the preview into the bordered "card" chrome; page entries
+ *  render their own flat `.rdz-page` inside. */
+function VariantPreview({ name, Component, showTag, canReplay }: { name: string; Component: ComponentType; showTag: boolean; canReplay: boolean }) {
   const { key, replay } = useReplay();
   return (
     <div className={cx('variant', 'rdz-preview')}>
       {showTag && <span className="variant__tag">{name}</span>}
-      <button type="button" className="variant__replay" onClick={replay} aria-label={`Replay ${name}`} title="Replay animations">
-        ↻ Replay
-      </button>
+      {canReplay && (
+        <button type="button" className="variant__replay" onClick={replay} aria-label={`Replay ${name}`} title="Replay animations">
+          ↻ Replay
+        </button>
+      )}
       <div className="variant__stage" key={key}>
         <Component />
       </div>
@@ -59,7 +61,7 @@ function EntryBlock({ entry }: { entry: Entry }) {
       {entry.description && <p className="sec__desc">{entry.description}</p>}
       <LazyMount minHeight={180}>
         {entry.variants.map(({ id, name, Component }) => (
-          <VariantPreview key={id} name={name} Component={Component} showTag={entry.variants.length > 1} />
+          <VariantPreview key={id} name={name} Component={Component} showTag={entry.variants.length > 1} canReplay={!!entry.replay} />
         ))}
       </LazyMount>
     </section>

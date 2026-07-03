@@ -7,14 +7,14 @@
 .nav-bar__links a { color: inherit; text-decoration: none; }
 .nav-bar__links a:hover { color: var(--text); }
 .nav-bar__cta { display: flex; align-items: center; gap: var(--space-2); }
-.nav-bar__burger { display: none; align-items: center; justify-content: center; width: 2.25rem; height: 2.25rem; flex: none; border: 1px solid var(--rule); background: var(--panel); border-radius: var(--radius-control); color: var(--text-soft); cursor: pointer; transition: var(--transition-control); }
+.nav-bar__burger { display: none; align-items: center; justify-content: center; width: var(--control-h-sm); height: var(--control-h-sm); flex: none; border: 1px solid var(--rule); background: var(--panel); border-radius: var(--radius-control); color: var(--text-soft); cursor: pointer; transition: var(--transition-control); }
 .nav-bar__burger:hover { background: var(--surface); color: var(--text); }
 .nav-bar__burger svg { width: 1.25rem; height: 1.25rem; }
 /* nav-sheet is the Overlay panel's appearance only; Overlay portals + positions it. */
-.nav-sheet { min-width: 13rem; display: flex; flex-direction: column; gap: 0.125rem; background: var(--panel); border: 1px solid var(--surface-edge); border-radius: var(--radius-overlay); box-shadow: var(--shadow-5); padding: var(--space-3); }
+.nav-sheet { min-width: 13rem; display: flex; flex-direction: column; gap: var(--space-0-5); background: var(--panel); border: 1px solid var(--surface-edge); border-radius: var(--radius-overlay); box-shadow: var(--shadow-5); padding: var(--space-3); }
 .nav-sheet a { padding: 0.625rem 0.75rem; border-radius: var(--radius-md); color: var(--text); text-decoration: none; font-size: var(--fs-body-s); font-weight: var(--fw-medium); }
 .nav-sheet a:hover { background: var(--surface); }
-.nav-sheet__cta { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.375rem; padding-top: var(--space-3); border-top: 1px solid var(--rule-soft); }
+.nav-sheet__cta { display: flex; flex-direction: column; gap: var(--space-2); margin-top: var(--space-1-5); padding-top: var(--space-3); border-top: 1px solid var(--rule-soft); }
 
 /* Collapse links into the burger before they crowd the brand/CTA — 720px gives
    the nav room to breathe instead of cramming links until it's truly tiny.
@@ -98,11 +98,12 @@
   .rdz-page .rdz-nav .sx-nav__brand { display: none; }
 }
 
-/* light/dark toggle button (ships in NavbarA by default) */
+/* light/dark toggle button (ships in NavbarA by default). Sized + shaped to the
+   bar's other controls (sm actions, burger) — Rule 4: one radius per group. */
 .rdz-scheme-toggle {
   display: inline-flex; align-items: center; justify-content: center; flex: none;
-  width: 2.25rem; height: 2.25rem; border: 1px solid var(--rule); background: var(--panel);
-  border-radius: var(--radius-full); color: var(--text-soft); cursor: pointer; transition: var(--transition-control);
+  width: var(--control-h-sm); height: var(--control-h-sm); border: 1px solid var(--rule); background: var(--panel);
+  border-radius: var(--radius-control); color: var(--text-soft); cursor: pointer; transition: var(--transition-control);
 }
 .rdz-scheme-toggle:hover { background: var(--surface); color: var(--text); }
 .rdz-scheme-toggle:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
@@ -114,7 +115,7 @@
 .nav-tabframe__body { flex: 1; padding: var(--space-4); display: flex; }
 .nav-tabframe__ph { flex: 1; }
 .nav-tabbar { display: flex; justify-content: space-around; gap: var(--space-1); padding: var(--space-2) var(--space-2) calc(var(--space-2) + env(safe-area-inset-bottom, 0px)); background: color-mix(in srgb, var(--bg-subtle) 86%, transparent); -webkit-backdrop-filter: blur(var(--glass-blur)); backdrop-filter: blur(var(--glass-blur)); border-top: 1px solid var(--rule); }
-.nav-tab { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 0.125rem; padding: var(--space-2) 0; border: 0; background: none; color: var(--text-muted); cursor: pointer; border-radius: var(--radius-md); transition: color var(--duration-fast) var(--ease-standard); }
+.nav-tab { flex: 1; display: flex; flex-direction: column; align-items: center; gap: var(--space-0-5); padding: var(--space-2) 0; border: 0; background: none; color: var(--text-muted); cursor: pointer; border-radius: var(--radius-md); transition: color var(--duration-fast) var(--ease-standard); }
 .nav-tab:hover { color: var(--text-soft); }
 .nav-tab__icon { display: inline-flex; width: 1.5rem; height: 1.5rem; }
 .nav-tab__icon > svg { width: 100%; height: 100%; }
@@ -129,7 +130,7 @@
 /* The sticky nav is only a backdrop for the floating glass bar — it has no fill
    or border of its own, otherwise a seam appears where it meets the hero. */
 .sx-nav__frame-b { background: none; border-color: transparent; }
-.sx-nav__bar-glass { padding: 0.625rem var(--space-5); background: var(--glass); backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur)); border: 1px solid var(--glass-sheen); border-radius: var(--radius-panel); box-shadow: var(--shadow-3); }
+.sx-nav__bar-glass { padding: var(--space-2-5) var(--space-5); background: var(--glass); backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur)); border: 1px solid var(--glass-sheen); border-radius: var(--radius-panel); box-shadow: var(--shadow-3); }
 .sx-nav__brand-row-sm { gap: 10px; }
 .sx-nav__logo-md { width: 1.75rem; height: 1.75rem; border-radius: var(--radius-md); }
 .sx-nav__logo-glyph-md { font-family: var(--font-mono); font-size: 0.875rem; font-weight: var(--fw-bold); }

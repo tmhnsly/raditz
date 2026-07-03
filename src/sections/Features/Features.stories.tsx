@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { FeaturesA, FeaturesB, FeaturesC, type FeaturesItem } from './Features';
 
-const meta: Meta = { title: 'Sections/Features' };
+const meta: Meta = { title: 'Sections/Features', parameters: { replay: true } };
 export default meta;
 type Story = StoryObj;
 

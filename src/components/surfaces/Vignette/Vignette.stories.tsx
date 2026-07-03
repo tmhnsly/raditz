@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Vignette, type VignetteBg } from './Vignette';
 
-const meta: Meta<typeof Vignette> = { title: 'Components/Surfaces/Vignette', component: Vignette };
+const meta: Meta<typeof Vignette> = { title: 'Components/Surfaces/Vignette', component: Vignette, parameters: { replay: true } };
 export default meta;
 type Story = StoryObj<typeof Vignette>;
 

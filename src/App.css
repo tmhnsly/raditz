@@ -115,10 +115,15 @@ body { font-family: var(--font-display); background-color: var(--bg-subtle); col
      .main is only space-4-padded, pushing those bars wider than the viewport → x-scroll. */
   .main { --main-pad-x: var(--space-4); padding-block: var(--space-4) var(--space-9); }
 
+  /* Closed: no shadow (a translated-offscreen drawer's shadow still paints a
+     dark strip down the viewport's left edge — the iOS "phantom shadow") and
+     visibility:hidden so its tree isn't tabbable offscreen. The visibility
+     delay holds it visible for the slide-out. */
   .rail { position: fixed; top: 0; left: 0; height: 100dvh; width: min(18rem, 86vw);
-    transform: translateX(-100%); transition: transform var(--duration-base) var(--ease-standard);
-    z-index: var(--z-drawer); box-shadow: var(--shadow-6); border-right: 1px solid var(--surface-edge); }
-  .shell--nav-open .rail { transform: none; }
+    transform: translateX(-100%); visibility: hidden;
+    transition: transform var(--duration-base) var(--ease-standard), visibility 0s var(--duration-base);
+    z-index: var(--z-drawer); border-right: 1px solid var(--surface-edge); }
+  .shell--nav-open .rail { transform: none; visibility: visible; box-shadow: var(--shadow-6); transition: transform var(--duration-base) var(--ease-standard); }
   .rail__brand--desktop { display: none; }
 
   .rail-scrim { display: block; position: fixed; inset: 0; z-index: var(--z-scrim); background: var(--overlay-scrim);

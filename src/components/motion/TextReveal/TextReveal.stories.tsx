@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { TextReveal, type TextRevealAnim } from './TextReveal';
 
-const meta: Meta = { title: 'Components/Motion/TextReveal' };
+const meta: Meta = { title: 'Components/Motion/TextReveal', parameters: { replay: true } };
 export default meta;
 type Story = StoryObj;
 

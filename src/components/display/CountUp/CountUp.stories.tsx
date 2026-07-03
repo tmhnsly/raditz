@@ -7,7 +7,7 @@ type Story = StoryObj<typeof CountUp>;
 
 export const Values: Story = {
   render: () => (
-    <div style={{ display: 'flex', gap: '2.5rem', fontSize: '2.5rem', fontWeight: 700 }}>
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'clamp(1rem, 4vw, 2.5rem)', fontSize: 'clamp(1.75rem, 6vw, 2.5rem)', fontWeight: 700 }}>
       <CountUp value="10k+" />
       <CountUp value="$2.5M" />
       <CountUp value="99.9%" />

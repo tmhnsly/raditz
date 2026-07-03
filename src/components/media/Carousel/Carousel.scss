@@ -29,7 +29,7 @@
    grouped so you don't traverse back and forth across the deck. */
 .rdz-carousel__bar { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); }
 
-.rdz-carousel__indicator { display: flex; align-items: center; gap: 0.375rem; min-width: 0; flex-wrap: wrap; }
+.rdz-carousel__indicator { display: flex; align-items: center; gap: var(--space-1-5); min-width: 0; flex-wrap: wrap; }
 
 .rdz-carousel__seg { width: 0.5rem; height: 0.5rem; padding: 0; border: 0; border-radius: var(--radius-full); background: var(--surface-strong); cursor: pointer; transition: width var(--duration-base) var(--ease-standard), background var(--duration-fast) var(--ease-standard); }
 

@@ -10,7 +10,7 @@
 
 .rdz-menu__item {
   display: flex; align-items: center; gap: var(--space-3); width: 100%; text-align: left;
-  padding: 0.5rem var(--space-3); border-radius: calc(var(--radius-overlay) - var(--space-2)); font-family: var(--font-display); /* Rule 1: inner = overlay radius − menu pad */
+  padding: var(--space-2) var(--space-3); border-radius: calc(var(--radius-overlay) - var(--space-2)); font-family: var(--font-display); /* Rule 1: inner = overlay radius − menu pad */
   font-size: var(--fs-body-s); color: var(--text); cursor: pointer; transition: background var(--duration-fast) var(--ease-standard);
 }
 
@@ -32,11 +32,12 @@
 
 .rdz-menu__shortcut { font-family: var(--font-mono); font-size: var(--fs-mono-xs); color: var(--text-faint); }
 
-.rdz-menu__sep { height: 0.0625rem; background: var(--rule-soft); margin: var(--space-2) calc(-1 * var(--space-2)); }
+.rdz-menu__sep { height: var(--border-width); background: var(--rule-soft); margin: var(--space-2) calc(-1 * var(--space-2)); }
 
-.rdz-menu__label { font-family: var(--font-mono); font-size: var(--fs-mono-xs); text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); padding: 0.375rem var(--space-3) 0.25rem; }
+.rdz-menu__label { font-family: var(--font-mono); font-size: var(--fs-mono-xs); text-transform: uppercase; letter-spacing: var(--ls-eyebrow); color: var(--text-muted); padding: var(--space-1-5) var(--space-3) var(--space-1); }
 
-.rdz-menu--anchored { position: absolute; top: calc(100% + 0.375rem); left: 0; }
+/* Mirrors the JS-positioned menus' 8px anchor gap (overlayPosition default). */
+.rdz-menu--anchored { position: absolute; top: calc(100% + var(--space-2)); left: 0; }
 
 /* The context-menu target. On touch the menu opens via long-press, so suppress
    the iOS callout + text selection that press-and-hold would otherwise trigger

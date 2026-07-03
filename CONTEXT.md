@@ -660,6 +660,14 @@ The `Sections/Animations` showcase composes it all (reveal-variant grid with a R
 control, title + TextReveal gallery, AnimatedIcon cards, Card-tone presets) so it's
 viewable/tunable in the explorer.
 
+The explorer's per-variant **Replay** control is opt-in: a story sets
+`parameters: { replay: true }` (read by `src/explorer/registry.ts`) and only then does
+the preview render the remount button — motion components and animated sections carry
+it; static previews stay clean. Demo imagery comes from `src/demos/images.ts` — one
+curated, verified Unsplash set (+ a seeded `placeholderImage()` via Lorem Picsum);
+stories never inline raw image URLs because individual Unsplash photos get deleted
+upstream and 404 years later. The library itself never hard-codes imagery.
+
 ## Component taxonomy (single source of truth, reorganised 2026-06-24)
 
 Every public component lives at `src/components/<category>/<Name>/`. The **folder is the

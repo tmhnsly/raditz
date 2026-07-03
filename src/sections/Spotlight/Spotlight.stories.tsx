@@ -43,7 +43,7 @@ const LevelsScene = (
   </svg>
 );
 
-const meta: Meta<typeof SpotlightA> = { title: 'Sections/Spotlight', component: SpotlightA };
+const meta: Meta<typeof SpotlightA> = { title: 'Sections/Spotlight', component: SpotlightA, parameters: { replay: true } };
 export default meta;
 type Story = StoryObj<typeof SpotlightA>;
 

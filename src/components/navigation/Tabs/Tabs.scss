@@ -17,7 +17,7 @@
 /* underline variant */
 .rdz-tabs[data-variant='underline'] { background: none; padding: 0; gap: var(--space-5); border-bottom: var(--border-width) solid var(--rule-soft); }
 
-.rdz-tabs[data-variant='underline'] .rdz-tabs__tab { border-radius: 0; padding: 0.625rem 0.125rem; background: none; box-shadow: none; border-bottom: var(--border-width-2) solid transparent; margin-bottom: -0.0625rem; }
+.rdz-tabs[data-variant='underline'] .rdz-tabs__tab { border-radius: 0; padding: var(--space-2-5) var(--space-0-5); background: none; box-shadow: none; border-bottom: var(--border-width-2) solid transparent; margin-bottom: -0.0625rem; }
 
 .rdz-tabs[data-variant='underline'] .rdz-tabs__tab--active { color: var(--accent-ink); border-bottom-color: var(--accent); background: none; box-shadow: none; }
 

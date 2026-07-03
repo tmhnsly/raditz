@@ -29,7 +29,7 @@ type Meta = {
   title?: string;
   component?: ComponentType<Record<string, unknown>>;
   args?: Record<string, unknown>;
-  parameters?: { docs?: { description?: { component?: string } }; layout?: string };
+  parameters?: { docs?: { description?: { component?: string } }; layout?: string; replay?: boolean };
 };
 type StoryModule = { default?: Meta } & Record<string, StoryObj | StoryFn | Meta | undefined>;
 
@@ -41,6 +41,9 @@ export type Entry = {
   title: string; // raw meta.title
   description?: string;
   fullscreen?: boolean;
+  /** Story opted into the showroom's Replay control (`parameters.replay`) —
+   *  set it on stories with entrance/motion styles worth re-firing. */
+  replay?: boolean;
   variants: Variant[];
 };
 
@@ -88,6 +91,7 @@ export const entries: Entry[] = Object.values(modules)
       title,
       description: meta.parameters?.docs?.description?.component,
       fullscreen: meta.parameters?.layout === 'fullscreen',
+      replay: meta.parameters?.replay === true,
       variants,
     };
   })
