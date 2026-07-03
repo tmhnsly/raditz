@@ -30,10 +30,11 @@
 @media (prefers-reduced-motion: reduce) { .sx-price__card-pop { animation: none; } }
 .sx-price__badge { position: absolute; top: -0.6875rem; left: var(--space-5); }
 .sx-price__toggle-col { gap: var(--space-6); align-items: center; }
-/* Heading + period toggle share a row while there's room (flex-wrap), stacking
-   only when genuinely tight — not at an arbitrary early breakpoint. */
-.sx-price__toggle-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: var(--space-3) var(--space-6); width: 100%; text-align: center; }
-/* The header shares this row with the sub + period toggle: sx-center's
-   `margin-inline: auto` would swallow the row's free space and shove its
-   siblings to the edge, so `align` here affects text alignment only. */
+/* Heading over the period toggle, both centred — a single centred column that
+   lines up with the capped, centred card grid below (the toggle used to share a
+   flex row with the heading and spread to the section's edges on desktop, which
+   no longer matched the centred cards). */
+.sx-price__toggle-head { display: flex; flex-direction: column; align-items: center; gap: var(--space-4); width: 100%; text-align: center; }
+/* Centring is the column's job (align-items), so drop the header's own auto
+   margins to keep it from fighting the flex alignment. */
 .sx-price__toggle-head > .sx-sec__head { margin-inline: 0; }
