@@ -63,8 +63,10 @@ export function AlertDialog({
     >
       {title || description ? (
         <div className="rdz-dialog__header">
-          {title ? <h2 id={titleId} className="rdz-dialog__title">{title}</h2> : null}
-          {description ? <p id={descId} className="rdz-dialog__desc">{description}</p> : null}
+          <div className="rdz-dialog__heading">
+            {title ? <h2 id={titleId} className="rdz-dialog__title">{title}</h2> : null}
+            {description ? <p id={descId} className="rdz-dialog__desc">{description}</p> : null}
+          </div>
         </div>
       ) : null}
       <div className="rdz-dialog__footer">

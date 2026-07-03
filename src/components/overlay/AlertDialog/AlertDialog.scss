@@ -5,10 +5,14 @@
 
 .rdz-overlay__scrim { position: absolute; inset: 0; background: var(--overlay-scrim); -webkit-backdrop-filter: blur(0.125rem); backdrop-filter: blur(0.125rem); animation: rdzFade var(--duration-base) var(--ease-standard); }
 
+/* Panel = title bar + scrolling body + footer (chork-style). The bar owns its
+   chrome (rule below, close disc in-row); overflow lives on the BODY so the
+   title stays put while long content scrolls under it. */
 .rdz-dialog {
   position: relative; z-index: var(--z-overlay-local); width: 100%; max-width: 28.75rem; max-height: calc(100vh - 2 * var(--space-7));
-  overflow: auto; background: var(--panel); border: var(--border-width) solid var(--surface-edge);
-  border-radius: var(--radius-panel); box-shadow: var(--shadow-6); padding: var(--space-6);
+  display: flex; flex-direction: column; overflow: hidden;
+  background: var(--panel); border: var(--border-width) solid var(--surface-edge);
+  border-radius: var(--radius-panel); box-shadow: var(--shadow-6);
   animation: rdzPop var(--duration-base) var(--ease-standard);
 }
 
@@ -16,20 +20,27 @@
 
 .rdz-dialog[data-size='lg'] { max-width: 40rem; }
 
-.rdz-dialog__header { margin-bottom: var(--space-4); padding-right: var(--space-7); }
+.rdz-dialog__header { flex: none; display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); padding: var(--space-4) var(--space-5); border-bottom: 1px solid var(--rule-soft); }
 
-.rdz-dialog__title { font-size: var(--fs-h3); letter-spacing: var(--ls-h3); line-height: var(--lh-heading); font-weight: var(--fw-semibold); }
+.rdz-dialog__heading { min-width: 0; }
 
-.rdz-dialog__desc { color: var(--text-soft); font-size: var(--fs-body-s); margin-top: var(--space-2); line-height: var(--lh-body); }
+.rdz-dialog__title { font-size: var(--fs-h4); line-height: var(--lh-heading); font-weight: var(--fw-bold); letter-spacing: -0.01em; }
 
-.rdz-dialog__body { font-size: var(--fs-body-s); color: var(--text-soft); line-height: var(--lh-body); }
+.rdz-dialog__desc { color: var(--text-soft); font-size: var(--fs-body-s); margin-top: var(--space-1); line-height: var(--lh-body); }
+
+.rdz-dialog__body { flex: 1; overflow-y: auto; overscroll-behavior: contain; padding: var(--space-5); font-size: var(--fs-body-s); color: var(--text-soft); line-height: var(--lh-body); }
 
 .rdz-dialog__body > * + * { margin-top: var(--space-3); }
 
-.rdz-dialog__footer { display: flex; justify-content: flex-end; gap: var(--space-3); margin-top: var(--space-6); }
+.rdz-dialog__footer { flex: none; display: flex; justify-content: flex-end; gap: var(--space-3); padding: var(--space-4) var(--space-5) var(--space-5); }
 
-/* Position only — the disc visual is the shared .rdz-oclose. */
-.rdz-dialog__close { position: absolute; top: var(--space-4); right: var(--space-4); }
+/* A body already pads its own bottom — the footer continues flush below it. */
+.rdz-dialog__body + .rdz-dialog__footer { padding-top: 0; }
+
+/* Layout only — the disc visual is the shared .rdz-oclose. */
+.rdz-dialog__close { flex: none; }
+/* Title-less dialog has no bar to host the close — float it over the body. */
+.rdz-dialog__close--solo { position: absolute; top: var(--space-4); right: var(--space-4); z-index: 1; }
 
 .rdz-alert__danger { background: var(--danger); box-shadow: none; }
 

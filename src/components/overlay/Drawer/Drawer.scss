@@ -10,9 +10,9 @@
 
 .rdz-drawer[data-side='bottom'] { bottom: 0; left: 0; width: 100%; height: var(--rdz-drawer-size); max-height: 92vh; border-top: 1px solid var(--surface-edge); border-radius: var(--radius-panel) var(--radius-panel) 0 0; animation: rdzDrawerB var(--duration-base) var(--ease-standard); }
 
-.rdz-drawer__header { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-3); padding: var(--space-5); border-bottom: 1px solid var(--rule-soft); }
+.rdz-drawer__header { flex: none; display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); padding: var(--space-4) var(--space-5); border-bottom: 1px solid var(--rule-soft); }
 
-.rdz-drawer__title { font-size: var(--fs-h4); font-weight: var(--fw-semibold); }
+.rdz-drawer__title { font-size: var(--fs-h4); line-height: var(--lh-heading); font-weight: var(--fw-bold); letter-spacing: -0.01em; }
 
 .rdz-drawer__desc { color: var(--text-soft); font-size: var(--fs-body-s); margin-top: 0.25rem; }
 

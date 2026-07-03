@@ -58,13 +58,17 @@ export function Dialog({
     >
       {title || description ? (
         <div className="rdz-dialog__header">
-          {title ? <h2 id={titleId} className="rdz-dialog__title">{title}</h2> : null}
-          {description ? <p id={descId} className="rdz-dialog__desc">{description}</p> : null}
+          <div className="rdz-dialog__heading">
+            {title ? <h2 id={titleId} className="rdz-dialog__title">{title}</h2> : null}
+            {description ? <p id={descId} className="rdz-dialog__desc">{description}</p> : null}
+          </div>
+          <OverlayClose className="rdz-dialog__close" onClick={close} />
         </div>
-      ) : null}
-      {children ? <div className="rdz-dialog__body">{children}</div> : null}
+      ) : (
+        <OverlayClose className="rdz-dialog__close rdz-dialog__close--solo" onClick={close} />
+      )}
+      {children ? <div className="rdz-dialog__body rdz-scrollbar">{children}</div> : null}
       {footer ? <div className="rdz-dialog__footer">{footer}</div> : null}
-      <OverlayClose className="rdz-dialog__close" onClick={close} />
     </Overlay>
   );
 }

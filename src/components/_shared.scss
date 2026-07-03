@@ -29,23 +29,28 @@
    text color or wrap in .rdz-on-dark and the button follows. */
 .rdz-oclose, .rdz-ovbtn {
   display: inline-grid; place-items: center; flex: none;
-  width: var(--rdz-oclose-size, 2rem); height: var(--rdz-oclose-size, 2rem);
-  border: 0; padding: 0; border-radius: var(--radius-full);
-  color: var(--text-soft); background: color-mix(in srgb, currentColor 16%, transparent);
-  /* Frosted glass so the disc stays legible over photos (Lightbox) and any panel —
-     driven by the same --glass-blur knob as cards/panels/glass buttons. */
-  -webkit-backdrop-filter: blur(var(--glass-blur)); backdrop-filter: blur(var(--glass-blur));
+  width: var(--rdz-oclose-size, 2.5rem); height: var(--rdz-oclose-size, 2.5rem);
+  padding: 0; border-radius: var(--radius-full);
+  color: var(--text-soft); background: color-mix(in srgb, currentColor 6%, transparent);
+  /* Outlined disc, not a filled one: the ring is what reads over a photo
+     (Lightbox) and over a panel alike, and it costs no backdrop-filter. */
+  border: 1px solid color-mix(in srgb, currentColor 30%, transparent);
   cursor: pointer; transition: var(--transition-control);
 }
-.rdz-oclose:hover, .rdz-ovbtn:hover { background: color-mix(in srgb, currentColor 30%, transparent); color: var(--text); transform: scale(1.06); }
-.rdz-oclose:active, .rdz-ovbtn:active { transform: scale(0.95); }
+.rdz-oclose:hover, .rdz-ovbtn:hover { background: color-mix(in srgb, currentColor 14%, transparent); border-color: color-mix(in srgb, currentColor 48%, transparent); color: var(--text); }
+.rdz-oclose:active, .rdz-ovbtn:active { background: color-mix(in srgb, currentColor 22%, transparent); }
 .rdz-oclose:focus-visible, .rdz-ovbtn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
-.rdz-oclose:disabled, .rdz-ovbtn:disabled { opacity: var(--disabled-opacity); cursor: not-allowed; transform: none; }
-.rdz-oclose svg, .rdz-ovbtn svg { width: 1.1rem; height: 1.1rem; }
+.rdz-oclose:disabled, .rdz-ovbtn:disabled { opacity: var(--disabled-opacity); cursor: not-allowed; }
+.rdz-oclose svg, .rdz-ovbtn svg { width: 1.125rem; height: 1.125rem; }
 .rdz-oclose[data-size='lg'], .rdz-ovbtn--lg { --rdz-oclose-size: 2.75rem; }
 .rdz-oclose[data-size='lg'] svg, .rdz-ovbtn--lg svg { width: 1.25rem; height: 1.25rem; }
-.rdz-oclose[data-size='sm'], .rdz-ovbtn--sm { --rdz-oclose-size: 1.625rem; }
+.rdz-oclose[data-size='sm'], .rdz-ovbtn--sm { --rdz-oclose-size: 1.75rem; }
 .rdz-oclose[data-size='sm'] svg, .rdz-ovbtn--sm svg { width: 0.9rem; height: 0.9rem; }
+/* Touch: the default disc grows to the 44px minimum (sm/lg keep their own var —
+   the data-size rules above outrank this un-attributed one). */
+@media (pointer: coarse) {
+  .rdz-oclose, .rdz-ovbtn { --rdz-oclose-size: 2.75rem; }
+}
 
 @keyframes rdzProgressSlide { 0% { transform: translateX(-110%); } 100% { transform: translateX(360%); } }
 
