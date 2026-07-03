@@ -34,7 +34,7 @@ and the hero background reaches the very top (no nav "band"). On an `image`+`scr
 text goes on-dark (white) automatically; use the `glass` or default (accent) button — and
 `secondary` now stays legible over media too, so no CTA goes invisible on a photo.
 
-166 exported components across 15 categories.
+168 exported components across 15 categories.
 
 ## utilities (CSS classes)
 
@@ -566,6 +566,29 @@ Usage:
 
 ## inputs
 
+### Calendar
+Import: `import { Calendar } from 'raditz'`
+
+Calendar — the inline month surface behind DatePicker / DateRangePicker, also usable on its own. Drill-up title (day → month → year), arrow-paged views, and grid-roving keyboard focus. Single mode uses `value` / `onValueChange` (ISO `YYYY-MM-DD`); passing any `range` prop switches to range selection (`onRangeChange` fires as `from` then `to` are picked, swapping if the second click precedes the first). `min` / `max` bound both. Built on date-fns.
+
+Props:
+  - autoFocus?: boolean (default: false) — Focus a day when the day grid mounts / re-enters (popover use).
+  - defaultRange?: DateRange — Initial span (uncontrolled, range mode).
+  - defaultValue?: string — Initial ISO date (uncontrolled, single mode).
+  - max?: string — Latest selectable ISO date.
+  - min?: string — Earliest selectable ISO date.
+  - onRangeChange?: ((range: DateRange) => void) — Fires with the new span as it's built (first click sets `from`, second `to`).
+  - onValueChange?: ((value: string) => void) — Fires with the new ISO date.
+  - range?: DateRange — Selected span (controlled, range mode). Presence of any range prop switches the calendar into range selection.
+  - value?: string — Selected ISO date (controlled, single mode).
+
+Examples (Storybook stories): Single, Bounded, Range
+
+Usage:
+```tsx
+<Calendar />
+```
+
 ### Checkbox
 Import: `import { Checkbox } from 'raditz'`
 
@@ -609,7 +632,7 @@ Usage:
 ### DatePicker
 Import: `import { DatePicker } from 'raditz'`
 
-DatePicker — a text trigger that opens a calendar popover with drill-up navigation: the title steps day → month → year (click "June 2026" to pick a month, "2026" to pick a year), and the arrows page the current view. Value is an ISO `YYYY-MM-DD` string (controlled `value`/`onValueChange` or `defaultValue`); `min`/`max` bound the range. Built on date-fns; renders into an {@link Overlay}.
+DatePicker — a text trigger that opens a {@link Calendar} popover with drill-up navigation: the title steps day → month → year, and the arrows page the view. Value is an ISO `YYYY-MM-DD` string (controlled `value`/`onValueChange` or `defaultValue`); `min`/`max` bound the range. Renders into an {@link Overlay}; the calendar surface itself is the standalone `Calendar` component.
 
 Props:
   - defaultValue?: string — Initial ISO date (uncontrolled).
@@ -625,6 +648,27 @@ Examples (Storybook stories): Default
 Usage:
 ```tsx
 <DatePicker />
+```
+
+### DateRangePicker
+Import: `import { DateRangePicker } from 'raditz'`
+
+DateRangePicker — a text trigger that opens a {@link Calendar} in range mode: the first day click sets the start, the second the end (hovering previews the span, and a second click before the first swaps them). Value is a `{ from, to }` pair of ISO `YYYY-MM-DD` strings (controlled `value` / `onValueChange` or `defaultValue`); the popover closes once both ends are set.
+
+Props:
+  - defaultValue?: DateRange — Initial span (uncontrolled).
+  - disabled?: boolean (default: false)
+  - max?: string — Latest selectable ISO date.
+  - min?: string — Earliest selectable ISO date.
+  - onValueChange?: ((value: DateRange) => void) — Fires as the span is built (first pick sets `from`, second `to`).
+  - placeholder?: string (default: Select dates) — Trigger text when no span is chosen.
+  - value?: DateRange — Selected span as ISO endpoints (controlled).
+
+Examples (Storybook stories): Default, Prefilled, Bounded
+
+Usage:
+```tsx
+<DateRangePicker />
 ```
 
 ### DateTimePicker

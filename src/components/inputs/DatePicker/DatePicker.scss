@@ -1,6 +1,6 @@
-// Auto-split from components.css — this component's styles, co-located.
-// Uses Raditz tokens (var(--…)); re-skins/re-themes with the system.
-/* ═══════════════════════ DatePicker · Calendar ═══════════════════════ */
+// Co-located styles for DatePicker — the trigger only; the popover surface is
+// the shared Calendar (see Calendar.scss). Uses Raditz tokens (var(--…)).
+/* ═══════════════════════ DatePicker ═══════════════════════ */
 .rdz-datepicker { display: inline-flex; position: relative; }
 
 .rdz-datepicker__trigger { display: inline-flex; align-items: center; gap: var(--space-2); cursor: pointer; text-align: left; min-width: 12rem; }
@@ -8,60 +8,3 @@
 .rdz-datepicker__trigger.is-placeholder { color: var(--text-faint); }
 
 .rdz-datepicker__cal { width: 1.0625rem; height: 1.0625rem; color: var(--text-muted); flex: none; }
-
-.rdz-calendar { z-index: var(--z-popover); width: 18rem; max-width: calc(100dvw - var(--space-4)); background: var(--panel); border: 1px solid var(--surface-edge); border-radius: var(--radius-overlay); box-shadow: var(--shadow-5); padding: var(--space-4); animation: rdzPopover var(--duration-fast) var(--ease-standard); overscroll-behavior: contain; }
-
-.rdz-calendar__head { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-3); }
-
-.rdz-calendar__title { font-weight: var(--fw-semibold); font-size: var(--fs-body-s); color: var(--text); padding: 0.25rem 0.5rem; border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition-control); }
-
-.rdz-calendar__title:hover:not(:disabled) { background: var(--surface); }
-
-.rdz-calendar__title:disabled { cursor: default; }
-
-.rdz-calendar__nav { width: 1.75rem; height: 1.75rem; display: inline-grid; place-items: center; border-radius: var(--radius-sm); color: var(--text-soft); transition: var(--transition-control); }
-
-.rdz-calendar__nav:hover { background: var(--surface); color: var(--text); }
-
-.rdz-calendar__nav svg { width: 1rem; height: 1rem; }
-
-.rdz-calendar__dow { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; margin-bottom: 2px; }
-
-.rdz-calendar__dow span { text-align: center; font-family: var(--font-mono); font-size: 0.625rem; color: var(--text-faint); padding: 0.25rem 0; }
-
-.rdz-calendar__grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
-
-.rdz-calendar__day { aspect-ratio: 1; display: inline-grid; place-items: center; border-radius: var(--radius-sm); font-size: var(--fs-body-s); color: var(--text); transition: var(--transition-control); }
-
-.rdz-calendar__day:hover:not(:disabled) { background: var(--surface); }
-
-.rdz-calendar__day:disabled { opacity: var(--disabled-opacity); cursor: not-allowed; }
-
-.rdz-calendar__day.is-today { box-shadow: inset 0 0 0 1px var(--accent-border); }
-
-.rdz-calendar__day.is-selected { background: var(--accent); color: var(--on-accent); }
-
-.rdz-calendar__day.is-selected:hover { background: var(--accent-hover); }
-
-/* Month + year drill-up grids (3 columns). */
-.rdz-calendar__cells { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-2); }
-
-.rdz-calendar__cell { padding: 0.625rem 0; border-radius: var(--radius-sm); font-size: var(--fs-body-s); color: var(--text); transition: var(--transition-control); }
-
-.rdz-calendar__cell:hover { background: var(--surface); }
-
-.rdz-calendar__cell.is-muted { color: var(--text-faint); }
-
-.rdz-calendar__cell.is-selected { background: var(--accent); color: var(--on-accent); }
-
-.rdz-calendar__cell.is-selected:hover { background: var(--accent-hover); }
-
-/* Touch ergonomics — approach iOS-native picker sizing: ≥44px targets and
-   body-size type so the panel reads like a native date wheel, not desktop-dense. */
-@media (pointer: coarse) {
-  .rdz-calendar { width: 19.5rem; }
-  .rdz-calendar__day { font-size: var(--fs-body); min-height: 2.75rem; border-radius: var(--radius-md); }
-  .rdz-calendar__cell { font-size: var(--fs-body); padding: 0.75rem 0; border-radius: var(--radius-md); }
-  .rdz-calendar__nav { width: 2.75rem; height: 2.75rem; border-radius: var(--radius-md); }
-  .rdz-calendar__title { min-height: 2.75rem; font-size: var(--fs-body); }
-}

@@ -79,6 +79,20 @@ that stops arrows scrolling the page while a picker is open (a 2D column/grid
 that `useRoving`'s single index can't model; both pickers used to hand-roll it).
 Its `strategy` is `{ kind: 'grid' }` (live `grid-template-columns` row jumps —
 DatePicker) or `{ kind: 'columns' }` (sibling-column hops — TimePicker).
+
+**Calendar** (`inputs/Calendar`, extracted 2026-07-03) is the ONE month surface —
+the `.rdz-calendar` panel (drill-up day→month→year, arrow paging, grid roving).
+DatePicker and DateRangePicker are thin triggers that render it inside an
+{@link Overlay} (the panel is positioning-only `.rdz-overlay__panel`; Calendar
+carries the visual chrome, so the extraction is DOM/byte-compatible — the
+DatePicker suite passes unmodified). One `Calendar` handles both modes: single
+(`value`/`onValueChange`, ISO) or range (any `range` prop switches it —
+`onRangeChange` fires `from` then `to`, swapping if the second pick precedes the
+first, previewing the span on hover). Dates are ISO `YYYY-MM-DD` strings
+throughout the family (`DateRange = { from?, to? }`); the range band bridges the
+2px grid gap with box-shadows (endpoints are `is-selected` discs, mid days
+`is-in-range`). `autoFocus` (the pickers pass it) grabs grid focus on open;
+standalone Calendars don't steal focus.
 An ARIA role that implies keyboard is a CONTRACT: the 2026-07-02 consistency pass
 found Tabs (`tablist`), Rating (`radiogroup`) and Toolbar (`toolbar`) shipping the
 role with no arrows at all (axe can't see this) — all three now implement the

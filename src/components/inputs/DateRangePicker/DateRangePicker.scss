@@ -1,0 +1,7 @@
+// Co-located styles for DateRangePicker — the trigger only; the popover surface
+// is the shared Calendar (see Calendar.scss). Uses Raditz tokens (var(--…)).
+/* ═══════════════════════ DateRangePicker ═══════════════════════ */
+.rdz-daterange { display: inline-flex; position: relative; }
+
+/* Wider than the single-date trigger — it holds two formatted dates. */
+.rdz-daterange__trigger { min-width: 16rem; }

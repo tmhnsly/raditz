@@ -4,6 +4,12 @@ All notable changes to Raditz are recorded here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/); versions are git tags `vX.Y.Z`.
 
 ## [Unreleased]
+- **Calendar / DateRangePicker** (2 more components): the `.rdz-calendar` month
+  surface is extracted as a public `Calendar` (single or range mode, ISO dates);
+  DatePicker now composes it (DOM/API unchanged — its suite passes unmodified),
+  and `DateRangePicker` is a new trigger for `{ from, to }` spans (pick start →
+  end, hover-preview, swap-if-earlier, closes when the span completes). Surface
+  100 → 102.
 - **New components** (10): `NumberInput` (stepped numeric field), `Chip`
   (dismissible tag), `CopyButton`, `Timeline`, `Legend` (chart series key), and
   `BottomSheet` (mobile drag-to-close sheet over the Overlay face); **new
