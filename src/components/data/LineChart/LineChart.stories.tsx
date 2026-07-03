@@ -27,6 +27,11 @@ export const Default: Story = {
   },
 };
 
+export const Empty: Story = {
+  name: 'Empty (no data)',
+  args: { data: [], height: 240 },
+};
+
 // ── Engagement / "episode drop-off" preset ──────────────────────────────────
 const Y = [62, 70, 66, 74, 81, 78, 86, 83, 90, 88, 93, 95, 92, 84, 79, 71, 60, 48];
 const TITLES = ['Pilot', 'The Gift', 'Crossroads', 'Fallout', 'Reunion', 'The Edge', 'Nightfall', 'Homecoming', 'Ashes', 'The Pact', 'Landslide', 'Zenith', 'Aftermath', 'Cold Open', 'Unraveled', 'The Drop', 'Embers', 'Finale'];

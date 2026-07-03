@@ -1,0 +1,31 @@
+/* Gallery — section styles (co-located with the component). */
+/* ── Gallery ── */
+.sx-gal__head { gap: var(--space-3); max-width: 60ch; }
+.sx-gal__head-text { gap: var(--space-2); }
+.sx-gal__lede { max-width: 52ch; }
+.sx-gal__grid { width: 100%; }
+
+/* ── Gallery B: masonry-ish columns ── */
+/* CSS columns (not grid) so each figure keeps its natural aspect; figures never
+   split across columns. Collapses 3 → 2 → 1 at the shared section container
+   breakpoints (the s-pad container). */
+.sx-gal__masonry { width: 100%; column-count: 3; column-gap: var(--space-4); }
+.sx-gal__fig {
+  margin: 0 0 var(--space-4);
+  break-inside: avoid;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.sx-gal__fig img {
+  display: block;
+  width: 100%;
+  height: auto; /* natural aspect */
+  border-radius: var(--radius-card);
+}
+@container (max-width: 680px) {
+  .sx-gal__masonry { column-count: 2; }
+}
+@container (max-width: 440px) {
+  .sx-gal__masonry { column-count: 1; }
+}

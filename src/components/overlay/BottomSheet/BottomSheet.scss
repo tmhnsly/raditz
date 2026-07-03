@@ -1,0 +1,66 @@
+// BottomSheet — bottom-anchored sheet. Uses Raditz tokens (var(--…));
+// re-skins/re-themes with the system. Rides inside the shared
+// .rdz-overlay--drawer container (scrim + z-modal), like Drawer.
+.rdz-sheet {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  z-index: var(--z-overlay-local);
+  background: var(--panel);
+  border-top: 1px solid var(--surface-edge);
+  border-radius: var(--radius-panel) var(--radius-panel) 0 0;
+  box-shadow: var(--shadow-6);
+  display: flex;
+  flex-direction: column;
+  // The drag offset is DATA — a custom property the component writes during the
+  // gesture — and CSS turns it into position, so there is never a real inline
+  // transform to fight the entrance animation or the settle transition.
+  transform: translateY(var(--rdz-sheet-drag, 0px));
+  animation: rdzDrawerB var(--duration-base) var(--ease-standard);
+}
+
+// auto = content height, capped short of the top edge; tall = near-full,
+// clearing the top safe-area (notch) plus a breath of margin.
+.rdz-sheet[data-height='auto'] { max-height: 90svh; }
+.rdz-sheet[data-height='tall'] { height: calc(100svh - env(safe-area-inset-top, 0px) - var(--space-6)); }
+
+/* Released → glide back to rest (or the gesture crossed the close threshold and
+   the sheet unmounts). While dragging the transform must track the pointer 1:1. */
+.rdz-sheet:not([data-dragging='true']) { transition: transform var(--duration-fast) var(--ease-standard); }
+.rdz-sheet[data-dragging='true'] { transition: none; }
+
+/* Grab handle — the pill above the title bar. touch-action: none so the browser
+   hands the vertical pan to the drag gesture instead of scrolling. */
+.rdz-sheet__grab { flex: none; display: grid; place-items: center; padding: var(--space-3) 0 var(--space-2); cursor: grab; touch-action: none; }
+.rdz-sheet__grab::before { content: ''; width: 2.75rem; height: 0.3125rem; border-radius: var(--radius-full); background: var(--rule-strong); }
+.rdz-sheet[data-dragging='true'] .rdz-sheet__grab { cursor: grabbing; }
+
+/* Title bar — mirrors Dialog's anatomy: title left, close disc right, soft rule
+   below. Also a drag surface, so selection/panning must not fight the gesture. */
+.rdz-sheet__header { flex: none; display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); padding: var(--space-1) var(--space-5) var(--space-4); border-bottom: 1px solid var(--rule-soft); touch-action: none; user-select: none; -webkit-user-select: none; }
+
+.rdz-sheet__title { font-size: var(--fs-h4); line-height: var(--lh-heading); font-weight: var(--fw-bold); letter-spacing: -0.01em; }
+
+.rdz-sheet__desc { color: var(--text-soft); font-size: var(--fs-body-s); margin-top: 0.25rem; }
+
+/* Layout only — the disc visual is the shared .rdz-oclose. */
+.rdz-sheet__close { flex: none; }
+/* A title-less sheet has no title bar to host the close — float it top-right
+   over the body (the sheet is `position: fixed`, so it's the positioning
+   context), like Drawer. */
+.rdz-sheet__close--solo { position: absolute; top: var(--space-3); right: var(--space-4); z-index: 1; }
+
+.rdz-sheet__body { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: var(--space-5); padding-bottom: calc(var(--space-5) + env(safe-area-inset-bottom, 0px)); }
+
+.rdz-sheet__footer { flex: none; padding: var(--space-4) var(--space-5) calc(var(--space-4) + env(safe-area-inset-bottom, 0px)); border-top: 1px solid var(--rule-soft); display: flex; justify-content: flex-end; gap: var(--space-3); }
+
+/* Belt-and-braces on top of the token collapse (like Drawer's entry in
+   _shared.scss's reduced-motion block — kept here so the component is
+   self-contained). */
+@media (prefers-reduced-motion: reduce) {
+  .rdz-sheet { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}

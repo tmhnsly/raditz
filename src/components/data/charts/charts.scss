@@ -7,6 +7,15 @@
    global ladder. */
 .rdz-chart { position: relative; width: 100%; min-width: 0; height: var(--rdz-chart-h, 240px); isolation: isolate; }
 
+/* Zero-data notice — a quiet centered mono caption that fills the frame so an
+   emptied chart holds its height instead of collapsing. Shared by every chart
+   (visx charts via ChartFrame's `empty` slot; pure-SVG charts render it inline). */
+.rdz-chart__empty {
+  position: absolute; inset: 0; display: grid; place-items: center; text-align: center;
+  font-family: var(--font-mono); font-size: var(--fs-mono-xs); text-transform: uppercase;
+  letter-spacing: var(--ls-eyebrow); color: var(--text-faint);
+}
+
 .rdz-chart__svg { display: block; overflow: visible; }
 
 /* Axis + grid — quiet neutral lines, mono tick labels. */

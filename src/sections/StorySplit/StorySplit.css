@@ -1,0 +1,29 @@
+/* StorySplit — section styles (co-located with the component). */
+/* ── StorySplit — alternating editorial rows (media | copy) ── */
+.sx-story__rows { gap: var(--space-9); }
+.sx-story__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  column-gap: var(--space-8);
+  row-gap: var(--space-5);
+  align-items: center;
+}
+/* Even rows read media-right. DOM order stays media → copy (reading order);
+   the flip is pure presentation — grid `order` driven by data-flip. */
+.sx-story__row[data-flip] > .sx-story__copy { order: -1; }
+
+/* Media pane: a clipped 4/3 frame; an image covers it, a custom node fills it
+   (grid items stretch to the cell by default). */
+.sx-story__media { display: grid; aspect-ratio: 4 / 3; border-radius: var(--radius-card); overflow: hidden; }
+.sx-story__img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.sx-story__title { text-wrap: balance; }
+/* The CTA hugs its content instead of stretching to the copy column. */
+.sx-story__action { align-self: flex-start; }
+
+/* Stacked: one column on narrow containers, media above copy — the flip resets
+   so every row returns to reading order. */
+@container (max-width: 680px) {
+  .sx-story__row { grid-template-columns: 1fr; }
+  .sx-story__row[data-flip] > .sx-story__copy { order: 0; }
+}

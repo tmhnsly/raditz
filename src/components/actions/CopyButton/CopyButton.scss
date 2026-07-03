@@ -1,0 +1,37 @@
+// Uses Raditz tokens (var(--…)); re-skins/re-themes with the system.
+/* ═══════════════════════ CopyButton ═══════════════════════ */
+.rdz-copybtn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2);
+  font-family: var(--font-display); font-weight: var(--fw-semibold);
+  font-size: var(--fs-label); line-height: 1; white-space: nowrap;
+  min-width: var(--control-icon); height: var(--control-icon); padding: 0;
+  color: var(--text-soft);
+  border: var(--border-width) solid transparent;
+  border-radius: var(--radius-control); cursor: pointer;
+  transition: var(--transition-control);
+}
+
+/* With a visible text label the square relaxes into a padded pill. */
+.rdz-copybtn[data-labelled] { padding: 0 var(--space-3); }
+
+.rdz-copybtn[data-size='sm'] { min-width: var(--control-h-sm); height: var(--control-h-sm); }
+
+.rdz-copybtn[data-variant='ghost']:hover { background: var(--surface); color: var(--text); }
+
+.rdz-copybtn[data-variant='outline'] { border-color: var(--rule); }
+
+.rdz-copybtn[data-variant='outline']:hover { background: var(--surface); border-color: var(--rule-strong); color: var(--text); }
+
+/* Copied confirmation — success ink on the check + label while it shows. */
+.rdz-copybtn[data-copied] { color: var(--success-ink); }
+
+.rdz-copybtn:active { transform: var(--press-down); }
+
+.rdz-copybtn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+
+.rdz-copybtn:disabled { opacity: var(--disabled-opacity); cursor: not-allowed; }
+
+/* Touch: keep the hit target at/above the 44px minimum. */
+@media (pointer: coarse) {
+  .rdz-copybtn { min-width: 2.75rem; min-height: 2.75rem; }
+}

@@ -1,0 +1,91 @@
+// Timeline — events on a continuous vertical rule.
+// Uses Raditz tokens (var(--…)); re-skins/re-themes with the system.
+.rdz-timeline {
+  --rdz-timeline-marker: 1.25rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.rdz-timeline__item {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding-bottom: var(--space-5);
+}
+.rdz-timeline__item:last-child { padding-bottom: 0; }
+
+/* The rule: from below this item's marker to the top of the next marker.
+   Items butt together, so per-item segments read as one continuous line;
+   the last item has no segment — the rule stops at its marker. */
+.rdz-timeline__item::before {
+  content: '';
+  position: absolute;
+  left: calc(var(--rdz-timeline-marker) / 2 - 0.5px);
+  top: var(--rdz-timeline-marker);
+  bottom: 0;
+  width: 1px;
+  background: var(--rule-soft);
+}
+.rdz-timeline__item:last-child::before { display: none; }
+
+.rdz-timeline__marker {
+  flex: none;
+  width: var(--rdz-timeline-marker);
+  height: var(--rdz-timeline-marker);
+  margin-top: 0.0625rem; /* optically centres against the first text line */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  background: var(--surface);
+  box-shadow: inset 0 0 0 1px var(--rule-soft);
+  color: var(--text-muted);
+}
+.rdz-timeline__marker svg { display: block; }
+
+.rdz-timeline__dot {
+  width: 0.375rem;
+  height: 0.375rem;
+  border-radius: var(--radius-full);
+  background: currentColor;
+}
+
+/* Tone axis rides data-tone on the item. */
+.rdz-timeline__item[data-tone='accent'] .rdz-timeline__marker {
+  color: var(--accent);
+  box-shadow: inset 0 0 0 1px var(--accent);
+}
+.rdz-timeline__item[data-tone='done'] .rdz-timeline__marker {
+  background: var(--accent);
+  color: var(--on-accent);
+  box-shadow: none;
+}
+
+.rdz-timeline__body {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.rdz-timeline__meta {
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-eyebrow);
+  color: var(--text-muted);
+}
+
+.rdz-timeline__title {
+  font-weight: var(--fw-semibold);
+  line-height: 1.35;
+}
+
+.rdz-timeline__description {
+  color: var(--text-soft);
+  font-size: var(--fs-body-s);
+}

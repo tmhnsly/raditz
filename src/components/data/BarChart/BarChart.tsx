@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { cx, minMax, toPercent } from '../../internal';
+import { ChartEmpty } from '../charts/ChartEmpty';
 
 export interface BarDatum {
   label: React.ReactNode;
@@ -15,6 +16,8 @@ export interface BarChartProps extends React.HTMLAttributes<HTMLDivElement> {
   showValues?: boolean;
   /** Chart height (vertical mode). @default "10rem" */
   height?: string;
+  /** Zero-data notice text. @default "No data" */
+  emptyMessage?: React.ReactNode;
 }
 
 /**
@@ -27,11 +30,25 @@ export function BarChart({
   horizontal = false,
   showValues = true,
   height = '10rem',
+  emptyMessage,
   className,
   style,
   ...rest
 }: BarChartProps): React.ReactElement {
   const max = Math.max(minMax(data.map((d) => d.value)).max, 1);
+  if (data.length === 0) {
+    return (
+      <div
+        className={cx('rdz-barchart', horizontal && 'rdz-barchart--h', 'rdz-barchart--empty', className)}
+        style={horizontal ? style : ({ '--rdz-barchart-h': height, ...style } as React.CSSProperties)}
+        role="img"
+        aria-label="Bar chart"
+        {...rest}
+      >
+        <ChartEmpty>{emptyMessage}</ChartEmpty>
+      </div>
+    );
+  }
   return (
     <div
       className={cx('rdz-barchart', horizontal && 'rdz-barchart--h', className)}

@@ -32,7 +32,7 @@
 .rdz-nav { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
 .rdz-nav--pill {
   height: 3.5rem;
-  padding-inline: var(--space-4) 0.5rem;
+  padding-inline: var(--space-4) var(--space-2);
   background: var(--glass);
   -webkit-backdrop-filter: blur(var(--glass-blur));
   backdrop-filter: blur(var(--glass-blur));
@@ -45,7 +45,7 @@
 .rdz-nav__frame { background: none; border-color: transparent; box-shadow: none; }
 /* The end cluster (toggle + CTA/burger) NEVER shrinks or clips; the brand row
    takes the remaining space and truncates its wordmark on a tight phone bar. */
-.rdz-nav__end { display: flex; align-items: center; gap: var(--space-1); flex: none; }
+.rdz-nav__end { display: flex; align-items: center; gap: var(--space-2); flex: none; }
 .rdz-nav > .row { min-width: 0; }
 .rdz-nav .sx-nav__brand { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
@@ -96,6 +96,17 @@
    always fit (the chip stays the home button). */
 @media (max-width: 30rem) {
   .rdz-page .rdz-nav .sx-nav__brand { display: none; }
+}
+
+/* Rule 1 inside the capsule bars: end-cluster controls are CONCENTRIC with the
+   frame (inner = outer − padding), so when a theme raises --radius-factor the
+   CTA, toggle and burger curve with the bar instead of clashing shapes. The
+   browser caps radius at half-height, so squarer themes degrade gracefully. */
+.rdz-nav--pill .rdz-nav__end :is(.rdz-btn, .rdz-scheme-toggle, .nav-bar__burger) {
+  border-radius: calc(var(--radius-panel) - var(--space-2));
+}
+.sx-nav__bar-glass :is(.rdz-btn, .rdz-scheme-toggle, .nav-bar__burger) {
+  border-radius: calc(var(--radius-panel) - var(--space-2-5));
 }
 
 /* light/dark toggle button (ships in NavbarA by default). Sized + shaped to the

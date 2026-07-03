@@ -4,6 +4,18 @@ All notable changes to Raditz are recorded here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/); versions are git tags `vX.Y.Z`.
 
 ## [Unreleased]
+- **New components** (10): `NumberInput` (stepped numeric field), `Chip`
+  (dismissible tag), `CopyButton`, `Timeline`, `Legend` (chart series key), and
+  `BottomSheet` (mobile drag-to-close sheet over the Overlay face); **new
+  sections** `Contact`, `HowItWorks` (A row / B vertical), `StorySplit`
+  (alternating editorial rows), and a `Gallery` section (grid `GalleryA` +
+  masonry `GalleryB`). Component surface: 94 → 100; sections: 22 → 26.
+- Charts render a shared empty state (`.rdz-chart__empty`, `emptyMessage` prop on
+  LineChart/BarChart/ScatterChart/Donut) instead of a blank/broken frame when
+  handed zero data; the frame holds its height so layout doesn't collapse.
+- Pill/glass navbars: the end-cluster controls (CTA, scheme toggle, burger) are
+  concentric with the bar (`radius-panel − padding`) so a high-`--radius-factor`
+  theme curves them with the frame instead of mixing capsules and rounded squares.
 - Chart tooltips hug the chart's left/right edge (`data-align` from anchor x vs
   chart width) instead of hanging half-clipped outside a card's radius clip.
 - Overlay panels adopt the title-bar anatomy: Dialog is now title-bar / scrolling

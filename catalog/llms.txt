@@ -34,7 +34,7 @@ and the hero background reaches the very top (no nav "band"). On an `image`+`scr
 text goes on-dark (white) automatically; use the `glass` or default (accent) button — and
 `secondary` now stays legible over media too, so no CTA goes invisible on a photo.
 
-153 exported components across 15 categories.
+166 exported components across 15 categories.
 
 ## utilities (CSS classes)
 
@@ -68,6 +68,26 @@ Examples (Storybook stories): Primary, Variants, Glass, Sizes
 Usage:
 ```tsx
 <Button />
+```
+
+### CopyButton
+Import: `import { CopyButton } from 'raditz'`
+
+Copy-to-clipboard button. Icon-only by default (pass an `aria-label` via `label`); pass `children` for a visible text label beside the icon. On a successful copy the glyph swaps to a check and the label to `copiedLabel` for a moment, and the result is announced politely to screen readers.
+
+Props:
+  - children?: ReactNode — Optional visible text rendered beside the icon (icon-only otherwise).
+  - copiedLabel?: string (default: Copied) — Label shown/announced after a successful copy.
+  - label?: string (default: Copy) — Accessible label (`aria-label` + `title`).
+  - size?: "sm" | "md" (default: md) — Control size.
+  - value: string — The text written to the clipboard on activation.
+  - variant?: "ghost" | "outline" (default: ghost) — Visual weight.
+
+Examples (Storybook stories): Default, WithLabel, BesideCode, Sizes
+
+Usage:
+```tsx
+<CopyButton>…</CopyButton>
 ```
 
 ### IconButton
@@ -139,6 +159,7 @@ BarChart — a compact categorical bar chart (pure SVG/flex). `data` is `[{ labe
 
 Props:
   - data?: BarDatum[] (default: [])
+  - emptyMessage?: ReactNode (default: "No data") — Zero-data notice text.
   - height?: string (default: 10rem) — Chart height (vertical mode).
   - horizontal?: boolean (default: false) — Horizontal bars.
   - showValues?: boolean (default: true) — Print values on bars.
@@ -180,6 +201,7 @@ Donut — a ring chart (pure SVG) for a single percentage or multiple segments. 
 
 Props:
   - color?: string (default: var(--accent)) — Single-ring color.
+  - emptyMessage?: ReactNode (default: "No data") — Zero-data notice text (shown when neither `value` nor `segments` are supplied — an explicit `value={0}` still draws an empty ring).
   - label?: ReactNode — Centre label.
   - max?: number (default: 100)
   - segments?: DonutSegment[] — Multi-segment data (overrides `value`).
@@ -195,6 +217,22 @@ Usage:
 <Donut />
 ```
 
+### Legend
+Import: `import { Legend } from 'raditz'`
+
+Legend — keys a chart's series to their colours. A wrap-friendly row of swatch + label pairs; pair it under a LineChart/Donut/BarChart. The swatch colour flows through the `--rdz-legend-color` custom property (data, never an inline paint), so it re-themes with whatever token expression you pass.
+
+Props:
+  - items: LegendItem[] — The series to key.
+  - size?: "sm" | "md" (default: md)
+
+Examples (Storybook stories): Shapes, UnderLineChart, BesideDonut
+
+Usage:
+```tsx
+<Legend />
+```
+
 ### LineChart
 Import: `import { LineChart } from 'raditz'`
 
@@ -203,6 +241,7 @@ LineChart — a responsive line/area chart (visx) with an optional value-mapped 
 Props:
   - area?: boolean (default: false) — Fill the area under the line.
   - data: LinePoint[]
+  - emptyMessage?: ReactNode (default: "No data") — Zero-data notice text.
   - formatY?: ((y: number) => string) (default: (y) => String(y)) — Y tick formatter.
   - gradient?: boolean (default: false) — Value-mapped gradient stroke (accent → warning → danger).
   - height?: number (default: 240) — Chart height in px.
@@ -210,7 +249,7 @@ Props:
   - references?: LineAnnotation[] (default: []) — Vertical dashed reference lines (e.g. a "STOP" annotation).
   - renderTooltip?: ((point: LinePoint, index: number) => ReactNode) — Custom hover tooltip content; omit for a simple value tooltip.
 
-Examples (Storybook stories): Default, Engagement
+Examples (Storybook stories): Default, Empty, Engagement
 
 Usage:
 ```tsx
@@ -224,6 +263,7 @@ ScatterChart — a responsive scatter / bubble plot (visx). Pass `[{ x, y, size?
 
 Props:
   - data: ScatterPoint[]
+  - emptyMessage?: ReactNode (default: "No data") — Zero-data notice text.
   - formatX?: ((x: number) => string) (default: (v) => String(v))
   - formatY?: ((y: number) => string) (default: (v) => String(v))
   - height?: number (default: 260)
@@ -331,6 +371,27 @@ Usage:
 <Badge />
 ```
 
+### Chip
+Import: `import { Chip } from 'raditz'`
+
+A compact pill-shaped token — selected filters, tags, people. `icon` leads, `onDismiss` adds a labelled trailing × button, `onClick` makes the body a real button. `variant` is the fill style, `size` the scale.
+
+Props:
+  - disabled?: boolean (default: false) — Disables both the body button and the × button.
+  - dismissLabel?: string (default: Remove) — Accessible label for the × button.
+  - icon?: ReactNode — Leading icon / visual.
+  - onClick?: MouseEventHandler<HTMLButtonElement> — When set, the chip body is a real <button>.
+  - onDismiss?: (() => void) — When set, renders a trailing × button that fires this callback.
+  - size?: "sm" | "md" (default: md) — Scale.
+  - variant?: "soft" | "outline" | "solid" (default: soft) — Fill style.
+
+Examples (Storybook stories): Default, Variants, Sizes, WithIcon, DismissibleRow, Clickable, Disabled
+
+Usage:
+```tsx
+<Chip />
+```
+
 ### CountUp
 Import: `import { CountUp } from 'raditz'`
 
@@ -393,6 +454,22 @@ Examples (Storybook stories): Default, Active, FilterRow
 Usage:
 ```tsx
 <Pill />
+```
+
+### Timeline
+Import: `import { Timeline } from 'raditz'`
+
+Timeline — an ordered list of events on a continuous rule. Each item is a marker disc (icon, dot, or check) with a content block beside it: mono eyebrow meta, semibold title, soft description. `tone` colours the marker (`accent` for the active step, `done` for completed ones). Non-interactive.
+
+Props:
+  - items: TimelineItem[] — The events, in display order.
+  - orientation?: "vertical" (default: vertical) — Axis direction — vertical only for now; horizontal can join later.
+
+Examples (Storybook stories): Default, WithIcons, Tones
+
+Usage:
+```tsx
+<Timeline />
 ```
 
 ## feedback
@@ -656,6 +733,28 @@ Examples (Storybook stories): Default, Invalid
 Usage:
 ```tsx
 <Input />
+```
+
+### NumberInput
+Import: `import { NumberInput } from 'raditz'`
+
+NumberInput — a stepped numeric field: a − button, a free-typing input and a + button in one frame. Controlled with `value` / `onValueChange`, or uncontrolled with `defaultValue`. The buttons and ArrowUp/ArrowDown move by `step` (Home/End jump to `min`/`max` when bounded); every committed value is clamped into [min, max] and the buttons disable at the bounds. Typing is free text — it commits (parse + clamp) on blur or Enter, and non-numeric text reverts to the last committed value. Forwards its ref to the native <input>; `aria-label`/`aria-labelledby` and Field's injected `id`/`aria-describedby` route to the input, everything else spreads onto the root.
+
+Props:
+  - defaultValue?: number (default: 0) — Initial value (uncontrolled), clamped into [min, max].
+  - disabled?: boolean (default: false) — Disable interaction — dimmed and non-interactive.
+  - max?: number — Upper bound (unbounded when omitted).
+  - min?: number — Lower bound (unbounded when omitted).
+  - onValueChange?: ((value: number) => void) — Fires when the committed value changes.
+  - size?: "sm" | "md" | "lg" (default: md)
+  - step?: number (default: 1) — Amount the buttons and arrow keys move by.
+  - value?: number — Controlled value.
+
+Examples (Storybook stories): Default, Sizes, Bounded, FractionalStep, InField, Disabled
+
+Usage:
+```tsx
+<NumberInput />
 ```
 
 ### OneTimePasswordField
@@ -1670,6 +1769,41 @@ Usage:
 <AlertDialog />
 ```
 
+### BottomSheet
+Import: `import { BottomSheet } from 'raditz'`
+
+BottomSheet — a mobile-first sheet fixed to the viewport bottom (full width up to the container measure, top corners rounded, slides up). Controlled with `open` / `onOpenChange`, or uncontrolled via `defaultOpen`; render your own trigger. Closes on Escape, scrim click, the close button, or by dragging the grab handle / title bar down past a quarter of its height ({@link shouldCloseFromDrag}). Focus is trapped and body scroll locked while open. An adapter face over {@link Overlay} (`side: bottom` topology, focus trap). The drag offset travels as the `--rdz-sheet-drag` custom property (data, not inline styling) — the stylesheet turns it into the transform.
+
+Props:
+  - defaultOpen?: boolean (default: false) — Initial open state (uncontrolled) — the sheet then owns open/close itself (Escape, scrim, close button, drag-to-close).
+  - description?: ReactNode — Sub-heading / description text.
+  - footer?: ReactNode — Footer node (usually action buttons).
+  - height?: "auto" | "tall" (default: auto) — Sheet height: `auto` sizes to content (up to 90svh); `tall` is near-full, leaving the top safe-area clear.
+  - onOpenChange?: ((open: boolean) => void) — Fires to request open/close.
+  - open?: boolean — Open state (controlled).
+  - title?: ReactNode — Heading text (title bar, like Dialog's).
+
+Examples (Storybook stories): Default, Tall
+
+Usage:
+```tsx
+<BottomSheet />
+```
+
+### shouldCloseFromDrag
+Import: `import { shouldCloseFromDrag } from 'raditz'`
+
+Drag-to-close decision: a release counts as "close" when the sheet was dragged down past 25% of its own height. Pure — unit-testable without a DOM. A zero/unmeasured height never closes (a phantom close on a sheet that hasn't laid out yet would eat the user's content).
+
+Props: none
+
+Examples (Storybook stories): Default, Tall
+
+Usage:
+```tsx
+<shouldCloseFromDrag />
+```
+
 ### CommandPalette
 Import: `import { CommandPalette } from 'raditz'`
 
@@ -2103,6 +2237,38 @@ Usage:
 <ComparisonA>…</ComparisonA>
 ```
 
+### ContactA
+Import: `import { ContactA } from 'raditz'`
+
+Contact A — split contact section: intro column (header, lede, labelled details, optional aside) beside a message form. The default form is uncontrolled name/email/message (name + email required) with a submit button; pass `form` to swap in your own, or `children` to replace the whole body.
+
+Props:
+  - align?: "start" | "center" (default: start) — Header alignment. Defaults to 'start' so the heading shares the intro column's left edge beside the form.
+  - animate?: boolean | "scroll" | "load" (default: 'scroll') — Content entrance choreography, forwarded to {@link SectionShell}: `'scroll'` (default) reveals on scroll, `'load'` animates on mount (above-the-fold heroes), `false` is static.
+  - aside?: ReactNode — Extra node pinned under the details (e.g. opening hours, a map embed).
+  - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh"
+  - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - className?: string — Consumer class merged onto the section's root element.
+  - details?: ContactDetail[] — Labelled contact details (email, phone, address…) under the lede.
+  - eyebrow?: ReactNode
+  - form?: ReactNode — Replaces the default name/email/message form entirely.
+  - heading?: ReactNode
+  - id?: string — Anchor id on the section's root element (in-page nav targets).
+  - image?: string
+  - lede?: ReactNode — Intro paragraph under the header.
+  - onSubmit?: ((values: ContactValues) => void) — Receives the typed values on submit. The default is prevented and the values are read from `FormData` — the inputs stay uncontrolled.
+  - parallax?: boolean
+  - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
+  - submitLabel?: string (default: Send message) — Submit button label on the default form.
+  - video?: string
+
+Examples (Storybook stories): A_Split, WithAside, CustomForm
+
+Usage:
+```tsx
+<ContactA>…</ContactA>
+```
+
 ### CtaA
 Import: `import { CtaA } from 'raditz'`
 
@@ -2298,7 +2464,7 @@ Import: `import { FeaturesTabbed } from 'raditz'`
 FeaturesTabbed — a vertical tab rail beside a detail panel: pick an offering on the left, read its lead (price/rates), description, ticked feature list and CTA on the right. Built for "a few rich, comparable offerings" where cards bury the detail. The panel holds a steady min-height so switching tabs never makes the page jump. Uncontrolled (first tab open) — a deep section, no wiring required.
 
 Props:
-  - align?: "start" | "center" (default: center) — Header alignment.
+  - align?: "start" | "center" (default: start) — Header alignment. Defaults to 'start' so the heading shares the rail's left edge — a centered heading floats awkwardly over the asymmetric rail + panel grid.
   - animate?: boolean | "scroll" | "load" (default: 'scroll') — Content entrance choreography, forwarded to {@link SectionShell}: `'scroll'` (default) reveals on scroll, `'load'` animates on mount (above-the-fold heroes), `false` is static.
   - aside?: ReactNode — Extra node pinned under the tab rail (e.g. opening hours, terms).
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh"
@@ -2370,6 +2536,66 @@ Examples (Storybook stories): A_MultiColumn, B_MinimalBar
 Usage:
 ```tsx
 <FooterB>…</FooterB>
+```
+
+### GalleryA
+Import: `import { GalleryA } from 'raditz'`
+
+Gallery A — header + lightbox grid. Composes the media {@link GalleryGrid} component (grid + Lightbox), forwarding `columns`/`aspect` — no duplicate grid/lightbox machinery here.
+
+Props:
+  - align?: "start" | "center" (default: 'start') — Align the header block: 'center' or 'start' (left).
+  - animate?: boolean | "scroll" | "load" (default: 'scroll') — Content entrance choreography, forwarded to {@link SectionShell}: `'scroll'` (default) reveals on scroll, `'load'` animates on mount (above-the-fold heroes), `false` is static.
+  - aspect?: string (default: "1") — Cell aspect-ratio, forwarded to the media Gallery (GalleryA only).
+  - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
+  - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - className?: string — Consumer class merged onto the section's root element.
+  - columns?: number (default: 3) — Grid columns, forwarded to the media Gallery (GalleryA only).
+  - eyebrow?: ReactNode — Kicker line above the heading.
+  - heading?: ReactNode — Section heading.
+  - id?: string — Anchor id on the section's root element (in-page nav targets).
+  - image?: string
+  - images: { src: string; alt: string; caption?: ReactNode; }[] — Images to render (required). `alt` is mandatory — gallery imagery is content, not decoration. `caption` shows under each figure in GalleryB (and in the GalleryA lightbox viewer).
+  - lede?: ReactNode — Supporting line under the heading.
+  - parallax?: boolean
+  - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
+  - video?: string
+
+Examples (Storybook stories): A_LightboxGrid, B_Masonry
+
+Usage:
+```tsx
+<GalleryA>…</GalleryA>
+```
+
+### GalleryB
+Import: `import { GalleryB } from 'raditz'`
+
+Gallery B — masonry-ish photo flow: CSS columns (3 → 2 → 1 via container query) of natural-aspect figures with optional captions. Owns its own figure markup — the media Gallery's uniform interactive grid doesn't fit an editorial captioned flow.
+
+Props:
+  - align?: "start" | "center" (default: 'start') — Align the header block: 'center' or 'start' (left).
+  - animate?: boolean | "scroll" | "load" (default: 'scroll') — Content entrance choreography, forwarded to {@link SectionShell}: `'scroll'` (default) reveals on scroll, `'load'` animates on mount (above-the-fold heroes), `false` is static.
+  - aspect?: string (default: "1") — Cell aspect-ratio, forwarded to the media Gallery (GalleryA only).
+  - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
+  - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - className?: string — Consumer class merged onto the section's root element.
+  - columns?: number (default: 3) — Grid columns, forwarded to the media Gallery (GalleryA only).
+  - eyebrow?: ReactNode — Kicker line above the heading.
+  - heading?: ReactNode — Section heading.
+  - id?: string — Anchor id on the section's root element (in-page nav targets).
+  - image?: string
+  - images: { src: string; alt: string; caption?: ReactNode; }[] — Images to render (required). `alt` is mandatory — gallery imagery is content, not decoration. `caption` shows under each figure in GalleryB (and in the GalleryA lightbox viewer).
+  - lede?: ReactNode — Supporting line under the heading.
+  - parallax?: boolean
+  - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
+  - video?: string
+
+Examples (Storybook stories): A_LightboxGrid, B_Masonry
+
+Usage:
+```tsx
+<GalleryB>…</GalleryB>
 ```
 
 ### HeroA
@@ -2454,6 +2680,61 @@ Examples (Storybook stories): A_CenteredDualCTA, B_SplitCopyMedia, C_AccentFullB
 Usage:
 ```tsx
 <HeroC>…</HeroC>
+```
+
+### HowItWorksA
+Import: `import { HowItWorksA } from 'raditz'`
+
+How it works A — numbered steps in a row, markers joined by a connecting rule.
+
+Props:
+  - align?: "start" | "center" (default: center) — Align the heading block: 'center' or 'start' (left).
+  - animate?: boolean | "scroll" | "load" (default: 'scroll') — Content entrance choreography, forwarded to {@link SectionShell}: `'scroll'` (default) reveals on scroll, `'load'` animates on mount (above-the-fold heroes), `false` is static.
+  - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
+  - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - className?: string — Consumer class merged onto the section's root element.
+  - eyebrow?: ReactNode — Small label above the heading.
+  - heading?: ReactNode — Section heading.
+  - id?: string — Anchor id on the section's root element (in-page nav targets).
+  - image?: string
+  - items: HowItWorksItem[] — Ordered steps (required).
+  - parallax?: boolean
+  - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
+  - video?: string
+
+Examples (Storybook stories): A_ThreeSteps, A_FourStepsIcons, B_WithMedia
+
+Usage:
+```tsx
+<HowItWorksA>…</HowItWorksA>
+```
+
+### HowItWorksB
+Import: `import { HowItWorksB } from 'raditz'`
+
+How it works B — vertical left-ruled step list, optional media in a split (media right).
+
+Props:
+  - align?: "start" | "center" (default: 'center') — Align the heading block: 'center' or 'start' (left).
+  - animate?: boolean | "scroll" | "load" (default: 'scroll') — Content entrance choreography, forwarded to {@link SectionShell}: `'scroll'` (default) reveals on scroll, `'load'` animates on mount (above-the-fold heroes), `false` is static.
+  - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
+  - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - className?: string — Consumer class merged onto the section's root element.
+  - eyebrow?: ReactNode — Small label above the heading.
+  - heading?: ReactNode — Section heading.
+  - id?: string — Anchor id on the section's root element (in-page nav targets).
+  - image?: string
+  - items: HowItWorksItem[] — Ordered steps (required).
+  - media?: ReactNode — Media rendered beside the vertical step list (right column of the split).
+  - parallax?: boolean
+  - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
+  - video?: string
+
+Examples (Storybook stories): A_ThreeSteps, A_FourStepsIcons, B_WithMedia
+
+Usage:
+```tsx
+<HowItWorksB>…</HowItWorksB>
 ```
 
 ### ImageFocus
@@ -2842,6 +3123,33 @@ Examples (Storybook stories): A_FourAcross, A_CenteredHeading, B_AccentBand
 Usage:
 ```tsx
 <StatsB>…</StatsB>
+```
+
+### StorySplitA
+Import: `import { StorySplitA } from 'raditz'`
+
+StorySplit A — alternating editorial rows: each pairs a media pane (an image that covers, or a custom `media` node) with an eyebrow + title + body + CTA copy column. DOM order stays media → copy (reading order) on every row; even rows flip the media to the right purely presentationally via a `data-flip` attribute the stylesheet turns into grid `order` — and the flip resets when the rows stack on narrow containers, so media always sits above its copy.
+
+Props:
+  - align?: "start" | "center" — Align the heading block: 'center' or 'start' (left). Omit for the default look.
+  - animate?: boolean | "scroll" | "load" (default: 'scroll') — Content entrance choreography, forwarded to {@link SectionShell}: `'scroll'` (default) reveals on scroll, `'load'` animates on mount (above-the-fold heroes), `false` is static.
+  - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh"
+  - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
+  - className?: string — Consumer class merged onto the section's root element.
+  - eyebrow?: ReactNode — Small label above the section heading.
+  - heading?: ReactNode — Section heading.
+  - id?: string — Anchor id on the section's root element (in-page nav targets).
+  - image?: string
+  - items: StorySplitItem[] — Editorial rows to render (required).
+  - parallax?: boolean
+  - scrim?: boolean — Darken an `image`/`video`/gradient backdrop so overlaid text stays legible (and content switches to on-dark tokens). Essential when using `image` as a full-bleed section background behind copy.
+  - video?: string
+
+Examples (Storybook stories): A_Alternating, B_SingleRow, C_MediaNode
+
+Usage:
+```tsx
+<StorySplitA>…</StorySplitA>
 ```
 
 ### TeamA

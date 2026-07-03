@@ -29,6 +29,9 @@ export interface ChartFrameProps extends Omit<HTMLAttributes<HTMLDivElement>, 'c
   children: (dims: ChartDims) => ReactNode;
   /** Optional HTML layer over the chart (tooltips), positioned in the outer box. */
   overlay?: (dims: ChartDims) => ReactNode;
+  /** Zero-data notice. When set, it replaces the plot but the frame keeps its
+   *  height (so a chart that empties doesn't collapse the layout around it). */
+  empty?: ReactNode;
 }
 
 const DEFAULT_MARGIN: ChartMargin = { top: 12, right: 16, bottom: 28, left: 38 };
@@ -41,7 +44,7 @@ const DEFAULT_MARGIN: ChartMargin = { top: 12, right: 16, bottom: 28, left: 38 }
  * with a default `aria-label` the consumer's rest props override — same pattern as
  * BarChart/Donut).
  */
-export function ChartFrame({ height = 240, margin, className, style, defs, children, overlay, ...rest }: ChartFrameProps) {
+export function ChartFrame({ height = 240, margin, className, style, defs, children, overlay, empty, ...rest }: ChartFrameProps) {
   const m: ChartMargin = { ...DEFAULT_MARGIN, ...margin };
   return (
     <div
@@ -51,6 +54,9 @@ export function ChartFrame({ height = 240, margin, className, style, defs, child
       aria-label="Chart"
       {...rest}
     >
+      {empty ? (
+        empty
+      ) : (
       <ParentSize>
         {({ width, height: h }) => {
           if (width < 10 || h < 10) return null;
@@ -74,6 +80,7 @@ export function ChartFrame({ height = 240, margin, className, style, defs, child
           );
         }}
       </ParentSize>
+      )}
     </div>
   );
 }

@@ -1,10 +1,11 @@
 'use client';
 import { useState } from 'react';
-import type { HTMLAttributes } from 'react';
+import type { HTMLAttributes, ReactNode } from 'react';
 import { scaleLinear } from '@visx/scale';
 import { Circle } from '@visx/shape';
 import { GridRows, GridColumns } from '@visx/grid';
 import { ChartFrame } from '../charts/ChartFrame';
+import { ChartEmpty } from '../charts/ChartEmpty';
 import { paddedDomain, ChartTip, ChartAxis } from '../../internal';
 
 export interface ScatterPoint {
@@ -20,6 +21,8 @@ export interface ScatterChartProps extends Omit<HTMLAttributes<HTMLDivElement>, 
   height?: number;
   formatX?: (x: number) => string;
   formatY?: (y: number) => string;
+  /** Zero-data notice text. @default "No data" */
+  emptyMessage?: ReactNode;
 }
 
 
@@ -32,11 +35,12 @@ export function ScatterChart({
   height = 260,
   formatX = (v) => String(v),
   formatY = (v) => String(v),
+  emptyMessage,
   ...rest
 }: ScatterChartProps) {
   const [active, setActive] = useState<number | null>(null);
   // Default accessible name; a consumer `aria-label` in `rest` overrides it.
-  if (data.length === 0) return <ChartFrame height={height} aria-label="Scatter chart" {...rest}>{() => null}</ChartFrame>;
+  if (data.length === 0) return <ChartFrame height={height} aria-label="Scatter chart" empty={<ChartEmpty>{emptyMessage}</ChartEmpty>} {...rest}>{() => null}</ChartFrame>;
   const xDomain = paddedDomain(data.map((d) => d.x), 0.08);
   const yDomain = paddedDomain(data.map((d) => d.y), 0.08);
   const rMax = Math.max(1, ...data.map((d) => d.size ?? 1));

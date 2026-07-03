@@ -120,12 +120,14 @@ const FLOOR_PROPS: Record<string, Record<string, unknown>> = {
   LineChart: { data: [{ y: 1 }, { y: 2 }] },
   ScatterChart: { data: [{ x: 1, y: 2 }] },
   Sparkline: { data: [1, 2, 3] }, // returns null under 2 points
+  Legend: { items: [{ label: 'A' }] }, // maps items eagerly
   // display / typography / motion / navigation — required content props
   CountUp: { value: 42 },
   Icon: { name: 'search' },
   CheckList: { items: ['one'] },
   TextReveal: { text: 'Hello' },
   Tree: { items: [{ id: 'a', label: 'A' }] },
+  Timeline: { items: [{ title: 'A' }] }, // maps items eagerly
   // overlays render nothing when closed — mount them open
   AlertDialog: { defaultOpen: true, title: 'T', description: 'D' },
   Dialog: { defaultOpen: true, title: 'T' },
@@ -137,6 +139,7 @@ const FLOOR_PROPS: Record<string, Record<string, unknown>> = {
   Menubar: { defaultOpen: true, menus: [{ label: 'File', items: [{ label: 'New' }] }] },
   CommandPalette: { defaultOpen: true, items: [{ label: 'Item' }] },
   Lightbox: { defaultOpen: true, images: [{ src: 'a.png', alt: 'a' }] },
+  BottomSheet: { defaultOpen: true, title: 'T' },
   // sections that eagerly read their required content array BEFORE the
   // `children` body-override short-circuits — an empty array satisfies the
   // eager access (finding: the children escape hatch doesn't shield a missing
@@ -146,6 +149,7 @@ const FLOOR_PROPS: Record<string, Record<string, unknown>> = {
   FeaturesTabbed: { items: [] },
   PricingB: { tiers: [] },
   TestimonialsB: { quotes: [] },
+  HowItWorksB: { items: [] },
   // section helpers (lib) — return null without their content prop
   SectionHeader: { heading: 'Heading' },
   TestimonialFigure: { person: { name: 'Ada' } },

@@ -1,0 +1,16 @@
+/* Contact — section styles (co-located with the component). */
+/* ── Contact A — intro column beside the message form ── */
+.sx-contact { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: var(--space-8); align-items: start; }
+.sx-contact__intro { gap: var(--space-5); }
+.sx-contact__lede { margin: 0; max-width: 46ch; }
+.sx-contact__details { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-4); }
+.sx-contact__detail { gap: var(--space-1); }
+.sx-contact__detail-value { color: var(--text); text-decoration: none; }
+a.sx-contact__detail-value { text-decoration: underline; text-decoration-color: var(--rule); text-underline-offset: 0.2em; transition: text-decoration-color var(--duration-fast) var(--ease-standard); }
+a.sx-contact__detail-value:hover { text-decoration-color: var(--accent); }
+.sx-contact__aside { color: var(--text-muted); font-size: var(--fs-body-s); max-width: 40ch; }
+.sx-contact__form { gap: var(--space-4); align-items: stretch; }
+.sx-contact__submit { align-self: flex-start; margin-top: var(--space-1); }
+@container (max-width: 700px) {
+  .sx-contact { grid-template-columns: 1fr; gap: var(--space-7); }
+}

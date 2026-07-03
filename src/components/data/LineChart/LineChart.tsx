@@ -7,6 +7,7 @@ import { GridRows } from '@visx/grid';
 import { Group } from '@visx/group';
 import { curveMonotoneX } from '@visx/curve';
 import { ChartFrame } from '../charts/ChartFrame';
+import { ChartEmpty } from '../charts/ChartEmpty';
 import { paddedDomain, ChartTip, ChartAxis } from '../../internal';
 
 export interface LinePoint {
@@ -39,6 +40,8 @@ export interface LineChartProps extends Omit<HTMLAttributes<HTMLDivElement>, 'ch
   formatY?: (y: number) => string;
   /** Custom hover tooltip content; omit for a simple value tooltip. */
   renderTooltip?: (point: LinePoint, index: number) => ReactNode;
+  /** Zero-data notice text. @default "No data" */
+  emptyMessage?: ReactNode;
 }
 
 /**
@@ -56,13 +59,14 @@ export function LineChart({
   references = [],
   formatY = (y) => String(y),
   renderTooltip,
+  emptyMessage,
   ...rest
 }: LineChartProps) {
   const [active, setActive] = useState<number | null>(null);
   const uid = useId().replace(/:/g, ''); // unique gradient ids per instance
   const n = data.length;
   // Default accessible name; a consumer `aria-label` in `rest` overrides it.
-  if (n === 0) return <ChartFrame height={height} aria-label="Line chart" {...rest}>{() => null}</ChartFrame>;
+  if (n === 0) return <ChartFrame height={height} aria-label="Line chart" empty={<ChartEmpty>{emptyMessage}</ChartEmpty>} {...rest}>{() => null}</ChartFrame>;
   const ys = data.map((d) => d.y);
   const yDomain = paddedDomain(ys, 0.12);
 

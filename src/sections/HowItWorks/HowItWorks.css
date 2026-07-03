@@ -1,0 +1,94 @@
+/* HowItWorks — section styles (co-located with the component). */
+/* ── HowItWorks ── */
+.sx-hiw__head { gap: var(--space-2); max-width: 48ch; }
+
+/* Shared marker disc: the 1-based step number (mono, on the accent surface) or
+   a supplied icon. Sized via a custom property so the connecting rules can
+   anchor to the disc's center without repeating the magic number. */
+.sx-hiw__steps, .sx-hiw__vsteps { --sx-hiw-marker: 2.75rem; }
+.sx-hiw__marker {
+  flex: none;
+  width: var(--sx-hiw-marker);
+  height: var(--sx-hiw-marker);
+  border-radius: var(--radius-full);
+  display: grid;
+  place-items: center;
+  background: var(--accent-surface);
+  color: var(--accent-ink);
+  font-family: var(--font-mono);
+  font-size: var(--fs-body);
+  position: relative;
+  z-index: 1; /* sits above the connecting rule */
+}
+.sx-hiw__title { font-weight: var(--fw-semibold); }
+
+/* A — steps in a row. auto-fit lets the row reflow without breakpoints. */
+.sx-hiw__steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: var(--space-6);
+}
+.sx-hiw__step { display: flex; flex-direction: column; gap: var(--space-2); min-width: 0; position: relative; }
+/* Connecting rule between markers: from just past this step's disc, across the
+   column gap, to the next step's disc. None after the last step. */
+.sx-hiw__step::after {
+  content: '';
+  position: absolute;
+  top: calc(var(--sx-hiw-marker) / 2);
+  left: calc(var(--sx-hiw-marker) + var(--space-3));
+  right: calc(-1 * var(--space-6) + var(--space-3));
+  height: 1px;
+  background: var(--rule-soft);
+}
+.sx-hiw__step:last-child::after { display: none; }
+
+/* B — vertical left-ruled list: marker column + content column. */
+.sx-hiw__vsteps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+.sx-hiw__vstep {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: var(--space-4);
+  align-items: start;
+  position: relative;
+}
+.sx-hiw__vbody { gap: var(--space-1); padding-block: var(--space-1); }
+/* Vertical rule between markers: from below this step's disc, across the row
+   gap, to the next step's disc. None after the last step. */
+.sx-hiw__vstep::after {
+  content: '';
+  position: absolute;
+  left: calc(var(--sx-hiw-marker) / 2 - 0.5px);
+  top: calc(var(--sx-hiw-marker) + var(--space-2));
+  bottom: calc(-1 * var(--space-6) + var(--space-2));
+  width: 1px;
+  background: var(--rule-soft);
+}
+.sx-hiw__vstep:last-child::after { display: none; }
+
+/* B split: step list left, media right; stacks when the section is tight. */
+.sx-hiw__split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--space-7);
+  align-items: center;
+}
+.sx-hiw__media { min-width: 0; }
+.sx-hiw__media img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--radius-lg); }
+
+/* Tight container: A stacks to a single column (connecting rule off — it only
+   reads left-to-right); B's split stacks (media drops below the list). */
+@container (max-width: 680px) {
+  .sx-hiw__steps { grid-template-columns: 1fr; }
+  .sx-hiw__step::after { display: none; }
+  .sx-hiw__split { grid-template-columns: 1fr; }
+}

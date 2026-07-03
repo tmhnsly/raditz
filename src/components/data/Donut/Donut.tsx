@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { cx, toPercent, donutDashes } from '../../internal';
+import { ChartEmpty } from '../charts/ChartEmpty';
 
 export interface DonutSegment {
   value: number;
@@ -23,6 +24,9 @@ export interface DonutProps extends React.HTMLAttributes<HTMLDivElement> {
   color?: string;
   /** Centre label. */
   label?: React.ReactNode;
+  /** Zero-data notice text (shown when neither `value` nor `segments` are
+   *  supplied — an explicit `value={0}` still draws an empty ring). @default "No data" */
+  emptyMessage?: React.ReactNode;
 }
 
 interface DonutPart {
@@ -48,6 +52,7 @@ export function Donut({
   trackColor = 'var(--surface-strong)',
   color = 'var(--accent)',
   label,
+  emptyMessage,
   className,
   style,
   ...rest
@@ -55,6 +60,8 @@ export function Donut({
   const R = 50;
   const r = R - thickness / 2;
   const C = 2 * Math.PI * r;
+  // Genuinely no data — distinct from `value={0}`, which is a real empty ring.
+  const isEmpty = segments ? segments.length === 0 : value == null;
   let parts: DonutPart[];
   if (segments && segments.length) {
     parts = donutDashes(segments.map((s) => s.value), C).map((d, i) => ({
@@ -68,7 +75,7 @@ export function Donut({
     <div className={cx('rdz-donut', className)} style={{ '--rdz-donut-size': size, ...style } as React.CSSProperties} role="img" aria-label="Donut chart" {...rest}>
       <svg viewBox="0 0 100 100">
         <circle cx="50" cy="50" r={r} fill="none" stroke={trackColor} strokeWidth={thickness} />
-        {parts.map((p) => (
+        {isEmpty ? null : parts.map((p) => (
           <circle
             key={p.key}
             cx="50"
@@ -84,7 +91,7 @@ export function Donut({
           />
         ))}
       </svg>
-      {label != null ? <div className="rdz-donut__label">{label}</div> : null}
+      {isEmpty ? <ChartEmpty>{emptyMessage}</ChartEmpty> : label != null ? <div className="rdz-donut__label">{label}</div> : null}
     </div>
   );
 }
