@@ -694,17 +694,17 @@ title or an unknown category blocks a release) and the test suite
 (`scripts/validate-taxonomy.test.mjs`); it prints the per-category counts (don't hand-count).
 
 The **13 categories** (each crisp + non-overlapping; counts from the validator):
-- **actions** (4) — controls that act on activation: Button, IconButton, Toggle, ToggleGroup.
-- **inputs** (20) — value entry bound to form state: Input/Textarea/Select/Combobox, Checkbox, Radio(+Group), Slider, Switch, the pickers, Rating, Search, TagInput, Field, Form…
-- **display** (4) — small non-interactive inline visuals: Badge, Pill, Icon, AccessibleIcon.
+- **actions** (5) — controls that act on activation: Button, IconButton, CopyButton, Toggle, ToggleGroup.
+- **inputs** (23) — value entry bound to form state: Input/Textarea/Select/Combobox, Checkbox, Radio(+Group), Slider, Switch, NumberInput, the pickers (Calendar, DatePicker, DateRangePicker, Time/DateTime), Rating, Search, TagInput, Field, Form…
+- **display** (7) — small non-interactive inline visuals: Badge, Pill, Chip, Timeline, CountUp, Icon, AccessibleIcon.
 - **feedback** (5) — status / progress / transient notices: Spinner, Skeleton, Progress, Toast, Banner.
-- **typography** (8) — text + screen-reader primitives: Heading, Text, Code, Kbd, Eyebrow, CheckList, Label, VisuallyHidden.
+- **typography** (9) — text + screen-reader primitives: Heading, Text, Prose, Code, Kbd, Eyebrow, CheckList, Label, VisuallyHidden.
 - **layout** (11) — space-arranging primitives: Container, Grid, Stack, Section, SectionBackground, FullBleed, Popout, AspectRatio, ScrollArea, Separator, AppShell.
 - **surfaces** (7) — content-bearing planes: Card, Callout, Vignette, Avatar, AvatarGroup, CardArrow, EmptyState.
-- **overlay** (11) — floating/fixed layers (the Overlay adapter faces, incl. menus): Dialog, Drawer, AlertDialog, Popover, HoverCard, CommandPalette, Tooltip, ContextMenu, DropdownMenu, Menubar, Lightbox.
+- **overlay** (12) — floating/fixed layers (the Overlay adapter faces, incl. menus): Dialog, Drawer, BottomSheet, AlertDialog, Popover, HoverCard, CommandPalette, Tooltip, ContextMenu, DropdownMenu, Menubar, Lightbox.
 - **navigation** (9) — wayfinding: NavBar, NavigationMenu, Breadcrumb, Pagination, Tabs, Stepper, Tree, Toolbar, PageHeader.
 - **disclosure** (2) — show/hide in place: Accordion, Collapsible.
-- **data** (6) — viz + tables: DataTable, BarChart, LineChart, ScatterChart, Donut, Sparkline.
+- **data** (7) — viz + tables: DataTable, BarChart, LineChart, ScatterChart, Donut, Sparkline, Legend (shared empty-state via ChartEmpty).
 - **media** (3) — image/gallery content: Carousel, Gallery, Marquee.
 - **motion** (3) — entrance/animation primitives: Reveal, TextReveal, AnimatedIcon.
 
