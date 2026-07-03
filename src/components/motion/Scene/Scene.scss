@@ -1,0 +1,152 @@
+// Uses Raditz tokens (var(--…)). Generic animated illustrations that fill a card
+// thumbnail. Marks are sized in CONTAINER units (cqmin) so a scene scales to any
+// canvas. Every loop rides --motion-scale (so data-motion + reduced-motion tune
+// it). Base (un-animated) styles are a sensible resting frame, so reduced motion
+// shows a static-but-complete picture. Component-local keyframes.
+/* ═══════════════════════ Motion · Scene ═══════════════════════ */
+
+.rdz-scene {
+  position: relative; display: block; width: 100%; min-width: 0; max-width: 100%;
+  aspect-ratio: var(--rdz-scene-ratio, 16 / 9);
+  overflow: hidden; border-radius: inherit; isolation: isolate;
+  container-type: size;
+  --rdz-scene-color: var(--accent-ink);
+}
+/* Fill a positioned parent (custom thumbnail box / Vignette) instead of self-sizing. */
+.rdz-scene--fill { position: absolute; inset: 0; width: auto; height: auto; aspect-ratio: auto; }
+
+.rdz-scene__stage { position: absolute; inset: 0; color: var(--rdz-scene-color); }
+/* Centred marks: inset:0 + margin:auto centres a fixed-size box, leaving `transform`
+   free for the animation (no centring-translate to fight). */
+.rdz-scene__core, .rdz-scene__ring, .rdz-scene__halo, .rdz-scene__particle { position: absolute; inset: 0; margin: auto; }
+
+.rdz-scene.is-paused .rdz-scene__stage * { animation-play-state: paused !important; }
+
+/* ── Background washes (token-driven; tone overrides the ink) ── */
+.rdz-scene[data-bg='none']      { background: none; }
+.rdz-scene[data-bg='soft']      { background: var(--surface); }
+.rdz-scene[data-bg='gradient']  { background: linear-gradient(150deg, var(--accent-surface), color-mix(in srgb, var(--accent-2-surface) 55%, var(--surface))); }
+.rdz-scene[data-bg='accent']    { background: linear-gradient(150deg, var(--accent), var(--accent-hover)); --rdz-scene-color: var(--on-accent); }
+.rdz-scene[data-bg='secondary'] { background: linear-gradient(150deg, var(--accent-2-surface), var(--surface)); --rdz-scene-color: var(--accent-2-ink); }
+
+$scale: var(--motion-scale, 1);
+
+/* ═══ pulse — a core with expanding rings + twinkling sparks ═══ */
+.rdz-scene__core { width: 15cqmin; height: 15cqmin; border-radius: 50%; background: currentColor; }
+.rdz-scene[data-preset='pulse'] .rdz-scene__core { animation: rdzScThrob calc(2.4s * #{$scale}) var(--ease-in-out) infinite; }
+.rdz-scene[data-preset='pulse'] .rdz-scene__ring { width: 15cqmin; height: 15cqmin; border-radius: 50%; border: 0.6cqmin solid currentColor; opacity: 0; animation: rdzScRing calc(2.4s * #{$scale}) var(--ease-decel) infinite; }
+.rdz-scene[data-preset='pulse'] .rdz-scene__ring:nth-child(2) { animation-delay: calc(2.4s * #{$scale} * -0.66); }
+.rdz-scene[data-preset='pulse'] .rdz-scene__ring:nth-child(3) { animation-delay: calc(2.4s * #{$scale} * -0.33); }
+.rdz-scene__spark { position: absolute; width: 4cqmin; height: 4cqmin; border-radius: 50%; background: currentColor; opacity: 0; }
+.rdz-scene[data-preset='pulse'] .rdz-scene__spark { animation: rdzScTwinkle calc(2.4s * #{$scale}) var(--ease-in-out) infinite; }
+.rdz-scene__spark:nth-child(1) { top: 22%; left: 24%; animation-delay: calc(2.4s * #{$scale} * 0); }
+.rdz-scene__spark:nth-child(2) { top: 18%; left: 72%; animation-delay: calc(2.4s * #{$scale} * 0.2); }
+.rdz-scene__spark:nth-child(3) { top: 68%; left: 30%; animation-delay: calc(2.4s * #{$scale} * 0.4); }
+.rdz-scene__spark:nth-child(4) { top: 72%; left: 76%; animation-delay: calc(2.4s * #{$scale} * 0.6); }
+.rdz-scene__spark:nth-child(5) { top: 44%; left: 88%; animation-delay: calc(2.4s * #{$scale} * 0.8); }
+
+/* ═══ rings — concentric radar halos ═══ */
+.rdz-scene__halo { width: 12cqmin; height: 12cqmin; border-radius: 50%; border: 0.6cqmin solid currentColor; opacity: 0; animation: rdzScRing calc(3s * #{$scale}) var(--ease-decel) infinite; }
+.rdz-scene[data-preset='rings'] .rdz-scene__halo:nth-child(2) { animation-delay: calc(3s * #{$scale} * -0.75); }
+.rdz-scene[data-preset='rings'] .rdz-scene__halo:nth-child(3) { animation-delay: calc(3s * #{$scale} * -0.5); }
+.rdz-scene[data-preset='rings'] .rdz-scene__halo:nth-child(4) { animation-delay: calc(3s * #{$scale} * -0.25); }
+
+/* ═══ orbit — a core with dots circling on rings ═══ */
+.rdz-scene[data-preset='orbit'] .rdz-scene__core { width: 13cqmin; height: 13cqmin; border-radius: 50%; background: currentColor; }
+.rdz-scene__orbit { position: absolute; inset: 0; margin: auto; border-radius: 50%; border: 0.4cqmin solid color-mix(in srgb, currentColor 30%, transparent); animation: rdzScSpin calc(7s * #{$scale}) linear infinite; }
+.rdz-scene__orbit:nth-child(2) { width: 34cqmin; height: 34cqmin; }
+.rdz-scene__orbit:nth-child(3) { width: 54cqmin; height: 54cqmin; animation-duration: calc(10s * #{$scale}); animation-direction: reverse; }
+.rdz-scene__orbit:nth-child(4) { width: 74cqmin; height: 74cqmin; animation-duration: calc(14s * #{$scale}); }
+.rdz-scene__orbit-dot { position: absolute; top: -2.6cqmin; left: 50%; width: 5.2cqmin; height: 5.2cqmin; margin-left: -2.6cqmin; border-radius: 50%; background: currentColor; }
+
+/* ═══ bars — an equaliser ═══ */
+.rdz-scene__bars { position: absolute; inset: 0; margin: auto; width: 60cqmin; height: 46cqmin; display: flex; align-items: flex-end; justify-content: space-between; gap: 2cqmin; }
+.rdz-scene__bar { flex: 1; height: 40%; border-radius: 1.4cqmin; background: currentColor; transform-origin: bottom; animation: rdzScBar calc(1.6s * #{$scale}) var(--ease-in-out) infinite; }
+.rdz-scene__bar:nth-child(1) { animation-delay: calc(1.6s * #{$scale} * -0.1); }
+.rdz-scene__bar:nth-child(2) { animation-delay: calc(1.6s * #{$scale} * -0.5); }
+.rdz-scene__bar:nth-child(3) { animation-delay: calc(1.6s * #{$scale} * -0.9); }
+.rdz-scene__bar:nth-child(4) { animation-delay: calc(1.6s * #{$scale} * -0.3); }
+.rdz-scene__bar:nth-child(5) { animation-delay: calc(1.6s * #{$scale} * -0.7); }
+.rdz-scene__bar:nth-child(6) { animation-delay: calc(1.6s * #{$scale} * -0.2); }
+.rdz-scene__bar:nth-child(7) { animation-delay: calc(1.6s * #{$scale} * -0.6); }
+
+/* ═══ waves — two out-of-phase sine lines drifting ═══ */
+.rdz-scene__wave { position: absolute; inset: 0; width: 100%; height: 100%; }
+.rdz-scene__wave path { stroke: currentColor; stroke-width: 2; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+.rdz-scene__wave-a { animation: rdzScDrift calc(4s * #{$scale}) linear infinite; }
+.rdz-scene__wave-b { opacity: 0.45; animation: rdzScDrift calc(4s * #{$scale}) linear infinite reverse; }
+
+/* ═══ grid — cells lighting up in a diagonal sweep ═══ */
+.rdz-scene__grid { position: absolute; inset: 0; margin: auto; width: 52cqmin; height: 52cqmin; display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(4, 1fr); gap: 3cqmin; }
+.rdz-scene__cell { border-radius: 1.6cqmin; background: currentColor; opacity: 0.18; animation: rdzScCell calc(3s * #{$scale}) var(--ease-in-out) infinite; }
+/* diagonal stagger: delay grows with row+col (nth-child order across the 4×4) */
+.rdz-scene__cell:nth-child(1)  { animation-delay: calc(3s * #{$scale} * -0.00); }
+.rdz-scene__cell:nth-child(2)  { animation-delay: calc(3s * #{$scale} * -0.08); }
+.rdz-scene__cell:nth-child(3)  { animation-delay: calc(3s * #{$scale} * -0.16); }
+.rdz-scene__cell:nth-child(4)  { animation-delay: calc(3s * #{$scale} * -0.24); }
+.rdz-scene__cell:nth-child(5)  { animation-delay: calc(3s * #{$scale} * -0.08); }
+.rdz-scene__cell:nth-child(6)  { animation-delay: calc(3s * #{$scale} * -0.16); }
+.rdz-scene__cell:nth-child(7)  { animation-delay: calc(3s * #{$scale} * -0.24); }
+.rdz-scene__cell:nth-child(8)  { animation-delay: calc(3s * #{$scale} * -0.32); }
+.rdz-scene__cell:nth-child(9)  { animation-delay: calc(3s * #{$scale} * -0.16); }
+.rdz-scene__cell:nth-child(10) { animation-delay: calc(3s * #{$scale} * -0.24); }
+.rdz-scene__cell:nth-child(11) { animation-delay: calc(3s * #{$scale} * -0.32); }
+.rdz-scene__cell:nth-child(12) { animation-delay: calc(3s * #{$scale} * -0.40); }
+.rdz-scene__cell:nth-child(13) { animation-delay: calc(3s * #{$scale} * -0.24); }
+.rdz-scene__cell:nth-child(14) { animation-delay: calc(3s * #{$scale} * -0.32); }
+.rdz-scene__cell:nth-child(15) { animation-delay: calc(3s * #{$scale} * -0.40); }
+.rdz-scene__cell:nth-child(16) { animation-delay: calc(3s * #{$scale} * -0.48); }
+
+/* ═══ constellation — nodes + drawn links, twinkling ═══ */
+.rdz-scene__net { position: absolute; inset: 0; width: 100%; height: 100%; }
+.rdz-scene__net-lines path { stroke: currentColor; stroke-width: 1; opacity: 0.4; stroke-dasharray: 120; stroke-dashoffset: 120; vector-effect: non-scaling-stroke; animation: rdzScDraw calc(4s * #{$scale}) var(--ease-in-out) infinite; }
+.rdz-scene__node { fill: currentColor; transform-box: fill-box; transform-origin: center; animation: rdzScTwinkle calc(3s * #{$scale}) var(--ease-in-out) infinite; animation-delay: calc(3s * #{$scale} * (var(--i) * -0.18)); }
+
+/* ═══ route — a path drawing with a dot travelling it ═══ */
+.rdz-scene__route { position: absolute; inset: 0; width: 100%; height: 100%; }
+.rdz-scene__path { stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-dasharray: 120; stroke-dashoffset: 120; vector-effect: non-scaling-stroke; animation: rdzScDraw calc(3.6s * #{$scale}) var(--ease-in-out) infinite; }
+.rdz-scene__waypoint { fill: currentColor; opacity: 0.7; }
+.rdz-scene__mover { fill: currentColor; offset-path: path('M12 46 C 30 46 30 16 50 16 S 70 46 88 34'); animation: rdzScTravel calc(3.6s * #{$scale}) var(--ease-in-out) infinite; }
+
+/* ═══ burst — particles flying out from a core ═══ */
+.rdz-scene[data-preset='burst'] .rdz-scene__core { width: 11cqmin; height: 11cqmin; border-radius: 50%; background: currentColor; animation: rdzScThrob calc(2.2s * #{$scale}) var(--ease-in-out) infinite; }
+.rdz-scene__particle { width: 4cqmin; height: 4cqmin; border-radius: 50%; background: currentColor; opacity: 0; animation: rdzScBurst calc(2.2s * #{$scale}) var(--ease-decel) infinite; }
+.rdz-scene__particle:nth-child(1) { --a: 0deg; }
+.rdz-scene__particle:nth-child(2) { --a: 40deg; }
+.rdz-scene__particle:nth-child(3) { --a: 80deg; }
+.rdz-scene__particle:nth-child(4) { --a: 120deg; }
+.rdz-scene__particle:nth-child(5) { --a: 160deg; }
+.rdz-scene__particle:nth-child(6) { --a: 200deg; }
+.rdz-scene__particle:nth-child(7) { --a: 240deg; }
+.rdz-scene__particle:nth-child(8) { --a: 280deg; }
+.rdz-scene__particle:nth-child(9) { --a: 320deg; }
+
+/* ═══ stack — sheets assembling into a pile ═══ */
+.rdz-scene__sheet { position: absolute; inset: 0; margin: auto; width: 46cqmin; height: 30cqmin; border-radius: 3cqmin; background: color-mix(in srgb, currentColor 22%, transparent); border: 0.6cqmin solid currentColor; animation: rdzScStack calc(3.2s * #{$scale}) var(--ease-standard) infinite; }
+.rdz-scene__sheet:nth-child(1) { animation-delay: calc(3.2s * #{$scale} * -0.0); }
+.rdz-scene__sheet:nth-child(2) { animation-delay: calc(3.2s * #{$scale} * -0.14); }
+.rdz-scene__sheet:nth-child(3) { animation-delay: calc(3.2s * #{$scale} * -0.28); }
+
+/* ── Keyframes ── */
+@keyframes rdzScThrob   { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.14); } }
+@keyframes rdzScRing    { 0% { transform: scale(1); opacity: 0.65; } 80%, 100% { transform: scale(3.4); opacity: 0; } }
+@keyframes rdzScTwinkle { 0%, 60%, 100% { opacity: 0; transform: scale(0.5); } 30% { opacity: 1; transform: scale(1); } }
+@keyframes rdzScSpin    { to { transform: rotate(360deg); } }
+@keyframes rdzScBar     { 0%, 100% { height: 24%; } 50% { height: 92%; } }
+@keyframes rdzScDrift   { to { transform: translateX(25%); } }
+@keyframes rdzScCell    { 0%, 70%, 100% { opacity: 0.18; transform: scale(0.9); } 35% { opacity: 1; transform: scale(1); } }
+@keyframes rdzScDraw    { 0% { stroke-dashoffset: 120; } 55%, 100% { stroke-dashoffset: 0; } }
+@keyframes rdzScTravel  { 0% { offset-distance: 0%; opacity: 0; } 12%, 88% { opacity: 1; } 100% { offset-distance: 100%; opacity: 0; } }
+@keyframes rdzScBurst   { 0%, 20% { opacity: 0; transform: rotate(var(--a)) translateY(0) scale(0.4); } 45% { opacity: 1; } 100% { opacity: 0; transform: rotate(var(--a)) translateY(-30cqmin) scale(1); } }
+@keyframes rdzScStack   { 0%, 100% { transform: translate(-14cqmin, 8cqmin) rotate(-6deg); opacity: 0; } 20%, 80% { transform: translate(0, 0) rotate(0); opacity: 1; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .rdz-scene__stage * { animation: none !important; }
+  /* Hold a legible resting frame: transient marks that live at opacity 0 stay
+     hidden; the persistent structure (core / bars / grid / paths) shows. */
+  .rdz-scene__path, .rdz-scene__net-lines path { stroke-dashoffset: 0; }
+  .rdz-scene__bar { height: 60%; }
+  .rdz-scene__cell { opacity: 0.5; }
+  .rdz-scene__sheet { opacity: 1; transform: none; }
+  .rdz-scene__node { opacity: 1; }
+}

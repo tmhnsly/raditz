@@ -706,7 +706,7 @@ The **13 categories** (each crisp + non-overlapping; counts from the validator):
 - **disclosure** (2) — show/hide in place: Accordion, Collapsible.
 - **data** (7) — viz + tables: DataTable, BarChart, LineChart, ScatterChart, Donut, Sparkline, Legend (shared empty-state via ChartEmpty).
 - **media** (3) — image/gallery content: Carousel, Gallery, Marquee.
-- **motion** (3) — entrance/animation primitives: Reveal, TextReveal, AnimatedIcon.
+- **motion** (4) — entrance/animation primitives: Reveal, TextReveal, Animate (modular preset lib for any element), Scene (full-canvas animated card-thumbnail illustrations). (AnimatedIcon removed — superseded by Animate/Scene; Scene is the generic counterpart to the bespoke-scene [[surfaces]] Vignette.)
 
 A component may sit under a different SHOWROOM top bucket via `TITLE_EXCEPTIONS` in the
 validator (only `layout/AppShell → Pages/App shell` today). The pre-reorg categories

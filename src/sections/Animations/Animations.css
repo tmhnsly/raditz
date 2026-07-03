@@ -2,5 +2,9 @@
 /* ── Animations (showcase section) ── */
 .sx-anim__card { align-items: center; text-align: center; }
 .sx-anim__icon { font-size: 2rem; color: var(--accent-ink); }
+/* Scene cards: the thumbnail is flush to the card edges (clipped to its radius),
+   the meta sits below with the usual card padding. */
+.sx-anim__scene-card { padding: 0; overflow: hidden; }
+.sx-anim__scene-meta { padding: var(--space-4); }
 .sx-anim__title-row { gap: var(--space-1); align-items: center; text-align: center; }
 .sx-anim__head-row { justify-content: space-between; align-items: flex-end; gap: var(--space-4); }

@@ -1,0 +1,106 @@
+// Uses Raditz tokens (var(--…)). Every preset's timing rides --motion-scale (so
+// the `none` preset + reduced-motion collapse it) AND a per-instance speed. The
+// preset picks a keyframe + base duration/ease via custom properties; ONE applied
+// rule (below) reads them, gated by the trigger. Component-local keyframes.
+/* ═══════════════════════ Motion · Animate ═══════════════════════ */
+
+// The applied animation — shared by every "on" trigger state so timing lives in
+// one place. animation-name is a custom property (unset for overlay-only presets
+// like shimmer → element animates nothing, its ::after does the work).
+@mixin rdz-animate-on {
+  animation-name: var(--rdz-animate-name);
+  animation-duration: calc(var(--rdz-animate-dur, 2s) * var(--rdz-animate-speed, 1) * var(--motion-scale, 1));
+  animation-timing-function: var(--rdz-animate-ease, var(--ease-in-out));
+  animation-delay: var(--rdz-animate-delay, 0s);
+  animation-iteration-count: var(--rdz-animate-count, 1);
+  animation-fill-mode: both;
+}
+
+.rdz-animate {
+  display: inline-block;
+  --rdz-animate-speed: 1;
+  /* GPU-composite the looping transform (rasterize once, then just move). */
+  will-change: transform;
+}
+
+/* Speed buckets — the multiplier lives here, not in the component. */
+.rdz-animate[data-speed='slow'] { --rdz-animate-speed: 1.8; }
+.rdz-animate[data-speed='base'] { --rdz-animate-speed: 1; }
+.rdz-animate[data-speed='fast'] { --rdz-animate-speed: 0.55; }
+
+/* ── Per-preset config: keyframe name + base duration + easing (+ default
+      iteration count for loops). One-shots leave the count at the mixin's `1`. ── */
+.rdz-animate[data-preset='float']     { --rdz-animate-name: rdzaFloat;     --rdz-animate-dur: 3s;    --rdz-animate-ease: var(--ease-in-out); --rdz-animate-count: infinite; }
+.rdz-animate[data-preset='float-x']   { --rdz-animate-name: rdzaFloatX;    --rdz-animate-dur: 3.4s;  --rdz-animate-ease: var(--ease-in-out); --rdz-animate-count: infinite; }
+.rdz-animate[data-preset='pulse']     { --rdz-animate-name: rdzaPulse;     --rdz-animate-dur: 2s;    --rdz-animate-ease: var(--ease-in-out); --rdz-animate-count: infinite; }
+.rdz-animate[data-preset='breathe']   { --rdz-animate-name: rdzaBreathe;   --rdz-animate-dur: 3.2s;  --rdz-animate-ease: var(--ease-in-out); --rdz-animate-count: infinite; }
+.rdz-animate[data-preset='spin']      { --rdz-animate-name: rdzaSpin;      --rdz-animate-dur: 2.4s;  --rdz-animate-ease: linear;            --rdz-animate-count: infinite; }
+.rdz-animate[data-preset='orbit']     { --rdz-animate-name: rdzaSpin;      --rdz-animate-dur: 6s;    --rdz-animate-ease: linear;            --rdz-animate-count: infinite; }
+.rdz-animate[data-preset='wiggle']    { --rdz-animate-name: rdzaWiggle;    --rdz-animate-dur: 1.6s;  --rdz-animate-ease: var(--ease-in-out); --rdz-animate-count: infinite; }
+.rdz-animate[data-preset='sway']      { --rdz-animate-name: rdzaSway;      --rdz-animate-dur: 4s;    --rdz-animate-ease: var(--ease-in-out); --rdz-animate-count: infinite; }
+.rdz-animate[data-preset='bob']       { --rdz-animate-name: rdzaBob;       --rdz-animate-dur: 2.2s;  --rdz-animate-ease: var(--ease-in-out); --rdz-animate-count: infinite; }
+.rdz-animate[data-preset='heartbeat'] { --rdz-animate-name: rdzaHeartbeat; --rdz-animate-dur: 1.4s;  --rdz-animate-ease: var(--ease-in-out); --rdz-animate-count: infinite; }
+.rdz-animate[data-preset='glow']      { --rdz-animate-name: rdzaGlow;      --rdz-animate-dur: 2s;    --rdz-animate-ease: var(--ease-in-out); --rdz-animate-count: infinite; --rdz-animate-color: var(--accent); }
+.rdz-animate[data-preset='blink']     { --rdz-animate-name: rdzaBlink;     --rdz-animate-dur: 1.4s;  --rdz-animate-ease: var(--ease-in-out); --rdz-animate-count: infinite; }
+.rdz-animate[data-preset='pop']       { --rdz-animate-name: rdzaPop;       --rdz-animate-dur: 0.45s; --rdz-animate-ease: var(--ease-spring); }
+.rdz-animate[data-preset='tada']      { --rdz-animate-name: rdzaTada;      --rdz-animate-dur: 0.9s;  --rdz-animate-ease: var(--ease-in-out); }
+.rdz-animate[data-preset='jelly']     { --rdz-animate-name: rdzaJelly;     --rdz-animate-dur: 0.9s;  --rdz-animate-ease: var(--ease-in-out); }
+.rdz-animate[data-preset='shake']     { --rdz-animate-name: rdzaShake;     --rdz-animate-dur: 0.5s;  --rdz-animate-ease: var(--ease-in-out); }
+.rdz-animate[data-preset='bounce']    { --rdz-animate-name: rdzaBounce;    --rdz-animate-dur: 0.9s;  --rdz-animate-ease: cubic-bezier(0.28, 0.84, 0.42, 1); }
+.rdz-animate[data-preset='rubber']    { --rdz-animate-name: rdzaRubber;    --rdz-animate-dur: 0.9s;  --rdz-animate-ease: var(--ease-in-out); }
+
+/* The loop trigger forces an infinite count for ANY preset (a one-shot becomes a
+   repeating attention loop). Placed after the presets so it wins the cascade. */
+.rdz-animate[data-trigger='loop'] { --rdz-animate-count: infinite; }
+
+/* ── Apply on the active trigger state ── */
+.rdz-animate[data-trigger='loop'],
+.rdz-animate[data-trigger='mount'],
+.rdz-animate[data-trigger='inview'].is-in { @include rdz-animate-on; }
+@media (hover: hover) {
+  .rdz-animate[data-trigger='hover']:hover { @include rdz-animate-on; }
+}
+
+.rdz-animate.is-paused, .rdz-animate.is-paused::after { animation-play-state: paused; }
+
+/* shimmer: an overlay light-sweep (the element itself doesn't transform). */
+.rdz-animate[data-preset='shimmer'] { position: relative; overflow: hidden; }
+.rdz-animate[data-preset='shimmer']::after {
+  content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background: linear-gradient(110deg, transparent 35%, var(--rdz-animate-sheen, var(--glass-sheen)) 50%, transparent 65%);
+  transform: translateX(-130%);
+}
+.rdz-animate[data-preset='shimmer'][data-trigger='loop']::after,
+.rdz-animate[data-preset='shimmer'][data-trigger='mount']::after,
+.rdz-animate[data-preset='shimmer'][data-trigger='inview'].is-in::after {
+  animation: rdzaShimmer calc(var(--rdz-animate-dur) * var(--rdz-animate-speed) * var(--motion-scale, 1)) linear var(--rdz-animate-delay, 0s) var(--rdz-animate-count, infinite) both;
+}
+@media (hover: hover) {
+  .rdz-animate[data-preset='shimmer'][data-trigger='hover']:hover::after {
+    animation: rdzaShimmer calc(var(--rdz-animate-dur) * var(--rdz-animate-speed) * var(--motion-scale, 1)) linear var(--rdz-animate-delay, 0s) 1 both;
+  }
+}
+
+/* ── Keyframes ── */
+@keyframes rdzaFloat     { 0%, 100% { transform: translate3d(0, -8%, 0); } 50% { transform: translate3d(0, 8%, 0); } }
+@keyframes rdzaFloatX    { 0%, 100% { transform: translate3d(-6%, 0, 0); } 50% { transform: translate3d(6%, 0, 0); } }
+@keyframes rdzaPulse     { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.12); opacity: 0.85; } }
+@keyframes rdzaBreathe   { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+@keyframes rdzaSpin      { to { transform: rotate(360deg); } }
+@keyframes rdzaWiggle    { 0%, 100% { transform: rotate(-7deg); } 50% { transform: rotate(7deg); } }
+@keyframes rdzaSway      { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
+@keyframes rdzaBob       { 0%, 100% { transform: translate3d(0, 0, 0) rotate(-2deg); } 50% { transform: translate3d(0, -15%, 0) rotate(2deg); } }
+@keyframes rdzaHeartbeat { 0% { transform: scale(1); } 14% { transform: scale(1.24); } 28% { transform: scale(1); } 42% { transform: scale(1.16); } 70%, 100% { transform: scale(1); } }
+@keyframes rdzaGlow      { 0%, 100% { filter: drop-shadow(0 0 2px color-mix(in srgb, var(--rdz-animate-color, var(--accent)) 40%, transparent)); } 50% { filter: drop-shadow(0 0 10px var(--rdz-animate-color, var(--accent))); } }
+@keyframes rdzaBlink     { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
+@keyframes rdzaShimmer   { to { transform: translateX(130%); } }
+@keyframes rdzaPop       { 0% { transform: scale(0.4); opacity: 0; } 60% { transform: scale(1.08); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
+@keyframes rdzaTada      { 0% { transform: scale(1) rotate(0); } 10%, 20% { transform: scale(0.9) rotate(-3deg); } 30%, 50%, 70%, 90% { transform: scale(1.1) rotate(3deg); } 40%, 60%, 80% { transform: scale(1.1) rotate(-3deg); } 100% { transform: scale(1) rotate(0); } }
+@keyframes rdzaJelly     { 0%, 100% { transform: skew(0, 0); } 11% { transform: skew(-12deg, -12deg); } 22% { transform: skew(6deg, 6deg); } 33% { transform: skew(-3deg, -3deg); } 44% { transform: skew(1.5deg, 1.5deg); } 55% { transform: skew(-0.8deg, -0.8deg); } }
+@keyframes rdzaShake     { 0%, 100% { transform: translate3d(0, 0, 0); } 10%, 30%, 50%, 70%, 90% { transform: translate3d(-8%, 0, 0); } 20%, 40%, 60%, 80% { transform: translate3d(8%, 0, 0); } }
+@keyframes rdzaBounce    { 0%, 20%, 53%, 80%, 100% { transform: translate3d(0, 0, 0); } 40%, 43% { transform: translate3d(0, -28%, 0); } 70% { transform: translate3d(0, -14%, 0); } 90% { transform: translate3d(0, -4%, 0); } }
+@keyframes rdzaRubber    { 0% { transform: scale(1, 1); } 30% { transform: scale(1.25, 0.75); } 40% { transform: scale(0.75, 1.25); } 50% { transform: scale(1.15, 0.85); } 65% { transform: scale(0.95, 1.05); } 75% { transform: scale(1.05, 0.95); } 100% { transform: scale(1, 1); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .rdz-animate, .rdz-animate::after { animation: none !important; }
+}

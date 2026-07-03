@@ -127,7 +127,7 @@
 @media (prefers-reduced-motion: reduce) {
   /* Collapse the motion TOKENS themselves (the same knobs `data-motion="none"`
      zeroes), so every token-driven duration/travel across the system — including
-     new animated components like Reveal / AnimatedIcon / title animations — goes
+     new animated components like Reveal / Animate / IconFX / title animations — goes
      instant for free. The explicit per-selector resets below stay as a belt-and-
      braces for animations not wired to these tokens. */
   :root {

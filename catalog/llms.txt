@@ -34,7 +34,7 @@ and the hero background reaches the very top (no nav "band"). On an `image`+`scr
 text goes on-dark (white) automatically; use the `glass` or default (accent) button — and
 `secondary` now stays legible over media too, so no CTA goes invisible on a photo.
 
-169 exported components across 15 categories.
+170 exported components across 15 categories.
 
 ## utilities (CSS classes)
 
@@ -1549,22 +1549,25 @@ Usage:
 
 ## motion
 
-### AnimatedIcon
-Import: `import { AnimatedIcon } from 'raditz'`
+### Animate
+Import: `import { Animate } from 'raditz'`
 
-AnimatedIcon — wraps any icon in a tasteful idle animation: `float`, `orbit`, `pulse`, `spin`, `wiggle`, or a one-shot `draw` (stroked icons only, e.g. the Raditz `<Icon/>`). Built to pair with `react-icons` — it's icon-agnostic, only styling its child, so it ships dependency-free and tree-shakeable. Timing rides the shared motion tokens (re-tunes with `data-motion`) and it honours `prefers-reduced-motion` by rendering the icon static.
+Animate — a modular animation wrapper: drop it around any element (an icon, a card, a badge, a heading) and pick a `preset` to add motion without writing keyframes. Loop presets (`float`, `pulse`, `spin`, `wiggle`, `glow`, `shimmer`, …) idle forever; one-shots (`pop`, `tada`, `shake`, `bounce`, …) fire on the `trigger` (`hover` / `inview` / `mount`). Timing rides the shared motion tokens (re-tunes with `data-motion`), `speed`/`delay`/`repeat` fine-tune per instance, and it renders static under `prefers-reduced-motion`. Pairs with `react-icons` (icon-agnostic) but works on anything.
 
 Props:
-  - anim: "float" | "orbit" | "pulse" | "spin" | "wiggle" | "draw" — Which looping (or one-shot, for `draw`) animation to play.
-  - children: ReactNode — The icon: a react-icons glyph (`<GiMoonOrbit/>`), a Raditz `<Icon/>`, or raw SVG.
-  - paused?: boolean (default: false) — Freeze the animation (e.g. resume on hover via your own class).
-  - speed?: "slow" | "base" | "fast" (default: base) — Speed bucket — multiplies the base duration.
+  - as?: ElementType<any, keyof IntrinsicElements> (default: span) — Element/tag to render.
+  - delay?: number (default: 0) — Start delay (ms).
+  - paused?: boolean (default: false) — Freeze the animation in place.
+  - preset: enum — Which animation to play.
+  - repeat?: number | "infinite" — Iteration count override (loops default to infinite; one-shots to 1).
+  - speed?: "base" | "slow" | "fast" (default: base) — Duration bucket — multiplies the preset's base duration.
+  - trigger?: "loop" | "hover" | "inview" | "mount" (default: loop) — What starts it: run forever (`loop`), on hover, once when scrolled into view, or once on mount.
 
-Examples (Storybook stories): Gallery
+Examples (Storybook stories): Loops, OnHover, CardShimmer, Tuned
 
 Usage:
 ```tsx
-<AnimatedIcon>…</AnimatedIcon>
+<Animate />
 ```
 
 ### Reveal
@@ -1601,6 +1604,26 @@ Examples (Storybook stories): StaggeredGroup, EachAnim
 Usage:
 ```tsx
 <RevealGroup />
+```
+
+### Scene
+Import: `import { Scene } from 'raditz'`
+
+Scene — a modular, animated illustration that fills a card's thumbnail area, so you can make a card read at a glance without authoring bespoke SVG. Pick a `preset` (`pulse`, `orbit`, `bars`, `grid`, `constellation`, `route`, `burst`, `stack`, …); it composes a small looping scene from layered marks, scaled to the canvas (container units), tinted by `bg` / `tone`, and paused under `prefers-reduced-motion`. Self-sizing (`ratio`) by default, or `fill` a positioned parent — including a {@link Vignette } for scroll/hover replay. The scene is decorative (`aria-hidden`); give the card a real text label.
+
+Props:
+  - bg?: "none" | "soft" | "gradient" | "accent" | "secondary" (default: gradient) — Backdrop treatment.
+  - fill?: boolean (default: false) — Fill a positioned parent (`inset: 0`) instead of self-sizing — e.g. inside a custom thumbnail box or a `Vignette`.
+  - paused?: boolean (default: false) — Freeze the animation.
+  - preset: "pulse" | "orbit" | "bars" | "grid" | "constellation" | "route" | "burst" | "stack" | "waves" | "rings" — Which scene to play.
+  - ratio?: string (default: 16 / 9) — Aspect ratio of the self-sizing canvas (ignored when `fill`).
+  - tone?: string — Ink tint for the scene marks — any CSS colour / `var(--…)`. Defaults to the ink paired with `bg`.
+
+Examples (Storybook stories): FeatureCards, Backgrounds, Tinted, Square
+
+Usage:
+```tsx
+<Scene />
 ```
 
 ### TextReveal
@@ -2106,14 +2129,14 @@ Usage:
 ### AnimationsC
 Import: `import { AnimationsC } from 'raditz'`
 
-Animations C — looping icon animations (AnimatedIcon + react-icons).
+Animations C — the motion library: `Scene` thumbnail illustrations (full-canvas card art) + modular `Animate` element loops.
 
 Props:
   - animate?: boolean | "scroll" | "load" (default: 'scroll') — Content entrance choreography, forwarded to {@link SectionShell}: `'scroll'` (default) reveals on scroll, `'load'` animates on mount (above-the-fold heroes), `false` is static.
   - background?: "none" | "surface" | "surface-2" | "gradient-accent" | "gradient-aurora" | "gradient-dusk" | "gradient-mesh" (default: none)
   - children?: ReactNode — Replaces the auto-rendered body inside the themed shell when provided.
   - className?: string — Consumer class merged onto the section's root element.
-  - heading?: ReactNode (default: Animated icons) — Section heading.
+  - heading?: ReactNode (default: Motion library) — Section heading.
   - id?: string — Anchor id on the section's root element (in-page nav targets).
   - image?: string
   - parallax?: boolean

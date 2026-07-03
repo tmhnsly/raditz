@@ -3,7 +3,8 @@ import type { ReactNode } from 'react';
 import { GiMoonOrbit } from 'react-icons/gi';
 import { SectionShell, SectionHeader, type SectionBaseProps } from '../../lib/SectionShell';
 import { Reveal, RevealGroup, type RevealAnim } from '../../components/motion/Reveal';
-import { AnimatedIcon, type IconAnim } from '../../components/motion/AnimatedIcon';
+import { Animate, type AnimatePreset } from '../../components/motion/Animate';
+import { Scene, type ScenePreset } from '../../components/motion/Scene';
 import { TextReveal } from '../../components/motion/TextReveal';
 import { Card, type CardTone } from '../../components/surfaces/Card';
 import { CardArrow } from '../../components/surfaces/CardArrow';
@@ -21,13 +22,21 @@ const REVEAL_ANIMS: RevealAnim[] = [
   'slide-left', 'slide-right', 'flip', 'flip-y', 'rotate', 'skew',
 ];
 const TITLE_MODES = ['fade', 'fade-up', 'blur-in', 'scale'] as const;
-const ICON_CARDS: { anim: IconAnim; label: string; glyph: ReactNode }[] = [
-  { anim: 'orbit', label: 'orbit', glyph: <GiMoonOrbit /> },
-  { anim: 'float', label: 'float', glyph: <Icon name="star" /> },
-  { anim: 'pulse', label: 'pulse', glyph: <Icon name="heart" /> },
-  { anim: 'spin', label: 'spin', glyph: <Icon name="settings" /> },
-  { anim: 'wiggle', label: 'wiggle', glyph: <Icon name="bell" /> },
-  { anim: 'draw', label: 'draw', glyph: <Icon name="check" /> },
+const ICON_CARDS: { preset: AnimatePreset; label: string; glyph: ReactNode }[] = [
+  { preset: 'orbit', label: 'orbit', glyph: <GiMoonOrbit /> },
+  { preset: 'float', label: 'float', glyph: <Icon name="star" /> },
+  { preset: 'pulse', label: 'pulse', glyph: <Icon name="heart" /> },
+  { preset: 'spin', label: 'spin', glyph: <Icon name="settings" /> },
+  { preset: 'wiggle', label: 'wiggle', glyph: <Icon name="bell" /> },
+  { preset: 'bob', label: 'bob', glyph: <Icon name="check" /> },
+];
+const SCENE_CARDS: { preset: ScenePreset; title: string; desc: string }[] = [
+  { preset: 'pulse', title: 'Realtime', desc: 'Live the moment it happens.' },
+  { preset: 'orbit', title: 'Integrations', desc: 'Every tool, connected.' },
+  { preset: 'bars', title: 'Analytics', desc: 'Trends at a glance.' },
+  { preset: 'constellation', title: 'Network', desc: 'See how it links up.' },
+  { preset: 'route', title: 'Automation', desc: 'Flows that run themselves.' },
+  { preset: 'burst', title: 'Achievements', desc: 'Celebrate milestones.' },
 ];
 const CARD_TONES: CardTone[] = ['accent', 'secondary', 'aurora', 'dusk', 'glass', 'mono'];
 
@@ -79,17 +88,31 @@ export function AnimationsB({ heading = 'Title & text animations', background = 
   );
 }
 
-/** Animations C — looping icon animations (AnimatedIcon + react-icons). */
-export function AnimationsC({ heading = 'Animated icons', background = 'none', children, ...props }: AnimationsProps) {
+/** Animations C — the motion library: `Scene` thumbnail illustrations (full-canvas
+ *  card art) + modular `Animate` element loops. */
+export function AnimationsC({ heading = 'Motion library', background = 'none', children, ...props }: AnimationsProps) {
   return (
     <SectionShell wrap="col sx-gap-6" background={background} {...props} animate={false}>
       {children ?? (
         <>
           <SectionHeader eyebrow="Animations" heading={heading} className="col sx-feat__head" />
+          {/* Scene — animated card-thumbnail illustrations (no bespoke SVG). */}
+          <div className="sx-g3 sx-gap-4">
+            {SCENE_CARDS.map((c, i) => (
+              <div key={i} className="rdz-card sx-anim__scene-card">
+                <Scene preset={c.preset} />
+                <div className="col sx-gap-1 sx-anim__scene-meta">
+                  <strong>{c.title}</strong>
+                  <span className="muted sx-body-s">{c.desc}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+          {/* Animate — element-level loops on any node. */}
           <div className="sx-g3 sx-gap-5">
             {ICON_CARDS.map((c, i) => (
               <div key={i} className="rdz-card col sx-gap-3 sx-anim__card">
-                <AnimatedIcon anim={c.anim} className="sx-anim__icon">{c.glyph}</AnimatedIcon>
+                <Animate preset={c.preset} className="sx-anim__icon">{c.glyph}</Animate>
                 <strong>{c.label}</strong>
               </div>
             ))}

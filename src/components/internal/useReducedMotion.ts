@@ -9,7 +9,7 @@ const QUERY = '(prefers-reduced-motion: reduce)';
  *
  * Animated components use this to render their FINAL state immediately rather
  * than animating to it — it's for JS-gated entrances (e.g. {@link useInView} +
- * Reveal, AnimatedIcon loops) that must skip the hidden initial state, not just
+ * Reveal, Animate/IconFX loops) that must skip the hidden initial state, not just
  * shorten its duration. The CSS counterpart is the token-zeroing in `_shared.scss`
  * (which collapses every motion-token-driven duration); use both together.
  */
