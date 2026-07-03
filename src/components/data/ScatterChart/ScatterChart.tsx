@@ -57,7 +57,7 @@ export function ScatterChart({
         const y = yFor(innerHeight);
         const d = data[active];
         return (
-          <ChartTip x={margin.left + (x(d.x) ?? 0)} y={margin.top + (y(d.y) ?? 0)}>
+          <ChartTip x={margin.left + (x(d.x) ?? 0)} y={margin.top + (y(d.y) ?? 0)} width={margin.left + innerWidth + margin.right}>
             {d.label ? <div className="rdz-chart__tip-title">{d.label}</div> : null}
             <div className="rdz-chart__tip-meta"><span className="rdz-chart__tip-value">{formatX(d.x)}, {formatY(d.y)}</span></div>
           </ChartTip>

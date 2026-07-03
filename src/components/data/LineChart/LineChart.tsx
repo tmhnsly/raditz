@@ -97,7 +97,7 @@ export function LineChart({
             <div className="rdz-chart__tip-value">{formatY(data[active].y)}</div>
           </>
         );
-        return <ChartTip x={px} y={py}>{node}</ChartTip>;
+        return <ChartTip x={px} y={py} width={margin.left + innerWidth + margin.right}>{node}</ChartTip>;
       }}
     >
       {({ innerWidth, innerHeight }) => {

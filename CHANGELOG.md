@@ -4,6 +4,8 @@ All notable changes to Raditz are recorded here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/); versions are git tags `vX.Y.Z`.
 
 ## [Unreleased]
+- Chart tooltips hug the chart's left/right edge (`data-align` from anchor x vs
+  chart width) instead of hanging half-clipped outside a card's radius clip.
 - Overlay panels adopt the title-bar anatomy: Dialog is now title-bar / scrolling
   body / footer (close disc lives in the bar; title-less dialogs float it), the
   shared close/nav disc is an outlined circle (no backdrop blur, 2.5rem, 2.75rem

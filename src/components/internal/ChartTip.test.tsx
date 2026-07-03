@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render } from '@testing-library/react';
-import { ChartTip, chartTipSide } from './ChartTip';
+import { ChartTip, chartTipSide, chartTipAlign } from './ChartTip';
 import { TOOLTIP_FLIP_PCT } from './scale';
 import { ChartAxis } from './ChartAxis';
 import type { LinearTickScale } from './ChartAxis';
@@ -16,7 +16,25 @@ describe('chartTipSide', () => {
   });
 });
 
+describe('chartTipAlign', () => {
+  it('hugs the near edge so the tip grows inward instead of hanging outside', () => {
+    expect(chartTipAlign(10, 800)).toBe('start');
+    expect(chartTipAlign(790, 800)).toBe('end');
+    expect(chartTipAlign(400, 800)).toBe('center');
+  });
+  it('stays centered on a chart too small to hug', () => {
+    expect(chartTipAlign(10, 200)).toBe('center');
+  });
+});
+
 describe('ChartTip', () => {
+  it('reflects edge-hugging in data-align when width is known (center otherwise)', () => {
+    const { container: end } = render(<ChartTip x={790} y={200} width={800}>a</ChartTip>);
+    expect(tipOf(end).getAttribute('data-align')).toBe('end');
+    const { container: bare } = render(<ChartTip x={790} y={200}>a</ChartTip>);
+    expect(tipOf(bare).getAttribute('data-align')).toBe('center');
+  });
+
   it('positions via the --rdz-tip-x/--rdz-tip-y custom properties', () => {
     const { container } = render(<ChartTip x={123} y={200}>hi</ChartTip>);
     const tip = tipOf(container);
