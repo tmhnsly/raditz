@@ -1,0 +1,17 @@
+/* Docs page — co-located chrome. Article + a sticky on-page TOC; the TOC drops
+   below a narrow content column via a container query. Tokens throughout. */
+.docs { display: grid; grid-template-columns: minmax(0, 1fr) 12rem; gap: var(--space-8); container-type: inline-size; }
+
+.docs__body { min-width: 0; }
+.docs__crumb { font-size: var(--fs-body-s); color: var(--text-soft); }
+
+.docs__toc { position: sticky; top: var(--space-5); align-self: start; display: flex; flex-direction: column; gap: var(--space-2); }
+.docs__toc-title { font-family: var(--font-mono); font-size: var(--fs-mono-xs); text-transform: uppercase; letter-spacing: var(--ls-eyebrow); color: var(--text-faint); }
+.docs__toc nav { display: flex; flex-direction: column; gap: var(--space-1); border-inline-start: 1px solid var(--rule); }
+.docs__toc-link { padding: var(--space-1) var(--space-3); margin-inline-start: -1px; border-inline-start: 2px solid transparent; color: var(--text-soft); text-decoration: none; font-size: var(--fs-body-s); transition: var(--transition-control); }
+.docs__toc-link:hover { color: var(--text); border-inline-start-color: var(--rule-strong); }
+
+@container (max-width: 46rem) {
+  .docs { grid-template-columns: 1fr; }
+  .docs__toc { display: none; }
+}

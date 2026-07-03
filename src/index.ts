@@ -102,6 +102,7 @@ export * from './components/typography/Eyebrow';
 export * from './components/typography/Heading';
 export * from './components/typography/Kbd';
 export * from './components/typography/Label';
+export * from './components/typography/Prose';
 export * from './components/typography/Text';
 export * from './components/typography/VisuallyHidden';
 

@@ -15,11 +15,12 @@ pnpm storybook    # the library (Foundations / Components / Sections / Pages)
 A personal UI library, organized in Storybook into:
 
 - **Foundations** — colors, typography, spacing, radius, elevation, motion (token docs)
-- **Components** — 102 real React components across 13 categories
+- **Components** — 103 real React components across 13 categories
   (actions, data, disclosure, display, feedback, inputs, layout, media, motion,
   navigation, overlay, surfaces, typography), each with a story + autodocs
 - **Sections** — 26 composable page sections, each with variants
-- **Pages** — full example pages (Landing, Pricing, Showcase) composed from sections
+- **Pages** — full example pages (Landing, Pricing, Showcase, Dashboard, Article,
+  Docs, Auth, Contact) composed from sections + components
 
 ## Folder-per-thing structure
 

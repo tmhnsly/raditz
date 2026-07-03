@@ -34,7 +34,7 @@ and the hero background reaches the very top (no nav "band"). On an `image`+`scr
 text goes on-dark (white) automatically; use the `glass` or default (accent) button — and
 `secondary` now stays legible over media too, so no CTA goes invisible on a photo.
 
-168 exported components across 15 categories.
+169 exported components across 15 categories.
 
 ## utilities (CSS classes)
 
@@ -3524,6 +3524,23 @@ Examples (Storybook stories): Default
 Usage:
 ```tsx
 <Label />
+```
+
+### Prose
+Import: `import { Prose } from 'raditz'`
+
+Prose — a long-form typography scope for rendered rich text (Markdown/MDX/CMS HTML) that you don't control element-by-element. Wrap the content and its descendant headings, paragraphs, lists, links, quotes, code, tables, images and rules pick up token-driven rhythm and spacing — no per-element classes. `measure` clamps the column to a readable length; `size` bumps the body scale.
+
+Props:
+  - as?: ElementType<any, keyof IntrinsicElements> (default: div) — Element to render.
+  - measure?: boolean (default: true) — Clamp to a readable line length.
+  - size?: "base" | "lg" (default: base) — Body type scale.
+
+Examples (Storybook stories): Article, Large
+
+Usage:
+```tsx
+<Prose />
 ```
 
 ### Text

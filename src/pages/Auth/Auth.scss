@@ -1,0 +1,29 @@
+/* Auth page — co-located chrome. Centres a single card in the viewport. Tokens. */
+.auth { min-height: 100dvh; display: grid; place-items: center; padding: var(--space-6); background: var(--bg-subtle); }
+
+.auth__card {
+  width: 100%; max-width: 25rem; display: flex; flex-direction: column;
+  padding: var(--space-7); background: var(--panel);
+  border: 1px solid var(--surface-edge); border-radius: var(--radius-panel); box-shadow: var(--shadow-4);
+}
+
+.auth__mark { width: 2.5rem; height: 2.5rem; display: inline-grid; place-items: center; border-radius: var(--radius-md); background: var(--accent); color: var(--on-accent); margin-bottom: var(--space-4); }
+.auth__mark svg { width: 1.35rem; height: 1.35rem; }
+
+.auth__title { font-size: var(--fs-h3); font-weight: var(--fw-bold); letter-spacing: var(--ls-h3); color: var(--text); }
+.auth__sub { margin-top: var(--space-1); color: var(--text-soft); font-size: var(--fs-body-s); }
+
+.auth__form { display: flex; flex-direction: column; gap: var(--space-4); margin-top: var(--space-6); }
+.auth__row { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); font-size: var(--fs-body-s); }
+.auth__submit { width: 100%; margin-top: var(--space-1); }
+
+.auth__link { color: var(--accent-ink); text-decoration: none; background: none; border: 0; padding: 0; font: inherit; cursor: pointer; }
+.auth__link:hover { text-decoration: underline; }
+
+/* Labelled divider — flanking rules that meet the "or" chip. */
+.auth__or { display: flex; align-items: center; gap: var(--space-3); margin-block: var(--space-5); color: var(--text-faint); font-size: var(--fs-body-s); }
+.auth__or::before, .auth__or::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+
+.auth__social { width: 100%; }
+
+.auth__switch { margin-top: var(--space-6); text-align: center; font-size: var(--fs-body-s); color: var(--text-soft); }

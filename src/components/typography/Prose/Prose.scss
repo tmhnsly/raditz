@@ -1,0 +1,98 @@
+// Co-located styles for Prose — a long-form typography scope. Everything is a
+// descendant rule so rendered rich text (Markdown/CMS HTML) inherits rhythm
+// without per-element classes. Uses Raditz tokens (var(--…)).
+/* ═══════════════════════ Prose ═══════════════════════ */
+.rdz-prose {
+  color: var(--text-soft);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  /* vertical rhythm between blocks, tuned per block below */
+  --rdz-prose-flow: var(--space-5);
+}
+
+.rdz-prose.is-measured { max-width: var(--measure-prose); }
+
+.rdz-prose[data-size='lg'] { font-size: var(--fs-body-l); }
+
+/* Flow spacing — every block gets top margin from its predecessor (lobotomised
+   owl), so the first block sits flush and spacing never doubles. */
+.rdz-prose > * + * { margin-top: var(--rdz-prose-flow); }
+
+/* Headings — display family, tighter leading, extra air above (never below). */
+.rdz-prose :is(h1, h2, h3, h4) {
+  color: var(--text);
+  font-family: var(--font-display);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-heading);
+  letter-spacing: var(--ls-h3);
+}
+.rdz-prose h1 { font-size: var(--fs-h1); }
+.rdz-prose h2 { font-size: var(--fs-h2); }
+.rdz-prose h3 { font-size: var(--fs-h3); }
+.rdz-prose h4 { font-size: var(--fs-h4); font-weight: var(--fw-semibold); }
+.rdz-prose :is(h2, h3, h4) + * { margin-top: var(--space-3); }
+.rdz-prose > :is(h2, h3, h4) { margin-top: var(--space-7); }
+/* Anchored headings keep clear of a sticky bar when deep-linked. */
+.rdz-prose :is(h1, h2, h3, h4)[id] { scroll-margin-top: var(--space-8); }
+
+.rdz-prose :is(strong, b) { color: var(--text); font-weight: var(--fw-semibold); }
+
+.rdz-prose a {
+  color: var(--accent-ink);
+  text-decoration: underline;
+  text-decoration-color: var(--accent-border);
+  text-underline-offset: 0.15em;
+  transition: var(--transition-control);
+}
+.rdz-prose a:hover { text-decoration-color: var(--accent); }
+
+/* Lists — hanging markers, comfortable item spacing. */
+.rdz-prose :is(ul, ol) { padding-inline-start: var(--space-6); }
+.rdz-prose li + li { margin-top: var(--space-2); }
+.rdz-prose li::marker { color: var(--text-faint); }
+.rdz-prose ul { list-style: disc; }
+.rdz-prose ol { list-style: decimal; }
+.rdz-prose li > :is(ul, ol) { margin-top: var(--space-2); }
+
+/* Blockquote — an accent rule + hushed italic. */
+.rdz-prose blockquote {
+  margin-inline: 0;
+  padding-inline-start: var(--space-4);
+  border-inline-start: 3px solid var(--accent-border);
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* Inline + block code. */
+.rdz-prose :not(pre) > code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  padding: var(--pad-inline-code);
+  background: var(--surface);
+  border-radius: var(--radius-xs);
+  color: var(--text);
+}
+.rdz-prose pre {
+  padding: var(--pad-code-block);
+  background: var(--panel-strong, var(--surface));
+  border: 1px solid var(--surface-edge);
+  border-radius: var(--radius-md);
+  overflow-x: auto;
+  font-size: var(--fs-body-s);
+  line-height: var(--lh-body);
+}
+.rdz-prose pre code { font-family: var(--font-mono); color: var(--text); }
+
+.rdz-prose hr { border: 0; border-top: 1px solid var(--rule); margin-block: var(--space-7); }
+
+.rdz-prose img { max-width: 100%; height: auto; border-radius: var(--radius-md); }
+
+.rdz-prose figure figcaption { margin-top: var(--space-2); font-size: var(--fs-body-s); color: var(--text-faint); text-align: center; }
+
+/* Tables — quiet rules, mono-ish header. */
+.rdz-prose table { width: 100%; border-collapse: collapse; font-size: var(--fs-body-s); }
+.rdz-prose :is(th, td) { padding: var(--space-2) var(--space-3); text-align: left; border-bottom: 1px solid var(--rule-soft); }
+.rdz-prose th { color: var(--text); font-weight: var(--fw-semibold); }
+
+/* A lead paragraph, when the author marks one. */
+.rdz-prose .lead { font-size: var(--fs-body-l); color: var(--text); }

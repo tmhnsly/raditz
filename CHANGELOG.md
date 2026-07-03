@@ -4,6 +4,15 @@ All notable changes to Raditz are recorded here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/); versions are git tags `vX.Y.Z`.
 
 ## [Unreleased]
+- **Prose** (typography) — a long-form scope so rendered Markdown/CMS HTML
+  inherits token-driven rhythm (headings, lists, links, quotes, code, tables,
+  rules) with no per-element classes. Surface 102 → 103.
+- **Example pages** (5): `Dashboard` (AppShell + KPI cards + LineChart/Donut/
+  BarChart + Legend + DataTable — the data components shown in a real
+  composition), `Article` and `Docs` (Prose-driven, Docs with a sticky TOC),
+  `Auth` (sign-in/up card from the form primitives), and `Contact` (the Contact
+  section framed by nav + footer). A `pages.smoke.test.tsx` renders every page so
+  a broken composition fails CI, not just the explorer.
 - **Calendar / DateRangePicker** (2 more components): the `.rdz-calendar` month
   surface is extracted as a public `Calendar` (single or range mode, ISO dates);
   DatePicker now composes it (DOM/API unchanged — its suite passes unmodified),
