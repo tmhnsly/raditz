@@ -39,7 +39,8 @@ const KPIS: Kpi[] = [
   { label: 'Churn', value: '1.1%', delta: '−0.2%', up: true, spark: [3, 3, 2, 3, 2, 2, 2, 1] },
 ];
 
-const SERIES = [42, 48, 45, 52, 60, 58, 66, 71, 68, 74, 80, 86];
+const THIS_YEAR = [42, 48, 45, 52, 60, 58, 66, 71, 68, 74, 80, 86];
+const LAST_YEAR = [30, 36, 34, 40, 44, 47, 52, 55, 58, 61, 64, 68];
 const CHANNELS = [
   { label: 'Direct', value: 42, color: 'var(--accent)' },
   { label: 'Referral', value: 28, color: 'var(--warning)' },
@@ -130,9 +131,19 @@ export function Dashboard() {
             <Card className="dash__panel dash__panel--wide">
               <div className="dash__panel-head">
                 <h2 className="dash__panel-title">Revenue trend</h2>
-                <Legend size="sm" items={[{ label: 'This period', color: 'var(--accent)', shape: 'line' }]} />
+                <Legend size="sm" items={[
+                  { label: 'This year', color: 'var(--accent)', shape: 'line' },
+                  { label: 'Last year', color: 'var(--warning)', shape: 'line' },
+                ]} />
               </div>
-              <LineChart data={SERIES.map((y, i) => ({ y, label: `D${i + 1}` }))} area gradient height={260} formatY={(v) => `$${v}k`} />
+              <LineChart
+                height={260}
+                formatY={(v) => `$${v}k`}
+                series={[
+                  { name: 'This year', color: 'var(--accent)', data: THIS_YEAR.map((y, i) => ({ y, label: `Month ${i + 1}` })) },
+                  { name: 'Last year', color: 'var(--warning)', data: LAST_YEAR.map((y, i) => ({ y, label: `Month ${i + 1}` })) },
+                ]}
+              />
             </Card>
 
             <Card className="dash__panel">

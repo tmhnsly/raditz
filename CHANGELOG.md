@@ -4,6 +4,11 @@ All notable changes to Raditz are recorded here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/); versions are git tags `vX.Y.Z`.
 
 ## [Unreleased]
+- **LineChart multi-series** — pass `series: { name?, data, color? }[]` for
+  comparison lines sharing one y-scale + crosshair, with a tooltip that lists
+  every series' value at the hovered index (pair with a `Legend`; colours cycle
+  a default palette). Single-series `data` is unchanged and keeps gradient /
+  markers / references / `renderTooltip`; the two modes are separate branches.
 - **Prose** (typography) — a long-form scope so rendered Markdown/CMS HTML
   inherits token-driven rhythm (headings, lists, links, quotes, code, tables,
   rules) with no per-element classes. Surface 102 → 103.

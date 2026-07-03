@@ -26,6 +26,9 @@
 /* Line + area */
 .rdz-chart__line { fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
 .rdz-chart__line--solid { stroke: var(--accent); }
+/* Multi-series lines/dots read their per-series colour off a custom property
+   (LineChart sets --rdz-line-color per path — data, not an inline paint). */
+.rdz-chart__line--series { stroke: var(--rdz-line-color, var(--accent)); }
 .rdz-chart__area { opacity: 0.9; }
 
 /* Data points + the labelled annotation markers (e.g. PEAK) */
@@ -40,6 +43,7 @@
 /* Hover crosshair + active dot */
 .rdz-chart__crosshair { stroke: var(--rule-strong); stroke-width: 1; stroke-dasharray: 3 3; pointer-events: none; }
 .rdz-chart__active-dot { fill: var(--accent); stroke: var(--panel); stroke-width: 2.5; pointer-events: none; }
+.rdz-chart__active-dot--series { fill: var(--rdz-line-color, var(--accent)); }
 .rdz-chart__hit { fill: transparent; }
 
 /* Scatter */
@@ -70,6 +74,10 @@
 .rdz-chart__tip-eyebrow { font-family: var(--font-mono); font-size: var(--fs-mono-xs); color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; }
 .rdz-chart__tip-title { font-weight: var(--fw-semibold); }
 .rdz-chart__tip-meta { display: flex; align-items: center; gap: var(--space-2); margin-top: var(--space-0-5); color: var(--text-soft); }
+/* Multi-series tooltip rows: colour swatch · series name · value. */
+.rdz-chart__tip-swatch { flex: none; width: 0.5rem; height: 0.5rem; border-radius: var(--radius-full); background: var(--rdz-line-color, var(--accent)); }
+.rdz-chart__tip-name { flex: 1; color: var(--text-soft); }
+.rdz-chart__tip-row + .rdz-chart__tip-row { margin-top: var(--space-1); }
 .rdz-chart__tip-star { color: var(--warning); }
 .rdz-chart__tip-tag { color: var(--accent-ink); }
 .rdz-chart__tip-value { font-family: var(--font-mono); font-weight: var(--fw-semibold); }

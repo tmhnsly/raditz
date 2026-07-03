@@ -240,7 +240,7 @@ LineChart — a responsive line/area chart (visx) with an optional value-mapped 
 
 Props:
   - area?: boolean (default: false) — Fill the area under the line.
-  - data: LinePoint[]
+  - data?: LinePoint[] — Single-series points. Provide this OR `series`.
   - emptyMessage?: ReactNode (default: "No data") — Zero-data notice text.
   - formatY?: ((y: number) => string) (default: (y) => String(y)) — Y tick formatter.
   - gradient?: boolean (default: false) — Value-mapped gradient stroke (accent → warning → danger).
@@ -248,8 +248,9 @@ Props:
   - markers?: LineAnnotation[] (default: []) — Labelled point markers (e.g. a "PEAK" dot).
   - references?: LineAnnotation[] (default: []) — Vertical dashed reference lines (e.g. a "STOP" annotation).
   - renderTooltip?: ((point: LinePoint, index: number) => ReactNode) — Custom hover tooltip content; omit for a simple value tooltip.
+  - series?: LineSeries[] — Multiple named series (comparison mode). Takes precedence over `data`; markers/references/gradient/renderTooltip are single-series only.
 
-Examples (Storybook stories): Default, Empty, Engagement
+Examples (Storybook stories): Default, Empty, MultiSeries, Engagement
 
 Usage:
 ```tsx

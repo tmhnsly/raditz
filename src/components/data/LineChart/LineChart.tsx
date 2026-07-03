@@ -1,6 +1,6 @@
 'use client';
 import { useId, useState } from 'react';
-import type { HTMLAttributes, MouseEvent, ReactNode } from 'react';
+import type { CSSProperties, HTMLAttributes, MouseEvent, ReactNode } from 'react';
 import { scaleLinear } from '@visx/scale';
 import { LinePath, AreaClosed, Circle, Line } from '@visx/shape';
 import { GridRows } from '@visx/grid';
@@ -24,8 +24,24 @@ export interface LineAnnotation {
   label?: string;
 }
 
-export interface LineChartProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
+export interface LineSeries {
+  /** Series name (shown in the multi-series tooltip; pair with a `Legend`). */
+  name?: string;
   data: LinePoint[];
+  /** Stroke colour (CSS colour or `var(--…)`); defaults to a rotating palette. */
+  color?: string;
+}
+
+/** Default series palette when a `LineSeries` gives no `color` (cycled by index). */
+const SERIES_COLORS = ['var(--accent)', 'var(--warning)', 'var(--danger)', 'var(--info, var(--accent))', 'var(--success, var(--accent))'];
+const seriesColor = (s: LineSeries, i: number): string => s.color ?? SERIES_COLORS[i % SERIES_COLORS.length];
+
+export interface LineChartProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
+  /** Single-series points. Provide this OR `series`. */
+  data?: LinePoint[];
+  /** Multiple named series (comparison mode). Takes precedence over `data`;
+   *  markers/references/gradient/renderTooltip are single-series only. */
+  series?: LineSeries[];
   /** Chart height in px. @default 240 */
   height?: number;
   /** Fill the area under the line. @default false */
@@ -52,6 +68,7 @@ export interface LineChartProps extends Omit<HTMLAttributes<HTMLDivElement>, 'ch
  */
 export function LineChart({
   data,
+  series,
   height = 240,
   area = false,
   gradient = false,
@@ -62,6 +79,28 @@ export function LineChart({
   emptyMessage,
   ...rest
 }: LineChartProps) {
+  // Multi-series is a distinct, simpler mode (comparison lines); the rich
+  // single-series path below keeps gradient/markers/references/renderTooltip.
+  if (series && series.length) {
+    return <LineMulti series={series} height={height} formatY={formatY} emptyMessage={emptyMessage} {...rest} />;
+  }
+  return <LineSingle data={data ?? []} height={height} area={area} gradient={gradient} markers={markers} references={references} formatY={formatY} renderTooltip={renderTooltip} emptyMessage={emptyMessage} {...rest} />;
+}
+
+type SingleProps = Omit<LineChartProps, 'series'> & { data: LinePoint[] };
+
+function LineSingle({
+  data,
+  height = 240,
+  area = false,
+  gradient = false,
+  markers = [],
+  references = [],
+  formatY = (y) => String(y),
+  renderTooltip,
+  emptyMessage,
+  ...rest
+}: SingleProps) {
   const [active, setActive] = useState<number | null>(null);
   const uid = useId().replace(/:/g, ''); // unique gradient ids per instance
   const n = data.length;
@@ -162,6 +201,94 @@ export function LineChart({
               onMouseMove={onMove}
               onMouseLeave={() => setActive(null)}
             />
+          </>
+        );
+      }}
+    </ChartFrame>
+  );
+}
+
+/** Multi-series comparison lines sharing one y-scale + crosshair; the tooltip
+ *  lists every series' value at the hovered index (pair with a `Legend`). */
+function LineMulti({
+  series,
+  height = 240,
+  formatY = (y) => String(y),
+  emptyMessage,
+  ...rest
+}: { series: LineSeries[]; height?: number; formatY?: (y: number) => string; emptyMessage?: ReactNode } & Omit<HTMLAttributes<HTMLDivElement>, 'children'>) {
+  const [active, setActive] = useState<number | null>(null);
+  const maxLen = Math.max(0, ...series.map((s) => s.data.length));
+  if (maxLen === 0) return <ChartFrame height={height} aria-label="Line chart" empty={<ChartEmpty>{emptyMessage}</ChartEmpty>} {...rest}>{() => null}</ChartFrame>;
+  const allYs = series.flatMap((s) => s.data.map((d) => d.y));
+  const yDomain = paddedDomain(allYs, 0.12);
+  const xFor = (iw: number) => scaleLinear({ domain: [0, Math.max(1, maxLen - 1)], range: [0, iw] });
+  const yFor = (ih: number) => scaleLinear({ domain: yDomain, range: [ih, 0] });
+
+  return (
+    <ChartFrame
+      height={height}
+      aria-label="Line chart"
+      margin={{ left: 40, right: 18, top: 18, bottom: 16 }}
+      {...rest}
+      overlay={({ margin, innerWidth, innerHeight }) => {
+        if (active == null) return null;
+        const x = xFor(innerWidth);
+        const y = yFor(innerHeight);
+        const present = series.map((s, i) => ({ s, i, pt: s.data[active] })).filter((v) => v.pt);
+        if (!present.length) return null;
+        const px = margin.left + (x(active) ?? 0);
+        const py = margin.top + Math.min(...present.map((v) => y(v.pt!.y) ?? 0));
+        const header = present.map((v) => v.pt!.label).find(Boolean);
+        return (
+          <ChartTip x={px} y={py} width={margin.left + innerWidth + margin.right}>
+            {header ? <div className="rdz-chart__tip-eyebrow">{header}</div> : null}
+            {present.map((v) => (
+              <div className="rdz-chart__tip-row" key={v.i}>
+                <span className="rdz-chart__tip-swatch" style={{ '--rdz-line-color': seriesColor(v.s, v.i) } as CSSProperties} />
+                {v.s.name ? <span className="rdz-chart__tip-name">{v.s.name}</span> : null}
+                <span className="rdz-chart__tip-value">{formatY(v.pt!.y)}</span>
+              </div>
+            ))}
+          </ChartTip>
+        );
+      }}
+    >
+      {({ innerWidth, innerHeight }) => {
+        const x = xFor(innerWidth);
+        const y = yFor(innerHeight);
+        const onMove = (e: MouseEvent<SVGRectElement>): void => {
+          const rect = e.currentTarget.getBoundingClientRect();
+          const i = Math.max(0, Math.min(maxLen - 1, Math.round(x.invert(e.clientX - rect.left))));
+          setActive(i);
+        };
+        return (
+          <>
+            <GridRows scale={y} width={innerWidth} numTicks={4} className="rdz-chart__grid" />
+            <ChartAxis y={y} formatY={formatY} />
+
+            {series.map((s, i) => (
+              <LinePath
+                key={i}
+                data={s.data}
+                x={(_d, j) => x(j) ?? 0}
+                y={(d) => y(d.y) ?? 0}
+                curve={curveMonotoneX}
+                className="rdz-chart__line rdz-chart__line--series"
+                style={{ '--rdz-line-color': seriesColor(s, i) } as CSSProperties}
+              />
+            ))}
+
+            {active != null ? (
+              <Group left={x(active) ?? 0}>
+                <Line from={{ x: 0, y: 0 }} to={{ x: 0, y: innerHeight }} className="rdz-chart__crosshair" />
+                {series.map((s, i) => s.data[active] ? (
+                  <Circle key={i} cy={y(s.data[active].y) ?? 0} r={4} className="rdz-chart__active-dot rdz-chart__active-dot--series" style={{ '--rdz-line-color': seriesColor(s, i) } as CSSProperties} />
+                ) : null)}
+              </Group>
+            ) : null}
+
+            <rect className="rdz-chart__hit" width={innerWidth} height={innerHeight} onMouseMove={onMove} onMouseLeave={() => setActive(null)} />
           </>
         );
       }}

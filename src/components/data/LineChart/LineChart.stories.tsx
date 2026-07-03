@@ -32,6 +32,19 @@ export const Empty: Story = {
   args: { data: [], height: 240 },
 };
 
+export const MultiSeries: Story = {
+  name: 'Multi-series (comparison)',
+  args: {
+    height: 260,
+    formatY: (v: number) => `${v}k`,
+    series: [
+      { name: 'This year', data: [12, 18, 15, 22, 28, 26, 33, 38].map((y, i) => ({ y, label: `M${i + 1}` })) },
+      { name: 'Last year', data: [10, 13, 14, 16, 19, 22, 24, 27].map((y, i) => ({ y, label: `M${i + 1}` })) },
+      { name: 'Target', data: [14, 16, 18, 20, 24, 28, 32, 36].map((y, i) => ({ y, label: `M${i + 1}` })), color: 'var(--text-faint)' },
+    ],
+  },
+};
+
 // ── Engagement / "episode drop-off" preset ──────────────────────────────────
 const Y = [62, 70, 66, 74, 81, 78, 86, 83, 90, 88, 93, 95, 92, 84, 79, 71, 60, 48];
 const TITLES = ['Pilot', 'The Gift', 'Crossroads', 'Fallout', 'Reunion', 'The Edge', 'Nightfall', 'Homecoming', 'Ashes', 'The Pact', 'Landslide', 'Zenith', 'Aftermath', 'Cold Open', 'Unraveled', 'The Drop', 'Embers', 'Finale'];
