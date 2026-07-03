@@ -4,13 +4,15 @@ All notable changes to Raditz are recorded here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/); versions are git tags `vX.Y.Z`.
 
 ## [Unreleased]
-- **Motion library** (replaces `AnimatedIcon`): **`Scene`** — modular full-canvas
-  animated illustrations that fill a card's thumbnail (pulse / orbit / bars / grid
-  / constellation / route / burst / stack / waves / rings), composed from layered
-  marks scaled in container units, tinted by `bg`/`tone`, self-sizing (`ratio`) or
-  `fill` a positioned parent / `Vignette` — the generic counterpart to Vignette's
-  bespoke scenes, so a card reads at a glance with no hand-authored SVG. Plus
-  **`Animate`** — an element-level wrapper with ~18 presets (float/pulse/spin/
+- **Motion library** (replaces `AnimatedIcon`): **`Scene`** — animated
+  card-thumbnail illustrations. Most presets frame a hero `icon` (any react-icons
+  glyph) with tasteful animated furniture — a `flash`/`rings` glow + expanding
+  rings, popping `spark`s/`stars`, a `halo`, an `orbit`, plus an optional popping
+  `badge` chip (`"+1 PT"`) — so any icon becomes a chork-style tile with no
+  bespoke SVG; the rest (`bars`, `waves`, `grid`, `constellation`, `route`,
+  `stack`) are self-contained. Marks scale in container units, tint via
+  `bg`/`tone`, self-size (`ratio`) or `fill` a positioned parent / `Vignette`.
+  Plus **`Animate`** — an element-level wrapper with ~18 presets (float/pulse/spin/
   wiggle/glow/shimmer + one-shots pop/tada/shake/bounce…), `trigger`
   loop/hover/inview/mount, speed/delay/repeat. Both ride the motion tokens and go
   static under reduced-motion. `AnimatedIcon` removed. Surface 103 → 104.

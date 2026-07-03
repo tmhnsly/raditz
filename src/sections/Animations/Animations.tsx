@@ -30,13 +30,13 @@ const ICON_CARDS: { preset: AnimatePreset; label: string; glyph: ReactNode }[] =
   { preset: 'wiggle', label: 'wiggle', glyph: <Icon name="bell" /> },
   { preset: 'bob', label: 'bob', glyph: <Icon name="check" /> },
 ];
-const SCENE_CARDS: { preset: ScenePreset; title: string; desc: string }[] = [
-  { preset: 'pulse', title: 'Realtime', desc: 'Live the moment it happens.' },
-  { preset: 'orbit', title: 'Integrations', desc: 'Every tool, connected.' },
-  { preset: 'bars', title: 'Analytics', desc: 'Trends at a glance.' },
-  { preset: 'constellation', title: 'Network', desc: 'See how it links up.' },
+const SCENE_CARDS: { preset: ScenePreset; icon?: ReactNode; badge?: ReactNode; title: string; desc: string }[] = [
+  { preset: 'flash', icon: <Icon name="sparkles" />, badge: '4 PTS', title: 'Flash it', desc: 'First-try sends earn max points.' },
+  { preset: 'stars', icon: <Icon name="star" />, title: 'Achievements', desc: 'Badges for streaks and podiums.' },
+  { preset: 'orbit', icon: <Icon name="link" />, title: 'Integrations', desc: 'Every tool in your stack, connected.' },
+  { preset: 'bars', title: 'Analytics', desc: 'Trends and breakdowns at a glance.' },
+  { preset: 'constellation', title: 'Network', desc: 'See how everything links up.' },
   { preset: 'route', title: 'Automation', desc: 'Flows that run themselves.' },
-  { preset: 'burst', title: 'Achievements', desc: 'Celebrate milestones.' },
 ];
 const CARD_TONES: CardTone[] = ['accent', 'secondary', 'aurora', 'dusk', 'glass', 'mono'];
 
@@ -100,7 +100,7 @@ export function AnimationsC({ heading = 'Motion library', background = 'none', c
           <div className="sx-g3 sx-gap-4">
             {SCENE_CARDS.map((c, i) => (
               <div key={i} className="rdz-card sx-anim__scene-card">
-                <Scene preset={c.preset} />
+                <Scene preset={c.preset} icon={c.icon} badge={c.badge} />
                 <div className="col sx-gap-1 sx-anim__scene-meta">
                   <strong>{c.title}</strong>
                   <span className="muted sx-body-s">{c.desc}</span>

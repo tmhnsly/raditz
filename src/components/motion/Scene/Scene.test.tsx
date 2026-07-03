@@ -17,31 +17,45 @@ describe('Scene (stories)', () => {
 
 describe('Scene', () => {
   it('rides data-preset / data-bg and hides itself from the a11y tree', () => {
-    const { container } = render(<Scene preset="orbit" bg="accent" />);
+    const { container } = render(<Scene preset="flash" bg="accent" />);
     const el = container.querySelector('.rdz-scene') as HTMLElement;
-    expect(el.getAttribute('data-preset')).toBe('orbit');
+    expect(el.getAttribute('data-preset')).toBe('flash');
     expect(el.getAttribute('data-bg')).toBe('accent');
     expect(el.getAttribute('aria-hidden')).toBe('true');
   });
 
-  it('composes the expected marks per preset', () => {
-    const { container: pulse } = render(<Scene preset="pulse" />);
-    expect(pulse.querySelectorAll('.rdz-scene__ring')).toHaveLength(3);
-    expect(pulse.querySelectorAll('.rdz-scene__spark')).toHaveLength(5);
-    expect(pulse.querySelector('.rdz-scene__core')).toBeTruthy();
+  it('renders a hero icon for icon presets (and a fallback core without one)', () => {
+    const { container: withIcon } = render(<Scene preset="flash" icon={<svg data-testid="glyph" />} />);
+    expect(withIcon.querySelector('.rdz-scene__icon [data-testid="glyph"]')).toBeTruthy();
+    expect(withIcon.querySelector('.rdz-scene__core')).toBeNull();
+
+    const { container: noIcon } = render(<Scene preset="flash" />);
+    expect(noIcon.querySelector('.rdz-scene__core')).toBeTruthy();
+  });
+
+  it('pops a badge chip when given one', () => {
+    const { container } = render(<Scene preset="spark" icon={<svg />} badge="+1 PT" />);
+    const badge = container.querySelector('.rdz-scene__badge');
+    expect(badge?.textContent).toBe('+1 PT');
+  });
+
+  it('composes the decorations per preset', () => {
+    const { container: flash } = render(<Scene preset="flash" icon={<svg />} />);
+    expect(flash.querySelectorAll('.rdz-scene__ring')).toHaveLength(2);
+    expect(flash.querySelector('.rdz-scene__glow')).toBeTruthy();
+
+    const { container: spark } = render(<Scene preset="spark" icon={<svg />} />);
+    expect(spark.querySelectorAll('.rdz-scene__spark')).toHaveLength(4);
 
     const { container: bars } = render(<Scene preset="bars" />);
     expect(bars.querySelectorAll('.rdz-scene__bar')).toHaveLength(7);
 
     const { container: grid } = render(<Scene preset="grid" />);
     expect(grid.querySelectorAll('.rdz-scene__cell')).toHaveLength(16);
-
-    const { container: burst } = render(<Scene preset="burst" />);
-    expect(burst.querySelectorAll('.rdz-scene__particle')).toHaveLength(9);
   });
 
   it('sets ratio + tone as custom properties (not inline paint/animation)', () => {
-    const { container } = render(<Scene preset="pulse" ratio="1 / 1" tone="var(--danger)" />);
+    const { container } = render(<Scene preset="flash" ratio="1 / 1" tone="var(--danger)" />);
     const el = container.querySelector('.rdz-scene') as HTMLElement;
     expect(el.style.getPropertyValue('--rdz-scene-ratio')).toBe('1 / 1');
     expect(el.style.getPropertyValue('--rdz-scene-color')).toBe('var(--danger)');
