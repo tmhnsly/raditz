@@ -72,7 +72,7 @@ export const Illustrations: Story = {
 
 export const Backgrounds: Story = {
   render: () => {
-    const bgs: SceneBg[] = ['gradient', 'accent', 'secondary', 'soft', 'none'];
+    const bgs: SceneBg[] = ['gradient', 'solid', 'soft', 'none'];
     return (
       <div style={grid}>
         {bgs.map((bg) => (
@@ -89,9 +89,9 @@ export const Backgrounds: Story = {
 export const Tinted: Story = {
   render: () => (
     <div style={grid}>
-      <div style={card}><Scene preset="stars" bg="soft" tone="var(--warning)" icon={<FiAward {...ic} />} /><div style={body}><strong>warning</strong></div></div>
-      <div style={card}><Scene preset="rings" bg="soft" tone="var(--danger)" icon={<FiActivity {...ic} />} badge="!" /><div style={body}><strong>danger</strong></div></div>
-      <div style={card}><Scene preset="bars" bg="soft" tone="var(--accent-2, var(--accent))" /><div style={body}><strong>secondary</strong></div></div>
+      <div style={card}><Scene preset="stars" bg="soft" tone="warning" icon={<FiAward {...ic} />} /><div style={body}><strong>warning</strong></div></div>
+      <div style={card}><Scene preset="rings" bg="soft" tone="danger" icon={<FiActivity {...ic} />} badge="!" /><div style={body}><strong>danger</strong></div></div>
+      <div style={card}><Scene preset="bars" bg="soft" tone="secondary" /><div style={body}><strong>secondary</strong></div></div>
     </div>
   ),
 };

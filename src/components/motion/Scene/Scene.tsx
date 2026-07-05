@@ -21,24 +21,24 @@ export type ScenePreset =
   | 'route'
   | 'stack';
 
-/** Background wash behind the scene (token-driven, re-themes with the accent). */
-export type SceneBg = 'none' | 'soft' | 'gradient' | 'accent' | 'secondary';
+/** Background treatment behind the scene (tone-driven, token-backed). */
+export type SceneBg = 'none' | 'soft' | 'gradient' | 'solid';
+/** Hue family — a semantic name resolves the full token triplet (ink / wash /
+ *  solid / on-colour); any other CSS colour string tints the ink only. */
+export type SceneTone = 'accent' | 'secondary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral' | (string & {});
+/** Local tempo — scales `--motion-scale` for this scene only. */
+export type SceneSpeed = 'slow' | 'normal' | 'fast';
 
 const ICON_PRESETS = new Set<ScenePreset>(['flash', 'rings', 'halo', 'spark', 'stars', 'orbit', 'pop']);
+const SEMANTIC_TONES = new Set(['accent', 'secondary', 'success', 'warning', 'danger', 'info', 'neutral']);
 
-export interface SceneProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> {
-  /** Which scene to play. */
-  preset: ScenePreset;
-  /** Hero glyph for the icon-companion presets (a react-icons glyph, a Raditz
-   *  `<Icon/>`, or raw SVG). Ignored by the standalone illustration presets. */
-  icon?: React.ReactNode;
-  /** Optional chip that pops near the icon (e.g. `"+1 PT"`, `"NEW"`). */
-  badge?: React.ReactNode;
+interface SceneBaseProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> {
   /** Backdrop treatment. @default 'gradient' */
   bg?: SceneBg;
-  /** Ink tint for the scene marks — any CSS colour / `var(--…)`. Defaults to the
-   *  ink paired with `bg`. */
-  tone?: string;
+  /** Hue family (semantic, token-driven) or a raw CSS colour (ink only). @default 'accent' */
+  tone?: SceneTone;
+  /** Local tempo override. @default 'normal' */
+  speed?: SceneSpeed;
   /** Aspect ratio of the self-sizing canvas (ignored when `fill`). @default '16 / 9' */
   ratio?: string;
   /** Fill a positioned parent (`inset: 0`) instead of self-sizing. @default false */
@@ -46,6 +46,33 @@ export interface SceneProps extends Omit<React.HTMLAttributes<HTMLDivElement>, '
   /** Freeze the animation. @default false */
   paused?: boolean;
 }
+export interface ScenePresetProps extends SceneBaseProps {
+  /** Which recipe to play. */
+  preset: ScenePreset;
+  /** Hero glyph for the icon-companion presets (a react-icons glyph, a Raditz
+   *  `<Icon/>`, or raw SVG). Ignored by the standalone illustration presets. */
+  icon?: React.ReactNode;
+  /** Optional chip near the icon (e.g. `"NEW"`) — never rendered unless supplied. */
+  badge?: React.ReactNode;
+  children?: never;
+}
+export interface SceneComposedProps extends SceneBaseProps {
+  preset?: never;
+  icon?: never;
+  badge?: never;
+  /** Compose your own scene from `Scene.X` layers. */
+  children: React.ReactNode;
+}
+export type SceneProps = ScenePresetProps | SceneComposedProps;
+
+// Widened view of the union for internal destructuring (the public XOR types
+// keep preset/children mutually exclusive at call sites).
+type SceneAllProps = SceneBaseProps & {
+  preset?: ScenePreset;
+  icon?: React.ReactNode;
+  badge?: React.ReactNode;
+  children?: React.ReactNode;
+};
 
 // Index-suffixed so per-mark rules work even when the marks share a parent with
 // other spans (icon/glow/badge) — `:nth-of-type` counts every sibling <span>, so
@@ -135,29 +162,26 @@ function content(preset: ScenePreset, icon: React.ReactNode, badge: React.ReactN
  * Self-sizing (`ratio`) or `fill` a positioned parent (incl. a {@link Vignette}).
  * Decorative (`aria-hidden`) — give the card a real text label.
  */
-export function Scene({
-  preset,
-  icon,
-  badge,
-  bg = 'gradient',
-  tone,
-  ratio = '16 / 9',
-  fill = false,
-  paused = false,
-  className,
-  style,
-  ...rest
-}: SceneProps): React.ReactElement {
+export function Scene(props: SceneProps): React.ReactElement {
+  const {
+    preset, icon, badge, children,
+    bg = 'gradient', tone = 'accent', speed = 'normal',
+    ratio = '16 / 9', fill = false, paused = false, className, style, ...rest
+  } = props as SceneAllProps;
+  const semantic = SEMANTIC_TONES.has(tone);
   return (
     <div
       className={cx('rdz-scene', fill && 'rdz-scene--fill', paused && 'is-paused', className)}
       data-preset={preset}
       data-bg={bg}
+      // accent is the stylesheet default — omit the attribute in the common case
+      data-tone={semantic && tone !== 'accent' ? tone : undefined}
+      data-speed={speed !== 'normal' ? speed : undefined}
       aria-hidden="true"
-      style={{ '--rdz-scene-ratio': ratio, ...(tone ? { '--rdz-scene-color': tone } : null), ...style } as React.CSSProperties}
+      style={{ '--rdz-scene-ratio': ratio, ...(semantic ? null : { '--rdz-scene-ink': tone }), ...style } as React.CSSProperties}
       {...rest}
     >
-      <span className="rdz-scene__stage">{content(preset, icon, badge)}</span>
+      <span className="rdz-scene__stage">{children ?? content(preset as ScenePreset, icon, badge)}</span>
     </div>
   );
 }

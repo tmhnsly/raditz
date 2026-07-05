@@ -9,25 +9,43 @@
 .rdz-scene {
   position: relative; display: block; width: 100%; min-width: 0; max-width: 100%;
   aspect-ratio: var(--rdz-scene-ratio, 16 / 9);
-  overflow: hidden; border-radius: inherit; isolation: isolate;
+  // No border-radius of its own — renders flush like an <img>; the card clips it.
+  overflow: hidden; isolation: isolate;
   container-type: size;
-  --rdz-scene-color: var(--accent-ink);
+  /* tone triplet — data-tone repoints all four; a raw `tone` overrides --rdz-scene-ink inline */
+  --rdz-scene-ink: var(--accent-ink);
+  --rdz-scene-wash: var(--accent-surface);
+  --rdz-scene-solid: var(--accent);
+  --rdz-scene-on: var(--on-accent);
 }
 .rdz-scene--fill { position: absolute; inset: 0; width: auto; height: auto; aspect-ratio: auto; }
 
-.rdz-scene__stage { position: absolute; inset: 0; display: grid; place-items: center; color: var(--rdz-scene-color); }
+/* local tempo — every loop below multiplies by --motion-scale */
+.rdz-scene[data-speed='slow'] { --motion-scale: 1.5; }
+.rdz-scene[data-speed='fast'] { --motion-scale: 0.7; }
+
+/* ── semantic tones (token triplets; accent is the root default above) ── */
+.rdz-scene[data-tone='secondary'] { --rdz-scene-ink: var(--accent-2-ink); --rdz-scene-wash: var(--accent-2-surface); --rdz-scene-solid: var(--accent-2-solid); --rdz-scene-on: var(--on-accent); }
+.rdz-scene[data-tone='success']   { --rdz-scene-ink: var(--success-ink);  --rdz-scene-wash: var(--success-surface);  --rdz-scene-solid: var(--success);  --rdz-scene-on: var(--on-success); }
+.rdz-scene[data-tone='warning']   { --rdz-scene-ink: var(--warning-ink);  --rdz-scene-wash: var(--warning-surface);  --rdz-scene-solid: var(--warning);  --rdz-scene-on: var(--on-warning); }
+.rdz-scene[data-tone='danger']    { --rdz-scene-ink: var(--danger-ink);   --rdz-scene-wash: var(--danger-surface);   --rdz-scene-solid: var(--danger);   --rdz-scene-on: var(--on-danger); }
+.rdz-scene[data-tone='info']      { --rdz-scene-ink: var(--info-ink);     --rdz-scene-wash: var(--info-surface);     --rdz-scene-solid: var(--info);     --rdz-scene-on: var(--on-info); }
+.rdz-scene[data-tone='neutral']   { --rdz-scene-ink: var(--neutral-11);   --rdz-scene-wash: var(--neutral-3);        --rdz-scene-solid: var(--neutral-9); --rdz-scene-on: var(--on-neutral); }
+
+.rdz-scene__stage { position: absolute; inset: 0; display: grid; place-items: center; color: var(--rdz-scene-ink); }
 /* Centred absolute marks: inset:0 + margin:auto centres a fixed box, leaving
    `transform` free for the animation. */
 .rdz-scene__ring, .rdz-scene__halo, .rdz-scene__orbit, .rdz-scene__glow { position: absolute; inset: 0; margin: auto; }
 
 .rdz-scene.is-paused .rdz-scene__stage * { animation-play-state: paused !important; }
 
-/* ── Background washes (token-driven; tone overrides the ink) ── */
-.rdz-scene[data-bg='none']      { background: none; }
-.rdz-scene[data-bg='soft']      { background: var(--surface); }
-.rdz-scene[data-bg='gradient']  { background: linear-gradient(150deg, var(--accent-surface), color-mix(in srgb, var(--accent-2-surface) 55%, var(--surface))); }
-.rdz-scene[data-bg='accent']    { background: linear-gradient(150deg, var(--accent), var(--accent-hover)); --rdz-scene-color: var(--on-accent); }
-.rdz-scene[data-bg='secondary'] { background: linear-gradient(150deg, var(--accent-2-surface), var(--surface)); --rdz-scene-color: var(--accent-2-ink); }
+/* ── Background treatments (tone-driven: bg picks the treatment, tone the hue) ── */
+.rdz-scene[data-bg='none']     { background: none; }
+.rdz-scene[data-bg='soft']     { background: var(--surface); }
+.rdz-scene[data-bg='gradient'] { background: linear-gradient(150deg, var(--rdz-scene-wash), color-mix(in srgb, var(--rdz-scene-wash) 45%, var(--bg))); }
+/* theme-safe depth: a white-alpha sheen reads as a light source in BOTH themes
+   (mixing toward a step-12 would invert on theme toggle) */
+.rdz-scene[data-bg='solid']    { background: linear-gradient(150deg, var(--white-a5), transparent 55%) var(--rdz-scene-solid); --rdz-scene-ink: var(--rdz-scene-on); }
 
 $scale: var(--motion-scale, 1);
 

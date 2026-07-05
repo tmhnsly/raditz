@@ -101,6 +101,8 @@
   --warning: var(--amber-9);  --warning-ink: var(--amber-11);  --warning-surface: var(--amber-3);  --on-warning: var(--black-a12); /* amber-9 is a light solid */
   --danger:  var(--red-9);    --danger-ink:  var(--red-11);    --danger-surface:  var(--red-3);    --on-danger: var(--white-a12);
   --info:    var(--blue-9);   --info-ink:    var(--blue-11);   --info-surface:    var(--blue-3);   --on-info: var(--white-a12);
+  /* on-colour for a solid neutral fill (e.g. Scene solid bg with the neutral tone) */
+  --on-neutral: var(--white-a12);
 
   /* ── focus ── */
   --focus-ring: var(--accent-ink);

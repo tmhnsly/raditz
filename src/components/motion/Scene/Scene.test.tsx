@@ -17,10 +17,10 @@ describe('Scene (stories)', () => {
 
 describe('Scene', () => {
   it('rides data-preset / data-bg and hides itself from the a11y tree', () => {
-    const { container } = render(<Scene preset="flash" bg="accent" />);
+    const { container } = render(<Scene preset="flash" bg="solid" />);
     const el = container.querySelector('.rdz-scene') as HTMLElement;
     expect(el.getAttribute('data-preset')).toBe('flash');
-    expect(el.getAttribute('data-bg')).toBe('accent');
+    expect(el.getAttribute('data-bg')).toBe('solid');
     expect(el.getAttribute('aria-hidden')).toBe('true');
   });
 
@@ -54,11 +54,11 @@ describe('Scene', () => {
     expect(grid.querySelectorAll('.rdz-scene__cell')).toHaveLength(16);
   });
 
-  it('sets ratio + tone as custom properties (not inline paint/animation)', () => {
+  it('sets ratio + raw tone as custom properties (not inline paint/animation)', () => {
     const { container } = render(<Scene preset="flash" ratio="1 / 1" tone="var(--danger)" />);
     const el = container.querySelector('.rdz-scene') as HTMLElement;
     expect(el.style.getPropertyValue('--rdz-scene-ratio')).toBe('1 / 1');
-    expect(el.style.getPropertyValue('--rdz-scene-color')).toBe('var(--danger)');
+    expect(el.style.getPropertyValue('--rdz-scene-ink')).toBe('var(--danger)');
   });
 
   it('fill + paused toggle their modifier classes', () => {
@@ -66,5 +66,34 @@ describe('Scene', () => {
     const el = container.querySelector('.rdz-scene') as HTMLElement;
     expect(el.classList.contains('rdz-scene--fill')).toBe(true);
     expect(el.classList.contains('is-paused')).toBe(true);
+  });
+});
+
+describe('Scene v2 canvas', () => {
+  it('semantic tone → data-tone attribute, no inline ink', () => {
+    const { container } = render(<Scene preset="flash" tone="success" />);
+    const el = container.querySelector('.rdz-scene') as HTMLElement;
+    expect(el.getAttribute('data-tone')).toBe('success');
+    expect(el.style.getPropertyValue('--rdz-scene-ink')).toBe('');
+  });
+
+  it('non-semantic tone (any CSS colour / token var) → inline --rdz-scene-ink, no data-tone', () => {
+    const { container } = render(<Scene preset="flash" tone="var(--accent-2-ink)" />);
+    const el = container.querySelector('.rdz-scene') as HTMLElement;
+    expect(el.getAttribute('data-tone')).toBeNull();
+    expect(el.style.getPropertyValue('--rdz-scene-ink')).toBe('var(--accent-2-ink)');
+  });
+
+  it('speed sets data-speed only when not normal', () => {
+    const { container: slow } = render(<Scene preset="flash" speed="slow" />);
+    expect((slow.querySelector('.rdz-scene') as HTMLElement).getAttribute('data-speed')).toBe('slow');
+    const { container: normal } = render(<Scene preset="flash" />);
+    expect((normal.querySelector('.rdz-scene') as HTMLElement).getAttribute('data-speed')).toBeNull();
+  });
+
+  it('children mode renders composed content instead of a preset', () => {
+    const { container } = render(<Scene><span data-testid="custom" /></Scene>);
+    expect(container.querySelector('.rdz-scene__stage [data-testid="custom"]')).toBeTruthy();
+    expect((container.querySelector('.rdz-scene') as HTMLElement).getAttribute('data-preset')).toBeNull();
   });
 });
