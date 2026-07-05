@@ -1,6 +1,11 @@
 'use client';
 import * as React from 'react';
 import { cx } from '../../internal';
+import {
+  SceneIcon, SceneGlow, SceneRings, SceneHalo, SceneSparks, SceneOrbit, SceneBeam, SceneBadge,
+} from './layers';
+
+export type { SceneIconMotion } from './layers';
 
 /** Scene presets. "Icon companions" frame a hero `icon` with decorations; the
  *  rest are self-contained illustrations (no icon needed). */
@@ -103,15 +108,15 @@ function content(preset: ScenePreset, icon: React.ReactNode, badge: React.ReactN
     case 'flash':
       return (<><span className="rdz-scene__glow" />{repeat(2, 'rdz-scene__ring')}{hero}{chip}</>);
     case 'rings':
-      return (<><span className="rdz-scene__glow rdz-scene__glow--faint" />{repeat(4, 'rdz-scene__ring')}{hero}{chip}</>);
+      return (<><span className="rdz-scene__glow rdz-scene__glow--soft" />{repeat(4, 'rdz-scene__ring')}{hero}{chip}</>);
     case 'halo':
       return (<><span className="rdz-scene__halo" />{hero}{chip}</>);
     case 'spark':
       return (<>{hero}{sparks(3, 'rdz-scene__spark', Spark)}{chip}</>);
     case 'stars':
-      return (<>{hero}{sparks(3, 'rdz-scene__star', Star)}{chip}</>);
+      return (<>{hero}{sparks(3, 'rdz-scene__spark', Star)}{chip}</>);
     case 'orbit':
-      return (<>{Array.from({ length: 3 }, (_, i) => <span key={i} className="rdz-scene__orbit"><span className="rdz-scene__orbit-dot" /></span>)}{hero}{chip}</>);
+      return (<>{Array.from({ length: 3 }, (_, i) => <span key={i} className={`rdz-scene__orbit rdz-scene__orbit--${i}`}><span className="rdz-scene__orbit-dot" /></span>)}{hero}{chip}</>);
     case 'pop':
       return (<>{hero}{chip}</>);
     case 'bars':
@@ -162,7 +167,7 @@ function content(preset: ScenePreset, icon: React.ReactNode, badge: React.ReactN
  * Self-sizing (`ratio`) or `fill` a positioned parent (incl. a {@link Vignette}).
  * Decorative (`aria-hidden`) — give the card a real text label.
  */
-export function Scene(props: SceneProps): React.ReactElement {
+function SceneRoot(props: SceneProps): React.ReactElement {
   const {
     preset, icon, badge, children,
     bg = 'gradient', tone = 'accent', speed = 'normal',
@@ -185,3 +190,15 @@ export function Scene(props: SceneProps): React.ReactElement {
     </div>
   );
 }
+
+/** Canvas + compound layers — `<Scene preset="…"/>` recipes or compose from `Scene.X`. */
+export const Scene = Object.assign(SceneRoot, {
+  Icon: SceneIcon,
+  Glow: SceneGlow,
+  Rings: SceneRings,
+  Halo: SceneHalo,
+  Sparks: SceneSparks,
+  Orbit: SceneOrbit,
+  Beam: SceneBeam,
+  Badge: SceneBadge,
+});

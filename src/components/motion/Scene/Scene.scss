@@ -56,9 +56,26 @@ $scale: var(--motion-scale, 1);
 
 /* ── Shared decorations ── */
 .rdz-scene__glow { z-index: 0; width: 92cqmin; height: 92cqmin; border-radius: 50%; background: radial-gradient(circle, color-mix(in srgb, currentColor 40%, transparent) 0%, transparent 62%); opacity: 0.6; animation: rdzScThrob calc(3s * #{$scale}) var(--ease-in-out) infinite; }
-.rdz-scene__glow--faint { opacity: 0.4; }
-.rdz-scene__ring { z-index: 0; width: 40cqmin; height: 40cqmin; border-radius: 50%; border: 0.6cqmin solid currentColor; opacity: 0; }
+.rdz-scene__glow--soft { opacity: 0.4; }
+/* rings — parameterised: --i / --n / --rdz-rings-dur come from <Scene.Rings> */
+.rdz-scene__ring {
+  z-index: 0; width: 40cqmin; height: 40cqmin; border-radius: 50%;
+  border: 0.6cqmin solid currentColor; opacity: 0;
+  animation: rdzScRing calc(var(--rdz-rings-dur, 3s) * #{$scale}) var(--ease-decel) infinite;
+  animation-delay: calc(var(--rdz-rings-dur, 3s) * #{$scale} * (var(--i, 0) / var(--n, 3)) * -1);
+}
 .rdz-scene__halo { z-index: 0; width: 44cqmin; height: 44cqmin; border-radius: 50%; background: radial-gradient(circle, color-mix(in srgb, currentColor 40%, transparent) 0%, transparent 70%); opacity: 0; animation: rdzScHalo calc(2.6s * #{$scale}) var(--ease-in-out) infinite; }
+.rdz-scene__halo--soft { --rdz-halo-max: 0.4; }
+
+/* ── icon motions (apply to __icon or the __core fallback) ── */
+.rdz-scene__m-flash { animation: rdzScFlash calc(2.2s * #{$scale}) var(--ease-in-out) infinite; }
+.rdz-scene__m-bob   { animation: rdzScBob   calc(3s   * #{$scale}) var(--ease-in-out) infinite; }
+.rdz-scene__m-pulse { animation: rdzScThrob calc(2.4s * #{$scale}) var(--ease-in-out) infinite; }
+.rdz-scene__m-spin  { animation: rdzScSpin  calc(14s  * #{$scale}) linear infinite; }
+.rdz-scene__m-float { animation: rdzScDrift calc(3.6s * #{$scale}) var(--ease-in-out) infinite; }
+
+/* ── beam — one soft diagonal light sweep ── */
+.rdz-scene__beam { position: absolute; inset: 0; z-index: 0; background: linear-gradient(115deg, transparent 32%, color-mix(in srgb, currentColor 16%, transparent) 50%, transparent 68%); animation: rdzScBeam calc(4.5s * #{$scale}) var(--ease-in-out) infinite; }
 
 /* badge chip — pops near the icon (top-right) */
 .rdz-scene__badge {
@@ -71,41 +88,23 @@ $scale: var(--motion-scale, 1);
   animation: rdzScBadge calc(0.5s * #{$scale}) var(--ease-spring) calc(0.35s * #{$scale}) 1 both;
 }
 
-/* ── flash — glow + two expanding rings + a pulsing icon ── */
-.rdz-scene[data-preset='flash'] .rdz-scene__icon, .rdz-scene[data-preset='flash'] .rdz-scene__core { animation: rdzScFlash calc(2.2s * #{$scale}) var(--ease-in-out) infinite; }
-.rdz-scene[data-preset='flash'] .rdz-scene__ring { animation: rdzScRing calc(2.2s * #{$scale}) var(--ease-decel) infinite; }
-.rdz-scene[data-preset='flash'] .rdz-scene__ring--1 { animation-delay: calc(2.2s * #{$scale} * -0.5); }
-
-/* ── rings — a radar of concentric rings behind the icon ── */
-.rdz-scene[data-preset='rings'] .rdz-scene__ring { animation: rdzScRing calc(3s * #{$scale}) var(--ease-decel) infinite; }
-.rdz-scene[data-preset='rings'] .rdz-scene__ring--0 { animation-delay: calc(3s * #{$scale} * -0.0); }
-.rdz-scene[data-preset='rings'] .rdz-scene__ring--1 { animation-delay: calc(3s * #{$scale} * -0.75); }
-.rdz-scene[data-preset='rings'] .rdz-scene__ring--2 { animation-delay: calc(3s * #{$scale} * -1.5); }
-.rdz-scene[data-preset='rings'] .rdz-scene__ring--3 { animation-delay: calc(3s * #{$scale} * -2.25); }
-
-/* ── halo — a soft disc breathing behind the icon ── */
-/* (uses the shared .rdz-scene__halo animation above) */
-
-/* ── spark / stars — glyphs popping at the icon's corners ── */
-.rdz-scene__spark, .rdz-scene__star { position: absolute; z-index: 2; color: currentColor; opacity: 0; }
-.rdz-scene__spark svg, .rdz-scene__star svg { width: 100%; height: 100%; display: block; }
-.rdz-scene[data-preset='spark'] .rdz-scene__spark { animation: rdzScTwinkle calc(2.4s * #{$scale}) var(--ease-in-out) infinite; }
-.rdz-scene[data-preset='stars'] .rdz-scene__star { animation: rdzScTwinkle calc(2.6s * #{$scale}) var(--ease-in-out) infinite; }
+/* ── sparks — glyphs twinkling around the hero ── */
+.rdz-scene__spark { position: absolute; z-index: 2; color: currentColor; opacity: 0; animation: rdzScTwinkle calc(2.5s * #{$scale}) var(--ease-in-out) infinite; }
+.rdz-scene__spark svg { width: 100%; height: 100%; display: block; }
 /* Asymmetric, top-right-led placement with varied sizes — reads as organic
    sparkle, not a mechanical corner grid. */
-.rdz-scene__spark--0, .rdz-scene__star--0 { left: 60%; top: 8%;  width: 15cqmin; height: 15cqmin; animation-delay: calc(2.6s * #{$scale} * 0); }
-.rdz-scene__spark--1, .rdz-scene__star--1 { left: 16%; top: 28%; width: 9cqmin;  height: 9cqmin;  animation-delay: calc(2.6s * #{$scale} * 0.42); }
-.rdz-scene__spark--2, .rdz-scene__star--2 { left: 58%; top: 66%; width: 11cqmin; height: 11cqmin; animation-delay: calc(2.6s * #{$scale} * 0.72); }
+.rdz-scene__spark--0 { left: 60%; top: 8%;  width: 15cqmin; height: 15cqmin; animation-delay: calc(2.5s * #{$scale} * 0); }
+.rdz-scene__spark--1 { left: 16%; top: 28%; width: 9cqmin;  height: 9cqmin;  animation-delay: calc(2.5s * #{$scale} * 0.42); }
+.rdz-scene__spark--2 { left: 58%; top: 66%; width: 11cqmin; height: 11cqmin; animation-delay: calc(2.5s * #{$scale} * 0.72); }
+.rdz-scene__spark--3 { left: 78%; top: 40%; width: 8cqmin;  height: 8cqmin;  animation-delay: calc(2.5s * #{$scale} * 0.2); }
+.rdz-scene__spark--4 { left: 30%; top: 72%; width: 10cqmin; height: 10cqmin; animation-delay: calc(2.5s * #{$scale} * 0.55); }
 
-/* ── orbit — dots circling the icon ── */
+/* ── orbit — dots circling the icon (index classes: compose-safe) ── */
 .rdz-scene__orbit { z-index: 0; border-radius: 50%; border: 0.4cqmin solid color-mix(in srgb, currentColor 26%, transparent); animation: rdzScSpin calc(8s * #{$scale}) linear infinite; }
-.rdz-scene__orbit:nth-of-type(1) { width: 46cqmin; height: 46cqmin; }
-.rdz-scene__orbit:nth-of-type(2) { width: 68cqmin; height: 68cqmin; animation-duration: calc(11s * #{$scale}); animation-direction: reverse; }
-.rdz-scene__orbit:nth-of-type(3) { width: 90cqmin; height: 90cqmin; animation-duration: calc(15s * #{$scale}); }
+.rdz-scene__orbit--0 { width: 46cqmin; height: 46cqmin; }
+.rdz-scene__orbit--1 { width: 68cqmin; height: 68cqmin; animation-duration: calc(11s * #{$scale}); animation-direction: reverse; }
+.rdz-scene__orbit--2 { width: 90cqmin; height: 90cqmin; animation-duration: calc(15s * #{$scale}); }
 .rdz-scene__orbit-dot { position: absolute; top: -2.6cqmin; left: 50%; width: 5.2cqmin; height: 5.2cqmin; margin-left: -2.6cqmin; border-radius: 50%; background: currentColor; }
-
-/* ── pop — a gently bobbing icon ── */
-.rdz-scene[data-preset='pop'] .rdz-scene__icon, .rdz-scene[data-preset='pop'] .rdz-scene__core { animation: rdzScBob calc(3s * #{$scale}) var(--ease-in-out) infinite; }
 
 /* ── bars — an equaliser ── */
 .rdz-scene__bars { position: absolute; inset: 0; margin: auto; width: 60cqmin; height: 46cqmin; display: flex; align-items: flex-end; justify-content: space-between; gap: 2cqmin; }
@@ -167,7 +166,10 @@ $scale: var(--motion-scale, 1);
 @keyframes rdzScFlash   { 0% { transform: scale(1); filter: drop-shadow(0 0 0 transparent); } 12% { transform: scale(1.12); filter: drop-shadow(0 0 6cqmin color-mix(in srgb, currentColor 60%, transparent)); } 34%, 100% { transform: scale(1); filter: drop-shadow(0 0 0 transparent); } }
 /* Held invisible until ~10%, appears at the flash peak, then emanates out. */
 @keyframes rdzScRing    { 0%, 10% { transform: scale(0.7); opacity: 0; } 18% { opacity: 0.65; } 82%, 100% { transform: scale(2.2); opacity: 0; } }
-@keyframes rdzScHalo    { 0%, 100% { opacity: 0.15; transform: scale(0.85); } 50% { opacity: 0.7; transform: scale(1.05); } }
+@keyframes rdzScHalo    { 0%, 100% { opacity: calc(var(--rdz-halo-max, 0.7) * 0.2); transform: scale(0.85); } 50% { opacity: var(--rdz-halo-max, 0.7); transform: scale(1.05); } }
+@keyframes rdzScDrift   { 0%, 100% { transform: translateY(2%);  filter: drop-shadow(0 2cqmin 3cqmin color-mix(in srgb, currentColor 24%, transparent)); }
+                          50%      { transform: translateY(-4%); filter: drop-shadow(0 5cqmin 5cqmin color-mix(in srgb, currentColor 12%, transparent)); } }
+@keyframes rdzScBeam    { 0% { transform: translateX(-60%); } 55%, 100% { transform: translateX(60%); } }
 @keyframes rdzScBadge   { 0% { transform: scale(0.4) translateY(6cqmin); opacity: 0; } 65% { transform: scale(1.1) translateY(0); opacity: 1; } 100% { transform: scale(1) translateY(0); opacity: 1; } }
 @keyframes rdzScTwinkle { 0%, 60%, 100% { opacity: 0; transform: scale(0.4) rotate(0); } 30% { opacity: 1; transform: scale(1) rotate(18deg); } }
 @keyframes rdzScSpin    { to { transform: rotate(360deg); } }

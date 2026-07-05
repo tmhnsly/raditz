@@ -97,3 +97,30 @@ describe('Scene v2 canvas', () => {
     expect((container.querySelector('.rdz-scene') as HTMLElement).getAttribute('data-preset')).toBeNull();
   });
 });
+
+describe('Scene layers', () => {
+  it('composes decorations with parameters', () => {
+    const { container } = render(
+      <Scene>
+        <Scene.Glow strength="soft" />
+        <Scene.Rings count={5} />
+        <Scene.Icon motion="spin"><svg data-testid="g" /></Scene.Icon>
+        <Scene.Sparks shape="star" count={4} />
+        <Scene.Orbit count={2} />
+        <Scene.Beam />
+      </Scene>,
+    );
+    expect(container.querySelector('.rdz-scene__glow--soft')).toBeTruthy();
+    expect(container.querySelectorAll('.rdz-scene__ring')).toHaveLength(5);
+    expect(container.querySelector('.rdz-scene__icon.rdz-scene__m-spin [data-testid="g"]')).toBeTruthy();
+    expect(container.querySelectorAll('.rdz-scene__spark')).toHaveLength(4);
+    expect(container.querySelectorAll('.rdz-scene__orbit')).toHaveLength(2);
+    expect(container.querySelector('.rdz-scene__beam')).toBeTruthy();
+  });
+
+  it('Icon without children falls back to a core disc, badge only renders when added', () => {
+    const { container } = render(<Scene><Scene.Icon motion="float" /></Scene>);
+    expect(container.querySelector('.rdz-scene__core.rdz-scene__m-float')).toBeTruthy();
+    expect(container.querySelector('.rdz-scene__badge')).toBeNull();
+  });
+});
