@@ -1,0 +1,13 @@
+// Co-located styles for Fieldset. Uses Raditz tokens (var(--…)). Resets the
+// browser's default fieldset chrome and lays the group out as a labelled stack.
+/* ═══════════════════════ Fieldset ═══════════════════════ */
+.rdz-fieldset { min-width: 0; margin: 0; padding: 0; border: 0; }
+
+.rdz-fieldset__legend { padding: 0; font-family: var(--font-display); font-size: var(--fs-body); font-weight: var(--fw-semibold); color: var(--text); }
+
+.rdz-fieldset__hint { margin-top: var(--space-1); font-size: var(--fs-body-s); color: var(--text-soft); line-height: var(--lh-body); }
+
+.rdz-fieldset__body { display: flex; flex-direction: column; gap: var(--space-4); margin-top: var(--space-4); }
+
+/* Native `<fieldset disabled>` cascade — dim the whole group to match. */
+.rdz-fieldset:disabled { opacity: var(--disabled-opacity); }

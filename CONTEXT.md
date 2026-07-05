@@ -19,6 +19,18 @@ ancestor (transform/filter/backdrop-filter) would otherwise become its containin
 block; positions are passed to CSS as custom properties, not presentational styles.
 _Avoid_: portal, popup, layer, modal (those name topologies or mechanisms, not the module).
 
+**Presence** (exit animations, adopted from Base UI/Radix, 2026-07-05):
+`internal/usePresence(open, ref)` keeps an overlay mounted through its close
+animation. Overlay renders while `mounted` (not `open`) and sets `data-state`
+`open`/`closed` on the panel + container; each surface's stylesheet keys an exit
+animation off `[data-state="closed"]` (the `rdz*Out` keyframes in `_shared.scss`),
+and the hook unmounts once the panel's animations finish — or immediately if there
+are none (jsdom/SSR) or reduced-motion collapses them. Intent-driven behaviour
+(scroll-lock, focus, dismissal) still keys off `open` and releases the instant a
+close is requested; only the visual lingers. Menu focus-return guards therefore
+also reclaim focus when it's still inside the *closing* menu, not only when
+stranded on `<body>`.
+
 **Topology**:
 Which shape an **Overlay** takes, selected by its `position`: `centered` and `side`
 are *modal* topologies (scrim + scroll-lock + focus-trap); `anchored` and `point`
@@ -695,7 +707,7 @@ title or an unknown category blocks a release) and the test suite
 
 The **13 categories** (each crisp + non-overlapping; counts from the validator):
 - **actions** (5) — controls that act on activation: Button, IconButton, CopyButton, Toggle, ToggleGroup.
-- **inputs** (23) — value entry bound to form state: Input/Textarea/Select/Combobox, Checkbox, Radio(+Group), Slider, Switch, NumberInput, the pickers (Calendar, DatePicker, DateRangePicker, Time/DateTime), Rating, Search, TagInput, Field, Form…
+- **inputs** (24) — value entry bound to form state: Input/Textarea/Select/Combobox, Checkbox, Radio(+Group), Slider, Switch, NumberInput, the pickers (Calendar, DatePicker, DateRangePicker, Time/DateTime), Rating, Search, TagInput, Field, Fieldset, Form…
 - **display** (7) — small non-interactive inline visuals: Badge, Pill, Chip, Timeline, CountUp, Icon, AccessibleIcon.
 - **feedback** (5) — status / progress / transient notices: Spinner, Skeleton, Progress, Toast, Banner.
 - **typography** (9) — text + screen-reader primitives: Heading, Text, Prose, Code, Kbd, Eyebrow, CheckList, Label, VisuallyHidden.
@@ -704,7 +716,7 @@ The **13 categories** (each crisp + non-overlapping; counts from the validator):
 - **overlay** (12) — floating/fixed layers (the Overlay adapter faces, incl. menus): Dialog, Drawer, BottomSheet, AlertDialog, Popover, HoverCard, CommandPalette, Tooltip, ContextMenu, DropdownMenu, Menubar, Lightbox.
 - **navigation** (9) — wayfinding: NavBar, NavigationMenu, Breadcrumb, Pagination, Tabs, Stepper, Tree, Toolbar, PageHeader.
 - **disclosure** (2) — show/hide in place: Accordion, Collapsible.
-- **data** (7) — viz + tables: DataTable, BarChart, LineChart, ScatterChart, Donut, Sparkline, Legend (shared empty-state via ChartEmpty).
+- **data** (8) — viz + tables: DataTable, BarChart, LineChart, ScatterChart, Donut, Sparkline, Legend (shared empty-state via ChartEmpty), Meter (scalar measurement gauge vs Progress's task completion; threshold `segments`).
 - **media** (3) — image/gallery content: Carousel, Gallery, Marquee.
 - **motion** (4) — entrance/animation primitives: Reveal, TextReveal, Animate (modular preset lib for any element), Scene (full-canvas animated card-thumbnail illustrations). (AnimatedIcon removed — superseded by Animate/Scene; Scene is the generic counterpart to the bespoke-scene [[surfaces]] Vignette.)
 

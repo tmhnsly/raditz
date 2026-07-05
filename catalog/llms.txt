@@ -34,7 +34,7 @@ and the hero background reaches the very top (no nav "band"). On an `image`+`scr
 text goes on-dark (white) automatically; use the `glass` or default (accent) button — and
 `secondary` now stays legible over media too, so no CTA goes invisible on a photo.
 
-170 exported components across 15 categories.
+172 exported components across 15 categories.
 
 ## utilities (CSS classes)
 
@@ -255,6 +255,28 @@ Examples (Storybook stories): Default, Empty, MultiSeries, Engagement
 Usage:
 ```tsx
 <LineChart />
+```
+
+### Meter
+Import: `import { Meter } from 'raditz'`
+
+Meter — a scalar measurement within a known range (disk usage, score, load), as distinct from {@link Progress } which tracks task completion. Renders a `role="meter"` with `aria-valuenow/min/max` and a formatted `aria-valuetext`; `segments` shift the fill colour across thresholds. Value-driven, not animated.
+
+Props:
+  - label?: ReactNode — Caption above the track.
+  - max?: number (default: 100) — Range ceiling.
+  - min?: number (default: 0) — Range floor.
+  - segments?: MeterSegment[] — Colour thresholds — the fill takes the tone of the first segment whose `to` the value hasn't exceeded (e.g. disk usage green → amber → red).
+  - showValue?: boolean | ((value: number, max: number) => ReactNode) (default: false) — Show the value on the right of the label. `true` prints `value/max`; pass a formatter for anything else (e.g. `(v) => `${v}%``).
+  - size?: "sm" | "md" (default: md) — Track thickness.
+  - tone?: "accent" | "neutral" | "info" | "success" | "warning" | "danger" (default: accent) — Fill tone (when no `segments` match).
+  - value: number — The measured value.
+
+Examples (Storybook stories): Default, Thresholds, Tones, CustomRange
+
+Usage:
+```tsx
+<Meter />
 ```
 
 ### ScatterChart
@@ -723,6 +745,23 @@ Examples (Storybook stories): Default, WithError
 Usage:
 ```tsx
 const result = useField();
+```
+
+### Fieldset
+Import: `import { Fieldset } from 'raditz'`
+
+Fieldset — groups related form controls under a `<legend>`, the native, accessible way to label a set of fields (address blocks, preference groups). `disabled` uses the browser's built-in fieldset cascade, so every control inside goes disabled without threading a prop through each one.
+
+Props:
+  - disabled?: boolean (default: false) — Disable the whole group. Native `<fieldset disabled>` cascades to every control inside — no per-control wiring.
+  - hint?: ReactNode — Supporting copy under the legend.
+  - legend?: ReactNode — Group heading, rendered as the `<legend>`.
+
+Examples (Storybook stories): Default, WithRadioGroup, Disabled
+
+Usage:
+```tsx
+<Fieldset />
 ```
 
 ### FileDropzone
@@ -1609,17 +1648,19 @@ Usage:
 ### Scene
 Import: `import { Scene } from 'raditz'`
 
-Scene — a modular, animated illustration that fills a card's thumbnail area, so you can make a card read at a glance without authoring bespoke SVG. Pick a `preset` (`pulse`, `orbit`, `bars`, `grid`, `constellation`, `route`, `burst`, `stack`, …); it composes a small looping scene from layered marks, scaled to the canvas (container units), tinted by `bg` / `tone`, and paused under `prefers-reduced-motion`. Self-sizing (`ratio`) by default, or `fill` a positioned parent — including a {@link Vignette } for scroll/hover replay. The scene is decorative (`aria-hidden`); give the card a real text label.
+Scene — an animated illustration that fills a card's thumbnail area. Most presets frame a hero `icon` (any react-icons glyph) with tasteful animated furniture — an expanding `rings` / `flash` glow, popping `spark`s / `stars`, a `halo`, an `orbit`, plus an optional popping `badge` chip (`"+1 PT"`) — so you get a chork-style tile from any icon, no bespoke SVG. The rest (`bars`, `waves`, `grid`, `constellation`, `route`, `stack`) are self-contained illustrations. Marks scale to the canvas (container units), tint via `bg`/`tone`, and hold a static frame under `prefers-reduced-motion`. Self-sizing (`ratio`) or `fill` a positioned parent (incl. a {@link Vignette }). Decorative (`aria-hidden`) — give the card a real text label.
 
 Props:
+  - badge?: ReactNode — Optional chip that pops near the icon (e.g. `"+1 PT"`, `"NEW"`).
   - bg?: "none" | "soft" | "gradient" | "accent" | "secondary" (default: gradient) — Backdrop treatment.
-  - fill?: boolean (default: false) — Fill a positioned parent (`inset: 0`) instead of self-sizing — e.g. inside a custom thumbnail box or a `Vignette`.
+  - fill?: boolean (default: false) — Fill a positioned parent (`inset: 0`) instead of self-sizing.
+  - icon?: ReactNode — Hero glyph for the icon-companion presets (a react-icons glyph, a Raditz `<Icon/>`, or raw SVG). Ignored by the standalone illustration presets.
   - paused?: boolean (default: false) — Freeze the animation.
-  - preset: "pulse" | "orbit" | "bars" | "grid" | "constellation" | "route" | "burst" | "stack" | "waves" | "rings" — Which scene to play.
+  - preset: enum — Which scene to play.
   - ratio?: string (default: 16 / 9) — Aspect ratio of the self-sizing canvas (ignored when `fill`).
   - tone?: string — Ink tint for the scene marks — any CSS colour / `var(--…)`. Defaults to the ink paired with `bg`.
 
-Examples (Storybook stories): FeatureCards, Backgrounds, Tinted, Square
+Examples (Storybook stories): IconTiles, Illustrations, Backgrounds, Tinted, Square
 
 Usage:
 ```tsx

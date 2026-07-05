@@ -18,3 +18,17 @@
 .rdz-overlay__panel[data-side="top"] { transform-origin: bottom center; }
 .rdz-overlay__panel[data-side="right"] { transform-origin: center left; }
 .rdz-overlay__panel[data-side="left"] { transform-origin: center right; }
+
+/* ── Exit animations ── usePresence holds the node mounted with data-state="closed"
+   until these finish, then unmounts it. Enter animations live with each surface;
+   these are the matching outs (keyframes in _shared.scss). Reduced motion collapses
+   the durations, so the exit is effectively instant there. */
+.rdz-overlay[data-state="closed"] .rdz-overlay__scrim { animation: rdzFadeOut var(--duration-base) var(--ease-standard) forwards; }
+.rdz-overlay__panel[data-state="closed"] { animation: rdzPopoverOut var(--duration-fast) var(--ease-accel) forwards; }
+.rdz-dialog[data-state="closed"], .rdz-cmdk[data-state="closed"] { animation: rdzPopOut var(--duration-base) var(--ease-accel) forwards; }
+.rdz-lightbox[data-state="closed"] { animation: rdzFadeOut var(--duration-fast) var(--ease-standard) forwards; }
+.rdz-drawer[data-side="right"][data-state="closed"] { animation: rdzDrawerROut var(--duration-base) var(--ease-accel) forwards; }
+.rdz-drawer[data-side="left"][data-state="closed"] { animation: rdzDrawerLOut var(--duration-base) var(--ease-accel) forwards; }
+.rdz-drawer[data-side="top"][data-state="closed"] { animation: rdzDrawerTOut var(--duration-base) var(--ease-accel) forwards; }
+.rdz-drawer[data-side="bottom"][data-state="closed"] { animation: rdzDrawerBOut var(--duration-base) var(--ease-accel) forwards; }
+.rdz-sheet[data-state="closed"] { animation: rdzDrawerBOut var(--duration-base) var(--ease-accel) forwards; }

@@ -9,6 +9,7 @@ import {
   useScrollLock,
   useOverlayPosition,
 } from './overlayHooks';
+import { usePresence } from './usePresence';
 import type { OverlayPosition } from './overlayHooks';
 
 export type { OverlayPosition } from './overlayHooks';
@@ -77,7 +78,13 @@ export function Overlay({
   const modal = position.kind === 'centered' || position.kind === 'side';
   const wantScrim = scrim ?? modal;
   const wantScrollLock = scrollLock ?? modal;
-  const pos = useOverlayPosition(panelRef, position, open);
+  // Stay mounted through the exit animation. Positioning tracks `mounted` (so an
+  // anchored panel keeps its place while it animates out); everything else keys
+  // off `open` (the intent) — scroll-lock, focus and dismissal release the
+  // instant a close is requested, only the visual lingers.
+  const { mounted, status } = usePresence(open, panelRef);
+  const dataState = status === 'open' ? 'open' : 'closed';
+  const pos = useOverlayPosition(panelRef, position, mounted);
 
   useScrollLock(open && wantScrollLock);
   useFocusTrap(panelRef, open && focus === 'trap');
@@ -99,7 +106,7 @@ export function Overlay({
     return () => { if (prev && prev.focus) prev.focus({ preventScroll: true }); };
   }, [open, focus, initialFocus]);
 
-  if (!open) return null;
+  if (!mounted) return null;
 
   // Anchored/point panels are positioned by --rdz-overlay-* custom properties that
   // useOverlayPosition writes IMPERATIVELY (so a scroll re-position doesn't wait on
@@ -116,6 +123,7 @@ export function Overlay({
       className={cx(anchored && 'rdz-overlay__panel', className)}
       aria-modal={focus === 'trap' ? true : undefined}
       data-side={pos.side}
+      data-state={dataState}
       data-ready={anchored ? (pos.ready ? 'true' : 'false') : undefined}
       style={panelStyle}
       {...rest}
@@ -130,7 +138,7 @@ export function Overlay({
       <div
         className={cx('rdz-overlay', position.kind === 'side' && 'rdz-overlay--drawer', containerClassName)}
         data-side={position.kind === 'side' ? position.side : undefined}
-        data-state="open"
+        data-state={dataState}
       >
         {wantScrim ? (
           <div className="rdz-overlay__scrim" onClick={dismissOnOutside ? onDismiss : undefined} />

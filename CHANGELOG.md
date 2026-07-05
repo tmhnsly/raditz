@@ -4,6 +4,18 @@ All notable changes to Raditz are recorded here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/); versions are git tags `vX.Y.Z`.
 
 ## [Unreleased]
+- **Overlay exit animations** (idea borrowed from Base UI/Radix): a new internal
+  `usePresence` keeps every overlay mounted through its close animation instead of
+  snapping out. Overlay now drives a `data-state` (`open`/`closed`) on the panel +
+  container, each surface has a matching `*Out` keyframe keyed on the closing
+  state (Dialog/AlertDialog/CommandPalette pop-out, Drawer/BottomSheet slide-out,
+  anchored menus/popovers/tooltips fade-scale, scrim fade), and the node unmounts
+  once its animations finish — instant under reduced motion / SSR. Behaviour
+  (scroll-lock, focus, dismissal) still releases the moment a close is requested.
+- **New components**: **`Meter`** (data) — a scalar measurement gauge with
+  `role="meter"`, `min`/`max`, threshold-coloured `segments`, distinct from
+  Progress's task completion; **`Fieldset`** (inputs) — a native `<legend>` group
+  whose `disabled` uses the browser fieldset cascade. Surface 104 → 106.
 - **Motion library** (replaces `AnimatedIcon`): **`Scene`** — animated
   card-thumbnail illustrations. Most presets frame a hero `icon` (any react-icons
   glyph) with tasteful animated furniture — a `flash`/`rings` glow + expanding

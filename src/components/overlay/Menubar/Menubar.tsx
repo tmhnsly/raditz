@@ -59,7 +59,8 @@ export function Menubar({ menus = [], className, open, defaultOpen = -1, onOpenC
     const i = lastOpen.current;
     lastOpen.current = -1;
     const active = document.activeElement;
-    if (active && active !== document.body) return;
+    // Stranded on <body>, or still inside the closing menu — reclaim for the trigger.
+    if (active && active !== document.body && !active.closest('[role="menu"]')) return;
     triggerRefs.current[i]?.focus({ preventScroll: true });
   }, [openIdx]);
 

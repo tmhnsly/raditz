@@ -1,0 +1,24 @@
+// Co-located styles for Meter. Uses Raditz tokens (var(--…)); the fill width
+// rides a custom property (data), the tone rides data-color.
+/* ═══════════════════════ Meter ═══════════════════════ */
+.rdz-meter { display: flex; flex-direction: column; gap: var(--space-2); width: 100%; --rdz-meter-h: 0.625rem; }
+
+.rdz-meter[data-size='sm'] { --rdz-meter-h: 0.375rem; }
+
+.rdz-meter__head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-3); font-size: var(--fs-body-s); }
+
+.rdz-meter__label { color: var(--text); font-weight: var(--fw-medium); }
+
+.rdz-meter__value { color: var(--text-soft); font-family: var(--font-mono); font-size: var(--fs-mono-xs); }
+
+.rdz-meter__track { height: var(--rdz-meter-h); border-radius: var(--radius-full); background: var(--surface-strong); overflow: hidden; }
+
+.rdz-meter__fill { height: 100%; width: var(--rdz-meter-pct, 0%); border-radius: inherit; background: var(--rdz-meter-color, var(--accent)); transition: width var(--duration-base) var(--ease-standard); }
+
+/* Tone → fill colour (shared status vocabulary). */
+.rdz-meter__fill[data-color='accent']  { --rdz-meter-color: var(--accent); }
+.rdz-meter__fill[data-color='neutral'] { --rdz-meter-color: var(--text-muted); }
+.rdz-meter__fill[data-color='info']    { --rdz-meter-color: var(--info); }
+.rdz-meter__fill[data-color='success'] { --rdz-meter-color: var(--success); }
+.rdz-meter__fill[data-color='warning'] { --rdz-meter-color: var(--warning); }
+.rdz-meter__fill[data-color='danger']  { --rdz-meter-color: var(--danger); }

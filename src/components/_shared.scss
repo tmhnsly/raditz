@@ -112,6 +112,23 @@
 
 @keyframes rdzDrawerB { from { transform: translateY(100%); } to { transform: none; } }
 
+/* Exit variants — the panel keeps mounted at `data-state="closed"` (usePresence)
+   until these finish, then unmounts. `to`-only, so each animates from the
+   surface's current resting frame; `forwards` holds the closed frame. */
+@keyframes rdzFadeOut { to { opacity: 0; } }
+
+@keyframes rdzPopOut { to { opacity: 0; transform: translateY(var(--motion-rise)) scale(var(--motion-pop)); } }
+
+@keyframes rdzPopoverOut { to { opacity: 0; transform: translateY(calc(-0.4 * var(--motion-rise))) scale(var(--motion-pop)); } }
+
+@keyframes rdzDrawerROut { to { transform: translateX(100%); } }
+
+@keyframes rdzDrawerLOut { to { transform: translateX(-100%); } }
+
+@keyframes rdzDrawerTOut { to { transform: translateY(-100%); } }
+
+@keyframes rdzDrawerBOut { to { transform: translateY(100%); } }
+
 @keyframes rdzShimmer { from { background-position: 100% 0; } to { background-position: 0 0; } }
 
 @keyframes rdzSpin { to { transform: rotate(360deg); } }

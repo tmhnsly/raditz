@@ -53,7 +53,10 @@ export function DropdownMenu({
     if (!wasOpen.current) return;
     wasOpen.current = false;
     const active = document.activeElement;
-    if (active && active !== document.body) return;
+    // Reclaim when focus is stranded on <body> OR still inside the (now closing,
+    // exit-animating) menu — the panel stays mounted through its close animation,
+    // so the focused menuitem lingers a beat before it unmounts.
+    if (active && active !== document.body && !active.closest('[role="menu"]')) return;
     const el = anchorRef.current?.querySelector<HTMLElement>(
       'a[href],button:not([disabled]),input:not([disabled]),[tabindex]:not([tabindex="-1"])',
     ) ?? anchorRef.current;

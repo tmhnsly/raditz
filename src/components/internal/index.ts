@@ -17,6 +17,7 @@ export * from './datetime';
 export * from './time';
 export * from './format';
 export * from './useReducedMotion';
+export * from './usePresence';
 export * from './useInView';
 export * from './useRevealState';
 export * from './useReplay';
