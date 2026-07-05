@@ -101,7 +101,9 @@ Two orthogonal axes, both resolving to the existing token triplets
   `'accent' | 'secondary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral'`
   — or any raw CSS colour string as an escape hatch (behaves like today's
   `tone`, ink-only). `secondary` maps to the accent-2 (gold) triplet; `neutral`
-  maps to the vendored Slate scale (`--slate-9/11/3`). Default `'accent'`.
+  rides the theme's neutral indirection ramp (`--neutral-9/11/3` — never a raw
+  Radix scale, so repointing the theme's neutral re-themes scenes too).
+  Default `'accent'`.
 - **`bg`** picks the treatment: `'none' | 'soft' | 'gradient' | 'solid'`.
   `gradient` washes with the tone's `-surface`; `solid` fills with the tone base
   and flips ink to `--on-<tone>`. (Today's `bg='accent'` → `solid`;
