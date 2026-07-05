@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { Icon } from '../../display/Icon/Icon';
 import type { IconName } from '../../display/Icon/Icon';
-import { cx } from '../../internal';
+import { cx, useRender } from '../../internal';
+import type { RenderProp } from '../../internal';
 
 export interface IconButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   /** @default "ghost" */
@@ -9,6 +10,9 @@ export interface IconButtonProps extends React.ButtonHTMLAttributes<HTMLButtonEl
   /** @default "md" */
   size?: 'sm' | 'md' | 'lg';
   href?: string;
+  /** Render *as* another element (e.g. a router `<Link>`), merging the styling +
+   *  data-attributes. Takes precedence over `href`. */
+  render?: RenderProp<{ variant: string; size: string }>;
   /** Icon registry name or node. */
   icon?: IconName | React.ReactNode;
   /** Required for accessibility. */
@@ -19,14 +23,17 @@ export interface IconButtonProps extends React.ButtonHTMLAttributes<HTMLButtonEl
 /**
  * Square, icon-only button. Always pass an `aria-label`. Provide the glyph via
  * the `icon` prop (a registry name) or as a child. `variant` matches Button's
- * weights (solid / soft / outline / ghost).
+ * weights. Renders a `<button>`, an `<a>` (`href`), or your `render` element.
  */
-export function IconButton({ variant = 'ghost', size = 'md', href, type = 'button', icon, className, children, ...rest }: IconButtonProps): React.ReactElement {
-  const cls = cx('rdz-icon-btn', className);
+export function IconButton({ variant = 'ghost', size = 'md', href, render, type = 'button', icon, className, children, ...rest }: IconButtonProps): React.ReactElement {
   const inner = typeof icon === 'string' ? <Icon name={icon as IconName} size="1.25em" /> : (icon || children);
-  if (href) {
-    const anchorRest = rest as React.AnchorHTMLAttributes<HTMLAnchorElement>;
-    return <a href={href} className={cls} data-variant={variant} data-size={size} {...anchorRest}>{inner}</a>;
-  }
-  return <button type={type} className={cls} data-variant={variant} data-size={size} {...rest}>{inner}</button>;
+  const ownProps = {
+    className: cx('rdz-icon-btn', className),
+    'data-variant': variant,
+    'data-size': size,
+    children: inner,
+    ...rest,
+  };
+  const target = render ?? (href ? <a href={href} /> : <button type={type} />);
+  return useRender({ render: target, props: ownProps, state: { variant, size } });
 }

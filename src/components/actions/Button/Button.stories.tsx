@@ -47,3 +47,20 @@ export const Sizes: Story = {
     </div>
   ),
 };
+
+export const AsElement: Story = {
+  name: 'render (compose as another element)',
+  render: () => (
+    <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', alignItems: 'center' }}>
+      {/* Swap the element while keeping the button's styling — e.g. a router
+          <Link>. Here a plain <a> stands in for one. */}
+      <Button render={<a href="https://example.com" target="_blank" rel="noreferrer" />} icon="link">
+        External link
+      </Button>
+      <Button variant="soft" render={<label htmlFor="file-x" />} icon="upload">
+        Upload (a &lt;label&gt;)
+      </Button>
+      <input id="file-x" type="file" hidden />
+    </div>
+  ),
+};

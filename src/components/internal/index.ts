@@ -28,3 +28,5 @@ export * from './ChartTip';
 export * from './ChartAxis';
 export * from './useGridFocus';
 export * from './useSearchableList';
+export * from './mergeProps';
+export * from './useRender';

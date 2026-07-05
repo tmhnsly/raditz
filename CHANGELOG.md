@@ -4,6 +4,14 @@ All notable changes to Raditz are recorded here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/); versions are git tags `vX.Y.Z`.
 
 ## [Unreleased]
+- **Element composition (`render` prop)** — the Base UI composition model, a
+  cleaner successor to `asChild`. `Button` / `IconButton` take a `render` prop (a
+  React element or `(props, state) => element`) to render *as* another element —
+  a router `<Link>`, a `<label>`, etc. — with the styling, data-attributes,
+  handlers and children merged onto it. Backed by internal `useRender` +
+  `mergeProps` / `composeRefs`, all re-exported from `raditz` so products can
+  build their own polymorphic components. Existing `href`/`<button>` behaviour is
+  unchanged (both now resolve through the one render path).
 - **Overlay exit animations** (idea borrowed from Base UI/Radix): a new internal
   `usePresence` keeps every overlay mounted through its close animation instead of
   snapping out. Overlay now drives a `data-state` (`open`/`closed`) on the panel +

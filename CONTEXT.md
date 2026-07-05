@@ -218,6 +218,16 @@ Cta/Newsletter email captures are real `<Input>`s (were hand-written `rdz-badge`
 - Accessible names ride native `aria-label` through the rest spread — never a
   bespoke `ariaLabel` prop (the charts' one was removed).
 - `size` is `'sm' | 'md' | 'lg'`.
+- **Element composition** (`render` prop, Base UI model, 2026-07-05): interactive
+  controls take an optional `render` — a React element or `(props, state) =>
+  element` — to swap the underlying element (a router `<Link>`, a `<label>`, …)
+  while the design-system class, data-attributes, handlers and children merge onto
+  it. Powered by internal `useRender` + `mergeProps`/`composeRefs` (className cx's,
+  style merges, matching handlers chain, refs compose, base children win). Button
+  and IconButton resolve their element through ONE path (`render` → `href` `<a>` →
+  `<button>`). `useRender`/`mergeProps`/`composeRefs` are re-exported from
+  `lib/hooks.ts` so products can build their own polymorphic components. Supersedes
+  reaching for `asChild`.
 - Overlay faces support BOTH modes: controlled `open`/`onOpenChange` and
   uncontrolled `defaultOpen` (Dialog/Drawer/AlertDialog/CommandPalette gained it;
   ContextMenu/Menubar gained the controlled side; Tooltip's hover state is
