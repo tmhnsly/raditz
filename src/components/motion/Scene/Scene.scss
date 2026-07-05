@@ -50,33 +50,34 @@ $scale: var(--motion-scale, 1);
   background: currentColor; color: var(--rdz-scene-badge-ink, var(--panel));
   font-family: var(--font-display); font-weight: var(--fw-bold); font-size: 7cqmin; line-height: 1; white-space: nowrap;
   box-shadow: var(--shadow-3); transform-origin: center;
-  animation: rdzScBadge calc(3.4s * #{$scale}) var(--ease-spring) infinite;
+  animation: rdzScBadge calc(0.5s * #{$scale}) var(--ease-spring) calc(0.35s * #{$scale}) 1 both;
 }
 
 /* ── flash — glow + two expanding rings + a pulsing icon ── */
 .rdz-scene[data-preset='flash'] .rdz-scene__icon, .rdz-scene[data-preset='flash'] .rdz-scene__core { animation: rdzScFlash calc(2.2s * #{$scale}) var(--ease-in-out) infinite; }
 .rdz-scene[data-preset='flash'] .rdz-scene__ring { animation: rdzScRing calc(2.2s * #{$scale}) var(--ease-decel) infinite; }
-.rdz-scene[data-preset='flash'] .rdz-scene__ring:nth-of-type(2) { animation-delay: calc(2.2s * #{$scale} * -0.5); }
+.rdz-scene[data-preset='flash'] .rdz-scene__ring--1 { animation-delay: calc(2.2s * #{$scale} * -0.5); }
 
 /* ── rings — a radar of concentric rings behind the icon ── */
 .rdz-scene[data-preset='rings'] .rdz-scene__ring { animation: rdzScRing calc(3s * #{$scale}) var(--ease-decel) infinite; }
-.rdz-scene[data-preset='rings'] .rdz-scene__ring:nth-of-type(1) { animation-delay: calc(3s * #{$scale} * -0.0); }
-.rdz-scene[data-preset='rings'] .rdz-scene__ring:nth-of-type(2) { animation-delay: calc(3s * #{$scale} * -0.75); }
-.rdz-scene[data-preset='rings'] .rdz-scene__ring:nth-of-type(3) { animation-delay: calc(3s * #{$scale} * -1.5); }
-.rdz-scene[data-preset='rings'] .rdz-scene__ring:nth-of-type(4) { animation-delay: calc(3s * #{$scale} * -2.25); }
+.rdz-scene[data-preset='rings'] .rdz-scene__ring--0 { animation-delay: calc(3s * #{$scale} * -0.0); }
+.rdz-scene[data-preset='rings'] .rdz-scene__ring--1 { animation-delay: calc(3s * #{$scale} * -0.75); }
+.rdz-scene[data-preset='rings'] .rdz-scene__ring--2 { animation-delay: calc(3s * #{$scale} * -1.5); }
+.rdz-scene[data-preset='rings'] .rdz-scene__ring--3 { animation-delay: calc(3s * #{$scale} * -2.25); }
 
 /* ── halo — a soft disc breathing behind the icon ── */
 /* (uses the shared .rdz-scene__halo animation above) */
 
 /* ── spark / stars — glyphs popping at the icon's corners ── */
-.rdz-scene__spark, .rdz-scene__star { position: absolute; z-index: 2; width: 12cqmin; height: 12cqmin; color: currentColor; opacity: 0; }
+.rdz-scene__spark, .rdz-scene__star { position: absolute; z-index: 2; color: currentColor; opacity: 0; }
 .rdz-scene__spark svg, .rdz-scene__star svg { width: 100%; height: 100%; display: block; }
-.rdz-scene[data-preset='spark'] .rdz-scene__spark { animation: rdzScTwinkle calc(2.2s * #{$scale}) var(--ease-in-out) infinite; }
-.rdz-scene[data-preset='stars'] .rdz-scene__star { animation: rdzScTwinkle calc(2.4s * #{$scale}) var(--ease-in-out) infinite; }
-.rdz-scene__spark:nth-of-type(1), .rdz-scene__star:nth-of-type(1) { top: 16%; left: 20%; animation-delay: calc(2.4s * #{$scale} * 0); }
-.rdz-scene__spark:nth-of-type(2), .rdz-scene__star:nth-of-type(2) { top: 12%; right: 18%; animation-delay: calc(2.4s * #{$scale} * 0.28); }
-.rdz-scene__spark:nth-of-type(3), .rdz-scene__star:nth-of-type(3) { bottom: 16%; left: 24%; animation-delay: calc(2.4s * #{$scale} * 0.56); }
-.rdz-scene__spark:nth-of-type(4), .rdz-scene__star:nth-of-type(4) { bottom: 14%; right: 22%; animation-delay: calc(2.4s * #{$scale} * 0.8); }
+.rdz-scene[data-preset='spark'] .rdz-scene__spark { animation: rdzScTwinkle calc(2.4s * #{$scale}) var(--ease-in-out) infinite; }
+.rdz-scene[data-preset='stars'] .rdz-scene__star { animation: rdzScTwinkle calc(2.6s * #{$scale}) var(--ease-in-out) infinite; }
+/* Asymmetric, top-right-led placement with varied sizes — reads as organic
+   sparkle, not a mechanical corner grid. */
+.rdz-scene__spark--0, .rdz-scene__star--0 { left: 60%; top: 8%;  width: 15cqmin; height: 15cqmin; animation-delay: calc(2.6s * #{$scale} * 0); }
+.rdz-scene__spark--1, .rdz-scene__star--1 { left: 16%; top: 28%; width: 9cqmin;  height: 9cqmin;  animation-delay: calc(2.6s * #{$scale} * 0.42); }
+.rdz-scene__spark--2, .rdz-scene__star--2 { left: 58%; top: 66%; width: 11cqmin; height: 11cqmin; animation-delay: calc(2.6s * #{$scale} * 0.72); }
 
 /* ── orbit — dots circling the icon ── */
 .rdz-scene__orbit { z-index: 0; border-radius: 50%; border: 0.4cqmin solid color-mix(in srgb, currentColor 26%, transparent); animation: rdzScSpin calc(8s * #{$scale}) linear infinite; }
@@ -100,10 +101,9 @@ $scale: var(--motion-scale, 1);
 .rdz-scene__bar:nth-child(7) { animation-delay: calc(1.6s * #{$scale} * -0.6); }
 
 /* ── waves — two out-of-phase sine lines drifting ── */
-.rdz-scene__wave { position: absolute; inset: 0; width: 100%; height: 100%; }
-.rdz-scene__wave path { stroke: currentColor; stroke-width: 2; stroke-linecap: round; vector-effect: non-scaling-stroke; }
-.rdz-scene__wave-a { animation: rdzScDrift calc(4s * #{$scale}) linear infinite; }
-.rdz-scene__wave-b { opacity: 0.45; animation: rdzScDrift calc(4s * #{$scale}) linear infinite reverse; }
+.rdz-scene__wave { position: absolute; inset: 0; width: 100%; height: 100%; transform-origin: center; animation: rdzScWave calc(3.6s * #{$scale}) linear infinite; }
+.rdz-scene__wave path { stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+.rdz-scene__wave-b { opacity: 0.4; }
 
 /* ── grid — cells lighting up in a diagonal sweep ── */
 .rdz-scene__grid { position: absolute; inset: 0; margin: auto; width: 52cqmin; height: 52cqmin; display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(4, 1fr); gap: 3cqmin; }
@@ -127,36 +127,40 @@ $scale: var(--motion-scale, 1);
 
 /* ── constellation — nodes + drawn links, twinkling ── */
 .rdz-scene__net { position: absolute; inset: 0; width: 100%; height: 100%; }
-.rdz-scene__net-lines path { stroke: currentColor; stroke-width: 1; opacity: 0.4; stroke-dasharray: 120; stroke-dashoffset: 120; vector-effect: non-scaling-stroke; animation: rdzScDraw calc(4s * #{$scale}) var(--ease-in-out) infinite; }
-.rdz-scene__node { fill: currentColor; transform-box: fill-box; transform-origin: center; animation: rdzScTwinkle calc(3s * #{$scale}) var(--ease-in-out) infinite; animation-delay: calc(3s * #{$scale} * (var(--i) * -0.18)); }
+.rdz-scene__net-lines path { stroke: currentColor; stroke-width: 1.2; opacity: 0.32; stroke-dasharray: 5 5; vector-effect: non-scaling-stroke; animation: rdzScFlow calc(1.8s * #{$scale}) linear infinite; }
+.rdz-scene__node { fill: currentColor; transform-box: fill-box; transform-origin: center; animation: rdzScNode calc(3s * #{$scale}) var(--ease-in-out) infinite; animation-delay: calc(3s * #{$scale} * (var(--i) * -0.22)); }
 
 /* ── route — a path drawing with a dot travelling it ── */
 .rdz-scene__route { position: absolute; inset: 0; width: 100%; height: 100%; }
-.rdz-scene__path { stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-dasharray: 120; stroke-dashoffset: 120; vector-effect: non-scaling-stroke; animation: rdzScDraw calc(3.6s * #{$scale}) var(--ease-in-out) infinite; }
-.rdz-scene__waypoint { fill: currentColor; opacity: 0.7; }
-.rdz-scene__mover { fill: currentColor; offset-path: path('M12 46 C 30 46 30 16 50 16 S 70 46 88 34'); animation: rdzScTravel calc(3.6s * #{$scale}) var(--ease-in-out) infinite; }
+.rdz-scene__path { stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; opacity: 0.5; stroke-dasharray: 6 6; vector-effect: non-scaling-stroke; animation: rdzScFlow calc(2.4s * #{$scale}) linear infinite; }
+.rdz-scene__waypoint { fill: currentColor; opacity: 0.75; }
+.rdz-scene__mover { fill: currentColor; offset-path: path('M12 46 C 30 46 30 16 50 16 S 70 46 88 34'); filter: drop-shadow(0 0 1.6cqmin currentColor); animation: rdzScTravel calc(3.4s * #{$scale}) var(--ease-in-out) infinite; }
 
 /* ── stack — sheets assembling into a pile ── */
-.rdz-scene__sheet { position: absolute; inset: 0; margin: auto; width: 46cqmin; height: 30cqmin; border-radius: 3cqmin; background: color-mix(in srgb, currentColor 22%, transparent); border: 0.6cqmin solid currentColor; animation: rdzScStack calc(3.2s * #{$scale}) var(--ease-standard) infinite; }
-.rdz-scene__sheet:nth-child(1) { animation-delay: calc(3.2s * #{$scale} * -0.0); }
-.rdz-scene__sheet:nth-child(2) { animation-delay: calc(3.2s * #{$scale} * -0.14); }
-.rdz-scene__sheet:nth-child(3) { animation-delay: calc(3.2s * #{$scale} * -0.28); }
+.rdz-scene__sheet { position: absolute; inset: 0; margin: auto; width: 46cqmin; height: 30cqmin; border-radius: 3cqmin; background: color-mix(in srgb, currentColor 20%, transparent); border: 0.6cqmin solid currentColor; transform: translate(var(--dx, 0), var(--dy, 0)) rotate(var(--rot, 0)); animation: rdzScFloat calc(3.4s * #{$scale}) var(--ease-in-out) infinite; }
+.rdz-scene__sheet--0 { --dx: -8cqmin; --dy: 6cqmin;  --rot: -5deg; animation-delay: calc(3.4s * #{$scale} * -0.0); }
+.rdz-scene__sheet--1 { --dx: 0;       --dy: 0;       --rot: 0deg;  animation-delay: calc(3.4s * #{$scale} * -1.1); }
+.rdz-scene__sheet--2 { --dx: 8cqmin;  --dy: -6cqmin; --rot: 5deg;  animation-delay: calc(3.4s * #{$scale} * -2.2); }
 
 /* ── Keyframes ── */
 @keyframes rdzScThrob   { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.14); } }
-@keyframes rdzScFlash   { 0%, 100% { transform: scale(1); filter: drop-shadow(0 0 1px transparent); } 50% { transform: scale(1.08); filter: drop-shadow(0 0 6cqmin color-mix(in srgb, currentColor 55%, transparent)); } }
-@keyframes rdzScRing    { 0% { transform: scale(0.7); opacity: 0.7; } 80%, 100% { transform: scale(2.1); opacity: 0; } }
+/* A quick flash early in the cycle (peak ~12%), then rest — the ring below is
+   timed to be born at that same beat so it reads as emanating FROM the flash. */
+@keyframes rdzScFlash   { 0% { transform: scale(1); filter: drop-shadow(0 0 0 transparent); } 12% { transform: scale(1.12); filter: drop-shadow(0 0 6cqmin color-mix(in srgb, currentColor 60%, transparent)); } 34%, 100% { transform: scale(1); filter: drop-shadow(0 0 0 transparent); } }
+/* Held invisible until ~10%, appears at the flash peak, then emanates out. */
+@keyframes rdzScRing    { 0%, 10% { transform: scale(0.7); opacity: 0; } 18% { opacity: 0.65; } 82%, 100% { transform: scale(2.2); opacity: 0; } }
 @keyframes rdzScHalo    { 0%, 100% { opacity: 0.15; transform: scale(0.85); } 50% { opacity: 0.7; transform: scale(1.05); } }
-@keyframes rdzScBadge   { 0% { transform: scale(0.4) translateY(6cqmin); opacity: 0; } 12% { transform: scale(1.12) translateY(0); opacity: 1; } 20%, 82% { transform: scale(1) translateY(0); opacity: 1; } 92% { transform: scale(1.08) translateY(0); } 100% { transform: scale(1) translateY(0); opacity: 1; } }
+@keyframes rdzScBadge   { 0% { transform: scale(0.4) translateY(6cqmin); opacity: 0; } 65% { transform: scale(1.1) translateY(0); opacity: 1; } 100% { transform: scale(1) translateY(0); opacity: 1; } }
 @keyframes rdzScTwinkle { 0%, 60%, 100% { opacity: 0; transform: scale(0.4) rotate(0); } 30% { opacity: 1; transform: scale(1) rotate(18deg); } }
 @keyframes rdzScSpin    { to { transform: rotate(360deg); } }
 @keyframes rdzScBob     { 0%, 100% { transform: translateY(3%) rotate(-2deg); } 50% { transform: translateY(-6%) rotate(2deg); } }
 @keyframes rdzScBar     { 0%, 100% { height: 24%; } 50% { height: 92%; } }
-@keyframes rdzScDrift   { to { transform: translateX(25%); } }
 @keyframes rdzScCell    { 0%, 70%, 100% { opacity: 0.18; transform: scale(0.9); } 35% { opacity: 1; transform: scale(1); } }
-@keyframes rdzScDraw    { 0% { stroke-dashoffset: 120; } 55%, 100% { stroke-dashoffset: 0; } }
 @keyframes rdzScTravel  { 0% { offset-distance: 0%; opacity: 0; } 12%, 88% { opacity: 1; } 100% { offset-distance: 100%; opacity: 0; } }
-@keyframes rdzScStack   { 0%, 100% { transform: translate(-14cqmin, 8cqmin) rotate(-6deg); opacity: 0; } 20%, 80% { transform: translate(0, 0) rotate(0); opacity: 1; } }
+@keyframes rdzScFlow    { to { stroke-dashoffset: -20; } }
+@keyframes rdzScNode    { 0%, 100% { opacity: 0.5; transform: scale(0.85); } 50% { opacity: 1; transform: scale(1.15); } }
+@keyframes rdzScFloat   { 0%, 100% { transform: translate(var(--dx, 0), var(--dy, 0)) rotate(var(--rot, 0)); } 50% { transform: translate(var(--dx, 0), calc(var(--dy, 0) - 3cqmin)) rotate(var(--rot, 0)); } }
+@keyframes rdzScWave    { 0% { transform: translateX(0) scaleY(0.85); } 50% { transform: translateX(-12.5%) scaleY(1.08); } 100% { transform: translateX(-25%) scaleY(0.85); } }
 
 @media (prefers-reduced-motion: reduce) {
   .rdz-scene__stage * { animation: none !important; }
@@ -164,8 +168,7 @@ $scale: var(--motion-scale, 1);
   .rdz-scene__glow, .rdz-scene__badge, .rdz-scene__node { opacity: 1; }
   .rdz-scene__halo { opacity: 0.4; }
   .rdz-scene__badge { transform: none; }
-  .rdz-scene__path, .rdz-scene__net-lines path { stroke-dashoffset: 0; }
   .rdz-scene__bar { height: 60%; }
   .rdz-scene__cell { opacity: 0.5; }
-  .rdz-scene__sheet { opacity: 1; transform: none; }
+  .rdz-scene__sheet { opacity: 1; }
 }

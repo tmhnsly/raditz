@@ -45,7 +45,7 @@ describe('Scene', () => {
     expect(flash.querySelector('.rdz-scene__glow')).toBeTruthy();
 
     const { container: spark } = render(<Scene preset="spark" icon={<svg />} />);
-    expect(spark.querySelectorAll('.rdz-scene__spark')).toHaveLength(4);
+    expect(spark.querySelectorAll('.rdz-scene__spark')).toHaveLength(3);
 
     const { container: bars } = render(<Scene preset="bars" />);
     expect(bars.querySelectorAll('.rdz-scene__bar')).toHaveLength(7);

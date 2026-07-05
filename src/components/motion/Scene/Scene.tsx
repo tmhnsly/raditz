@@ -47,8 +47,11 @@ export interface SceneProps extends Omit<React.HTMLAttributes<HTMLDivElement>, '
   paused?: boolean;
 }
 
+// Index-suffixed so per-mark rules work even when the marks share a parent with
+// other spans (icon/glow/badge) — `:nth-of-type` counts every sibling <span>, so
+// it can't target "the 2nd ring"; a `--0/--1/…` class can.
 const repeat = (n: number, cls: string) =>
-  Array.from({ length: n }, (_, i) => <span key={i} className={cls} />);
+  Array.from({ length: n }, (_, i) => <span key={i} className={`${cls} ${cls}--${i}`} />);
 
 /** A 4-point spark glyph. */
 const Spark = () => (
@@ -59,7 +62,7 @@ const Star = () => (
   <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 1.5l3 6.4 7 .9-5.2 4.8 1.4 6.9L12 17.9 5.8 20.5l1.4-6.9L2 8.8l7-.9z" /></svg>
 );
 const sparks = (n: number, cls: string, Glyph: React.FC) =>
-  Array.from({ length: n }, (_, i) => <span key={i} className={cls}><Glyph /></span>);
+  Array.from({ length: n }, (_, i) => <span key={i} className={`${cls} ${cls}--${i}`}><Glyph /></span>);
 
 function content(preset: ScenePreset, icon: React.ReactNode, badge: React.ReactNode): React.ReactNode {
   const chip = badge != null ? <span className="rdz-scene__badge">{badge}</span> : null;
@@ -77,9 +80,9 @@ function content(preset: ScenePreset, icon: React.ReactNode, badge: React.ReactN
     case 'halo':
       return (<><span className="rdz-scene__halo" />{hero}{chip}</>);
     case 'spark':
-      return (<>{hero}{sparks(4, 'rdz-scene__spark', Spark)}{chip}</>);
+      return (<>{hero}{sparks(3, 'rdz-scene__spark', Spark)}{chip}</>);
     case 'stars':
-      return (<>{hero}{sparks(4, 'rdz-scene__star', Star)}{chip}</>);
+      return (<>{hero}{sparks(3, 'rdz-scene__star', Star)}{chip}</>);
     case 'orbit':
       return (<>{Array.from({ length: 3 }, (_, i) => <span key={i} className="rdz-scene__orbit"><span className="rdz-scene__orbit-dot" /></span>)}{hero}{chip}</>);
     case 'pop':
