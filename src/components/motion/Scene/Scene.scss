@@ -117,10 +117,10 @@ $scale: var(--motion-scale, 1);
 .rdz-scene__bar:nth-child(6) { animation-delay: calc(1.6s * #{$scale} * -0.2); }
 .rdz-scene__bar:nth-child(7) { animation-delay: calc(1.6s * #{$scale} * -0.6); }
 
-/* ── waves — two out-of-phase sine lines drifting ── */
-.rdz-scene__wave { position: absolute; inset: 0; width: 100%; height: 100%; transform-origin: center; animation: rdzScWave calc(3.6s * #{$scale}) linear infinite; }
-.rdz-scene__wave path { stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; vector-effect: non-scaling-stroke; }
-.rdz-scene__wave-b { opacity: 0.4; }
+/* ── waves — one clean sine wave drifting over a soft signal fill ── */
+.rdz-scene__wave { position: absolute; inset: 0; width: 100%; height: 100%; animation: rdzScWave calc(3.8s * #{$scale}) linear infinite; }
+.rdz-scene__wave-line { stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; fill: none; vector-effect: non-scaling-stroke; }
+.rdz-scene__wave-fill { fill: currentColor; opacity: 0.1; }
 
 /* ── grid — cells lighting up in a diagonal sweep ── */
 .rdz-scene__grid { position: absolute; inset: 0; margin: auto; width: 52cqmin; height: 52cqmin; display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(4, 1fr); gap: 3cqmin; }
@@ -160,11 +160,12 @@ $scale: var(--motion-scale, 1);
 .rdz-scene__sheet--1 { --dx: 0;       --dy: 0;       --rot: 0deg;  animation-delay: calc(3.4s * #{$scale} * -1.1); }
 .rdz-scene__sheet--2 { --dx: 8cqmin;  --dy: -6cqmin; --rot: 5deg;  animation-delay: calc(3.4s * #{$scale} * -2.2); }
 
-/* ── trend — line draws up, area fades in, end-dot pops (5.5s cycle) ── */
+/* ── trend — persistent line + area; a glowing pulse rides up it, end-dot beats ── */
 .rdz-scene__trend { position: absolute; inset: 0; width: 100%; height: 100%; }
-.rdz-scene__trend-line { stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; vector-effect: non-scaling-stroke; stroke-dasharray: 1; stroke-dashoffset: 0; animation: rdzScTrendLine calc(5.5s * #{$scale}) var(--ease-in-out) infinite; }
-.rdz-scene__trend-area { fill: currentColor; opacity: 0.12; animation: rdzScTrendArea calc(5.5s * #{$scale}) var(--ease-in-out) infinite; }
-.rdz-scene__trend-dot  { fill: currentColor; transform-box: fill-box; transform-origin: center; animation: rdzScTrendDot calc(5.5s * #{$scale}) var(--ease-in-out) infinite; }
+.rdz-scene__trend-line { stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; fill: none; vector-effect: non-scaling-stroke; }
+.rdz-scene__trend-area { fill: currentColor; opacity: 0.12; }
+.rdz-scene__trend-pulse { fill: currentColor; filter: drop-shadow(0 0 1.6cqmin currentColor); offset-path: path('M10 48 C 26 46 34 36 50 32 S 74 20 90 14'); animation: rdzScTrendPulse calc(4s * #{$scale}) var(--ease-in-out) infinite; }
+.rdz-scene__trend-dot  { fill: currentColor; transform-box: fill-box; transform-origin: center; animation: rdzScThrob calc(2.4s * #{$scale}) var(--ease-in-out) infinite; }
 
 /* ── gauge — arc sweeps to 70%, glowing tip rides the arc (4.5s cycle) ── */
 .rdz-scene__gauge { position: absolute; inset: 0; width: 100%; height: 100%; }
@@ -249,10 +250,9 @@ $scale: var(--motion-scale, 1);
 @keyframes rdzScFlow    { to { stroke-dashoffset: -20; } }
 @keyframes rdzScNode    { 0%, 100% { opacity: 0.5; transform: scale(0.85); } 50% { opacity: 1; transform: scale(1.15); } }
 @keyframes rdzScFloat   { 0%, 100% { transform: translate(var(--dx, 0), var(--dy, 0)) rotate(var(--rot, 0)); } 50% { transform: translate(var(--dx, 0), calc(var(--dy, 0) - 3cqmin)) rotate(var(--rot, 0)); } }
-@keyframes rdzScWave    { 0% { transform: translateX(0) scaleY(0.85); } 50% { transform: translateX(-12.5%) scaleY(1.08); } 100% { transform: translateX(-25%) scaleY(0.85); } }
-@keyframes rdzScTrendLine { 0%, 6% { stroke-dashoffset: 1; opacity: 1; } 48%, 88% { stroke-dashoffset: 0; opacity: 1; } 96%, 100% { stroke-dashoffset: 0; opacity: 0; } }
-@keyframes rdzScTrendArea { 0%, 38% { opacity: 0; } 58%, 88% { opacity: 0.12; } 96%, 100% { opacity: 0; } }
-@keyframes rdzScTrendDot  { 0%, 44% { opacity: 0; transform: scale(0.4); } 52% { opacity: 1; transform: scale(1.2); } 58%, 88% { opacity: 1; transform: scale(1); } 96%, 100% { opacity: 0; } }
+/* one-wavelength drift (viewBox width 100, wavelength 25) → seamless loop */
+@keyframes rdzScWave    { to { transform: translateX(-25%); } }
+@keyframes rdzScTrendPulse { 0% { offset-distance: 0%; opacity: 0; } 12%, 82% { opacity: 1; } 100% { offset-distance: 100%; opacity: 0; } }
 @keyframes rdzScGauge     { 0%, 8% { stroke-dashoffset: 1; opacity: 1; } 50%, 86% { stroke-dashoffset: 0.3; opacity: 1; } 95%, 100% { stroke-dashoffset: 0.3; opacity: 0; } }
 @keyframes rdzScGaugeTip  { 0%, 8% { offset-distance: 0%; opacity: 0; } 14% { opacity: 1; } 50%, 86% { offset-distance: 70%; opacity: 1; } 95%, 100% { offset-distance: 70%; opacity: 0; } }
 @keyframes rdzScBubble  { 0% { opacity: 0; transform: scale(0.6); } 5% { opacity: 1; transform: scale(1.04); } 8%, 86% { opacity: 1; transform: scale(1); } 96%, 100% { opacity: 0; transform: scale(1); } }
@@ -283,5 +283,5 @@ $scale: var(--motion-scale, 1);
   .rdz-scene__skel { opacity: 0.35; }
   /* shield rests drawn; pins rest landed; transient flourishes stay hidden */
   .rdz-scene__pin { opacity: 1; transform: none; }
-  .rdz-scene__shield-scan, .rdz-scene__pin-ripple, .rdz-scene__pay-shine, .rdz-scene__pay-ring { opacity: 0; }
+  .rdz-scene__shield-scan, .rdz-scene__pin-ripple, .rdz-scene__pay-shine, .rdz-scene__pay-ring, .rdz-scene__trend-pulse { opacity: 0; }
 }

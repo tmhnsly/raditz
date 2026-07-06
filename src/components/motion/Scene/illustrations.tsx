@@ -16,12 +16,13 @@ export function SceneBars(): React.ReactElement {
   return <span className="rdz-scene__bars">{repeat(7, 'rdz-scene__bar')}</span>;
 }
 
-/** Two out-of-phase sine lines drifting. */
+/** One clean sine wave flowing across, over a soft signal fill. */
+const WAVE_D = 'M-25 20 Q -12.5 7 0 20 T 25 20 T 50 20 T 75 20 T 100 20 T 125 20';
 export function SceneWaves(): React.ReactElement {
   return (
     <svg className="rdz-scene__wave" viewBox="0 0 100 40" preserveAspectRatio="none" aria-hidden="true">
-      <path className="rdz-scene__wave-a" d="M-25 20 Q -12.5 4 0 20 T 25 20 T 50 20 T 75 20 T 100 20 T 125 20" fill="none" />
-      <path className="rdz-scene__wave-b" d="M-25 20 Q -12.5 36 0 20 T 25 20 T 50 20 T 75 20 T 100 20 T 125 20" fill="none" />
+      <path className="rdz-scene__wave-fill" d={`${WAVE_D} L 125 40 L -25 40 Z`} />
+      <path className="rdz-scene__wave-line" d={WAVE_D} fill="none" />
     </svg>
   );
 }
@@ -64,12 +65,15 @@ export function SceneStack(): React.ReactElement {
 
 /* ── new bespoke scenes (marks filled in per-scene tasks) ── */
 
-/** Line chart drawing itself upward — soft area fill, pulsing end-dot. */
+/** A settled trend line — persistent line + area, a glowing pulse rides up it,
+ *  the end-dot beats. Always on the canvas (no redraw-from-blank). */
+const TREND_D = 'M10 48 C 26 46 34 36 50 32 S 74 20 90 14';
 export function SceneTrend(): React.ReactElement {
   return (
     <svg className="rdz-scene__trend" viewBox="0 0 100 60" aria-hidden="true">
-      <path className="rdz-scene__trend-area" d="M10 48 C 26 46 34 36 50 32 S 74 20 90 14 L 90 52 L 10 52 Z" />
-      <path className="rdz-scene__trend-line" pathLength={1} d="M10 48 C 26 46 34 36 50 32 S 74 20 90 14" fill="none" />
+      <path className="rdz-scene__trend-area" d={`${TREND_D} L 90 52 L 10 52 Z`} />
+      <path className="rdz-scene__trend-line" d={TREND_D} fill="none" />
+      <circle className="rdz-scene__trend-pulse" r="2.4" />
       <circle className="rdz-scene__trend-dot" cx="90" cy="14" r="3.2" />
     </svg>
   );
