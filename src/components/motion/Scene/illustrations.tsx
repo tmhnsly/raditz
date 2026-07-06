@@ -131,15 +131,19 @@ export function SceneGauge(): React.ReactElement {
 
 const SHIELD_D = 'M50 8 L70 15 V 32 C 70 44 61 52 50 56 C 39 52 30 44 30 32 V 15 Z';
 
-/** Shield outline draws on, check lands, one soft scan pass. */
+/** A persistent verified shield (fill + outline + check) with a periodic scan
+ *  sweep — always on the canvas, so it never blanks between loops. */
 export function SceneShield(): React.ReactElement {
-  const clipId = React.useId();
+  // Sanitise the id (useId yields ':r0:'-style colons — safe for CSS id refs in
+  // modern browsers, but the strip is cheap insurance for SVG clip references).
+  const clipId = React.useId().replace(/:/g, '');
   return (
     <svg className="rdz-scene__shield" viewBox="0 0 100 60" aria-hidden="true">
       <clipPath id={clipId}><path d={SHIELD_D} /></clipPath>
-      <path className="rdz-scene__shield-outline" pathLength={1} d={SHIELD_D} fill="none" />
-      <rect className="rdz-scene__shield-scan" clipPath={`url(#${clipId})`} x="28" y="4" width="44" height="9" />
-      <path className="rdz-scene__shield-check" pathLength={1} d="M42 32 L48 38 L59 26" fill="none" />
+      <path className="rdz-scene__shield-fill" d={SHIELD_D} />
+      <path className="rdz-scene__shield-outline" d={SHIELD_D} fill="none" />
+      <path className="rdz-scene__shield-check" d="M42 32 L48 38 L59 26" fill="none" />
+      <rect className="rdz-scene__shield-scan" clipPath={`url(#${clipId})`} x="26" y="6" width="48" height="8" />
     </svg>
   );
 }

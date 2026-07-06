@@ -149,7 +149,8 @@ $scale: var(--motion-scale, 1);
 
 /* ── route — a path drawing with a dot travelling it ── */
 .rdz-scene__route { position: absolute; inset: 0; width: 100%; height: 100%; }
-.rdz-scene__path { stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; opacity: 0.5; stroke-dasharray: 6 6; vector-effect: non-scaling-stroke; animation: rdzScFlow calc(2.4s * #{$scale}) linear infinite; }
+/* dasharray period (5+5=10) divides the rdzScFlow offset (-20) → seamless loop */
+.rdz-scene__path { stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; opacity: 0.5; stroke-dasharray: 5 5; vector-effect: non-scaling-stroke; animation: rdzScFlow calc(2.4s * #{$scale}) linear infinite; }
 .rdz-scene__waypoint { fill: currentColor; opacity: 0.75; }
 .rdz-scene__mover { fill: currentColor; offset-path: path('M12 46 C 30 46 30 16 50 16 S 70 46 88 34'); filter: drop-shadow(0 0 1.6cqmin currentColor); animation: rdzScTravel calc(3.4s * #{$scale}) var(--ease-in-out) infinite; }
 
@@ -202,12 +203,14 @@ $scale: var(--motion-scale, 1);
 .rdz-scene__skel--2 { animation-delay: calc(3.2s * #{$scale} * 0.3); }
 .rdz-scene__skel--3 { grid-column: 1 / -1; animation-delay: calc(3.2s * #{$scale} * 0.45); }
 
-/* ── shield — outline draws, check lands, one scan pass (7s loop) ── */
+/* ── shield — a persistent verified badge (fill + outline + check) with a
+      periodic scan sweep; always on the canvas so it never blanks between loops ── */
 .rdz-scene__shield { position: absolute; inset: 0; width: 100%; height: 100%; }
-.rdz-scene__shield-outline { stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; stroke-dasharray: 1; stroke-dashoffset: 0; animation: rdzScShieldDraw calc(7s * #{$scale}) var(--ease-in-out) infinite; }
-.rdz-scene__shield-check { stroke: currentColor; stroke-width: 2.8; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; stroke-dasharray: 1; stroke-dashoffset: 0; animation: rdzScCheckDraw calc(7s * #{$scale}) var(--ease-in-out) infinite; }
-/* scan rect translates in SVG user units (1px ≡ 1 unit in a 100×60 viewBox) */
-.rdz-scene__shield-scan { fill: color-mix(in srgb, currentColor 18%, transparent); opacity: 0; animation: rdzScScan calc(7s * #{$scale}) var(--ease-in-out) infinite; }
+.rdz-scene__shield-fill { fill: color-mix(in srgb, currentColor 13%, transparent); }
+.rdz-scene__shield-outline { stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; fill: none; animation: rdzScShieldPulse calc(4s * #{$scale}) var(--ease-in-out) infinite; }
+.rdz-scene__shield-check { stroke: currentColor; stroke-width: 2.8; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; fill: none; }
+/* scan rect sweeps top→bottom, clipped to the shield (SVG user units in a 100×60 viewBox) */
+.rdz-scene__shield-scan { fill: color-mix(in srgb, currentColor 24%, transparent); opacity: 0; animation: rdzScScan calc(3.6s * #{$scale}) var(--ease-in-out) infinite; }
 
 /* ── pins — staggered drop + landing ripple (6s loop) ── */
 .rdz-scene__pins { position: absolute; inset: 0; width: 100%; height: 100%; }
@@ -258,9 +261,8 @@ $scale: var(--motion-scale, 1);
 @keyframes rdzScBlink   { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
 @keyframes rdzScTermOut { 0%, 52% { opacity: 0; transform: translateY(20%); } 60%, 90% { opacity: 1; transform: translateY(0); } 97%, 100% { opacity: 0; } }
 @keyframes rdzScSkel    { 0%, 100% { opacity: 0.15; } 50% { opacity: 0.45; } }
-@keyframes rdzScShieldDraw { 0%, 4% { stroke-dashoffset: 1; opacity: 1; } 34%, 88% { stroke-dashoffset: 0; opacity: 1; } 96%, 100% { stroke-dashoffset: 0; opacity: 0; } }
-@keyframes rdzScCheckDraw  { 0%, 36% { stroke-dashoffset: 1; opacity: 0; } 40% { opacity: 1; } 52%, 88% { stroke-dashoffset: 0; opacity: 1; } 96%, 100% { stroke-dashoffset: 0; opacity: 0; } }
-@keyframes rdzScScan       { 0%, 56% { opacity: 0; transform: translateY(0); } 62% { opacity: 1; } 78%, 100% { opacity: 0; transform: translateY(48px); } }
+@keyframes rdzScShieldPulse { 0%, 100% { opacity: 0.8; } 50% { opacity: 1; } }
+@keyframes rdzScScan       { 0%, 12% { opacity: 0; transform: translateY(0); } 26%, 60% { opacity: 0.9; } 74%, 100% { opacity: 0; transform: translateY(42px); } }
 @keyframes rdzScPinDrop    { 0%, 6% { opacity: 0; transform: translateY(-16%); } 14% { opacity: 1; transform: translateY(3%); } 18%, 86% { opacity: 1; transform: translateY(0); } 95%, 100% { opacity: 0; } }
 @keyframes rdzScPinRipple  { 0%, 14% { opacity: 0; transform: scale(0.2); } 20% { opacity: 0.5; } 42%, 100% { opacity: 0; transform: scale(1.7); } }
 @keyframes rdzScTapRing    { 0%, 55% { opacity: 0; transform: scale(0.4); } 62% { opacity: 0.7; } 85%, 100% { opacity: 0; transform: scale(1.5); } }
