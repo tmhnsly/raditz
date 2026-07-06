@@ -162,4 +162,15 @@ describe('Scene bespoke scenes', () => {
     expect(g.querySelector('.rdz-scene__gauge-fill')).toBeTruthy();
     expect(g.querySelector('.rdz-scene__gauge-tip')).toBeTruthy();
   });
+
+  it('chat pops bubbles with typing dots; terminal types with a caret; window shimmers skeletons', () => {
+    const { container: c } = render(<Scene preset="chat" />);
+    expect(c.querySelectorAll('.rdz-scene__bubble')).toHaveLength(3);
+    expect(c.querySelectorAll('.rdz-scene__chat-dot')).toHaveLength(3);
+    const { container: t } = render(<Scene preset="terminal" />);
+    expect(t.querySelector('.rdz-scene__term-caret')).toBeTruthy();
+    expect(t.querySelector('.rdz-scene__frame-bar')).toBeTruthy();
+    const { container: w } = render(<Scene preset="window" />);
+    expect(w.querySelectorAll('.rdz-scene__skel')).toHaveLength(4);
+  });
 });

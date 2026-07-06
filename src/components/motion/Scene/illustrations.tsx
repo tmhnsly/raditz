@@ -77,17 +77,45 @@ export function SceneTrend(): React.ReactElement {
 
 /** Message bubbles popping in, typing-dots on the last. */
 export function SceneChat(): React.ReactElement {
-  return <span className="rdz-scene__chat" />;
+  return (
+    <span className="rdz-scene__chat">
+      <span className="rdz-scene__bubble rdz-scene__bubble--0" />
+      <span className="rdz-scene__bubble rdz-scene__bubble--1" />
+      <span className="rdz-scene__bubble rdz-scene__bubble--2">
+        <span className="rdz-scene__chat-dot" /><span className="rdz-scene__chat-dot" /><span className="rdz-scene__chat-dot" />
+      </span>
+    </span>
+  );
 }
 
 /** Window chrome + a prompt line typing with a blinking caret. */
 export function SceneTerminal(): React.ReactElement {
-  return <span className="rdz-scene__frame rdz-scene__frame--terminal" />;
+  return (
+    <span className="rdz-scene__frame rdz-scene__frame--terminal">
+      <span className="rdz-scene__frame-bar"><span /><span /><span /></span>
+      <span className="rdz-scene__term-line">
+        <span className="rdz-scene__term-prompt" />
+        <span className="rdz-scene__term-text" />
+        <span className="rdz-scene__term-caret" />
+      </span>
+      <span className="rdz-scene__term-out" />
+    </span>
+  );
 }
 
 /** Browser frame with skeleton content blocks shimmering in. */
 export function SceneWindow(): React.ReactElement {
-  return <span className="rdz-scene__frame rdz-scene__frame--window" />;
+  return (
+    <span className="rdz-scene__frame rdz-scene__frame--window">
+      <span className="rdz-scene__frame-bar"><span /><span /><span /></span>
+      <span className="rdz-scene__win-body">
+        <span className="rdz-scene__skel rdz-scene__skel--0" />
+        <span className="rdz-scene__skel rdz-scene__skel--1" />
+        <span className="rdz-scene__skel rdz-scene__skel--2" />
+        <span className="rdz-scene__skel rdz-scene__skel--3" />
+      </span>
+    </span>
+  );
 }
 
 /** Arc meter sweeping to ~70% with a glowing tip. */

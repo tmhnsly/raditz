@@ -171,6 +171,37 @@ $scale: var(--motion-scale, 1);
 .rdz-scene__gauge-fill  { stroke: currentColor; stroke-width: 5; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 0.3; animation: rdzScGauge calc(4.5s * #{$scale}) var(--ease-in-out) infinite; }
 .rdz-scene__gauge-tip   { fill: currentColor; filter: drop-shadow(0 0 1.8cqmin currentColor); offset-path: path('M18 50 A 34 34 0 1 1 82 50'); offset-distance: 70%; animation: rdzScGaugeTip calc(4.5s * #{$scale}) var(--ease-in-out) infinite; }
 
+/* ── shared window chrome (terminal / window) ── */
+.rdz-scene__frame { position: absolute; inset: 0; margin: auto; width: 64cqmin; height: 46cqmin; border-radius: 3cqmin; border: 0.6cqmin solid color-mix(in srgb, currentColor 45%, transparent); background: color-mix(in srgb, currentColor 6%, transparent); display: flex; flex-direction: column; }
+.rdz-scene__frame-bar { display: flex; gap: 1.8cqmin; padding: 2.4cqmin 3cqmin; border-bottom: 0.4cqmin solid color-mix(in srgb, currentColor 25%, transparent); }
+.rdz-scene__frame-bar > span { width: 2.6cqmin; height: 2.6cqmin; border-radius: 50%; background: currentColor; opacity: 0.5; }
+
+/* ── chat — three bubbles pop in a 7s conversation loop ── */
+.rdz-scene__chat { position: absolute; inset: 0; margin: auto; width: 62cqmin; height: 44cqmin; }
+.rdz-scene__bubble { position: absolute; border-radius: 3.4cqmin; background: color-mix(in srgb, currentColor 18%, transparent); opacity: 0; animation: rdzScBubble calc(7s * #{$scale}) var(--ease-spring) infinite; }
+.rdz-scene__bubble--0 { left: 0; top: 0;    width: 58%; height: 24%; border-bottom-left-radius: 1cqmin; }
+.rdz-scene__bubble--1 { right: 0; top: 32%; width: 48%; height: 24%; border-bottom-right-radius: 1cqmin; background: color-mix(in srgb, currentColor 85%, transparent); transform-origin: bottom right; animation-delay: calc(7s * #{$scale} * 0.14); }
+.rdz-scene__bubble--2 { left: 0; bottom: 0; width: 40%; height: 26%; border-bottom-left-radius: 1cqmin; display: inline-flex; align-items: center; justify-content: center; gap: 2cqmin; animation-delay: calc(7s * #{$scale} * 0.3); }
+.rdz-scene__bubble--0, .rdz-scene__bubble--2 { transform-origin: bottom left; }
+.rdz-scene__chat-dot { width: 2.6cqmin; height: 2.6cqmin; border-radius: 50%; background: currentColor; animation: rdzScChatDot calc(1.2s * #{$scale}) var(--ease-in-out) infinite; }
+.rdz-scene__chat-dot:nth-child(2) { animation-delay: calc(1.2s * #{$scale} * 0.2); }
+.rdz-scene__chat-dot:nth-child(3) { animation-delay: calc(1.2s * #{$scale} * 0.4); }
+
+/* ── terminal — prompt types, caret blinks, an output line lands (6s loop) ── */
+.rdz-scene__term-line { display: flex; align-items: center; gap: 1.8cqmin; padding: 4cqmin 4cqmin 0; }
+.rdz-scene__term-prompt { width: 3cqmin; height: 3.6cqmin; background: currentColor; clip-path: polygon(0 0, 100% 50%, 0 100%); flex: none; }
+.rdz-scene__term-text { height: 3cqmin; border-radius: 0.8cqmin; background: color-mix(in srgb, currentColor 55%, transparent); width: 60%; animation: rdzScType calc(6s * #{$scale}) var(--ease-in-out) infinite; }
+.rdz-scene__term-caret { width: 1.4cqmin; height: 4cqmin; background: currentColor; animation: rdzScBlink calc(1s * #{$scale}) steps(1) infinite; flex: none; }
+.rdz-scene__term-out { margin: 3cqmin 4cqmin 0 8.8cqmin; height: 3cqmin; border-radius: 0.8cqmin; background: color-mix(in srgb, currentColor 25%, transparent); opacity: 0; animation: rdzScTermOut calc(6s * #{$scale}) var(--ease-in-out) infinite; }
+
+/* ── window — skeleton blocks shimmer in ── */
+.rdz-scene__win-body { position: relative; flex: 1; padding: 3cqmin; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 2fr 1fr; gap: 2.4cqmin; }
+.rdz-scene__skel { border-radius: 1.4cqmin; background: currentColor; opacity: 0.15; animation: rdzScSkel calc(3.2s * #{$scale}) var(--ease-in-out) infinite; }
+.rdz-scene__skel--0 { grid-column: 1 / -1; }
+.rdz-scene__skel--1 { animation-delay: calc(3.2s * #{$scale} * 0.15); }
+.rdz-scene__skel--2 { animation-delay: calc(3.2s * #{$scale} * 0.3); }
+.rdz-scene__skel--3 { grid-column: 1 / -1; animation-delay: calc(3.2s * #{$scale} * 0.45); }
+
 /* ── Keyframes ── */
 @keyframes rdzScThrob   { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.14); } }
 /* A quick flash early in the cycle (peak ~12%), then rest — the ring below is
@@ -198,6 +229,12 @@ $scale: var(--motion-scale, 1);
 @keyframes rdzScTrendDot  { 0%, 44% { opacity: 0; transform: scale(0.4); } 52% { opacity: 1; transform: scale(1.2); } 58%, 88% { opacity: 1; transform: scale(1); } 96%, 100% { opacity: 0; } }
 @keyframes rdzScGauge     { 0%, 8% { stroke-dashoffset: 1; opacity: 1; } 50%, 86% { stroke-dashoffset: 0.3; opacity: 1; } 95%, 100% { stroke-dashoffset: 0.3; opacity: 0; } }
 @keyframes rdzScGaugeTip  { 0%, 8% { offset-distance: 0%; opacity: 0; } 14% { opacity: 1; } 50%, 86% { offset-distance: 70%; opacity: 1; } 95%, 100% { offset-distance: 70%; opacity: 0; } }
+@keyframes rdzScBubble  { 0% { opacity: 0; transform: scale(0.6); } 5% { opacity: 1; transform: scale(1.04); } 8%, 86% { opacity: 1; transform: scale(1); } 96%, 100% { opacity: 0; transform: scale(1); } }
+@keyframes rdzScChatDot { 0%, 60%, 100% { opacity: 0.35; transform: translateY(0); } 30% { opacity: 1; transform: translateY(-30%); } }
+@keyframes rdzScType    { 0%, 8% { width: 0; } 46%, 90% { width: 60%; } 97%, 100% { width: 0; } }
+@keyframes rdzScBlink   { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+@keyframes rdzScTermOut { 0%, 52% { opacity: 0; transform: translateY(20%); } 60%, 90% { opacity: 1; transform: translateY(0); } 97%, 100% { opacity: 0; } }
+@keyframes rdzScSkel    { 0%, 100% { opacity: 0.15; } 50% { opacity: 0.45; } }
 
 @media (prefers-reduced-motion: reduce) {
   .rdz-scene__stage * { animation: none !important; }
@@ -210,4 +247,7 @@ $scale: var(--motion-scale, 1);
   .rdz-scene__sheet { opacity: 1; }
   /* trend rests fully drawn; gauge rests at 70% with the tip lit (base styles) */
   .rdz-scene__trend-dot, .rdz-scene__gauge-tip { opacity: 1; }
+  /* chat / terminal / window rest as a complete picture */
+  .rdz-scene__bubble, .rdz-scene__term-out { opacity: 1; transform: none; }
+  .rdz-scene__skel { opacity: 0.35; }
 }
