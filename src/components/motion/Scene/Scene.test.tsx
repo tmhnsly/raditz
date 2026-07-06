@@ -150,3 +150,16 @@ describe('Scene recipes', () => {
     expect(container.querySelector('.rdz-scene__badge')?.textContent).toBe('NEW');
   });
 });
+
+describe('Scene bespoke scenes', () => {
+  it('trend draws a line, area and end-dot; gauge has track, fill and tip', () => {
+    const { container: t } = render(<Scene preset="trend" />);
+    expect(t.querySelector('.rdz-scene__trend-line')).toBeTruthy();
+    expect(t.querySelector('.rdz-scene__trend-area')).toBeTruthy();
+    expect(t.querySelector('.rdz-scene__trend-dot')).toBeTruthy();
+    const { container: g } = render(<Scene preset="gauge" />);
+    expect(g.querySelector('.rdz-scene__gauge-track')).toBeTruthy();
+    expect(g.querySelector('.rdz-scene__gauge-fill')).toBeTruthy();
+    expect(g.querySelector('.rdz-scene__gauge-tip')).toBeTruthy();
+  });
+});

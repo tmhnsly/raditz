@@ -66,7 +66,13 @@ export function SceneStack(): React.ReactElement {
 
 /** Line chart drawing itself upward — soft area fill, pulsing end-dot. */
 export function SceneTrend(): React.ReactElement {
-  return <svg className="rdz-scene__trend" viewBox="0 0 100 60" aria-hidden="true" />;
+  return (
+    <svg className="rdz-scene__trend" viewBox="0 0 100 60" aria-hidden="true">
+      <path className="rdz-scene__trend-area" d="M10 48 C 26 46 34 36 50 32 S 74 20 90 14 L 90 52 L 10 52 Z" />
+      <path className="rdz-scene__trend-line" pathLength={1} d="M10 48 C 26 46 34 36 50 32 S 74 20 90 14" fill="none" />
+      <circle className="rdz-scene__trend-dot" cx="90" cy="14" r="3.2" />
+    </svg>
+  );
 }
 
 /** Message bubbles popping in, typing-dots on the last. */
@@ -86,7 +92,13 @@ export function SceneWindow(): React.ReactElement {
 
 /** Arc meter sweeping to ~70% with a glowing tip. */
 export function SceneGauge(): React.ReactElement {
-  return <svg className="rdz-scene__gauge" viewBox="0 0 100 60" aria-hidden="true" />;
+  return (
+    <svg className="rdz-scene__gauge" viewBox="0 0 100 60" aria-hidden="true">
+      <path className="rdz-scene__gauge-track" d="M18 50 A 34 34 0 1 1 82 50" fill="none" />
+      <path className="rdz-scene__gauge-fill" pathLength={1} d="M18 50 A 34 34 0 1 1 82 50" fill="none" />
+      <circle className="rdz-scene__gauge-tip" r="3.4" />
+    </svg>
+  );
 }
 
 /** Shield outline draws on, check lands, one soft scan pass. */

@@ -159,6 +159,18 @@ $scale: var(--motion-scale, 1);
 .rdz-scene__sheet--1 { --dx: 0;       --dy: 0;       --rot: 0deg;  animation-delay: calc(3.4s * #{$scale} * -1.1); }
 .rdz-scene__sheet--2 { --dx: 8cqmin;  --dy: -6cqmin; --rot: 5deg;  animation-delay: calc(3.4s * #{$scale} * -2.2); }
 
+/* ── trend — line draws up, area fades in, end-dot pops (5.5s cycle) ── */
+.rdz-scene__trend { position: absolute; inset: 0; width: 100%; height: 100%; }
+.rdz-scene__trend-line { stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; vector-effect: non-scaling-stroke; stroke-dasharray: 1; stroke-dashoffset: 0; animation: rdzScTrendLine calc(5.5s * #{$scale}) var(--ease-in-out) infinite; }
+.rdz-scene__trend-area { fill: currentColor; opacity: 0.12; animation: rdzScTrendArea calc(5.5s * #{$scale}) var(--ease-in-out) infinite; }
+.rdz-scene__trend-dot  { fill: currentColor; transform-box: fill-box; transform-origin: center; animation: rdzScTrendDot calc(5.5s * #{$scale}) var(--ease-in-out) infinite; }
+
+/* ── gauge — arc sweeps to 70%, glowing tip rides the arc (4.5s cycle) ── */
+.rdz-scene__gauge { position: absolute; inset: 0; width: 100%; height: 100%; }
+.rdz-scene__gauge-track { stroke: currentColor; stroke-width: 5; stroke-linecap: round; opacity: 0.16; }
+.rdz-scene__gauge-fill  { stroke: currentColor; stroke-width: 5; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 0.3; animation: rdzScGauge calc(4.5s * #{$scale}) var(--ease-in-out) infinite; }
+.rdz-scene__gauge-tip   { fill: currentColor; filter: drop-shadow(0 0 1.8cqmin currentColor); offset-path: path('M18 50 A 34 34 0 1 1 82 50'); offset-distance: 70%; animation: rdzScGaugeTip calc(4.5s * #{$scale}) var(--ease-in-out) infinite; }
+
 /* ── Keyframes ── */
 @keyframes rdzScThrob   { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.14); } }
 /* A quick flash early in the cycle (peak ~12%), then rest — the ring below is
@@ -181,6 +193,11 @@ $scale: var(--motion-scale, 1);
 @keyframes rdzScNode    { 0%, 100% { opacity: 0.5; transform: scale(0.85); } 50% { opacity: 1; transform: scale(1.15); } }
 @keyframes rdzScFloat   { 0%, 100% { transform: translate(var(--dx, 0), var(--dy, 0)) rotate(var(--rot, 0)); } 50% { transform: translate(var(--dx, 0), calc(var(--dy, 0) - 3cqmin)) rotate(var(--rot, 0)); } }
 @keyframes rdzScWave    { 0% { transform: translateX(0) scaleY(0.85); } 50% { transform: translateX(-12.5%) scaleY(1.08); } 100% { transform: translateX(-25%) scaleY(0.85); } }
+@keyframes rdzScTrendLine { 0%, 6% { stroke-dashoffset: 1; opacity: 1; } 48%, 88% { stroke-dashoffset: 0; opacity: 1; } 96%, 100% { stroke-dashoffset: 0; opacity: 0; } }
+@keyframes rdzScTrendArea { 0%, 38% { opacity: 0; } 58%, 88% { opacity: 0.12; } 96%, 100% { opacity: 0; } }
+@keyframes rdzScTrendDot  { 0%, 44% { opacity: 0; transform: scale(0.4); } 52% { opacity: 1; transform: scale(1.2); } 58%, 88% { opacity: 1; transform: scale(1); } 96%, 100% { opacity: 0; } }
+@keyframes rdzScGauge     { 0%, 8% { stroke-dashoffset: 1; opacity: 1; } 50%, 86% { stroke-dashoffset: 0.3; opacity: 1; } 95%, 100% { stroke-dashoffset: 0.3; opacity: 0; } }
+@keyframes rdzScGaugeTip  { 0%, 8% { offset-distance: 0%; opacity: 0; } 14% { opacity: 1; } 50%, 86% { offset-distance: 70%; opacity: 1; } 95%, 100% { offset-distance: 70%; opacity: 0; } }
 
 @media (prefers-reduced-motion: reduce) {
   .rdz-scene__stage * { animation: none !important; }
@@ -191,4 +208,6 @@ $scale: var(--motion-scale, 1);
   .rdz-scene__bar { height: 60%; }
   .rdz-scene__cell { opacity: 0.5; }
   .rdz-scene__sheet { opacity: 1; }
+  /* trend rests fully drawn; gauge rests at 70% with the tip lit (base styles) */
+  .rdz-scene__trend-dot, .rdz-scene__gauge-tip { opacity: 1; }
 }
