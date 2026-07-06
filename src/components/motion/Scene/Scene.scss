@@ -120,7 +120,9 @@ $scale: var(--motion-scale, 1);
 /* ── waves — one clean sine wave drifting over a soft signal fill. The svg is
       TWICE the container width (two identical periods); translating it by one
       period (-50% of its own width) scrolls seamlessly with no gap or jump. ── */
-.rdz-scene__wave { position: absolute; top: 0; left: 0; width: 200%; height: 100%; animation: rdzScWave calc(4.5s * #{$scale}) linear infinite; }
+/* max-width:none defeats the reset's media conformance (img,svg{max-width:100%})
+   — this svg MUST be 2× its container for the one-period translate to tile. */
+.rdz-scene__wave { position: absolute; top: 0; left: 0; width: 200%; max-width: none; height: 100%; animation: rdzScWave calc(4.5s * #{$scale}) linear infinite; }
 .rdz-scene__wave-line { stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; fill: none; vector-effect: non-scaling-stroke; }
 .rdz-scene__wave-fill { fill: currentColor; opacity: 0.1; }
 

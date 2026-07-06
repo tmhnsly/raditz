@@ -143,9 +143,9 @@ const SHIELD_D = 'M50 8 L70 15 V 32 C 70 44 61 52 50 56 C 39 52 30 44 30 32 V 15
 /** A persistent verified shield (fill + outline + check) with a periodic scan
  *  sweep — always on the canvas, so it never blanks between loops. */
 export function SceneShield(): React.ReactElement {
-  // Sanitise the id (useId yields ':r0:'-style colons — safe for CSS id refs in
-  // modern browsers, but the strip is cheap insurance for SVG clip references).
-  const clipId = React.useId().replace(/:/g, '');
+  // Sanitise the id for the url(#…) clip reference: React 18 useId yields
+  // ':r0:', React 19 '«r0»' — keep only url-fragment-safe characters.
+  const clipId = 'rdzsc-' + React.useId().replace(/[^a-zA-Z0-9-]/g, '');
   return (
     <svg className="rdz-scene__shield" viewBox="0 0 100 60" aria-hidden="true">
       <clipPath id={clipId}><path d={SHIELD_D} /></clipPath>
