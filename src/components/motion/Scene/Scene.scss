@@ -67,12 +67,12 @@ $scale: var(--motion-scale, 1);
 .rdz-scene__halo { z-index: 0; width: 44cqmin; height: 44cqmin; border-radius: 50%; background: radial-gradient(circle, color-mix(in srgb, currentColor 40%, transparent) 0%, transparent 70%); opacity: 0; animation: rdzScHalo calc(2.6s * #{$scale}) var(--ease-in-out) infinite; }
 .rdz-scene__halo--soft { --rdz-halo-max: 0.4; }
 
-/* ── icon motions (apply to __icon or the __core fallback) ── */
-.rdz-scene__m-flash { animation: rdzScFlash calc(2.2s * #{$scale}) var(--ease-in-out) infinite; }
-.rdz-scene__m-bob   { animation: rdzScBob   calc(3s   * #{$scale}) var(--ease-in-out) infinite; }
-.rdz-scene__m-pulse { animation: rdzScThrob calc(2.4s * #{$scale}) var(--ease-in-out) infinite; }
-.rdz-scene__m-spin  { animation: rdzScSpin  calc(14s  * #{$scale}) linear infinite; }
-.rdz-scene__m-float { animation: rdzScDrift calc(3.6s * #{$scale}) var(--ease-in-out) infinite; }
+/* ── icon motions — enumerated axis on data-motion (applies to __icon or the __core fallback) ── */
+.rdz-scene [data-motion='flash'] { animation: rdzScFlash calc(2.2s * #{$scale}) var(--ease-in-out) infinite; }
+.rdz-scene [data-motion='bob']   { animation: rdzScBob   calc(3s   * #{$scale}) var(--ease-in-out) infinite; }
+.rdz-scene [data-motion='pulse'] { animation: rdzScThrob calc(2.4s * #{$scale}) var(--ease-in-out) infinite; }
+.rdz-scene [data-motion='spin']  { animation: rdzScSpin  calc(14s  * #{$scale}) linear infinite; }
+.rdz-scene [data-motion='float'] { animation: rdzScDrift calc(3.6s * #{$scale}) var(--ease-in-out) infinite; }
 
 /* ── beam — one soft diagonal light sweep ── */
 .rdz-scene__beam { position: absolute; inset: 0; z-index: 0; background: linear-gradient(115deg, transparent 32%, color-mix(in srgb, currentColor 16%, transparent) 50%, transparent 68%); animation: rdzScBeam calc(4.5s * #{$scale}) var(--ease-in-out) infinite; }
@@ -92,18 +92,18 @@ $scale: var(--motion-scale, 1);
 .rdz-scene__spark { position: absolute; z-index: 2; color: currentColor; opacity: 0; animation: rdzScTwinkle calc(2.5s * #{$scale}) var(--ease-in-out) infinite; }
 .rdz-scene__spark svg { width: 100%; height: 100%; display: block; }
 /* Asymmetric, top-right-led placement with varied sizes — reads as organic
-   sparkle, not a mechanical corner grid. */
-.rdz-scene__spark--0 { left: 60%; top: 8%;  width: 15cqmin; height: 15cqmin; animation-delay: calc(2.5s * #{$scale} * 0); }
-.rdz-scene__spark--1 { left: 16%; top: 28%; width: 9cqmin;  height: 9cqmin;  animation-delay: calc(2.5s * #{$scale} * 0.42); }
-.rdz-scene__spark--2 { left: 58%; top: 66%; width: 11cqmin; height: 11cqmin; animation-delay: calc(2.5s * #{$scale} * 0.72); }
-.rdz-scene__spark--3 { left: 78%; top: 40%; width: 8cqmin;  height: 8cqmin;  animation-delay: calc(2.5s * #{$scale} * 0.2); }
-.rdz-scene__spark--4 { left: 30%; top: 72%; width: 10cqmin; height: 10cqmin; animation-delay: calc(2.5s * #{$scale} * 0.55); }
+   sparkle, not a mechanical corner grid. Slots ride data-i (compose-safe). */
+.rdz-scene__spark[data-i='0'] { left: 60%; top: 8%;  width: 15cqmin; height: 15cqmin; animation-delay: calc(2.5s * #{$scale} * 0); }
+.rdz-scene__spark[data-i='1'] { left: 16%; top: 28%; width: 9cqmin;  height: 9cqmin;  animation-delay: calc(2.5s * #{$scale} * 0.42); }
+.rdz-scene__spark[data-i='2'] { left: 58%; top: 66%; width: 11cqmin; height: 11cqmin; animation-delay: calc(2.5s * #{$scale} * 0.72); }
+.rdz-scene__spark[data-i='3'] { left: 78%; top: 40%; width: 8cqmin;  height: 8cqmin;  animation-delay: calc(2.5s * #{$scale} * 0.2); }
+.rdz-scene__spark[data-i='4'] { left: 30%; top: 72%; width: 10cqmin; height: 10cqmin; animation-delay: calc(2.5s * #{$scale} * 0.55); }
 
-/* ── orbit — dots circling the icon (index classes: compose-safe) ── */
+/* ── orbit — dots circling the icon (rings ride data-i: compose-safe) ── */
 .rdz-scene__orbit { z-index: 0; border-radius: 50%; border: 0.4cqmin solid color-mix(in srgb, currentColor 26%, transparent); animation: rdzScSpin calc(8s * #{$scale}) linear infinite; }
-.rdz-scene__orbit--0 { width: 46cqmin; height: 46cqmin; }
-.rdz-scene__orbit--1 { width: 68cqmin; height: 68cqmin; animation-duration: calc(11s * #{$scale}); animation-direction: reverse; }
-.rdz-scene__orbit--2 { width: 90cqmin; height: 90cqmin; animation-duration: calc(15s * #{$scale}); }
+.rdz-scene__orbit[data-i='0'] { width: 46cqmin; height: 46cqmin; }
+.rdz-scene__orbit[data-i='1'] { width: 68cqmin; height: 68cqmin; animation-duration: calc(11s * #{$scale}); animation-direction: reverse; }
+.rdz-scene__orbit[data-i='2'] { width: 90cqmin; height: 90cqmin; animation-duration: calc(15s * #{$scale}); }
 .rdz-scene__orbit-dot { position: absolute; top: -2.6cqmin; left: 50%; width: 5.2cqmin; height: 5.2cqmin; margin-left: -2.6cqmin; border-radius: 50%; background: currentColor; }
 
 /* ── bars — an equaliser ── */

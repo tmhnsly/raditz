@@ -54,16 +54,17 @@ or your own markup:
 ### Button
 Import: `import { Button } from 'raditz'`
 
-The primary action component. `variant` sets the visual weight, `size` the scale. Renders an `<a>` when `href` is set, otherwise a `<button>`. Pass `icon` / `iconTrailing` (a registry name or node) for auto-sized icons.
+The primary action component. `variant` sets the visual weight, `size` the scale. Renders a `<button>` by default, an `<a>` when `href` is set, or any element you pass via `render` (e.g. a framework `<Link>`) — the styling, data-attributes and handlers merge onto it. Pass `icon` / `iconTrailing` (a registry name or node) for auto-sized icons.
 
 Props:
   - href?: string — Render an anchor instead of a button.
   - icon?: ReactNode — Leading icon — a registry name or a node.
   - iconTrailing?: ReactNode — Trailing icon — a registry name or a node.
+  - render?: RenderProp<ButtonState> — Render *as* another element — e.g. a router `<Link>` — keeping the button's styling, data-attributes and handlers (Base UI-style composition). Takes precedence over `href`.
   - size?: "sm" | "md" | "lg" (default: md) — Size.
   - variant?: "primary" | "secondary" | "soft" | "outline" | "ghost" | "glass" (default: primary) — Visual weight.
 
-Examples (Storybook stories): Primary, Variants, Glass, Sizes
+Examples (Storybook stories): Primary, Variants, Glass, Sizes, AsElement
 
 Usage:
 ```tsx
@@ -93,12 +94,13 @@ Usage:
 ### IconButton
 Import: `import { IconButton } from 'raditz'`
 
-Square, icon-only button. Always pass an `aria-label`. Provide the glyph via the `icon` prop (a registry name) or as a child. `variant` matches Button's weights (solid / soft / outline / ghost).
+Square, icon-only button. Always pass an `aria-label`. Provide the glyph via the `icon` prop (a registry name) or as a child. `variant` matches Button's weights. Renders a `<button>`, an `<a>` (`href`), or your `render` element.
 
 Props:
   - aria-label: string — Required for accessibility.
   - href?: string
   - icon?: ReactNode — Icon registry name or node.
+  - render?: RenderProp<{ variant: string; size: string; }> — Render *as* another element (e.g. a router `<Link>`), merging the styling + data-attributes. Takes precedence over `href`.
   - size?: "sm" | "md" | "lg" (default: md)
   - variant?: "solid" | "soft" | "outline" | "ghost" | "glass" (default: ghost)
 
@@ -1361,16 +1363,19 @@ Exports:
 > Note: This is a utility/hook module, not a React component — do not render as JSX.
 
 ### hooks
-Import: `import { cx, splitText, useControllableState, useInView, useReducedMotion, useRevealState } from 'raditz'`
+Import: `import { composeRefs, cx, mergeProps, splitText, useControllableState, useInView, useReducedMotion, useRender, useRevealState } from 'raditz'`
 
 Utility module — see exports below.
 
 Exports:
+  - composeRefs
   - cx
+  - mergeProps
   - splitText
   - useControllableState
   - useInView
   - useReducedMotion
+  - useRender
   - useRevealState
 
 > Note: This is a utility/hook module, not a React component — do not render as JSX.
@@ -1648,23 +1653,25 @@ Usage:
 ### Scene
 Import: `import { Scene } from 'raditz'`
 
-Scene — an animated illustration that fills a card's thumbnail area. Most presets frame a hero `icon` (any react-icons glyph) with tasteful animated furniture — an expanding `rings` / `flash` glow, popping `spark`s / `stars`, a `halo`, an `orbit`, plus an optional popping `badge` chip (`"+1 PT"`) — so you get a chork-style tile from any icon, no bespoke SVG. The rest (`bars`, `waves`, `grid`, `constellation`, `route`, `stack`) are self-contained illustrations. Marks scale to the canvas (container units), tint via `bg`/`tone`, and hold a static frame under `prefers-reduced-motion`. Self-sizing (`ratio`) or `fill` a positioned parent (incl. a {@link Vignette }). Decorative (`aria-hidden`) — give the card a real text label.
+Canvas + compound layers — `<Scene preset="…"/>` recipes or compose from `Scene.X`.
 
 Props:
-  - badge?: ReactNode — Optional chip that pops near the icon (e.g. `"+1 PT"`, `"NEW"`).
-  - bg?: "none" | "soft" | "gradient" | "accent" | "secondary" (default: gradient) — Backdrop treatment.
+  - badge?: ReactNode — Optional chip near the icon (e.g. `"NEW"`) — never rendered unless supplied.
+  - bg?: "none" | "soft" | "gradient" | "solid" (default: 'gradient') — Backdrop treatment.
+  - children?: ReactNode — Compose your own scene from `Scene.X` layers.
   - fill?: boolean (default: false) — Fill a positioned parent (`inset: 0`) instead of self-sizing.
   - icon?: ReactNode — Hero glyph for the icon-companion presets (a react-icons glyph, a Raditz `<Icon/>`, or raw SVG). Ignored by the standalone illustration presets.
   - paused?: boolean (default: false) — Freeze the animation.
-  - preset: enum — Which scene to play.
-  - ratio?: string (default: 16 / 9) — Aspect ratio of the self-sizing canvas (ignored when `fill`).
-  - tone?: string — Ink tint for the scene marks — any CSS colour / `var(--…)`. Defaults to the ink paired with `bg`.
+  - preset?: enum — Which recipe to play.
+  - ratio?: string (default: '16 / 9') — Aspect ratio of the self-sizing canvas (ignored when `fill`).
+  - speed?: "slow" | "normal" | "fast" (default: 'normal') — Local tempo override.
+  - tone?: SceneTone (default: 'accent') — Hue family (semantic, token-driven) or a raw CSS colour (ink only).
 
-Examples (Storybook stories): IconTiles, Illustrations, Backgrounds, Tinted, Square
+Examples (Storybook stories): IconTiles, ProductScenes, DataScenes, Tones, Backgrounds, Composed, WithBadge, SquareRatio
 
 Usage:
 ```tsx
-<Scene />
+<Scene>…</Scene>
 ```
 
 ### TextReveal

@@ -728,7 +728,7 @@ The **13 categories** (each crisp + non-overlapping; counts from the validator):
 - **disclosure** (2) — show/hide in place: Accordion, Collapsible.
 - **data** (8) — viz + tables: DataTable, BarChart, LineChart, ScatterChart, Donut, Sparkline, Legend (shared empty-state via ChartEmpty), Meter (scalar measurement gauge vs Progress's task completion; threshold `segments`).
 - **media** (3) — image/gallery content: Carousel, Gallery, Marquee.
-- **motion** (4) — entrance/animation primitives: Reveal, TextReveal, Animate (modular preset lib for any element), Scene (full-canvas animated card-thumbnail illustrations). (AnimatedIcon removed — superseded by Animate/Scene; Scene is the generic counterpart to the bespoke-scene [[surfaces]] Vignette.)
+- **motion** (4) — entrance/animation primitives: Reveal, TextReveal, Animate (modular preset lib for any element), Scene (layered card-thumbnail primitives: ~23 presets — 9 icon companions incl. beam/drift + 14 illustrations incl. bespoke trend/chat/terminal/window/gauge/shield/pins/card — each a recipe over exported `Scene.X` layers, composable as children when no recipe fits; semantic `tone` (accent/secondary/success/warning/danger/info/neutral, raw-colour escape hatch) × `bg` treatment (none/soft/gradient/solid) over token triplets; `speed` scales `--motion-scale` locally; badge chips strictly opt-in; renders flush like an `<img>` — the card clips it). (AnimatedIcon removed — superseded by Animate/Scene; Scene is the generic counterpart to the bespoke-scene [[surfaces]] Vignette.)
 
 A component may sit under a different SHOWROOM top bucket via `TITLE_EXCEPTIONS` in the
 validator (only `layout/AppShell → Pages/App shell` today). The pre-reorg categories

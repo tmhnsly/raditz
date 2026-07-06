@@ -12,10 +12,11 @@ export type SceneIconMotion = 'none' | 'flash' | 'bob' | 'pulse' | 'spin' | 'flo
 
 /** Hero glyph (or a plain core disc when no glyph is given). */
 export function SceneIcon({ motion = 'none', children }: { motion?: SceneIconMotion; children?: React.ReactNode }): React.ReactElement {
-  const m = motion !== 'none' ? `rdz-scene__m-${motion}` : undefined;
+  // Enumerated axis → data attribute (house rule; see scripts/style-contract.test.mjs).
+  const m = motion !== 'none' ? motion : undefined;
   return children != null
-    ? <span className={cx('rdz-scene__icon', m)}>{children}</span>
-    : <span className={cx('rdz-scene__core', m)} />;
+    ? <span className="rdz-scene__icon" data-motion={m}>{children}</span>
+    : <span className="rdz-scene__core" data-motion={m} />;
 }
 
 /** Throbbing radial glow behind the hero. */
@@ -54,7 +55,7 @@ export function SceneSparks({ shape = 'spark', count = 3 }: { shape?: 'spark' | 
   return (
     <>
       {Array.from({ length: Math.min(count, 5) }, (_, i) => (
-        <span key={i} className={`rdz-scene__spark rdz-scene__spark--${i}`}><Glyph /></span>
+        <span key={i} className="rdz-scene__spark" data-i={i}><Glyph /></span>
       ))}
     </>
   );
@@ -65,7 +66,7 @@ export function SceneOrbit({ count = 3 }: { count?: number }): React.ReactElemen
   return (
     <>
       {Array.from({ length: Math.min(count, 3) }, (_, i) => (
-        <span key={i} className={`rdz-scene__orbit rdz-scene__orbit--${i}`}><span className="rdz-scene__orbit-dot" /></span>
+        <span key={i} className="rdz-scene__orbit" data-i={i}><span className="rdz-scene__orbit-dot" /></span>
       ))}
     </>
   );

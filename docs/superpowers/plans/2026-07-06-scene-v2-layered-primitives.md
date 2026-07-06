@@ -59,10 +59,10 @@ describe('Scene v2 canvas', () => {
   });
 
   it('raw-colour tone → inline --rdz-scene-ink, no data-tone', () => {
-    const { container } = render(<Scene preset="flash" tone="rebeccapurple" />);
+    const { container } = render(<Scene preset="flash" tone="var(--accent-2-ink)" />);
     const el = container.querySelector('.rdz-scene') as HTMLElement;
     expect(el.getAttribute('data-tone')).toBeNull();
-    expect(el.style.getPropertyValue('--rdz-scene-ink')).toBe('rebeccapurple');
+    expect(el.style.getPropertyValue('--rdz-scene-ink')).toBe('var(--accent-2-ink)');
   });
 
   it('speed sets data-speed only when not normal', () => {
@@ -193,12 +193,14 @@ export function Scene(props: SceneProps): React.ReactElement {
 .rdz-scene[data-bg='none']     { background: none; }
 .rdz-scene[data-bg='soft']     { background: var(--surface); }
 .rdz-scene[data-bg='gradient'] { background: linear-gradient(150deg, var(--rdz-scene-wash), color-mix(in srgb, var(--rdz-scene-wash) 45%, var(--bg))); }
-.rdz-scene[data-bg='solid']    { background: linear-gradient(150deg, var(--rdz-scene-solid), color-mix(in srgb, var(--rdz-scene-solid) 82%, var(--neutral-12))); --rdz-scene-ink: var(--rdz-scene-on); }
+/* theme-safe depth: a white-alpha sheen reads as a light source in BOTH themes
+   (mixing toward --neutral-12 would invert on theme toggle) */
+.rdz-scene[data-bg='solid']    { background: linear-gradient(150deg, var(--white-a5), transparent 55%) var(--rdz-scene-solid); --rdz-scene-ink: var(--rdz-scene-on); }
 ```
 
 Also: `.rdz-scene__stage { … color: var(--rdz-scene-ink); }` (was `--rdz-scene-color`), and delete the old `--rdz-scene-color` default + old `[data-bg='accent'|'secondary']` blocks. Run `grep -rn "rdz-scene-color" src/` — update any stragglers to `--rdz-scene-ink`.
 
-3d. `Scene.stories.tsx` — in `Backgrounds` change the array to `['gradient', 'solid', 'soft', 'none']`; in `Tinted` change `tone="var(--warning)"` → `tone="warning"`, `tone="var(--danger)"` → `tone="danger"`, `tone="var(--accent-2, var(--accent))"` → `tone="secondary"`. Update the existing test asserting `--rdz-scene-color`/`bg="accent"` accordingly (ratio/tone test now: `tone="rebeccapurple"` asserts `--rdz-scene-ink`).
+3d. `Scene.stories.tsx` — in `Backgrounds` change the array to `['gradient', 'solid', 'soft', 'none']`; in `Tinted` change `tone="var(--warning)"` → `tone="warning"`, `tone="var(--danger)"` → `tone="danger"`, `tone="var(--accent-2, var(--accent))"` → `tone="secondary"`. Update the existing test asserting `--rdz-scene-color`/`bg="accent"` accordingly (ratio/tone test now: `tone="var(--accent-2-ink)"` asserts `--rdz-scene-ink`).
 
 - [ ] **Step 4: Run tests to verify they pass**
 

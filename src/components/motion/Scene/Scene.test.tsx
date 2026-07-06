@@ -112,7 +112,7 @@ describe('Scene layers', () => {
     );
     expect(container.querySelector('.rdz-scene__glow--soft')).toBeTruthy();
     expect(container.querySelectorAll('.rdz-scene__ring')).toHaveLength(5);
-    expect(container.querySelector('.rdz-scene__icon.rdz-scene__m-spin [data-testid="g"]')).toBeTruthy();
+    expect(container.querySelector('.rdz-scene__icon[data-motion="spin"] [data-testid="g"]')).toBeTruthy();
     expect(container.querySelectorAll('.rdz-scene__spark')).toHaveLength(4);
     expect(container.querySelectorAll('.rdz-scene__orbit')).toHaveLength(2);
     expect(container.querySelector('.rdz-scene__beam')).toBeTruthy();
@@ -120,7 +120,7 @@ describe('Scene layers', () => {
 
   it('Icon without children falls back to a core disc, badge only renders when added', () => {
     const { container } = render(<Scene><Scene.Icon motion="float" /></Scene>);
-    expect(container.querySelector('.rdz-scene__core.rdz-scene__m-float')).toBeTruthy();
+    expect(container.querySelector('.rdz-scene__core[data-motion="float"]')).toBeTruthy();
     expect(container.querySelector('.rdz-scene__badge')).toBeNull();
   });
 });
@@ -141,7 +141,7 @@ describe('Scene recipes', () => {
     expect(beam.querySelector('.rdz-scene__beam')).toBeTruthy();
     const { container: drift } = render(<Scene preset="drift" icon={<svg />} />);
     expect(drift.querySelector('.rdz-scene__halo--soft')).toBeTruthy();
-    expect(drift.querySelector('.rdz-scene__icon.rdz-scene__m-float')).toBeTruthy();
+    expect(drift.querySelector('.rdz-scene__icon[data-motion="float"]')).toBeTruthy();
   });
 
   it('illustrations exist as layers too', () => {
