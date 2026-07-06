@@ -16,12 +16,14 @@ export function SceneBars(): React.ReactElement {
   return <span className="rdz-scene__bars">{repeat(7, 'rdz-scene__bar')}</span>;
 }
 
-/** One clean sine wave flowing across, over a soft signal fill. */
-const WAVE_D = 'M-25 20 Q -12.5 7 0 20 T 25 20 T 50 20 T 75 20 T 100 20 T 125 20';
+/** One clean sine wave flowing across, over a soft signal fill. A doubled-width
+ *  tile (two identical periods) translated by exactly one period → seamless loop
+ *  with no gap and no phase jump. */
+const WAVE_D = 'M0 20 Q 25 7 50 20 T 100 20 T 150 20 T 200 20';
 export function SceneWaves(): React.ReactElement {
   return (
-    <svg className="rdz-scene__wave" viewBox="0 0 100 40" preserveAspectRatio="none" aria-hidden="true">
-      <path className="rdz-scene__wave-fill" d={`${WAVE_D} L 125 40 L -25 40 Z`} />
+    <svg className="rdz-scene__wave" viewBox="0 0 200 40" preserveAspectRatio="none" aria-hidden="true">
+      <path className="rdz-scene__wave-fill" d={`${WAVE_D} L 200 40 L 0 40 Z`} />
       <path className="rdz-scene__wave-line" d={WAVE_D} fill="none" />
     </svg>
   );
@@ -32,15 +34,18 @@ export function SceneGrid(): React.ReactElement {
   return <span className="rdz-scene__grid">{repeat(16, 'rdz-scene__cell')}</span>;
 }
 
-/** Nodes + drawn links, twinkling. */
+/** Nodes spread across the canvas, linked and twinkling. */
 export function SceneConstellation(): React.ReactElement {
+  const nodes: [number, number][] = [[16, 24], [40, 14], [64, 22], [86, 16], [30, 46], [68, 46]];
   return (
     <svg className="rdz-scene__net" viewBox="0 0 100 60" aria-hidden="true">
       <g className="rdz-scene__net-lines" fill="none">
-        <path d="M18 42 L38 20 L60 40 L82 16" /><path d="M38 20 L54 12 L82 16" /><path d="M18 42 L54 12" />
+        <path d="M16 24 L40 14 L64 22 L86 16" />
+        <path d="M16 24 L30 46 L68 46 L64 22" />
+        <path d="M40 14 L30 46" />
       </g>
-      {[[18, 42], [38, 20], [54, 12], [60, 40], [82, 16]].map(([x, y], i) => (
-        <circle key={i} className="rdz-scene__node" cx={x} cy={y} r="3.4" style={{ '--i': i } as React.CSSProperties} />
+      {nodes.map(([x, y], i) => (
+        <circle key={i} className="rdz-scene__node" cx={x} cy={y} r="3.2" style={{ '--i': i } as React.CSSProperties} />
       ))}
     </svg>
   );
