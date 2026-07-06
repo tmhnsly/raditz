@@ -124,3 +124,29 @@ describe('Scene layers', () => {
     expect(container.querySelector('.rdz-scene__badge')).toBeNull();
   });
 });
+
+describe('Scene recipes', () => {
+  it('presets render the same marks as their layer recipes', () => {
+    const { container: preset } = render(<Scene preset="rings" icon={<svg />} />);
+    const { container: composed } = render(
+      <Scene><Scene.Glow strength="soft" /><Scene.Rings count={4} /><Scene.Icon><svg /></Scene.Icon></Scene>,
+    );
+    const marks = (c: HTMLElement) =>
+      Array.from(c.querySelectorAll('.rdz-scene__stage *')).map((el) => (el as HTMLElement).className).sort();
+    expect(marks(preset as HTMLElement)).toEqual(marks(composed as HTMLElement));
+  });
+
+  it('new companion presets: beam sweeps, drift floats with a soft halo', () => {
+    const { container: beam } = render(<Scene preset="beam" icon={<svg />} />);
+    expect(beam.querySelector('.rdz-scene__beam')).toBeTruthy();
+    const { container: drift } = render(<Scene preset="drift" icon={<svg />} />);
+    expect(drift.querySelector('.rdz-scene__halo--soft')).toBeTruthy();
+    expect(drift.querySelector('.rdz-scene__icon.rdz-scene__m-float')).toBeTruthy();
+  });
+
+  it('illustrations exist as layers too', () => {
+    const { container } = render(<Scene><Scene.Waves /><Scene.Badge>NEW</Scene.Badge></Scene>);
+    expect(container.querySelector('.rdz-scene__wave')).toBeTruthy();
+    expect(container.querySelector('.rdz-scene__badge')?.textContent).toBe('NEW');
+  });
+});
