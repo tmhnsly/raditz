@@ -173,4 +173,17 @@ describe('Scene bespoke scenes', () => {
     const { container: w } = render(<Scene preset="window" />);
     expect(w.querySelectorAll('.rdz-scene__skel')).toHaveLength(4);
   });
+
+  it('shield draws with a check and scan; pins drop with ripples; card has chip and shine', () => {
+    const { container: s } = render(<Scene preset="shield" />);
+    expect(s.querySelector('.rdz-scene__shield-outline')).toBeTruthy();
+    expect(s.querySelector('.rdz-scene__shield-check')).toBeTruthy();
+    expect(s.querySelector('.rdz-scene__shield-scan')).toBeTruthy();
+    const { container: p } = render(<Scene preset="pins" />);
+    expect(p.querySelectorAll('.rdz-scene__pin')).toHaveLength(2);
+    expect(p.querySelectorAll('.rdz-scene__pin-ripple')).toHaveLength(2);
+    const { container: c } = render(<Scene preset="card" />);
+    expect(c.querySelector('.rdz-scene__pay-chip')).toBeTruthy();
+    expect(c.querySelector('.rdz-scene__pay-shine')).toBeTruthy();
+  });
 });

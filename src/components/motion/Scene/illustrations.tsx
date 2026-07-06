@@ -129,17 +129,50 @@ export function SceneGauge(): React.ReactElement {
   );
 }
 
+const SHIELD_D = 'M50 8 L70 15 V 32 C 70 44 61 52 50 56 C 39 52 30 44 30 32 V 15 Z';
+
 /** Shield outline draws on, check lands, one soft scan pass. */
 export function SceneShield(): React.ReactElement {
-  return <svg className="rdz-scene__shield" viewBox="0 0 100 60" aria-hidden="true" />;
+  const clipId = React.useId();
+  return (
+    <svg className="rdz-scene__shield" viewBox="0 0 100 60" aria-hidden="true">
+      <clipPath id={clipId}><path d={SHIELD_D} /></clipPath>
+      <path className="rdz-scene__shield-outline" pathLength={1} d={SHIELD_D} fill="none" />
+      <rect className="rdz-scene__shield-scan" clipPath={`url(#${clipId})`} x="28" y="4" width="44" height="9" />
+      <path className="rdz-scene__shield-check" pathLength={1} d="M42 32 L48 38 L59 26" fill="none" />
+    </svg>
+  );
 }
 
 /** Dotted map fragment; two pins drop with landing ripples. */
 export function ScenePins(): React.ReactElement {
-  return <svg className="rdz-scene__pins" viewBox="0 0 100 60" aria-hidden="true" />;
+  return (
+    <svg className="rdz-scene__pins" viewBox="0 0 100 60" aria-hidden="true">
+      <g className="rdz-scene__pins-dots">
+        {Array.from({ length: 15 }, (_, i) => (
+          <circle key={i} cx={18 + (i % 5) * 16} cy={16 + Math.floor(i / 5) * 14} r="1.4" />
+        ))}
+      </g>
+      <circle className="rdz-scene__pin-ripple rdz-scene__pin-ripple--0" cx="34" cy="31" r="6" />
+      <circle className="rdz-scene__pin-ripple rdz-scene__pin-ripple--1" cx="66" cy="45" r="6" />
+      {/* teardrop with a punched hole (evenodd: outer drop + inner circle subpath) */}
+      <path className="rdz-scene__pin rdz-scene__pin--0" fillRule="evenodd"
+        d="M34 31 C 29 25 26 22 26 17 A 8 8 0 1 1 42 17 C 42 22 39 25 34 31 Z M34 20 a 3 3 0 1 0 0-6 a 3 3 0 1 0 0 6 Z" />
+      <path className="rdz-scene__pin rdz-scene__pin--1" fillRule="evenodd"
+        d="M66 45 C 61 39 58 36 58 31 A 8 8 0 1 1 74 31 C 74 36 71 39 66 45 Z M66 34 a 3 3 0 1 0 0-6 a 3 3 0 1 0 0 6 Z" />
+    </svg>
+  );
 }
 
 /** Payment card — chip, number lines, shine sweep, tap ripple. */
 export function SceneCard(): React.ReactElement {
-  return <span className="rdz-scene__pay" />;
+  return (
+    <span className="rdz-scene__pay">
+      <span className="rdz-scene__pay-chip" />
+      <span className="rdz-scene__pay-line rdz-scene__pay-line--0" />
+      <span className="rdz-scene__pay-line rdz-scene__pay-line--1" />
+      <span className="rdz-scene__pay-shine" />
+      <span className="rdz-scene__pay-ring" />
+    </span>
+  );
 }
