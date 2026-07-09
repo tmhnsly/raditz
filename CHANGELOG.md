@@ -4,6 +4,13 @@ All notable changes to Raditz are recorded here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/); versions are git tags `vX.Y.Z`.
 
 ## [Unreleased]
+- **Fixed: Carousel dot indicator glitched during paging.** Clicking a dot (or
+  autoplay/arrows) set the active dot immediately, but the scroll-spy kept
+  re-deriving the nearest slide from every frame of the 460ms smooth scroll —
+  yanking the pill back to the origin and walking it through each intermediate
+  dot, restarting its width transition every step. The spy now stands down while
+  a programmatic scroll owns the track (`animating` ref) and still tracks
+  user-initiated swipes/trackpad scrolls.
 - **Fixed: production app build silently dropped all component/section CSS.**
   package.json `sideEffects: ["**/*.css"]` declared every non-CSS source file
   pure — including the side-effect-only style barrels (`src/styles/components.ts`,

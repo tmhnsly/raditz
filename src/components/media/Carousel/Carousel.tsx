@@ -66,6 +66,11 @@ export function Carousel({
   // Original scroll-snap value, captured once while an animation owns it — so
   // overlapping paging (rapid clicks) can't leave snapping permanently disabled.
   const snapSaved = useRef<string | null>(null);
+  // True while a programmatic smooth scroll owns the track. The scroll-spy must
+  // stand down for its scroll events: go(i) already set the target dot, and
+  // letting the spy re-derive it per frame yanks the indicator back to the
+  // origin and walks it through every intermediate dot.
+  const animating = useRef(false);
   // Latest active index, so the autoplay interval reads it without a stale closure
   // (and without a side effect inside the setState updater).
   const activeRef = useRef(0);
@@ -81,7 +86,7 @@ export function Carousel({
     cancelAnimationFrame(raf.current);
     // Restore snapping on any non-animating exit, else a cancelled in-flight
     // animation leaves scrollSnapType stuck at 'none'.
-    const restoreSnap = (): void => { if (snapSaved.current !== null) { track.style.scrollSnapType = snapSaved.current; snapSaved.current = null; } };
+    const restoreSnap = (): void => { animating.current = false; if (snapSaved.current !== null) { track.style.scrollSnapType = snapSaved.current; snapSaved.current = null; } };
     const start = track.scrollLeft;
     const dist = left - start;
     if (Math.abs(dist) < 1) { restoreSnap(); return; }
@@ -90,6 +95,7 @@ export function Carousel({
     if (dur < 30) { track.scrollLeft = left; restoreSnap(); return; } // "none" preset / reduced motion
     if (snapSaved.current === null) snapSaved.current = track.style.scrollSnapType;
     track.style.scrollSnapType = 'none';
+    animating.current = true;
     const t0 = performance.now();
     const step = (now: number): void => {
       const t = Math.min(1, (now - t0) / dur);
@@ -125,6 +131,7 @@ export function Carousel({
     if (!track) return undefined;
     let r = 0;
     const onScroll = (): void => {
+      if (animating.current) return; // programmatic scroll in flight — go() owns the dot
       cancelAnimationFrame(r);
       r = requestAnimationFrame(() => {
         const center = track.scrollLeft + track.clientWidth / 2;

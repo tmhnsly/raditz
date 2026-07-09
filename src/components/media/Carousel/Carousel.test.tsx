@@ -107,3 +107,55 @@ describe('Carousel — behaviour', () => {
     expect(screen.queryByRole('button', { name: 'Next' })).toBeNull();
   });
 });
+
+// The scroll-spy (scroll → nearest-centre → setActive) must not fight the
+// programmatic smooth scroll: go(i) sets the target dot immediately, and scroll
+// events fired by the animation itself must not yank the indicator back through
+// every intermediate slide (the "jump, snap back, walk" dot glitch).
+describe('Carousel — scroll-spy vs programmatic scroll', () => {
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  /** Give the jsdom track/slides real-ish geometry: 3 slides of 300px. */
+  const mockGeometry = (track: HTMLElement): void => {
+    Object.defineProperty(track, 'clientWidth', { value: 300, configurable: true });
+    Object.defineProperty(track, 'scrollWidth', { value: 900, configurable: true });
+    Object.defineProperty(track, 'offsetLeft', { value: 0, configurable: true });
+    [...track.children].forEach((c, i) => {
+      Object.defineProperty(c, 'offsetLeft', { value: i * 300, configurable: true });
+      Object.defineProperty(c, 'clientWidth', { value: 300, configurable: true });
+    });
+  };
+
+  it('ignores scroll events while the paging animation is in flight', () => {
+    vi.useFakeTimers({ toFake: ['setTimeout', 'setInterval', 'requestAnimationFrame', 'performance'] });
+    const { container } = render(<Carousel>{slides(3)}</Carousel>);
+    const track = container.querySelector('.rdz-carousel__viewport') as HTMLElement;
+    mockGeometry(track);
+
+    // Click dot 3: active jumps to 2 and the 460ms animation starts at scrollLeft 0.
+    act(() => { (screen.getByRole('tab', { name: 'Go to slide 3' }) as HTMLButtonElement).click(); });
+    expect(selectedDot()).toBe(2);
+
+    // First animation frame: scrollLeft is still near 0 (nearest slide = 0).
+    act(() => vi.advanceTimersByTime(32));
+    // The animation's own scroll event must not drag the dot back to 0.
+    act(() => { track.dispatchEvent(new Event('scroll')); });
+    act(() => vi.advanceTimersByTime(32)); // flush the spy's rAF
+    expect(selectedDot()).toBe(2);
+  });
+
+  it('still spies on user-initiated scrolls (no animation in flight)', () => {
+    vi.useFakeTimers({ toFake: ['setTimeout', 'setInterval', 'requestAnimationFrame', 'performance'] });
+    const { container } = render(<Carousel>{slides(3)}</Carousel>);
+    const track = container.querySelector('.rdz-carousel__viewport') as HTMLElement;
+    mockGeometry(track);
+
+    // A swipe/trackpad scroll to slide 3's position, with no go() in flight.
+    track.scrollLeft = 600;
+    act(() => { track.dispatchEvent(new Event('scroll')); });
+    act(() => vi.advanceTimersByTime(32));
+    expect(selectedDot()).toBe(2);
+  });
+});
