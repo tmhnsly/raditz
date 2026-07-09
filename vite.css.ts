@@ -21,10 +21,11 @@ export default defineConfig({
     cssCodeSplit: false,
     assetsInlineLimit: 0, // emit fonts as files in dist/assets/, never inline
     rollupOptions: {
-      // The CSS build's whole job is to collect every CSS side-effect. Tree-shaking
-      // must stay OFF: package.json `sideEffects: ["**/*.css"]` marks components.ts
-      // (a .ts module) side-effect-free, so Rollup would otherwise drop bundle.ts's
-      // `import './components'` and lose every component's SCSS (only tokens survive).
+      // The CSS build's whole job is to collect every CSS side-effect, so
+      // tree-shaking buys nothing here. package.json `sideEffects` now lists
+      // `src/styles/**` (the barrels ARE side-effect modules — that's the root
+      // fix; see scripts/check-app-css.mjs), but keeping treeshake off makes
+      // this build immune to any future sideEffects drift.
       treeshake: false,
       input: { '_styles-bundle': 'src/styles/bundle.ts' },
       output: {

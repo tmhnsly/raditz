@@ -4,6 +4,18 @@ All notable changes to Raditz are recorded here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/); versions are git tags `vX.Y.Z`.
 
 ## [Unreleased]
+- **Fixed: production app build silently dropped all component/section CSS.**
+  package.json `sideEffects: ["**/*.css"]` declared every non-CSS source file
+  pure — including the side-effect-only style barrels (`src/styles/components.ts`,
+  `sections.ts`) — so Rollup tree-shook them out of `pnpm build` and the deployed
+  showroom lost every `rdz-*` style (dev was unaffected; Vite doesn't tree-shake
+  there, which is why it looked fine locally). Root fix: `src/styles/**` added to
+  `sideEffects` (those barrels *are* side-effect modules). Guard: `pnpm build` now
+  runs `scripts/check-app-css.mjs`, which asserts a class from every source
+  stylesheet is present in the built CSS — the app-build twin of
+  `check-consumer.mjs`'s package-CSS checks. (`vite.css.ts` already carried a
+  `treeshake:false` workaround for this exact mechanism; the package artifact was
+  never affected.)
 - **Scene: six new product scenes** — `feed` (activity rows with beating dots +
   a highlight wash), `calendar` (mini month, the selection mark hops cell to
   cell), `search` (result rows under a gliding magnifier), `toggles` (switch
