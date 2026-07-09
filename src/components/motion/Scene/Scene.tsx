@@ -7,6 +7,7 @@ import {
 import {
   SceneBars, SceneWaves, SceneGrid, SceneConstellation, SceneRoute, SceneStack,
   SceneTrend, SceneChat, SceneTerminal, SceneWindow, SceneGauge, SceneShield, ScenePins, SceneCard,
+  SceneFeed, SceneCalendar, SceneSearch, SceneToggles, SceneUpload, SceneLaunch,
 } from './illustrations';
 
 export type { SceneIconMotion } from './layers';
@@ -38,7 +39,13 @@ export type ScenePreset =
   | 'gauge'
   | 'shield'
   | 'pins'
-  | 'card';
+  | 'card'
+  | 'feed'
+  | 'calendar'
+  | 'search'
+  | 'toggles'
+  | 'upload'
+  | 'launch';
 
 /** Background treatment behind the scene (tone-driven, token-backed). */
 export type SceneBg = 'none' | 'soft' | 'gradient' | 'solid';
@@ -122,6 +129,12 @@ function recipe(preset: ScenePreset, icon: React.ReactNode, badge: React.ReactNo
     case 'shield': return (<><SceneShield />{chip}</>);
     case 'pins': return (<><ScenePins />{chip}</>);
     case 'card': return (<><SceneCard />{chip}</>);
+    case 'feed': return (<><SceneFeed />{chip}</>);
+    case 'calendar': return (<><SceneCalendar />{chip}</>);
+    case 'search': return (<><SceneSearch />{chip}</>);
+    case 'toggles': return (<><SceneToggles />{chip}</>);
+    case 'upload': return (<><SceneUpload />{chip}</>);
+    case 'launch': return (<><SceneLaunch />{chip}</>);
   }
 }
 
@@ -188,4 +201,10 @@ export const Scene = Object.assign(SceneRoot, {
   Shield: SceneShield,
   Pins: ScenePins,
   Card: SceneCard,
+  Feed: SceneFeed,
+  Calendar: SceneCalendar,
+  Search: SceneSearch,
+  Toggles: SceneToggles,
+  Upload: SceneUpload,
+  Launch: SceneLaunch,
 });

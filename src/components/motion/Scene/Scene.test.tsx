@@ -152,6 +152,25 @@ describe('Scene recipes', () => {
 });
 
 describe('Scene bespoke scenes', () => {
+  it('product scenes compose their marks (feed/calendar/search/toggles/upload/launch)', () => {
+    const { container: f } = render(<Scene preset="feed" />);
+    expect(f.querySelectorAll('.rdz-scene__feed-row')).toHaveLength(3);
+    const { container: c } = render(<Scene preset="calendar" />);
+    expect(c.querySelectorAll('.rdz-scene__calmini-day')).toHaveLength(12);
+    expect(c.querySelector('.rdz-scene__calmini-mark')).toBeTruthy();
+    const { container: se } = render(<Scene preset="search" />);
+    expect(se.querySelectorAll('.rdz-scene__search-row')).toHaveLength(3);
+    expect(se.querySelector('.rdz-scene__search-lens')).toBeTruthy();
+    const { container: t } = render(<Scene preset="toggles" />);
+    expect(t.querySelectorAll('.rdz-scene__toggle-knob')).toHaveLength(3);
+    const { container: u } = render(<Scene preset="upload" />);
+    expect(u.querySelector('.rdz-scene__upload-arrow')).toBeTruthy();
+    expect(u.querySelector('.rdz-scene__upload-fill')).toBeTruthy();
+    const { container: l } = render(<Scene preset="launch" />);
+    expect(l.querySelector('.rdz-scene__rocket')).toBeTruthy();
+    expect(l.querySelectorAll('.rdz-scene__exhaust')).toHaveLength(3);
+  });
+
   it('trend draws a line, area and end-dot; gauge has track, fill and tip', () => {
     const { container: t } = render(<Scene preset="trend" />);
     expect(t.querySelector('.rdz-scene__trend-line')).toBeTruthy();

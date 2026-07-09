@@ -4,6 +4,15 @@ All notable changes to Raditz are recorded here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/); versions are git tags `vX.Y.Z`.
 
 ## [Unreleased]
+- **Scene: six new product scenes** — `feed` (activity rows with beating dots +
+  a highlight wash), `calendar` (mini month, the selection mark hops cell to
+  cell), `search` (result rows under a gliding magnifier), `toggles` (switch
+  rows flipping in a staggered round), `upload` (arrow rises from the tray while
+  the progress bar fills), `launch` (rocket + streaming exhaust). All follow the
+  loop discipline (persistent base; transients invisible at their seam or
+  palindromic) and rest as complete panels under reduced motion. Also fixed the
+  wave scene for real: the global media reset (`svg{max-width:100%}`) was capping
+  its two-period tile, making it slide open a gap and snap back.
 - **Element composition (`render` prop)** — the Base UI composition model, a
   cleaner successor to `asChild`. `Button` / `IconButton` take a `render` prop (a
   React element or `(props, state) => element`) to render *as* another element —

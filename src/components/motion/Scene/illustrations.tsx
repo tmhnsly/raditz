@@ -189,3 +189,89 @@ export function SceneCard(): React.ReactElement {
     </span>
   );
 }
+
+/** Activity feed — persistent rows (avatar dot + text lines); each row's dot
+ *  beats and a soft highlight washes down the list in turn. */
+export function SceneFeed(): React.ReactElement {
+  return (
+    <span className="rdz-scene__feed">
+      {Array.from({ length: 3 }, (_, i) => (
+        <span key={i} className="rdz-scene__feed-row" data-i={i}>
+          <span className="rdz-scene__feed-dot" />
+          <span className="rdz-scene__feed-lines">
+            <span className="rdz-scene__feed-line rdz-scene__feed-line--a" />
+            <span className="rdz-scene__feed-line rdz-scene__feed-line--b" />
+          </span>
+        </span>
+      ))}
+    </span>
+  );
+}
+
+/** Mini month — header bar + a dot grid; a highlight pops cell to cell. */
+export function SceneCalendar(): React.ReactElement {
+  return (
+    <span className="rdz-scene__calmini">
+      <span className="rdz-scene__calmini-head" />
+      <span className="rdz-scene__calmini-grid">
+        {Array.from({ length: 12 }, (_, i) => <span key={i} className="rdz-scene__calmini-day" />)}
+        <span className="rdz-scene__calmini-mark" />
+      </span>
+    </span>
+  );
+}
+
+/** Result rows with a magnifier gliding over them; the row under the lens lifts. */
+export function SceneSearch(): React.ReactElement {
+  return (
+    <span className="rdz-scene__search">
+      {Array.from({ length: 3 }, (_, i) => <span key={i} className="rdz-scene__search-row" data-i={i} />)}
+      <svg className="rdz-scene__search-lens" viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="10" cy="10" r="6.2" fill="none" />
+        <line x1="14.8" y1="14.8" x2="20.5" y2="20.5" />
+      </svg>
+    </span>
+  );
+}
+
+/** Settings panel — three switch rows; the knobs flip in a staggered round. */
+export function SceneToggles(): React.ReactElement {
+  return (
+    <span className="rdz-scene__toggles">
+      {Array.from({ length: 3 }, (_, i) => (
+        <span key={i} className="rdz-scene__toggle-row" data-i={i}>
+          <span className="rdz-scene__toggle-label" />
+          <span className="rdz-scene__toggle-pill"><span className="rdz-scene__toggle-knob" /></span>
+        </span>
+      ))}
+    </span>
+  );
+}
+
+/** Upload tray — an arrow rises and fades while the progress bar fills. */
+export function SceneUpload(): React.ReactElement {
+  return (
+    <span className="rdz-scene__upload">
+      <svg className="rdz-scene__upload-arrow" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 19 V6 M6 12 L12 6 L18 12" fill="none" />
+      </svg>
+      <span className="rdz-scene__upload-tray" />
+      <span className="rdz-scene__upload-bar"><span className="rdz-scene__upload-fill" /></span>
+    </span>
+  );
+}
+
+/** Launch — a rocket lifts gently, exhaust dashes stream beneath it. */
+export function SceneLaunch(): React.ReactElement {
+  return (
+    <span className="rdz-scene__launch">
+      <svg className="rdz-scene__rocket" viewBox="0 0 40 64" aria-hidden="true">
+        <path className="rdz-scene__rocket-body" d="M20 2 C 28 10 30 22 30 34 L 30 44 L 10 44 L 10 34 C 10 22 12 10 20 2 Z" />
+        <circle className="rdz-scene__rocket-window" cx="20" cy="24" r="5" />
+        <path className="rdz-scene__rocket-fin" d="M10 34 L 2 48 L 10 46 Z" />
+        <path className="rdz-scene__rocket-fin" d="M30 34 L 38 48 L 30 46 Z" />
+      </svg>
+      {Array.from({ length: 3 }, (_, i) => <span key={i} className="rdz-scene__exhaust" data-i={i} />)}
+    </span>
+  );
+}

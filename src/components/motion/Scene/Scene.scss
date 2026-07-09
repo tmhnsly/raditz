@@ -233,6 +233,62 @@ $scale: var(--motion-scale, 1);
 .rdz-scene__pay-shine { position: absolute; inset: -30%; background: linear-gradient(115deg, transparent 42%, color-mix(in srgb, currentColor 22%, transparent) 50%, transparent 58%); animation: rdzScBeam calc(5s * #{$scale}) var(--ease-in-out) infinite; }
 .rdz-scene__pay-ring { position: absolute; right: 8%; top: 18%; width: 11cqmin; height: 11cqmin; border-radius: 50%; border: 0.6cqmin solid currentColor; opacity: 0; animation: rdzScTapRing calc(5s * #{$scale}) var(--ease-decel) infinite; }
 
+/* ── feed — persistent activity rows; dots beat, a highlight washes down ── */
+.rdz-scene__feed { position: absolute; inset: 0; margin: auto; width: 62cqmin; height: 46cqmin; display: flex; flex-direction: column; justify-content: space-between; }
+.rdz-scene__feed-row { display: flex; align-items: center; gap: 3cqmin; padding: 2.4cqmin 3cqmin; border-radius: 2.4cqmin; background: color-mix(in srgb, currentColor 8%, transparent); animation: rdzScFeedGlow calc(5s * #{$scale}) var(--ease-in-out) infinite; }
+.rdz-scene__feed-row[data-i='1'] { animation-delay: calc(5s * #{$scale} * 0.33); }
+.rdz-scene__feed-row[data-i='2'] { animation-delay: calc(5s * #{$scale} * 0.66); }
+.rdz-scene__feed-dot { width: 6cqmin; height: 6cqmin; border-radius: 50%; background: currentColor; flex: none; animation: rdzScThrob calc(5s * #{$scale}) var(--ease-in-out) infinite; animation-delay: inherit; }
+.rdz-scene__feed-lines { flex: 1; display: flex; flex-direction: column; gap: 1.6cqmin; }
+.rdz-scene__feed-line { height: 2.2cqmin; border-radius: 1.1cqmin; background: currentColor; opacity: 0.5; }
+.rdz-scene__feed-line--a { width: 72%; }
+.rdz-scene__feed-line--b { width: 46%; opacity: 0.3; }
+
+/* ── calendar — mini month; the selection mark hops cell to cell ── */
+.rdz-scene__calmini { position: absolute; inset: 0; margin: auto; width: 54cqmin; height: 46cqmin; display: flex; flex-direction: column; gap: 3cqmin; }
+.rdz-scene__calmini-head { height: 6cqmin; border-radius: 1.6cqmin; background: color-mix(in srgb, currentColor 30%, transparent); }
+.rdz-scene__calmini-grid { position: relative; flex: 1; display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(3, 1fr); gap: 2.4cqmin; }
+.rdz-scene__calmini-day { border-radius: 1.6cqmin; background: color-mix(in srgb, currentColor 14%, transparent); }
+/* the mark is one cell-sized overlay; translate % = own size = whole cells.
+   Grid gap ≈ 2.4cqmin ≈ 19% of a cell — bake it into the hop distances. */
+.rdz-scene__calmini-mark { position: absolute; z-index: 1; width: calc(25% - 1.8cqmin); height: calc(33.33% - 1.6cqmin); border-radius: 1.6cqmin; background: currentColor; animation: rdzScCalHop calc(4.8s * #{$scale}) var(--ease-spring) infinite; }
+
+/* ── search — persistent result rows; a magnifier glides (palindrome) ── */
+.rdz-scene__search { position: absolute; inset: 0; margin: auto; width: 60cqmin; height: 44cqmin; display: flex; flex-direction: column; justify-content: space-between; padding-right: 8cqmin; }
+.rdz-scene__search-row { height: 8.4cqmin; border-radius: 2cqmin; background: color-mix(in srgb, currentColor 12%, transparent); animation: rdzScSearchRow calc(4.6s * #{$scale}) var(--ease-in-out) infinite; }
+.rdz-scene__search-row[data-i='0'] { width: 92%; }
+.rdz-scene__search-row[data-i='1'] { width: 70%; animation-delay: calc(4.6s * #{$scale} * 0.25); }
+.rdz-scene__search-row[data-i='2'] { width: 82%; animation-delay: calc(4.6s * #{$scale} * 0.5); }
+.rdz-scene__search-lens { position: absolute; z-index: 2; top: 0; left: 6%; width: 16cqmin; height: 16cqmin; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; filter: drop-shadow(0 1cqmin 2cqmin color-mix(in srgb, currentColor 30%, transparent)); animation: rdzScLens calc(4.6s * #{$scale}) var(--ease-in-out) infinite; }
+
+/* ── toggles — switch rows flipping in a staggered round ── */
+.rdz-scene__toggles { position: absolute; inset: 0; margin: auto; width: 58cqmin; height: 44cqmin; display: flex; flex-direction: column; justify-content: space-between; }
+.rdz-scene__toggle-row { display: flex; align-items: center; justify-content: space-between; gap: 4cqmin; }
+.rdz-scene__toggle-label { flex: 1; height: 3cqmin; border-radius: 1.5cqmin; background: currentColor; opacity: 0.35; max-width: 55%; }
+.rdz-scene__toggle-row[data-i='1'] .rdz-scene__toggle-label { max-width: 42%; }
+.rdz-scene__toggle-row[data-i='2'] .rdz-scene__toggle-label { max-width: 48%; }
+.rdz-scene__toggle-pill { width: 14cqmin; height: 7.6cqmin; border-radius: 3.8cqmin; background: color-mix(in srgb, currentColor 22%, transparent); padding: 1.1cqmin; animation: rdzScPill calc(4.2s * #{$scale}) var(--ease-in-out) infinite; }
+.rdz-scene__toggle-knob { display: block; width: 5.4cqmin; height: 5.4cqmin; border-radius: 50%; background: var(--panel); animation: rdzScKnob calc(4.2s * #{$scale}) var(--ease-spring) infinite; }
+.rdz-scene__toggle-row[data-i='1'] :is(.rdz-scene__toggle-pill, .rdz-scene__toggle-knob) { animation-delay: calc(4.2s * #{$scale} * 0.33); }
+.rdz-scene__toggle-row[data-i='2'] :is(.rdz-scene__toggle-pill, .rdz-scene__toggle-knob) { animation-delay: calc(4.2s * #{$scale} * 0.66); }
+
+/* ── upload — arrow rises out of the tray; progress fills then rests ── */
+.rdz-scene__upload { position: absolute; inset: 0; margin: auto; width: 46cqmin; height: 44cqmin; }
+.rdz-scene__upload-arrow { position: absolute; z-index: 1; left: 50%; top: 26%; width: 16cqmin; height: 16cqmin; margin-left: -8cqmin; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; opacity: 0; animation: rdzScUpArrow calc(3.8s * #{$scale}) var(--ease-decel) infinite; }
+.rdz-scene__upload-tray { position: absolute; left: 0; right: 0; bottom: 10cqmin; height: 14cqmin; border-radius: 0 0 2.6cqmin 2.6cqmin; border: 0.7cqmin solid currentColor; border-top: 0; opacity: 0.75; }
+.rdz-scene__upload-bar { position: absolute; left: 0; right: 0; bottom: 0; height: 3.6cqmin; border-radius: 1.8cqmin; background: color-mix(in srgb, currentColor 18%, transparent); overflow: hidden; }
+.rdz-scene__upload-fill { display: block; height: 100%; width: 70%; border-radius: inherit; background: currentColor; animation: rdzScUpFill calc(3.8s * #{$scale}) var(--ease-in-out) infinite; }
+
+/* ── launch — rocket floats; exhaust streams beneath ── */
+.rdz-scene__launch { position: absolute; inset: 0; margin: auto; width: 30cqmin; height: 62cqmin; }
+.rdz-scene__rocket { position: absolute; z-index: 1; top: 0; left: 50%; width: 26cqmin; height: 42cqmin; margin-left: -13cqmin; animation: rdzScDrift calc(3.4s * #{$scale}) var(--ease-in-out) infinite; }
+.rdz-scene__rocket-body { fill: color-mix(in srgb, currentColor 82%, transparent); }
+.rdz-scene__rocket-window { fill: var(--panel); stroke: currentColor; stroke-width: 2; }
+.rdz-scene__rocket-fin { fill: currentColor; }
+.rdz-scene__exhaust { position: absolute; z-index: 0; left: 50%; top: 66%; width: 2.6cqmin; height: 9cqmin; margin-left: -1.3cqmin; border-radius: 1.3cqmin; background: currentColor; opacity: 0; animation: rdzScExhaust calc(1.6s * #{$scale}) var(--ease-accel) infinite; }
+.rdz-scene__exhaust[data-i='1'] { margin-left: -5.2cqmin; animation-delay: calc(1.6s * #{$scale} * 0.33); height: 7cqmin; }
+.rdz-scene__exhaust[data-i='2'] { margin-left: 2.6cqmin; animation-delay: calc(1.6s * #{$scale} * 0.66); height: 7cqmin; }
+
 /* ── Keyframes ── */
 @keyframes rdzScThrob   { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.14); } }
 /* A quick flash early in the cycle (peak ~12%), then rest — the ring below is
@@ -270,6 +326,29 @@ $scale: var(--motion-scale, 1);
 @keyframes rdzScShieldPulse { 0%, 100% { opacity: 0.8; } 50% { opacity: 1; } }
 @keyframes rdzScScan       { 0%, 12% { opacity: 0; transform: translateY(0); } 26%, 60% { opacity: 0.9; } 74%, 100% { opacity: 0; transform: translateY(42px); } }
 @keyframes rdzScPinDrop    { 0%, 6% { opacity: 0; transform: translateY(-16%); } 14% { opacity: 1; transform: translateY(3%); } 18%, 86% { opacity: 1; transform: translateY(0); } 95%, 100% { opacity: 0; } }
+/* symmetric (0% == 100%) → seamless */
+@keyframes rdzScFeedGlow   { 0%, 40%, 100% { background: color-mix(in srgb, currentColor 8%, transparent); } 12%, 24% { background: color-mix(in srgb, currentColor 20%, transparent); } }
+/* discrete selection hops (spring per hop); the seam is just another hop */
+@keyframes rdzScCalHop {
+  0%, 4%   { transform: translate(0, 0) scale(1); }
+  8%       { transform: translate(119%, 0) scale(1.15); }
+  12%, 37% { transform: translate(119%, 0) scale(1); }
+  41%      { transform: translate(238%, 119%) scale(1.15); }
+  45%, 70% { transform: translate(238%, 119%) scale(1); }
+  74%      { transform: translate(119%, 238%) scale(1.15); }
+  78%, 96% { transform: translate(119%, 238%) scale(1); }
+  100%     { transform: translate(0, 0) scale(1); }
+}
+/* palindrome (0% == 100%, mirrored at 50%) → seamless */
+@keyframes rdzScLens { 0%, 100% { transform: translate(0, -18%); } 25% { transform: translate(230%, 62%); } 50% { transform: translate(40%, 160%); } 75% { transform: translate(230%, 62%); } }
+@keyframes rdzScSearchRow  { 0%, 30%, 100% { background: color-mix(in srgb, currentColor 12%, transparent); } 10%, 18% { background: color-mix(in srgb, currentColor 26%, transparent); } }
+/* on → hold → off → hold-off; starts and ends off → seamless */
+@keyframes rdzScKnob { 0%, 100% { transform: translateX(0); } 12%, 55% { transform: translateX(6.4cqmin); } 67%, 100% { transform: translateX(0); } }
+@keyframes rdzScPill { 0%, 100% { background: color-mix(in srgb, currentColor 22%, transparent); } 12%, 55% { background: color-mix(in srgb, currentColor 85%, transparent); } 67%, 100% { background: color-mix(in srgb, currentColor 22%, transparent); } }
+/* transients: opacity 0 at both ends → seamless */
+@keyframes rdzScUpArrow { 0%, 8% { opacity: 0; transform: translateY(30%); } 22% { opacity: 1; } 48%, 100% { opacity: 0; transform: translateY(-46%); } }
+@keyframes rdzScUpFill  { 0%, 6% { width: 0; opacity: 1; } 62%, 84% { width: 70%; opacity: 1; } 96%, 100% { width: 70%; opacity: 0; } }
+@keyframes rdzScExhaust { 0% { opacity: 0; transform: translateY(0) scaleY(0.6); } 18% { opacity: 0.75; } 100% { opacity: 0; transform: translateY(160%) scaleY(1); } }
 @keyframes rdzScPinRipple  { 0%, 14% { opacity: 0; transform: scale(0.2); } 20% { opacity: 0.5; } 42%, 100% { opacity: 0; transform: scale(1.7); } }
 @keyframes rdzScTapRing    { 0%, 55% { opacity: 0; transform: scale(0.4); } 62% { opacity: 0.7; } 85%, 100% { opacity: 0; transform: scale(1.5); } }
 
@@ -289,5 +368,7 @@ $scale: var(--motion-scale, 1);
   .rdz-scene__skel { opacity: 0.35; }
   /* shield rests drawn; pins rest landed; transient flourishes stay hidden */
   .rdz-scene__pin { opacity: 1; transform: none; }
-  .rdz-scene__shield-scan, .rdz-scene__pin-ripple, .rdz-scene__pay-shine, .rdz-scene__pay-ring, .rdz-scene__trend-pulse { opacity: 0; }
+  .rdz-scene__shield-scan, .rdz-scene__pin-ripple, .rdz-scene__pay-shine, .rdz-scene__pay-ring, .rdz-scene__trend-pulse,
+  .rdz-scene__upload-arrow, .rdz-scene__exhaust { opacity: 0; }
+  /* feed/search/toggles/calendar/upload rest as complete panels (base styles). */
 }

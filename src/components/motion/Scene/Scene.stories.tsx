@@ -50,6 +50,12 @@ const PRODUCT_TILES: { preset: ScenePreset; title: string; desc: string }[] = [
   { preset: 'shield', title: 'Security', desc: 'Protected by default, verified always.' },
   { preset: 'card', title: 'Billing', desc: 'Payments without the paperwork.' },
   { preset: 'pins', title: 'Logistics', desc: 'Know where everything is, live.' },
+  { preset: 'feed', title: 'Activity', desc: 'Every update, as it happens.' },
+  { preset: 'calendar', title: 'Scheduling', desc: 'Book it in two taps.' },
+  { preset: 'search', title: 'Search', desc: 'Find anything, instantly.' },
+  { preset: 'toggles', title: 'Control', desc: 'Every setting, one panel.' },
+  { preset: 'upload', title: 'Import', desc: 'Bring your data with you.' },
+  { preset: 'launch', title: 'Ship it', desc: 'From merge to production.' },
 ];
 
 const DATA_TILES: { preset: ScenePreset; title: string; desc: string }[] = [
