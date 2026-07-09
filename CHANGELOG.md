@@ -4,6 +4,12 @@ All notable changes to Raditz are recorded here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/); versions are git tags `vX.Y.Z`.
 
 ## [Unreleased]
+- **Fixed: Lightbox controls lost their frosted-glass visibility.** The panel
+  restyle (`0ad4816`) turned the shared overlay discs (`rdz-oclose`/`rdz-ovbtn`)
+  into outline-only buttons — right for Dialog/Drawer, but over a busy photo the
+  outline vanishes. The frosted treatment (white-alpha fill + `--glass-blur` +
+  `--on-media` icon colour) is restored scoped to `.rdz-on-dark`, so Lightbox
+  chrome and hero-scrim discs read again while panels keep the plain outline.
 - **Fixed: Carousel dot indicator glitched during paging.** Clicking a dot (or
   autoplay/arrows) set the active dot immediately, but the scroll-spy kept
   re-deriving the nearest slide from every frame of the 460ms smooth scroll —
