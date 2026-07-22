@@ -4,6 +4,8 @@ All notable changes to Raditz are recorded here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/); versions are git tags `vX.Y.Z`.
 
 ## [Unreleased]
+
+## [0.3.0] - 2026-07-22
 - **Fixed: Lightbox controls lost their frosted-glass visibility.** The panel
   restyle (`0ad4816`) turned the shared overlay discs (`rdz-oclose`/`rdz-ovbtn`)
   into outline-only buttons — right for Dialog/Drawer, but over a busy photo the
@@ -38,6 +40,13 @@ All notable changes to Raditz are recorded here. The format is based on
   palindromic) and rest as complete panels under reduced motion. Also fixed the
   wave scene for real: the global media reset (`svg{max-width:100%}`) was capping
   its two-period tile, making it slide open a gap and snap back.
+- **Scene v2 — presets become recipes over public decoration layers.** The
+  decoration furniture (Icon/Glow/Rings/Halo/Sparks/Orbit/Beam/Badge + drift) is
+  now a public layer vocabulary composable via `children`; the canvas gained
+  semantic `tone`/`bg`/`speed` (neutral tone rides the `--neutral-*` indirection)
+  and flush corners; new bespoke scenes `chat`, `terminal`, `window`, `trend`,
+  `gauge`, `shield`, `pins`, `card`; every loop audited for seam-free cycling;
+  showroom stories grouped by use with neutral copy.
 - **Element composition (`render` prop)** — the Base UI composition model, a
   cleaner successor to `asChild`. `Button` / `IconButton` take a `render` prop (a
   React element or `(props, state) => element`) to render *as* another element —
