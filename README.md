@@ -10,6 +10,50 @@ pnpm install
 pnpm storybook    # the library (Foundations / Components / Sections / Pages)
 ```
 
+## Using Raditz in a product
+
+Raditz publishes to **GitHub Packages** as `@tmhnsly/raditz`. Consumers alias it
+back to the bare name so every documented import path (`from 'raditz'`,
+`raditz/styles.css`, `raditz/catalog/llms.txt`) stays correct.
+
+In the product repo:
+
+```bash
+# .npmrc  (committed — CI needs it too)
+@tmhnsly:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=${NPM_TOKEN}
+```
+
+```jsonc
+// package.json
+"dependencies": {
+  "raditz": "npm:@tmhnsly/raditz@^0.3.1"
+}
+```
+
+`NPM_TOKEN` is a GitHub PAT with `read:packages`. Set it locally (shell profile
+or a local `.env`) and add it to CI — on Vercel, as an Environment Variable for
+all environments. The package ships prebuilt `dist` + `catalog`, so consumers
+install fast and need no build toolchain of their own.
+
+### Releasing
+
+```bash
+pnpm release:gate                     # preflight + build + consumer check + tests
+npm version <patch|minor|major>
+npm publish                           # publishConfig pins it to GitHub Packages
+git push && git push --tags
+```
+
+`publishConfig.registry` means a stray `npm publish` cannot reach npmjs.com.
+
+### Co-developing against a product
+
+From the product repo, `pnpm rdz:link` swaps the dependency to `link:../raditz`
+and `pnpm dev:lib` builds + watches the library alongside the app. Run
+`pnpm rdz:unlink` before committing — a `link:` spec in `package.json` breaks
+every build that isn't on your machine.
+
 ## What's inside
 
 A personal UI library, organized in Storybook into:

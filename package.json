@@ -1,7 +1,13 @@
 {
-  "name": "raditz",
-  "private": true,
-  "version": "0.3.0",
+  "name": "@tmhnsly/raditz",
+  "version": "0.3.1",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tmhnsly/raditz.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
