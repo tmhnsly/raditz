@@ -12,7 +12,7 @@ re-skins everything.
 
 ## At a glance
 
-- **107 components** in 13 categories, **26 page sections** with variants, and 8 full
+- **106 components** in 13 categories, **26 page sections** with variants, and 8 full
   example pages (landing, pricing, dashboard, docs, auth and more).
 - **Tokens over Radix Colors.** Components only use semantic tokens (`--accent`,
   `--surface`, `--text`), so light/dark mode and re-theming (accent, gray, radius,
@@ -101,7 +101,7 @@ every build that isn't on your machine.
 A personal UI library, organized in Storybook into:
 
 - **Foundations** — colors, typography, spacing, radius, elevation, motion (token docs)
-- **Components** — 107 real React components across 13 categories
+- **Components** — 106 real React components across 13 categories
   (actions, data, disclosure, display, feedback, inputs, layout, media, motion,
   navigation, overlay, surfaces, typography), each with a story + autodocs
 - **Sections** — 26 composable page sections, each with variants
