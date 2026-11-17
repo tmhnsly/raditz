@@ -1,9 +1,51 @@
 # Raditz
 
-A personal React + Vite + TypeScript UI library with Storybook, built on the
-**Raditz** design system (Radix Colors + semantic tokens). Real, editable
-components, sections, and full example pages — all re-skin and re-theme from one
-accent token.
+[![CI](https://github.com/tmhnsly/raditz/actions/workflows/ci.yml/badge.svg)](https://github.com/tmhnsly/raditz/actions/workflows/ci.yml)
+
+A React and TypeScript design system for building fast prototypes that still look
+finished. Accessible components, light and dark themes, and one accent token that
+re-skins everything.
+
+**[Live showcase](https://raditz-nine.vercel.app)** · **[In use: Beatz DJ Studio demo](https://beats-dj-studio.vercel.app)**
+
+![Raditz showcase: foundations, theme picker and component tree](docs/screenshots/showcase.png)
+
+## At a glance
+
+- **107 components** in 13 categories, **26 page sections** with variants, and 8 full
+  example pages (landing, pricing, dashboard, docs, auth and more).
+- **Tokens over Radix Colors.** Components only use semantic tokens (`--accent`,
+  `--surface`, `--text`), so light/dark mode and re-theming (accent, gray, radius,
+  motion) are automatic.
+- **Accessibility is a test gate.** Every story is rendered and checked with axe;
+  1,500+ tests run in CI alongside the typecheck and both builds.
+- **Strict TypeScript** with no `any` or `@ts-ignore`.
+- **Packaged and versioned** as `@tmhnsly/raditz` on GitHub Packages, with a
+  changelog and a gated release script.
+
+## In use: Beatz DJ Studio
+
+![Beatz DJ Studio concept site built with Raditz](docs/screenshots/beatz-demo.png)
+
+A concept redesign for a real DJ studio in Farnham, Surrey, built entirely from
+Raditz sections and components to test the system on a real business's content.
+Not commissioned; shown with the owner's permission.
+
+## How it was built
+
+Designed and built by [Tom Hinsley](https://tomhinsley.com) with Claude Code as a
+pair. The working method is in the repo:
+
+- `docs/superpowers/specs` and `plans`: design specs and step-by-step implementation
+  plans, written before the code.
+- `docs/adr`: architecture decision records for the calls worth remembering.
+- `CONTEXT.md` and `CLAUDE.md`: the domain language and house rules.
+- `catalog/llms.txt`: a generated component catalogue, so an AI agent building a
+  product composes existing Raditz parts instead of inventing new ones.
+- `skills/`: Claude Code skills to start a new product on Raditz (`raditz-new`) and
+  promote a component back into the library (`raditz-promote`).
+
+## Run it locally
 
 ```bash
 pnpm install
@@ -59,7 +101,7 @@ every build that isn't on your machine.
 A personal UI library, organized in Storybook into:
 
 - **Foundations** — colors, typography, spacing, radius, elevation, motion (token docs)
-- **Components** — 106 real React components across 13 categories
+- **Components** — 107 real React components across 13 categories
   (actions, data, disclosure, display, feedback, inputs, layout, media, motion,
   navigation, overlay, surfaces, typography), each with a story + autodocs
 - **Sections** — 26 composable page sections, each with variants

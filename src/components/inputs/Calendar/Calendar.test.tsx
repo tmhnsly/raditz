@@ -40,11 +40,17 @@ describe('Calendar (single)', () => {
 
 describe('Calendar (range)', () => {
   it('first click sets `from`, second sets `to`', () => {
-    const onRangeChange = vi.fn();
-    const { container } = render(<Calendar range={{}} onRangeChange={onRangeChange} defaultValue="2026-07-01" />);
-    // seed the view month via a within-month click chain
-    fireEvent.click(day(container, 8));
-    expect(onRangeChange).toHaveBeenLastCalledWith({ from: '2026-07-08', to: undefined });
+    // An empty range opens on today's month, so pin the clock to keep the test date-independent.
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(new Date('2026-07-01T12:00:00'));
+    try {
+      const onRangeChange = vi.fn();
+      const { container } = render(<Calendar range={{}} onRangeChange={onRangeChange} />);
+      fireEvent.click(day(container, 8));
+      expect(onRangeChange).toHaveBeenLastCalledWith({ from: '2026-07-08', to: undefined });
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it('a second click before the first swaps the endpoints so from ≤ to', () => {
